@@ -1,17 +1,17 @@
 <init tal:define="global model request/model; global view here; global version options/version; global mangle modules/Products/Silva/mangle" tal:omit-tag="" />
 
-<table cellspacing="0" cellpadding="1" width="100%" border="0">
+<table class="silvatable newstable" cellspacing="0" cellpadding="1" width="100%" border="0">
 
 <tr>
-<td colspan="2">
+<td class="titlecell" colspan="2">
 <h2 tal:content="structure python:version.get_title()">Title</h2>
 </td>
 </tr>
-<tr style="vertical-align:top">
-<td style="padding-right:1em">
+<tr>
+<td class="contentcell">
 <p tal:replace="structure python: view.get_content(version)"></p>
 </td>
-<td width="20%" valign="top" style="font-size: 10px; padding-top:0.8em; text-align: right;">
+<td class="metadata">
 <tal:block 
   define="creationdate python: mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStrOptionalTime()"
   condition="python: creationdate != ''">
