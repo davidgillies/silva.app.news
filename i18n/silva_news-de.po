@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Mon Dec  6 15:13:24 2004\n"
+"POT-Creation-Date: Mon Dec  6 15:30:59 2004\n"
 "PO-Revision-Date: 2004-12-06 15:11+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -108,6 +108,16 @@ msgid ""
 "If 'acquire' is not checked, these settings will determine the items allowed "
 "in this publication. Otherwise the addables are acquired from the "
 "publication above."
+msgstr ""
+
+# Default: "silva_news"
+#: /views/edit/Container/NewsPublication/settings_addables_submit.py:41
+msgid "Addable settings changed for: ${metadata}"
+msgstr ""
+
+# Default: "silva_news"
+#: /views/edit/Container/NewsPublication/settings_submit.py:25
+msgid "Settings changed."
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:120
@@ -420,6 +430,11 @@ msgstr ""
 msgid "Promoter"
 msgstr ""
 
+# Default: "silva_news"
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_submit.py:40
+msgid "${path} is updated"
+msgstr ""
+
 #: /views/edit/Container/NewsPublication/tab_info.pt:17
 msgid "Info for"
 msgstr "Info für"
@@ -428,21 +443,17 @@ msgstr "Info für"
 msgid "Authorized users below this level"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:48
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:47
 msgid "properties of"
 msgstr "Eigenschaften von"
 
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:49
-msgid "<span>x</span> &#xab; &#xbb;"
-msgstr ""
-
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
-msgid "convert to publication"
-msgstr "In Publikation umwandeln"
-
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
 msgid "change Folder into Publication: alt-c"
 msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
+msgid "convert to publication"
+msgstr "In Publikation umwandeln"
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
 msgid "&nbsp;News Publication settings"

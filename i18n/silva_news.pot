@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec  6 15:13:24 2004\n"
+"POT-Creation-Date: Mon Dec  6 15:30:59 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -101,6 +101,16 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/settings_addables_form.form:42
 msgid "If 'acquire' is not checked, these settings will determine the items allowed in this publication. Otherwise the addables are acquired from the publication above."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_submit.py:41
+# Default: "silva_news"
+msgid "Addable settings changed for: ${metadata}"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_submit.py:25
+# Default: "silva_news"
+msgid "Settings changed."
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:120
@@ -410,6 +420,11 @@ msgstr ""
 msgid "Promoter"
 msgstr ""
 
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_submit.py:40
+# Default: "silva_news"
+msgid "${path} is updated"
+msgstr ""
+
 #: /views/edit/Container/NewsPublication/tab_info.pt:17
 msgid "Info for"
 msgstr ""
@@ -418,20 +433,16 @@ msgstr ""
 msgid "Authorized users below this level"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:48
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:47
 msgid "properties of"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:49
-msgid "<span>x</span> &#xab; &#xbb;"
-msgstr ""
-
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
-msgid "convert to publication"
-msgstr ""
-
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
 msgid "change Folder into Publication: alt-c"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
+msgid "convert to publication"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
