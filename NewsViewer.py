@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.22 $
+# $Revision: 1.23 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -224,6 +224,12 @@ class NewsViewer(Content, Folder.Folder):
                               'is_published')
     def is_published(self):
         """Returns 1 so the object will be shown in TOCs and such"""
+        return 1
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'is_deletable')
+    def is_deletable(self):
+        """return 1 so this object can always be deleted"""
         return 1
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
