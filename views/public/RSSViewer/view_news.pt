@@ -6,20 +6,24 @@
 
 <table border="0" cellpadding="0" cellspacing="5">
 <tr>
-  <td>
+  <td colspan="2">
     <h2><span class="folder-title" tal:content="python: model.rss_title() or model.get_title_html()">View News</span></h2>
+    <span tal:replace="model/rss_textinput_description" /><br />
+    <form tal:attributes="action model/rss_textinput_link" method="post" tal:condition="python: model.rss_textinput_title() and model.rss_textinput_name() and model.rss_textinput_link()">
+        <input type="text" tal:attributes="name model/rss_textinput_name"><input type="submit" tal:attributes="value python: model.rss_textinput_title()"><br /><br />
+    </form>
   </td>
 </tr>
 <tr>
-  <td valign="top">
-    <a tal:attributes="href model/rss_image_link" tal:condition="model/rss_image_link"><img style="float: left" border="0" tal:condition="model/rss_image_url" tal:attributes="src model/rss_image_url; alt model/rss_image_title"></a>
-    <img style="float: left" border="0" tal:condition="python: model.rss_image_url() and not model.rss_image_link()" tal:attributes="src model/rss_image_url; alt model/rss_image_title">
+  <td valign="top" colspan="2">
+    <a tal:attributes="href model/rss_image_link" tal:condition="model/rss_image_link"><img border="0" tal:condition="model/rss_image_url" tal:attributes="src model/rss_image_url; alt model/rss_image_title" style="margin-right: 5px; mergin-bottom: 5px; float: left;"></a>
+    <img border="0" tal:condition="python: model.rss_image_url() and not model.rss_image_link()" tal:attributes="src model/rss_image_url; alt model/rss_image_title" style="margin-right: 5px; mergin-bottom: 5px; float: left;">
     <a tal:condition="model/rss_link" tal:attributes="href model/rss_link" tal:content="structure string:${model/rss_link}<br /><br />" />
     <tal:block replace="structure string:${model/rss_description}<br /><br />" condition="model/rss_description" />
   </td>
 </tr>
 <tr>
-  <td>
+  <td colspan="2">
     <tal:block replace="structure string:${model/rss_copyright}<br /><br />" condition="model/rss_copyright" />
     <tal:block replace="structure string:Published: ${model/rss_publication_date}" condition="model/rss_publication_date" />
   </td>

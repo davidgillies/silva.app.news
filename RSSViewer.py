@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 
 from urllib import urlopen
 from xml.dom.minidom import parseString
@@ -81,13 +81,17 @@ class RSSViewer(NewsViewer):
         self._rss_image_title = ''
         self._rss_image_url = ''
         self._rss_image_link = ''
+        self._rss_textinput_title = ''
+        self._rss_textinput_description = ''
+        self._rss_textinput_name = ''
+        self._rss_textinput_link = ''
         results = []
         feedxml = urlopen(self._rss_feed).read()
         dom = parseString(feedxml)
         rssnode = dom.childNodes[0]
         if rssnode.nodeName != u'rss' and rssnode.nodeName != u'rdf:RDF':
             raise Exception, 'RSS format with main node %s not supported!' % rssnode.nodeName.encode('cp1252')
-        elif rssnode.nodeName == u'rss':
+        elif (rssnode.nodeName == u'rss' and 'version' in rssnode._attrs.keys() and rssnode._attrs['version'].nodeValue == u'0.91'):
             # RSS version 0.91
             for node in rssnode.childNodes:
                 if node.nodeName == u'channel':
@@ -110,9 +114,19 @@ class RSSViewer(NewsViewer):
                                     self._rss_image_link = get_text_from_children(inode)
                                 elif inode.nodeName == u'url':
                                     self._rss_image_url = get_text_from_children(inode)
+                        elif n.nodeName == u'textinput':
+                            for inode in n.childNodes:
+                                if inode.nodeName == u'title':
+                                    self._rss_textinput_title = get_text_from_children(inode)
+                                if inode.nodeName == u'description':
+                                    self._rss_textinput_description = get_text_from_children(inode)
+                                if inode.nodeName == u'name':
+                                    self._rss_textinput_name = get_text_from_children(inode)
+                                if inode.nodeName == u'link':
+                                    self._rss_textinput_link = get_text_from_children(inode)
                         elif n.nodeName == u'item':
                             results.append(RSSBrain(n))
-        elif rssnode.nodeName == u'rdf:RDF':
+        elif rssnode.nodeName == u'rdf:RDF' and 'xmlns' in rssnode._attrs.keys() and (rssnode._attrs['xmlns'].nodeValue.startswith(u'http://purl.org/rss/1.0') or rssnode._attrs['xmlns'].nodeValue.startswith(u'http://my.netscape.com/rdf/simple/0.9/')):
             # RSS version 1.0
             for node in rssnode.childNodes:
                 if node.nodeName == u'channel':
@@ -135,8 +149,21 @@ class RSSViewer(NewsViewer):
                             self._rss_image_link = get_text_from_children(inode)
                         elif inode.nodeName == u'url':
                             self._rss_image_url = get_text_from_children(inode)
+                elif node.nodeName == u'textinput':
+                    for inode in node.childNodes:
+                        if inode.nodeName == u'title':
+                            self._rss_textinput_title = get_text_from_children(inode)
+                        if inode.nodeName == u'description':
+                            self._rss_textinput_description = get_text_from_children(inode)
+                        if inode.nodeName == u'name':
+                            self._rss_textinput_name = get_text_from_children(inode)
+                        if inode.nodeName == u'link':
+                            self._rss_textinput_link = get_text_from_children(inode)
                 elif node.nodeName == u'item':
                     results.append(RSSBrain(node))
+        else:
+            raise Exception, 'RSS version not supported!'
+
         return results
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -198,6 +225,30 @@ class RSSViewer(NewsViewer):
     def rss_image_link(self):
         """Returns the URL of the image (if any)"""
         return self._rss_image_link
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_textinput_title')
+    def rss_textinput_title(self):
+        """Returns the title of the textinput part"""
+        return self._rss_textinput_title
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_textinput_description')
+    def rss_textinput_description(self):
+        """Returns the description of the textinput part"""
+        return self._rss_textinput_description
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_textinput_name')
+    def rss_textinput_name(self):
+        """Returns the name of the textinput part"""
+        return self._rss_textinput_name
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_textinput_link')
+    def rss_textinput_link(self):
+        """Returns the link of the textinput part"""
+        return self._rss_textinput_link
 
 InitializeClass(RSSViewer)
 
