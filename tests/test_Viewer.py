@@ -1,18 +1,13 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
-
-import unittest
-import Zope
-Zope.startup()
+# $Revision: 1.10 $
+import os, sys
+if __name__ == '__main__':
+    execfile(os.path.join(sys.path[0], 'framework.py'))
+ 
+import SilvaTestCase
 
 from DateTime import DateTime
-from Products.ZCatalog.ZCatalog import ZCatalog
-from Testing import makerequest
-
-from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
-from Products.Silva.tests.test_SilvaObject import hack_create_user
-from Products.SilvaNews.install import install
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -22,37 +17,9 @@ def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
-def setup_catalog(context, columns, indexes):
-    catalog = context.service_catalog
-
-    existing_columns = catalog.schema()
-    existing_indexes = catalog.indexes()
-
-    for column_name in columns:
-        if column_name in existing_columns:
-            continue
-        catalog.addColumn(column_name)
-
-    for field_name, field_type in indexes:
-        if field_name in existing_indexes:
-            continue
-        catalog.addIndex(field_name, field_type)
-
-class NewsViewerBaseTestCase(unittest.TestCase):
-    def setUp(self):
-        get_transaction().begin()
-        self.connection = Zope.DB.open()
-        self.root = makerequest.makerequest(self.connection.root()['Application'])
-        self.root.REQUEST['URL1'] = ''
-        self.REQUEST = self.root.REQUEST
-        self.REQUEST.set = lambda a, b: None
-        hack_create_user(self.root)
-
-        self.root.manage_addProduct['Silva'].manage_addRoot(
-            'root', 'Root')
-        self.sroot = self.root.root
-
-        install(self.sroot)
+class NewsViewerBaseTestCase(SilvaTestCase.SilvaTestCase):
+    def afterSetUp(self):
+        self.sroot = self.root
         
         service_news = self.service_news = self.sroot.service_news
         service_news.add_subject('test')
@@ -98,10 +65,6 @@ class NewsViewerBaseTestCase(unittest.TestCase):
         self.newsviewer = add_helper_news(self.newsfilter, 'NewsViewer', 'newsviewer', 'NewsViewer')
         self.newsviewer.set_filter('/root/newsfilter', 1)
 
-    def tearDown(self):
-        get_transaction().abort()
-        self.connection.close()
-
 class NewsViewerTestCase(NewsViewerBaseTestCase):
     """Test the NewsViewer interface.
     """
@@ -133,13 +96,11 @@ class NewsViewerTestCase(NewsViewerBaseTestCase):
         self.assert_(not ('', 'root', 'source1', 'art2') in iops)
         self.assert_(len(iops) == 1)
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(NewsViewerTestCase, 'test'))
-    return suite
-
-def main():
-    unittest.TextTestRunner().run(test_suite())
-
 if __name__ == '__main__':
-    main()
+    framework()
+else:
+    import unittest
+    def test_suite():
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(NewsViewerTestCase))
+        return suite
