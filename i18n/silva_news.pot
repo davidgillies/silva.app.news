@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 14:53:59 2004\n"
+"POT-Creation-Date: Mon Dec 13 15:53:10 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -97,7 +97,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit.pt:129
 #: /views/edit/Content/edit.pt:103
 #: /views/edit/Filter/AgendaFilter/edit.pt:94
-#: /views/edit/Filter/NewsFilter/edit.pt:115
+#: /views/edit/Filter/NewsFilter/edit.pt:96
 msgid "access key: alt-s"
 msgstr ""
 
@@ -277,21 +277,21 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:71
 #: /views/edit/Container/NewsPublication/settings_addables.pt:74
 #: /views/edit/Container/NewsPublication/tab_settings.pt:39
-#: /views/edit/Filter/NewsFilter/edit.pt:86
+#: /views/edit/Filter/NewsFilter/edit.pt:67
 msgid "Element"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:77
 #: /views/edit/Container/NewsPublication/settings_addables.pt:77
 #: /views/edit/Container/NewsPublication/tab_settings.pt:45
-#: /views/edit/Filter/NewsFilter/edit.pt:87
+#: /views/edit/Filter/NewsFilter/edit.pt:68
 msgid "Content"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:80
 #: /views/edit/Container/NewsPublication/settings_addables.pt:80
 #: /views/edit/Container/NewsPublication/tab_settings.pt:48
-#: /views/edit/Filter/NewsFilter/edit.pt:88
+#: /views/edit/Filter/NewsFilter/edit.pt:69
 msgid "Note"
 msgstr ""
 
@@ -300,12 +300,12 @@ msgid "Some items of your selection are containers (folders, publications, newss
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
-#: /views/edit/Filter/NewsFilter/edit.pt:152
+#: /views/edit/Filter/NewsFilter/edit.pt:133
 msgid "Id"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
-#: /views/edit/Filter/NewsFilter/edit.pt:153
+#: /views/edit/Filter/NewsFilter/edit.pt:134
 #: /views/add/NewsViewer/form.form:48
 #: /views/edit/Container/NewsPublication/form.form:29
 msgid "Title"
@@ -499,7 +499,7 @@ msgid "note"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:121
-#: /views/edit/Filter/NewsFilter/edit.pt:142
+#: /views/edit/Filter/NewsFilter/edit.pt:123
 msgid "sources"
 msgstr ""
 
@@ -525,12 +525,12 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/edit.pt:156
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:110
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:118
-#: /views/edit/Filter/NewsFilter/edit.pt:178
+#: /views/edit/Filter/NewsFilter/edit.pt:159
 msgid "Edit this item"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:167
-#: /views/edit/Filter/NewsFilter/edit.pt:189
+#: /views/edit/Filter/NewsFilter/edit.pt:170
 msgid "(not activated)"
 msgstr ""
 
@@ -541,8 +541,8 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
-#: /views/edit/Filter/NewsFilter/edit.pt:226
-#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit.pt:207
+#: /views/edit/Filter/NewsFilter/edit.pt:207
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "select all"
 msgstr ""
@@ -550,7 +550,7 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
-#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit.pt:207
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "deselect all"
@@ -558,7 +558,7 @@ msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
-#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit.pt:207
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "select all items: alt-a"
 msgstr ""
@@ -568,18 +568,18 @@ msgid "use selected sources in this filter: alt-u"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:261
-#: /views/edit/Filter/NewsFilter/edit.pt:283
+#: /views/edit/Filter/NewsFilter/edit.pt:264
 msgid "update sources"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:275
-#: /views/edit/Filter/NewsFilter/edit.pt:297
+#: /views/edit/Filter/NewsFilter/edit.pt:278
 #: /views/edit/Filter/NewsFilter/edit_items.pt:248
 msgid "Previous"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:279
-#: /views/edit/Filter/NewsFilter/edit.pt:301
+#: /views/edit/Filter/NewsFilter/edit.pt:282
 #: /views/edit/Filter/NewsFilter/edit_items.pt:252
 msgid "Next"
 msgstr ""
@@ -646,25 +646,25 @@ msgid "Input form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:29
-#: /views/edit/Filter/NewsFilter/submit_settings.py:36
+#: /views/edit/Filter/NewsFilter/submit_settings.py:27
 # Default: "silva_news"
 msgid "subjects changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:35
-#: /views/edit/Filter/NewsFilter/submit_settings.py:42
+#: /views/edit/Filter/NewsFilter/submit_settings.py:33
 # Default: "silva_news"
 msgid "target audiences changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
-#: /views/edit/Filter/NewsFilter/submit_settings.py:54
+#: /views/edit/Filter/NewsFilter/submit_settings.py:45
 # Default: "silva_news"
 msgid "stick to path changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
-#: /views/edit/Filter/NewsFilter/submit_settings.py:85
+#: /views/edit/Filter/NewsFilter/submit_settings.py:49
 # Default: "silva_news"
 msgid "Settings changed for: "
 msgstr ""
@@ -675,28 +675,28 @@ msgstr ""
 msgid "The filter is updated."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:115
-msgid " save settings "
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/edit.pt:151
+#: /views/edit/Filter/NewsFilter/edit.pt:132
 msgid "In use"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:172
+#: /views/edit/Filter/NewsFilter/edit.pt:153
 msgid "Edit this source"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:206
+#: /views/edit/Filter/NewsFilter/edit.pt:187
 msgid "There are no newssources available."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:283
+#: /views/edit/Filter/NewsFilter/edit.pt:264
 msgid "Use selected sources in this filter: alt-u"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:77
+#: /views/edit/Filter/NewsFilter/edit.pt:58
 msgid "general settings"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:96
+msgid " save settings "
 msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:110
@@ -714,46 +714,6 @@ msgstr ""
 #: /views/edit/Filter/NewsFilter/edit_items.pt:89
 #: /views/edit/Filter/NewsFilter/edit_items.pt:96
 msgid "edit this item"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:114
-msgid "search description"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:115
-msgid "Description added to the search form."
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:31
-msgid "description"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:32
-msgid "Describe the type of news this filter delivers."
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:51
-msgid "link"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:53
-msgid "Enter the URL where the RSS feed should point to for information."
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:72
-msgid "copyright"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:74
-msgid "Enter a copyright notice (not used if left empty)."
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:91
-msgid "allow RSS search"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/rssform.form:93
-msgid "If set to 'yes', extra information will be sent along with the RSS feed to enable searching this newsfilter using a remote form (the client will be sent to this Silva instance to view the results)."
 msgstr ""
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:29
@@ -778,12 +738,7 @@ msgstr ""
 msgid "If set to 'yes', show agenda items as well as news items."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/submit_settings.py:29
-# Default: "silva_news"
-msgid "RSS form errors ${errors}"
-msgstr ""
-
-#: /views/edit/Filter/NewsFilter/submit_settings.py:48
+#: /views/edit/Filter/NewsFilter/submit_settings.py:39
 # Default: "silva_news"
 msgid "show agendaitems changed"
 msgstr ""
