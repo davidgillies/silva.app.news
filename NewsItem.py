@@ -32,7 +32,9 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
     meta_type = "Silva NewsItem"
     default_catalog = 'service_catalog'
 
-    __implements__ = IVersionedContent, INewsItem
+    __implements__ = INewsItem, IVersionedContent
+
+    _is_allowed_in_publication = 0
 
     def __init__(self, id, title):
         NewsItem.inheritedAttribute("__init__")(self, id, title)
@@ -61,7 +63,18 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
     def to_xml(self, context):
         """Maps to the most useful(?) version (public, else unapproved or approved)
         """
-        version = self.get_viewable() or self.get_previewable()
+        if context.last_version == 1:
+            version_id = self.get_next_version()
+            if version_id is None:
+                version_id = self.get_public_version()
+        else:
+            version_id = self.get_public_version()
+
+        if version_id is None:
+            return
+
+        version = getattr(self, version_id)
+
         version.to_xml(context)
 
 InitializeClass(NewsItem)
@@ -79,51 +92,13 @@ class NewsItemVersion(Version, CatalogPathAware):
 
     def __init__(self, id):
         self.id = id
-        self._common_info = ''
-        self._specific_info = ''
-        self._manual_specific_info = ''
         self._subjects = []
         self._target_audiences = []
-        self._embargo_datetime = None
-        self._more_info_links = []
 
-    # MANIPULATORS -- BECAUSE OF THE BULK-EDITING THE SET_DATA-WAY (1 MANIPULATOR FOR ALL THE
-    # DATA-FIELDS) DID NOT SFFICE, THEREFORE THERE WILL BE 1 MANIPULATOR FOR EACH DATA-FIELD.
+    # MANIPULATORS -- THE BULK-EDITING THE SET_DATA-WAY (1 MANIPULATOR FOR ALL THE
+    # DATA-FIELDS) DID NOT SUFFICE, THEREFORE THERE WILL BE 1 MANIPULATOR FOR EACH DATA-FIELD.
     # THIS IS AN ADVANTAGE WHEN SUBCLASSING: ONLY 1 MANIPULATOR PER FIELD-TYPE HAS TO BE WRIITEN
     # (IN THE CLASS THAT HOLDS THE DATA-DEFINITION)
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_common_info')
-    def set_common_info(self, value):
-        self._common_info = value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_specific_info')
-    def set_specific_info(self, value):
-        self._specific_info = value
-        self.reindex_object()
-
-    # FIXME: The method is called 'specific_info_manual' to conform with 'location_manual', the attribute
-    # is still called '_manual_specific_info', while the locaiton-attr is called '_location_manual'... May
-    # be nice to use the same convention here...
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_specific_info_manual')
-    def set_specific_info_manual(self, value):
-        self._manual_specific_info = value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_embargo_datetime')
-    def set_embargo_datetime(self, value):
-        self._embargo_datetime = value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_more_info_links')
-    def set_more_info_links(self, value):
-        self._more_info_links = value
-        self.reindex_object()
-
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
     def set_subjects(self, subjects):
@@ -169,35 +144,6 @@ class NewsItemVersion(Version, CatalogPathAware):
             return 0
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'embargo_datetime')
-    def embargo_datetime(self):
-        """Returns the embargo datetime
-        """
-        return self._embargo_datetime
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'common_info')
-    def common_info(self):
-        """Returns common info
-        """
-        return self._common_info
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'specific_info')
-    def specific_info(self):
-        """Returns specific info
-        """
-        return self._specific_info
-
-    # FIXME: See 'set_specific_info_manual'
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'specific_info_manual')
-    def specific_info_manual(self):
-        """Returns manual specific info
-        """
-        return self._manual_specific_info
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'subjects')
     def subjects(self):
         """Returns the subjects
@@ -212,28 +158,12 @@ class NewsItemVersion(Version, CatalogPathAware):
         return self._target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'more_info_links')
-    def more_info_links(self):
-        """Returns the links
-        """
-        links = []
-        for link in self._more_info_links:
-            if len(link) == 1:
-                links.append((link[0], link[0]))
-            else:
-                links.append(link)
-        return links
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        return "%s %s %s %s %s %s" % (self.id,
+        return "%s %s %s %s" % (self.id,
                                       self.get_title(),
-                                      self._common_info,
-                                      self._manual_specific_info or
-                                      self._specific_info,
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences))
 
@@ -269,49 +199,11 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Returns the content as a partial XML-document
         """
         xml = u'<title>%s</title>\n' % self.get_title()
-        xml += u'<common_info>%s</common_info>\n' % self._prepare_xml(self._common_info)
-        xml += u'<specific_info>%s</specific_info>\n' % self._prepare_xml(self._manual_specific_info or self._specific_info)
-        xml += u'<embargo_datetime>%s</embargo_datetime>\n' % self._prepare_xml(self._embargo_datetime)
         for subject in self._subjects:
             xml += u'<subject>%s</subject>\n' % self._prepare_xml(subject)
         for audience in self._target_audiences:
             xml += u'<target_audience>%s</target_audience>\n' % self._prepare_xml(audience)
-        for pair in self._more_info_links:
-            xml += u'<link>\n'
-            print pair
-            if len(pair) > 1:
-                url, text = pair
-                xml += u'<url>%s</url>\n' % self._prepare_xml(url)
-                xml += u'<text>%s</text>\n' % self._prepare_xml(text)
-            else:
-                xml += u'<url>%s</url>\n' % self._prepare_xml(pair[0])
-            xml += u'</link>\n'
 
-        context.f.write(xml)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_summary_xml')
-    def to_summary_xml(self, context):
-        """Returns a summary of the content as a partial XML-doc (for NewsBundle)
-        """
-        xml = u'<title>%s</title>\n' % self.get_title()
-        xml += u'<common_info>%s</common_info>\n' % self._prepare_xml(self._common_info)
-        xml += u'<specific_info>%s</specific_info>\n' % self._prepare_xml(self._manual_specific_info or self._specific_info)
-        context.f.write(xml)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_small_xml')
-    def to_small_xml(self, context):
-        """Returns a part of the content as a partial XML-doc (for NewsBundle small articles)
-        """
-        xml = u'<title>%s</title>\n' % self.get_title()
-        for subject in self._subjects:
-            xml += u'<subject>%s</subject>\n' % self._prepare_xml(subject)
-        for audience in self._target_audiences:
-            xml += u'<target_audience>%s</target_audience>\n' % self._prepare_xml(audience)
-        xml += u'<common_info>%s</common_info>\n' % self._prepare_xml(self._common_info)
-        xml += u'<common_info>%s</common_info>\n' % self._prepare_xml(self._common_info)
-        xml += u'<specific_info>%s</specific_info>\n' % self._prepare_xml(self._manual_specific_info or self._specific_info)
         context.f.write(xml)
 
     def _prepare_xml(self, inputstring):
