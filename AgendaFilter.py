@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -85,9 +85,9 @@ class AgendaFilter(Filter):
         return output
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date')
+                              'get_agenda_items_by_date')
     def get_agenda_items_by_date(self, month, year, meta_types=None):
-        """Returns non-excluded published items for a particular month
+        """Returns non-excluded published items for a particular start month
         """
         self.verify_sources()
         if not self._sources:
@@ -106,6 +106,39 @@ class AgendaFilter(Filter):
         query = {}
         query['start_datetime'] = [startdate, enddate]
         query['start_datetime_usage'] = 'range:min:max'
+        query['version_status'] = 'public'
+        query['path'] = self._sources
+        query['subjects'] = self._subjects.keys()
+        query['target_audiences'] = self._target_audiences.keys()
+        query['meta_type'] = meta_types
+        query['sort_on'] = 'start_datetime'
+        query['sort_order'] = 'descending'
+        result = getattr(self, self._catalog)(query)
+
+        return [r for r in result if not r.object_path in self._excluded_items]
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_items_by_date')
+    def get_items_by_date(self, month, year, meta_types=None):
+        """Returns non-excluded published items for a particular publication month
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+        self.verify_excluded_items()
+        month = int(month)
+        year = int(year)
+        startdate = DateTime(year, month, 1)
+        endmonth = month + 1
+        if month == 12:
+            endmonth = 1
+            year = year + 1
+        enddate = DateTime(year, endmonth, 1)
+        query = {}
+        query['publication_datetime'] = [startdate, enddate]
+        query['publication_datetime_usage'] = 'range:min:max'
         query['version_status'] = 'public'
         query['path'] = self._sources
         query['subjects'] = self._subjects.keys()
