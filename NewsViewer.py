@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -126,7 +126,10 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
 
         results = self._remove_doubles(results)
         results.sort(self._sortresults)
-        return results[:self._number_to_show]
+        if not self._number_is_days:
+            return results[:self._number_to_show]
+        else:
+            return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
@@ -158,10 +161,7 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
 
         results = self._remove_doubles(results)
         results.sort(self._sortresults)
-        if not self._number_is_days:
-            return results[:self._number_to_show]
-        else:
-            return results
+        return results
 
     def _sortresults(self, item1, item2):
         return cmp(item1.publication_datetime, item2.publication_datetime)
