@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -27,6 +27,8 @@ class NewsFilter(Filter):
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)
         self._show_agenda_items = 0
+        self._description = ''
+        self._allow_rss_export = 0
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
@@ -198,9 +200,33 @@ class NewsFilter(Filter):
         return self._show_agenda_items
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_description')
+    def set_description(self, value):
+        """Sets the description"""
+        self._description = value
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'description')
+    def description(self):
+        """Returns the description"""
+        return self._description
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_show_agenda_items')
     def set_show_agenda_items(self, value):
         self._show_agenda_items = not not int(value)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'allow_rss_export')
+    def allow_rss_export(self):
+        """Returns true if the filter allows RSS export"""
+        return self._allow_rss_export
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_allow_rss_export')
+    def set_allow_rss_export(self, yesorno):
+        """Sets whether it is allowed to export to RSS"""
+        self._allow_rss_export = not not yesorno
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
@@ -215,6 +241,40 @@ class NewsFilter(Filter):
                     if IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']):
                         allowed.append(mt['name'])
         return allowed
+
+    security.declarePublic('rss_feed')
+    def rss_feed(self):
+        """Returns the top 15 records as an RSS feed (RSS version 0.91)"""
+        if not self.allow_rss_export():
+            raise Exception, 'RSS export not allowed!'
+        feed = '<?xml version="1.0" ?>\n'\
+                '<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/ formats/rss-0.91.dtd">\n'\
+                '<rss version="0.91" encoding="ISO_8859-1">\n'\
+                '<channel>\n'\
+                '<title>' + self.get_title_html() + '</title>\n'\
+                '<description>' + unicode(self.description(), 'cp1252') + '</description>\n'\
+                '<link>' + unicode(self.get_publication().absolute_url(), 'cp1252') + '</link>\n'\
+                '<language>en-us</language>\n'
+
+        last = self.get_last_items(15, 0)
+        for item in last:
+            # chop the last bit off lead if it's too large
+            lead = item.lead
+            if len(lead) > 256:
+                lead = lead[:256]
+                if lead.find(' ') > -1:
+                    lead = lead[:lead.rfind(' ')]
+                lead += '...'
+            feed += '<item>\n'\
+                    '<title>' + unicode(item.get_title_html, 'cp1252') + '</title>\n'\
+                    '<link>' + unicode(item.absolute_url(), 'cp1252') + '</link>\n'\
+                    '<description>' + unicode(lead, 'cp1252') + '</description>\n'\
+                    '</item>\n'
+
+        feed += '</channel>\n'\
+                '</rss>\n'
+
+        return feed
 
 InitializeClass(NewsFilter)
 

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.16 $
+# $Revision: 1.17 $
 
 """Install and Uninstall for Silva News
 """
@@ -43,6 +43,7 @@ def registerViews(reg):
     reg.register('edit', 'Silva News NewsFilter', ['edit', 'Filter', 'NewsFilter'])
     reg.register('edit', 'Silva News NewsSource', ['edit', 'Container', 'NewsSource'])
     reg.register('edit', 'Silva News NewsViewer', ['edit', 'Content', 'NewsViewer'])
+    reg.register('edit', 'Silva News RSSViewer', ['edit', 'Content', 'RSSViewer'])
     reg.register('edit', 'Silva News AgendaViewer', ['edit', 'Content', 'AgendaViewer'])
     reg.register('edit', 'Silva News Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
     reg.register('edit', 'Silva News AgendaItem', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
@@ -51,6 +52,7 @@ def registerViews(reg):
     reg.register('public', 'Silva News NewsFilter', ['public', 'NewsFilter'])
     reg.register('public', 'Silva News NewsSource', ['public', 'NewsSource'])
     reg.register('public', 'Silva News NewsViewer', ['public', 'NewsViewer'])
+    reg.register('public', 'Silva News RSSViewer', ['public', 'RSSViewer'])
     reg.register('public', 'Silva News AgendaViewer', ['public', 'AgendaViewer'])
     reg.register('public', 'Silva News Article', ['public', 'PlainArticle'])
     reg.register('public', 'Silva News AgendaItem', ['public', 'PlainAgendaItem'])
@@ -59,6 +61,7 @@ def registerViews(reg):
     reg.register('add', 'Silva News NewsFilter', ['add', 'NewsFilter'])
     reg.register('add', 'Silva News NewsSource', ['add', 'NewsSource'])
     reg.register('add', 'Silva News NewsViewer', ['add', 'NewsViewer'])
+    reg.register('add', 'Silva News RSSViewer', ['add', 'RSSViewer'])
     reg.register('add', 'Silva News AgendaViewer', ['add', 'AgendaViewer'])
     reg.register('add', 'Silva News Article', ['add', 'NewsItem', 'PlainArticle'])
     reg.register('add', 'Silva News AgendaItem', ['add', 'NewsItem', 'PlainAgendaItem'])
@@ -71,6 +74,7 @@ def unregisterViews(reg):
     reg.unregister('edit', 'Silva News NewsFilter')
     reg.unregister('edit', 'Silva News NewsSource')
     reg.unregister('edit', 'Silva News NewsViewer')
+    reg.unregister('edit', 'Silva News RSSViewer')
     reg.unregister('edit', 'Silva News AgendaViewer')
     reg.unregister('edit', 'Silva News Article')
     reg.unregister('edit', 'Silva News AgendaItem')
@@ -79,6 +83,7 @@ def unregisterViews(reg):
     reg.unregister('public', 'Silva News NewsFilter')
     reg.unregister('public', 'Silva News NewsSource')
     reg.unregister('public', 'Silva News NewsViewer')
+    reg.unregister('public', 'Silva News RSSViewer')
     reg.unregister('public', 'Silva News AgendaViewer')
     reg.unregister('public', 'Silva News Article')
     reg.unregister('public', 'Silva News AgendaItem')
@@ -87,6 +92,7 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva News NewsFilter')
     reg.unregister('add', 'Silva News NewsSource')
     reg.unregister('add', 'Silva News NewsViewer')
+    reg.unregister('add', 'Silva News RSSViewer')
     reg.unregister('add', 'Silva News AgendaViewer')
     reg.unregister('add', 'Silva News Article')
     reg.unregister('add', 'Silva News AgendaItem')

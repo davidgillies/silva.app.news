@@ -1,9 +1,9 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 import AgendaFilter, NewsFilter, ServiceNews
-import NewsSource, NewsViewer, AgendaViewer
+import NewsSource, NewsViewer, AgendaViewer, RSSViewer
 import PlainArticle, PlainAgendaItem
 from Products.PythonScripts.Utility import allow_module
 from AccessControl import ModuleSecurityInfo
@@ -20,7 +20,7 @@ def initialize(context):
 
     extensionRegistry.register(
         'SilvaNews', 'Silva News', context, [
-        AgendaFilter, AgendaViewer, NewsFilter, NewsViewer, NewsSource, PlainArticle, PlainAgendaItem],
+        AgendaFilter, AgendaViewer, NewsFilter, NewsViewer, RSSViewer, NewsSource, PlainArticle, PlainAgendaItem],
         install, depends_on='Silva')
 
     context.registerClass(
