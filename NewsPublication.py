@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -8,7 +8,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
 # Silva
 from Products.Silva.Publication import Publication
-#from Products.Silva.IPublication import IPublication
+from Products.Silva.interfaces import IPublication
 #from Products.Silva.Folder import Folder
 from Products.Silva.interfaces import IContainer
 from Products.Silva import SilvaPermissions
@@ -35,11 +35,11 @@ class NewsPublication(ObjectTitle, Publication):
 
     meta_type = "Silva News Publication"
 
-    __implements__ = IContainer
+    __implements__ = (IContainer, IPublication)
 
     hide_from_tocs = 1
     
-    _addables_allowed_in_publication = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Publication']
+    _addables_allowed_in_publication = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Folder']
 
     def __init__(self, id):
         NewsPublication.inheritedAttribute('__init__')(self, id)
