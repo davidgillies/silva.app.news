@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 
 from urllib import urlopen
 from xml.dom.minidom import parseString
@@ -90,9 +90,12 @@ class RSSViewer(NewsViewer):
         results = []
         feedxml = urlopen(self._rss_feed).read()
         dom = parseString(feedxml)
-        rssnode = dom.childNodes[0]
-        if rssnode.nodeName != u'rss' and rssnode.nodeName != u'rdf:RDF':
-            raise Exception, 'RSS format with main node %s not supported!' % rssnode.nodeName.encode('cp1252')
+        rssnode = None
+        for node in dom.childNodes:
+            if node.nodeName == u'rss' or node.nodeName == u'rdf:RDF':
+                rssnode = node
+        if not rssnode:
+            raise Exception, 'RSS format not supported!'
         elif (rssnode.nodeName == u'rss' and 'version' in rssnode._attrs.keys() and rssnode._attrs['version'].nodeValue == u'0.91'):
             # RSS version 0.91
             for node in rssnode.childNodes:
