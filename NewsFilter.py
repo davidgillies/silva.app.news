@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
+# $Revision: 1.18 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -28,17 +28,8 @@ class NewsFilter(Filter):
 
     search = ViewAttribute('public', 'index_html')
 
-    __implements__ = INewsFilter
+    #__implements__ = INewsFilter
 
-    # backward compatiblitly
-    _rss_description = ''
-    _allow_rss_export = 0
-    _rss_link = ''
-    _rss_copyright = ''
-    _allow_rss_search = 0
-    _rss_search_description = ''
-    _rss_image = ''
-    
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)
         self._show_agenda_items = 0
