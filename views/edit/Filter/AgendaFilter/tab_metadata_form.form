@@ -9,7 +9,7 @@
 
   <groups>
     <group>
-      
+      <title>Default</title> 
       <fields>
 
       <field><id>object_title</id> <type>TextAreaField</type>

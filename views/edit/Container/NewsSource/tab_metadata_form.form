@@ -9,7 +9,7 @@
 
   <groups>
     <group>
-      
+      <title>MetaData</title>
       <fields>
 
       <field><id>object_title</id> <type>StringField</type>
