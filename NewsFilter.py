@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.23 $
+# $Revision: 1.24 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -10,9 +10,10 @@ from DateTime import DateTime
 import OFS
 # Silva
 import Products.Silva.SilvaPermissions as SilvaPermissions
-from Products.Silva.ViewRegistry import ViewAttribute
+from Products.SilvaViews.ViewRegistry import ViewAttribute
 # misc
 from Products.Silva.helpers import add_and_edit
+from Products.Silva import mangle
 
 from Filter import Filter, MetaTypeException
 from interfaces import INewsItemVersion, INewsFilter, IAgendaItemVersion
@@ -417,7 +418,7 @@ manage_addNewsFilterForm = PageTemplateFile("www/newsFilterAdd", globals(),
 
 def manage_addNewsFilter(self, id, title, REQUEST=None):
     """Add an NewsFilter."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = NewsFilter(id)
     self._setObject(id, object)

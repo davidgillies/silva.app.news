@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.16 $
+# $Revision: 1.17 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -12,6 +12,7 @@ import OFS
 from Products.Silva import SilvaPermissions
 # misc
 from Products.Silva.helpers import add_and_edit
+from Products.Silva import mangle
 
 from Filter import Filter, MetaTypeException
 from interfaces import IAgendaItemVersion
@@ -223,7 +224,7 @@ manage_addAgendaFilterForm = PageTemplateFile("www/agendaFilterAdd", globals(),
 
 def manage_addAgendaFilter(self, id, title, REQUEST=None):
     """Add an AgendaFilter."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = AgendaFilter(id)
     self._setObject(id, object)

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -9,11 +9,12 @@ from OFS import Folder
 from DateTime import DateTime
 import Acquisition
 
-from Products.Silva.IContent import IContent
+from Products.Silva.interfaces import IContent
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
-from Products.Silva.Document import Document
+from Products.SilvaDocument.Document import Document
 from Products.Silva.helpers import add_and_edit
+from Products.Silva import mangle
 
 from Products.SilvaNews.NewsViewer import NewsViewer
 
@@ -71,7 +72,7 @@ manage_addRSSViewerForm = PageTemplateFile(
 
 def manage_addRSSViewer(self, id, title, REQUEST=None):
     """Add a News RSSViewer."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = RSSViewer(id)
     self._setObject(id, object)

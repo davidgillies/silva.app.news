@@ -7,7 +7,7 @@
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   tal:define="
-    global breadcrumb_vein string:Settings;
+    global vein string:settings;
     ">
 
 <!-- settings (aka tab_metadata) for Container objects -->
@@ -23,7 +23,7 @@
         <td class="left">
           <metal:use-macro use-macro="view/macro_vein_navigation/macros/vein">
             <metal:fill-slot fill-slot="sidebar">
-              <tal:block replace="structure python: view.service_sidebar.render(model, 'tab_metadata', breadcrumb_vein)" />
+              <tal:block replace="structure python: view.service_sidebar.render(model, 'tab_metadata', vein)" />
             </metal:fill-slot>
           </metal:use-macro>
         </td>

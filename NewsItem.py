@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.22 $
+# $Revision: 1.23 $
 
 # Python
 from StringIO import StringIO
@@ -19,9 +19,9 @@ from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 # Silva
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import CatalogedVersionedContent
-from Products.Silva.IVersionedContent import IVersionedContent
+from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
-from Products.Silva.Document import DocumentVersion
+from Products.SilvaDocument.Document import DocumentVersion
 from Products.Silva.Metadata import export_metadata
 
 class NewsItem(CatalogedVersionedContent):

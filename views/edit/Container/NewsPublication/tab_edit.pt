@@ -8,7 +8,7 @@
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
   tal:define="
-    global breadcrumb_vein string:Contents;
+    global vein string:contents;
 ">
 
 <metal:block use-macro="here/macro_index/macros/master">
@@ -19,6 +19,7 @@
     publishables python: default_doc_list + model.get_ordered_publishables();
     assets model/get_assets;
     iterate python: 0;
+    mangle modules/Products/Silva/mangle;
 ">
 
 <form action="."
@@ -33,7 +34,7 @@
         <td class="left">
           <metal:use-macro use-macro="view/macro_vein_navigation/macros/vein">
             <metal:fill-slot fill-slot="sidebar">
-              <tal:block replace="structure python: view.service_sidebar.render(model, 'tab_edit', breadcrumb_vein)" />
+              <tal:block replace="structure python: view.service_sidebar.render(model, 'tab_edit', vein)" />
             </metal:fill-slot>
           </metal:use-macro>
         </td>
@@ -274,7 +275,7 @@
                       <a class="blacklink" title="metadata"
                         tal:condition="modification_time"
                         tal:attributes="href string:${item_url}/edit/tab_metadata"
-                        tal:content="structure python:here.service_utils.backend_short_datetime_to_str(modification_time)"
+                        tal:content="structure python:mangle.DateTime(modification_time).toStr()"
                       >
                         date
                       </a>
@@ -424,7 +425,7 @@
                     <td tal:define="modification_time asset/get_modification_datetime | nothing">
                       <tal:block
                         condition="modification_time"
-                        content="structure python:here.service_utils.backend_short_datetime_to_str(modification_time)">
+                        content="structure python:mangle.DateTime(modification_time).toStr()">
                       </tal:block>
                       <tal:block condition="not:modification_time">
                         <i i18n:translate="unknown">

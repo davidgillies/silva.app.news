@@ -1,4 +1,4 @@
-<init tal:define="global model request/model; global view here; global version options/version" />
+<init tal:define="global model request/model; global view here; global version options/version; global mangle modules/Products/Silva/mangle" />
 
 <table cellspacing="0" width="100%" border="0">
 
@@ -8,7 +8,7 @@
 </td>
 <td rowspan="3" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
 <b>Creation date:</b><br />
-<span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(view.get_metadata_element('silva-extra', 'creationtime'))"></span><br /><br />
+<span tal:replace="structure python:mangle.DateTime(view.get_metadata_element('silva-extra', 'creationtime')).toStr()"></span><br /><br />
 </td>
 </tr>
 

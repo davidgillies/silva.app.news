@@ -2,6 +2,7 @@
                    global model view/REQUEST/model;
                    global results python:model.search_items(view.REQUEST['query']);
                    global silva_root view/silva_root;
+                   global mangle modules/Products/Silva/mangle;
                    " />
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -32,7 +33,8 @@
 
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
-  tal:repeat="obj results">
+  tal:repeat="object results">
+<tal:block define="obj object/getObject">
 <tr class="odd">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
@@ -45,11 +47,11 @@
 <tr class="even">
 <td valign="top">
 <b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
-<a href="#" tal:attributes="href obj/getURL">view article</a>
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStr()" tal:condition="obj/start_datetime">DateTime</span>
+<a href="#" tal:attributes="href python:obj.get_content().absolute_url()">view article</a>
 </td>
 </tr>
-
+</tal:block>
 </toc_entry>
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>

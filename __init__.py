@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 import AgendaFilter, NewsFilter, ServiceNews
 import NewsPublication, NewsViewer, AgendaViewer, RSSViewer
@@ -8,7 +8,7 @@ import PlainArticle, PlainAgendaItem
 
 from Products.FileSystemSite.DirectoryView import registerDirectory
 from Products.Silva.ExtensionRegistry import extensionRegistry
-from Products.Silva.upgrade import upgrade_registry
+#from Products.Silva.upgrade import upgrade_registry
 from Products.SilvaMetadata.Compatibility import registerTypeForMetadata
 import install
 

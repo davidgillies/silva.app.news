@@ -6,6 +6,7 @@
                    global results python:model.get_items_by_date(currentmonth, currentyear);
                    global user_role view/get_user_role;
                    global silva_root view/silva_root;
+                   global mangle modules/Products/Silva/mangle;
                    " />
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -66,7 +67,7 @@
 
 <span tal:replace="nothing"> _______ date _______ </span>
 <td nowrap="1" valign="top" align="left" colspan="3">
-<span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(object.publication_datetime())" />
+<span tal:replace="structure python:mangle.DateTime(object.publication_datetime()).toStr()" />
 </td>
 
 <span tal:replace="nothing"> _______ title cell _______ </span>

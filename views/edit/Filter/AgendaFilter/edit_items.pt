@@ -6,13 +6,14 @@
     user_role view/get_user_role;
     silva_root view/silva_root;
     title model/get_title_editable;
-    breadcrumb_vein string:Edit;
+    vein string:edit;
     dummy model/security_trigger;
     months view/get_months;
     currentmonth request/month | options/month | view/currentmonth;
     currentyear request/year | options/year | view/currentyear;
     results python:model.backend_get_items_by_date(currentmonth, currentyear);
     objects python:view.prepare_objects(results);
+    mangle modules/Products/Silva/mangle;
 ">
 
   <table class="columns columns2">
@@ -131,7 +132,7 @@
       <td>
       <tal:block define="publication_dt obj/publication_datetime">
         <tal:block condition="publication_dt">
-          <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(publication_dt)" tal:omit-tag="">21 oct 2001 18:18</span>
+          <span tal:replace="structure python: mangle.DateTime(publication_dt).toStr()" tal:omit-tag="">21 oct 2001 18:18</span>
         </tal:block>
         <tal:block condition="not: publication_dt">
           None
@@ -144,7 +145,7 @@
       <span tal:condition="object_status">
         <tal:block define="expiration_dt python: obj.expiration_datetime()">
         <tal:block condition="expiration_dt">
-          <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(expiration_dt)" tal:omit-tag="">21 oct 2001 18:18</span>
+          <span tal:replace="structure python: mangle.DateTime(expiration_dt).toStr()" tal:omit-tag="">21 oct 2001 18:18</span>
         </tal:block>
         <tal:block condition="not: expiration_dt">
           None

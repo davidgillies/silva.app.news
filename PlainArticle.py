@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -12,13 +12,14 @@ from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
-from Products.Silva.IVersionedContent import IVersionedContent
+from Products.Silva.interfaces import IVersionedContent
 
 # Silva
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from Products.Silva import mangle
 
 icon = 'www/news_item.png'
 
@@ -61,7 +62,7 @@ manage_addPlainArticleForm = PageTemplateFile(
 
 def manage_addPlainArticle(self, id, title, REQUEST=None):
     """Add a News PlainArticle."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = PlainArticle(id)
     self._setObject(id, object)

@@ -6,7 +6,7 @@
     user_role view/get_user_role;
     silva_root view/silva_root;
     title model/get_title_editable;
-    breadcrumb_vein string:Edit;
+    vein string:edit;
     fields view/form/get_fields;
 ">
 

@@ -6,7 +6,9 @@
                   global objects python:[item.getObject() for item in results];
                   global model here/REQUEST/model;
                   global user_role view/get_user_role;
-                  global silva_root view/silva_root" />
+                  global silva_root view/silva_root;
+                  global mangle modules/Products/Silva/mangle;
+                  " />
 
 <div class="margins">
 <h2>Manage <span class="folder-title" tal:content="structure string:&raquo;${model/get_title}&laquo;">title here</span></h2>
@@ -137,7 +139,7 @@
 <td valign="top">
 <tal:block condition="item/implements_versioning">
 <span tal:condition="python:item.get_next_version_publication_datetime() != None"
-  tal:replace="structure python:view.service_utils.backend_short_datetime_to_str(item.get_next_version_publication_datetime())" tal:omit-tag="">21 oct 2001 18:18</span>
+  tal:replace="structure python:mangle.DateTime(item.get_next_version_publication_datetime()).toStr()" tal:omit-tag="">21 oct 2001 18:18</span>
 <span tal:condition="python:item.get_next_version_publication_datetime() == None"
   tal:omit-tag="">&nbsp;</span>
 </tal:block>

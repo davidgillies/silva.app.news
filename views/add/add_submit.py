@@ -7,6 +7,8 @@
 ##parameters=
 ##title=
 ##
+from Products.Silva import mangle
+
 model = context.REQUEST.model
 view = context
 REQUEST = context.REQUEST
@@ -36,7 +38,7 @@ else:
     title = ""
 
 # if we don't have the right id, reject adding
-if not model.is_id_valid(id):
+if not mangle.Id(context, id).isValid():
   return view.add_form(message_type="error", message="%s is not a valid id." % view.quotify(id))
 
 # process data in result and add using validation result

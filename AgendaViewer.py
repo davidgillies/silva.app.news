@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -9,9 +9,11 @@ from OFS import Folder
 
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
-from Products.Silva.IContent import IContent
+from Products.Silva.interfaces import IContent
+from Products.Silva import mangle
 
 from NewsViewer import NewsViewer
+from Products.SilvaNews.interfaces import IAgendaItemVersion
 
 icon = 'www/agenda_viewer.png'
 
@@ -105,12 +107,15 @@ class AgendaViewer(NewsViewer):
         """
         self.verify_filters()
         results = []
+        allowed_meta_types = self.get_allowed_meta_types()
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.search_items(keywords)
+            print obj.absolute_url()
+            res = obj.search_items(keywords, allowed_meta_types)
             results += res
 
         results = self._remove_doubles(results)
+        print [r.getObject().meta_type for r in results]
         results.sort(self._sortresults)
         if not self._number_is_days:
             return results[:self._number_to_show]
@@ -125,6 +130,17 @@ class AgendaViewer(NewsViewer):
         self._days_to_show = number
         self._p_changed = 1
 
+    security.declarePrivate('get_allowed_meta_types')
+    def get_allowed_meta_types(self):
+        """Returns the allowed meta_types for this filter"""
+        allowed = []
+        mts = self.get_root().filtered_meta_types()
+        for mt in mts:
+            if (mt.has_key('instance') and
+                IAgendaItemVersion.isImplementedByInstancesOf(mt['instance'])):
+                allowed.append(mt['name'])
+        return allowed
+
     def _sortresults(self, item1, item2):
         return cmp(item1.getObject().start_datetime(), item2.getObject().start_datetime())
 
@@ -136,7 +152,7 @@ manage_addAgendaViewerForm = PageTemplateFile(
 
 def manage_addAgendaViewer(self, id, title, REQUEST=None):
     """Add a News AgendaViewer."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = AgendaViewer(id)
     self._setObject(id, object)

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -11,7 +11,7 @@ from Globals import InitializeClass
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from Products.Silva.IVersionedContent import IVersionedContent
+from Products.Silva.interfaces import IVersionedContent
 from Products.SilvaNews.interfaces import INewsItem
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
 
@@ -20,6 +20,7 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.helpers import add_and_edit
 from AgendaItem import AgendaItem, AgendaItemVersion
+from Products.Silva import mangle
 
 icon = 'www/agenda_item.png'
 
@@ -52,7 +53,7 @@ manage_addPlainAgendaItemForm = PageTemplateFile(
 
 def manage_addPlainAgendaItem(self, id, title, REQUEST=None):
     """Add a News PlainAgendaItem."""
-    if not self.is_id_valid(id):
+    if not mangle.Id(self, id).isValid():
         return
     object = PlainAgendaItem(id)
     self._setObject(id, object)

@@ -1,6 +1,5 @@
 from Interface import Base
-from Products.Silva.ISilvaObject import ISilvaObject
-from Products.Silva.IVersion import IVersion
+from Products.Silva.interfaces import ISilvaObject, IVersion
 
 class INewsItem(ISilvaObject):
     """Silva News Item interface

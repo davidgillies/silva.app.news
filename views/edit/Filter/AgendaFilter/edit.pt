@@ -12,7 +12,7 @@
     previous python:batch.previous;
     next python:batch.next;
     title model/get_title_editable;
-    breadcrumb_vein string:Edit;
+    vein string:edit;
     fields view/settingsform/get_fields;
 ">
 

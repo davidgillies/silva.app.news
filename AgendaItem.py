@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.13 $
+# $Revision: 1.14 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -17,7 +17,7 @@ from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 # Silva
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import VersionedContent
-from Products.Silva.IVersionedContent import IVersionedContent
+from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
 
 # SilvaNews
