@@ -1,6 +1,6 @@
-$Revision: 1.16 $
+$Revision: 1.17 $
 
-Copyright (c) 2002 - 2004 Infrae. All rights reserved.
+Copyright (c) 2002-2005 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
@@ -8,7 +8,7 @@ Meta::
   Valid for:   Silva News 1.0
   Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
   Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
-  CVS:         $Revision: 1.16 $
+  CVS:         $Revision: 1.17 $
 
 Silva News
 
