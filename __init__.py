@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 import AgendaFilter, NewsFilter, ServiceNews
 import NewsSource, NewsViewer, AgendaViewer, RSSViewer
@@ -9,7 +9,7 @@ from Products.PythonScripts.Utility import allow_module
 from AccessControl import ModuleSecurityInfo
 from Products.FileSystemSite.DirectoryView import registerDirectory
 from Products.Silva.ExtensionRegistry import extensionRegistry
-from Products.Silva.upgrade import xml_upgrade_registry
+from Products.Silva.upgrade import upgrade_registry, upgrade_list_titles_in_parsed_xml 
 import install
 
 def initialize(context):
@@ -33,5 +33,10 @@ def initialize(context):
 
     registerDirectory('views', globals())
 
-xml_upgrade_registry.register('Silva News Article', 'content')
-xml_upgrade_registry.register('Silva News AgendaItem', 'content')
+# upgrade methods
+def upgrade_newsitem(obj):
+    for o in obj.objectValues():
+        upgrade_list_titles_in_parsed_xml(o.content)
+
+upgrade_registry.register('Silva News Article', upgrade_newsitem)
+upgrade_registry.register('Silva News AgendaItem', upgrade_newsitem)
