@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -27,8 +27,10 @@ class NewsFilter(Filter):
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)
         self._show_agenda_items = 0
-        self._description = ''
+        self._rss_description = ''
         self._allow_rss_export = 0
+        self._rss_link = ''
+        self._rss_copyright = ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
@@ -200,16 +202,16 @@ class NewsFilter(Filter):
         return self._show_agenda_items
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_description')
-    def set_description(self, value):
-        """Sets the description"""
-        self._description = value
+                              'set_rss_description')
+    def set_rss_description(self, value):
+        """Sets the RSS description"""
+        self._rss_description = value
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'description')
-    def description(self):
+                              'rss_description')
+    def rss_description(self):
         """Returns the description"""
-        return self._description
+        return self._rss_description
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_show_agenda_items')
@@ -227,6 +229,30 @@ class NewsFilter(Filter):
     def set_allow_rss_export(self, yesorno):
         """Sets whether it is allowed to export to RSS"""
         self._allow_rss_export = not not yesorno
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_link')
+    def rss_link(self):
+        """Returns the link to be used as the 'link' tag value for the RSS feed"""
+        return self._rss_link
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_rss_link')
+    def set_rss_link(self, value):
+        """Sets the RSS link"""
+        self._rss_link = value
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_copyright')
+    def rss_copyright(self):
+        """Returns the copyright notice to be used for the RSS feed"""
+        return self._rss_copyright
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_rss_copyright')
+    def set_rss_copyright(self, value):
+        """Sets the RSS copyright notice"""
+        self._rss_copyright = value
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
@@ -251,10 +277,15 @@ class NewsFilter(Filter):
                 '<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/ formats/rss-0.91.dtd">\n'\
                 '<rss version="0.91" encoding="ISO_8859-1">\n'\
                 '<channel>\n'\
-                '<title>' + self.get_title_html() + '</title>\n'\
-                '<description>' + unicode(self.description(), 'cp1252') + '</description>\n'\
-                '<link>' + unicode(self.get_publication().absolute_url(), 'cp1252') + '</link>\n'\
+                '<title>' + self._xml_preformat(self.get_title_html()) + '</title>\n'\
+                '<description>' + self._xml_preformat(self.rss_description()) + '</description>\n'\
+                '<link>' + (self._xml_preformat(self.rss_link()) or self._xml_preformat(self.get_publication().absolute_url())) + '</link>\n'\
                 '<language>en-us</language>\n'
+
+        if self.rss_copyright():
+            feed += '<copyright>' + self._xml_preformat(self.rss_copyright()) + '</copyright>\n'
+
+        feed += '\n'
 
         last = self.get_last_items(15, 0)
         for item in last:
@@ -266,15 +297,23 @@ class NewsFilter(Filter):
                     lead = lead[:lead.rfind(' ')]
                 lead += '...'
             feed += '<item>\n'\
-                    '<title>' + unicode(item.get_title_html, 'cp1252') + '</title>\n'\
-                    '<link>' + unicode(item.absolute_url(), 'cp1252') + '</link>\n'\
-                    '<description>' + unicode(lead, 'cp1252') + '</description>\n'\
-                    '</item>\n'
+                    '<title>' + self._xml_preformat(item.get_title_html) + '</title>\n'\
+                    '<link>' + self._xml_preformat(item.absolute_url()) + '</link>\n'\
+                    '<description>' + self._xml_preformat(lead) + '</description>\n'\
+                    '</item>\n\n'
 
         feed += '</channel>\n'\
                 '</rss>\n'
 
         return feed
+
+    def _xml_preformat(self, text, codepage='cp1252'):
+        text = text.replace('&', '&amp;')
+        text = text.replace('"', '&quot;')
+        text = text.replace('<', '&lt;')
+        text = text.replace('>', '&gt;')
+
+        return unicode(text, codepage)
 
 InitializeClass(NewsFilter)
 

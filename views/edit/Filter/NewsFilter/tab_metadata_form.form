@@ -33,27 +33,6 @@
           <default>python: form.REQUEST.model.get_title()</default>
         </tales>
       </field>
-      <field><id>description</id> <type>TextAreaField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">0</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Description</title>
-          <description>Used for RSS export.</description>
-          <extra></extra>
-        </values>
-        <tales>
-          <default>python: form.REQUEST.model.description()</default>
-        </tales>
-      </field>
       <field><id>subjects</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
@@ -127,6 +106,67 @@
           <items>python: [('Yes', 1), ('No', 0)]</items>
           <default>python: form.REQUEST.model.allow_rss_export()</default>
           <description>python: "If set to 'yes', this filter can be used as an RSS feed (by calling %s/rss_feed)." % form.REQUEST.model.absolute_url()</description>
+        </tales>
+      </field>
+      <field><id>rss_description</id> <type>TextAreaField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
+          <external_validator></external_validator>
+          <height type="int">2</height>
+          <required type="int">0</required>
+          <css_class></css_class>
+          <default></default>
+          <title>RSS description</title>
+          <description>Describe the type of news this filter shows.</description>
+          <extra></extra>
+        </values>
+        <tales>
+          <default>python: form.REQUEST.model.rss_description()</default>
+        </tales>
+      </field>
+      <field><id>rss_link</id> <type>StringField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_length></max_length>
+          <external_validator></external_validator>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">60</display_width>
+          <required type="int">0</required>
+          <css_class></css_class>
+          <default></default>
+          <title>RSS link</title>
+          <truncate type="int">0</truncate>
+          <description>Enter the URL where the RSS feed should point to for information.</description>
+          <extra></extra>
+        </values>
+        <tales>
+          <default>python: form.REQUEST.model.rss_link()</default>
+        </tales>
+      </field>
+      <field><id>rss_copyright</id> <type>StringField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_length></max_length>
+          <external_validator></external_validator>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">60</display_width>
+          <required type="int">0</required>
+          <css_class></css_class>
+          <default></default>
+          <title>RSS copyright</title>
+          <truncate type="int">0</truncate>
+          <description>Enter a copyright notice (not used if left empty).</description>
+          <extra></extra>
+        </values>
+        <tales>
+          <default>python: form.REQUEST.model.rss_copyright()</default>
         </tales>
       </field>
       </fields>

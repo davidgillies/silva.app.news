@@ -55,4 +55,20 @@ if result['show_agenda_items'] != model.show_agenda_items():
     model.set_show_agenda_items(result['show_agenda_items'])
     changed_metadata.append(('show_agenda_items', 'updated'))
 
+if result['rss_description'] != model.rss_description():
+    model.set_rss_description(result['rss_description'])
+    changed_metadata.append(('rss_description', 'updated'))
+
+if result['rss_link'] != model.rss_link():
+    model.set_rss_link(result['rss_link'])
+    changed_metadata.append(('rss_link','changed'))
+
+if result['rss_copyright'] != model.rss_copyright():
+    model.set_rss_copyright(result['rss_copyright'])
+    changed_metadata.append(('rss_copyright', 'changed'))
+
+if not not result['allow_rss_export'] != model.allow_rss_export():
+    model.set_allow_rss_export(result['allow_rss_export'])
+    changed_metadata.append(('allow_rss_export', 'changed'))
+
 return context.tab_metadata(message_type="feedback", message="Metadata changed for: %s"%(context.quotify_list(changed_metadata)))
