@@ -6,101 +6,12 @@ import time
 from xml_helpers import *
 from cached_http_loader import *
 
+# ZOPE
+import Acquisition
+from AccessControl import ClassSecurityInfo
+
 class FormatException(Exception):
     pass
-
-class RSSItem:
-    """A struct to hold all items of an RSS feed
-    """
-
-    def __init__(self):
-        self.title = None
-        self.description = None
-        self.link = None
-        self.author = None
-        self.category = None
-        self.comments = None
-        self.enclosure = None
-        self.guid = None
-        self.pubdate = None
-        self.source = None
-        self.sourceurl = None
-
-class RSSTextInput:
-    """A struct to hold data of a textinput element of an RSS feed
-    """
-
-    def __init__(self):
-        self.title = None
-        self.description = None
-        self.name = None
-        self.link = None
-
-class RSSImage:
-    """A struct to hold data of an image element of an RSS feed
-    """
-
-    def __init__(self):
-        self.url = None
-        self.title = None
-        self.description = None
-        self.link = None
-        self.width = None
-        self.height = None
-
-class RSSChannel:
-    """A struct to hold all data of the RSS feed
-    """
-
-    def __init__(self):
-        self.items = [] 
-        self.image = RSSImage()
-        self.textinput = RSSTextInput()
-        self.title = None
-        self.description = None
-        self.link = None
-        self.copyright = None
-        self.pubdate = None
-        self.lastbuilddate = None
-        self.language = None
-        self.category = None
-        self.webmaster = None
-        self.managingeditor = None
-        self.ttl = None
-        self.rating = None
-        self.docs = None
-        self.generator = None
-
-    def __str__(self):
-        """Pretty print the contents for debugging purposes
-        """
-        retval = 'RSSChannel:\n'
-
-        for a in dir(self):
-            if (a != 'image' and 
-                a != 'items' and 
-                a != 'textinput' and 
-                a[0] != '_'):
-                retval += '\t%s: %s\n' % (a, getattr(self, a))
-
-        retval += '\n\tItems:\n'
-        for item in self.items:
-            for a in dir(item):
-                if a[0] != '_':
-                    retval += '\t\t%s: %s\n' % (a, getattr(item, a))
-            retval += '\n'
-
-        retval += '\n\tImage:\n'
-        for a in dir(self.image):
-            if a[0] != '_':
-                retval += '\t\t%s: %s\n' % (a, getattr(self.image, a))
-
-        retval += '\n\tTextInput:\n'
-        for a in dir(self.textinput):
-            if a[0] != '_':
-                retval += '\t\t%s: %s\n' % (a, getattr(self.textinput, a))
-
-        return retval.encode('cp1252')
 
 class RSSParser:
     """An RSS parser
@@ -114,18 +25,24 @@ class RSSParser:
         Sends If-Modified-Since headers and ETag headers to see whether
         it should or should not use cached data.
         """
-        retval = RSSChannel()
+        retval = {}
+        retval['rssitems'] = []
+        retval['image'] = {}
+        retval['textinput'] = {}
         dom = parseString(xml)
 
         # first find the namespace and version
         namespace = None
         version = None
         if dom.documentElement.nodeName == u'rss':
-            for attr in dom.documentElement._attrs:
+            print "Docelement:", dom.documentElement
+            print "Dir:", dir(dom.documentElement)
+            print "Attrs:", dom.documentElement._attrs
+            for attr in dom.documentElement._attrs.keys():
                 if attr == u'version':
                     version = dom.documentElement._attrs[attr].nodeValue
         else:
-            for attr in dom.documentElement._attrs:
+            for attr in dom.documentElement._attrs.keys():
                 ns = None
                 tag = attr
                 if attr.find(':') > -1:
@@ -161,7 +78,7 @@ class RSSParser:
         # outside of it.
         item = getChildOfName(dom.documentElement, u'item', namespace)
         if item:
-            retval.items = []
+            retval['rssitems'] = []
             self.parse_items(dom.documentElement, retval, namespace)
 
         # afaik the textinput element can be part of the channel or of the rss
@@ -182,46 +99,46 @@ class RSSParser:
     def parse_channel(self, channel, retval, namespace):
         """Parse all interesting elements of the channel node
         """
-        retval.title            = getNodeContent(getChildOfName(channel, 
+        retval['title']            = getNodeContent(getChildOfName(channel, 
                                                     u'title', 
                                                     namespace))
-        retval.description      = getNodeContent(getChildOfName(channel, 
+        retval['description']      = getNodeContent(getChildOfName(channel, 
                                                     u'description', 
                                                     namespace))
-        retval.link             = getNodeContent(getChildOfName(channel, 
+        retval['link']             = getNodeContent(getChildOfName(channel, 
                                                     u'link', 
                                                     namespace))
-        retval.copyright        = getNodeContent(getChildOfName(channel, 
+        retval['copyright']        = getNodeContent(getChildOfName(channel, 
                                                     u'copyright', 
                                                     namespace))
-        retval.pubdate          = getNodeContent(getChildOfName(channel, 
+        retval['pubdate']          = getNodeContent(getChildOfName(channel, 
                                                     u'pubDate', 
                                                     namespace))
-        retval.lastbuilddate    = getNodeContent(getChildOfName(channel, 
+        retval['lastbuilddate']    = getNodeContent(getChildOfName(channel, 
                                                     u'lastBuildDate', 
                                                     namespace))
-        retval.language         = getNodeContent(getChildOfName(channel, 
+        retval['language']         = getNodeContent(getChildOfName(channel, 
                                                     u'language', 
                                                     namespace))
-        retval.category         = getNodeContent(getChildOfName(channel, 
+        retval['category']         = getNodeContent(getChildOfName(channel, 
                                                     u'category', 
                                                     namespace))
-        retval.webmaster        = getNodeContent(getChildOfName(channel, 
+        retval['webmaster']        = getNodeContent(getChildOfName(channel, 
                                                     u'webMaster', 
                                                     namespace))
-        retval.managingeditor   = getNodeContent(getChildOfName(channel, 
+        retval['managingeditor']   = getNodeContent(getChildOfName(channel, 
                                                     u'managingEditor', 
                                                     namespace))
-        retval.ttl              = getNodeContent(getChildOfName(channel, 
+        retval['ttl']              = getNodeContent(getChildOfName(channel, 
                                                     u'ttl', 
                                                     namespace))
-        retval.rating           = getNodeContent(getChildOfName(channel, 
+        retval['rating']           = getNodeContent(getChildOfName(channel, 
                                                     u'rating', 
                                                     namespace))
-        retval.docs             = getNodeContent(getChildOfName(channel, 
+        retval['docs']             = getNodeContent(getChildOfName(channel, 
                                                     u'docs', 
                                                     namespace))
-        retval.generator        = getNodeContent(getChildOfName(channel, 
+        retval['generator']        = getNodeContent(getChildOfName(channel, 
                                                     u'generator', 
                                                     namespace))
 
@@ -240,20 +157,20 @@ class RSSParser:
     def parse_image(self, image, retval, namespace):
         """Parse all interesting elements of the image node
         """
-        retval.image.url            = getNodeContent(
-                                        getChildOfName(image, 
+        retval['image']['url']         = getNodeContent(
+                                         getChildOfName(image, 
                                                         u'url', 
                                                         namespace))
-        retval.image.title          = getNodeContent(
-                                        getChildOfName(image, 
+        retval['image']['title']       = getNodeContent(
+                                         getChildOfName(image, 
                                                         u'title', 
                                                         namespace))
-        retval.image.description    = getNodeContent(
-                                        getChildOfName(image, 
+        retval['image']['description'] = getNodeContent(
+                                         getChildOfName(image, 
                                                         u'description', 
                                                         namespace))
-        retval.image.link           = getNodeContent(
-                                        getChildOfName(image, 
+        retval['image']['link']        = getNodeContent(
+                                         getChildOfName(image, 
                                                         u'link', 
                                                         namespace))
 
@@ -266,68 +183,68 @@ class RSSParser:
             if not item:
                 break
             i += 1
-            itemobj = RSSItem()
-            itemobj.title       = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'title', 
-                                                    namespace))
-            itemobj.description = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'description', 
-                                                    namespace))
-            itemobj.link        = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'link', 
-                                                    namespace))
-            itemobj.author      = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'author', 
-                                                    namespace))
-            itemobj.category    = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'category', 
-                                                    namespace))
-            itemobj.comments    = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'comments', 
-                                                    namespace))
-            itemobj.enclosure   = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'enclosure', 
-                                                    namespace))
-            itemobj.guid        = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'guid', 
-                                                    namespace))
-            itemobj.pubdate     = getNodeContent(
-                                    getChildOfName(item, 
-                                                    u'pubdate', 
-                                                    namespace))
+            itemobj = {} 
+            itemobj['title']       = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'title', 
+                                                     namespace))
+            itemobj['description'] = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'description', 
+                                                     namespace))
+            itemobj['link']        = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'link', 
+                                                     namespace))
+            itemobj['author']      = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'author', 
+                                                     namespace))
+            itemobj['category']    = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'category', 
+                                                     namespace))
+            itemobj['comments']    = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'comments', 
+                                                     namespace))
+            itemobj['enclosure']   = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'enclosure', 
+                                                     namespace))
+            itemobj['guid']        = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'guid', 
+                                                     namespace))
+            itemobj['pubdate']     = getNodeContent(
+                                     getChildOfName(item, 
+                                                     u'pubdate', 
+                                                     namespace))
             
             sourceel = getChildOfName(item, u'source', namespace)
             if sourceel:
-                itemobj.source = sourceel.nodeValue
-                itemobj.sourceurl = sourceel._attrs[u'url'].nodeValue
+                itemobj['source'] = sourceel.nodeValue
+                itemobj['sourceurl'] = sourceel._attrs[u'url'].nodeValue
 
-            retval.items.append(itemobj)
+            retval['rssitems'].append(itemobj)
 
     def parse_textinput(self, node, retval, namespace):
         """Parse a textinput element
         """
-        retval.textinput.title          = getNodeContent(
-                                            getChildOfName(node, 
+        retval['textinput']['title']       = getNodeContent(
+                                             getChildOfName(node, 
                                                             u'title', 
                                                             namespace))
-        retval.textinput.description    = getNodeContent(
-                                            getChildOfName(node, 
+        retval['textinput']['description'] = getNodeContent(
+                                             getChildOfName(node, 
                                                             u'description', 
                                                             namespace))
-        retval.textinput.name           = getNodeContent(
-                                            getChildOfName(node, 
+        retval['textinput']['name']        = getNodeContent(
+                                             getChildOfName(node, 
                                                             u'name', 
                                                             namespace))
-        retval.textinput.link           = getNodeContent(
-                                            getChildOfName(node,
+        retval['textinput']['link']        = getNodeContent(
+                                             getChildOfName(node,
                                                             u'link', 
                                                             namespace))
 
@@ -345,28 +262,28 @@ class RSSLoader:
     def get_rss(self, url):
         if (self._cache.has_key(url) and 
                 self._ttl and
-                self._cache[url].last_checked and
-                time.time() < self._cache[url].last_checked + (self._ttl * 60)):
+                self._cache[url]['last_checked'] and
+                time.time() < self._cache[url]['last_checked'] + (self._ttl * 60)):
             ret = self._cache[url]
-            ret.wascached = 1
+            ret['wascached'] = 1
         else:
             l = CachedHTTPLoader()
             r = l.urlopen(url)
             ret = None
             if (r.wascached and 
                     self._cache.has_key(url) and 
-                    (self._cache[url].etag == r.etag or 
-                    self._cache[url].last_modified == r.last_modified)):
+                    (self._cache[url]['etag'] == r.etag or 
+                    self._cache[url]['last_modified'] == r.last_modified)):
                 ret = self._cache[url]
-                ret.wascached = 1
+                ret['wascached'] = 1
             else:
                 p = RSSParser()
                 ret = p.parse_stream(r.read())
-                ret.etag = r.etag
-                ret.last_modified = r.last_modified
-                ret.last_checked = time.time()
+                ret['etag'] = r.etag
+                ret['last_modified'] = r.last_modified
+                ret['last_checked'] = time.time()
                 self._cache[url] = ret
-                ret.wascached = 0
+                ret['wascached'] = 0
 
         return ret
 

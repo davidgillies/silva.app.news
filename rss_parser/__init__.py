@@ -5,70 +5,73 @@ usage:
 l = RSSLoader()
 r = l.get_rss(<url>)
 
-get_rss returns a (data containing) object with the following attributes:
+get_rss returns a dict with the following keys:
 
 Fields that are derived from the channel's plain elements:
 
-    r.title
-    r.description
-    r.link
-    r.copyright
-    r.pubdate
-    r.lastbuilddate
-    r.language
-    r.category
-    r.webmaster
-    r.managingeditor
-    r.ttl
-    r.rating
-    r.docs
-    r.generator
+    title
+    description
+    link
+    copyright
+    pubdate
+    lastbuilddate
+    language
+    category
+    webmaster
+    managingeditor
+    ttl
+    rating
+    docs
+    generator
+
+    Note that some of the elements' tagnames are defined with capitals in the RSS protocol,
+    but the dict keys of the channel dict uses lowercase
 
 Special fields:
 
-    r.image - an object containing the following attributes:
+    image - a dict containing the following keys:
 
     Image fields:
     
-        r.image.url
-        r.image.title
-        r.image.description
-        r.image.link
-        r.image.width
-        r.image.height
+        url
+        title
+        description
+        link
+        width
+        height
 
-    r.textinput - an object containing the following attributes:
+    textinput - a dict containing the following attributes:
 
     TestInput fields:
 
-        r.textinput.title
-        r.textinput.description
-        r.textinput.name
-        r.textinput.link
+        title
+        description
+        name
+        link
 
-    r.items - a list of item objects
+    items - a list of item dicts
 
-    ItemObject fields:
+    Item fields:
 
-        item.title
-        item.description
-        item.link
-        item.author
-        item.category
-        item.comments
-        item.enclosure
-        item.guid
-        item.pubdate
-        item.source
-        item.sourceurl - reflects the 'url' attribute of the
+        title
+        description
+        link
+        author
+        category
+        comments
+        enclosure
+        guid
+        pubdate
+        source
+        sourceurl - reflects the 'url' attribute of the
                 item's source element
 
 Meta-fields (used in the caching machinery):
 
-    r.wascached - whether the result was returned from some cache or was retrieved just now
-    r.etag - the value of the Etag HTTP response header
-    r.last_modified - the value of the Last-Modified HTTP response header
-    r.last_checked - the timestamp of the last (uncached) request
+    wascached - whether the result was returned from some cache or was retrieved just now
+    tag - the value of the Etag HTTP response header
+    last_modified - the value of the Last-Modified HTTP response header
+    last_checked - the timestamp of the last (uncached) request
 
 The loader has the following additional methods:
 
