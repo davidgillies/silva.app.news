@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -20,7 +20,9 @@ class DuplicateError(Exception):
     pass
 
 class NewsSource(Publication, CatalogPathAware):
-    """Source
+    """A special Silva publication that offers NewsArticles
+       and AgendaItems. The Source can be accessed by NewsFilters
+       in other locations within a Silva site.
     """
     security = ClassSecurityInfo()
 
