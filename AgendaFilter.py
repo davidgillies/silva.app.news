@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -20,7 +20,7 @@ class AgendaFilter(Filter):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva AgendaFilter"
+    meta_type = "Silva News AgendaFilter"
 
     def __init__(self, id, title):
         AgendaFilter.inheritedAttribute('__init__')(self, id, title)

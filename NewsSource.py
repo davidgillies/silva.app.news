@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -23,7 +23,7 @@ class NewsSource(Publication, CatalogPathAware):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva NewsSource"
+    meta_type = "Silva News NewsSource"
 
     __implements__ = IPublication
 
@@ -212,7 +212,7 @@ class NewsSource(Publication, CatalogPathAware):
             (INewsItem.isImplementedByInstancesOf(
             addable_dict['instance']) or
             IAgendaItem.isImplementedByInstancesOf(
-            addable_dict['instance'])) or addable_dict['name'] == 'Silva NewsSource')
+            addable_dict['instance'])) or addable_dict['name'] == self.meta_type)
 
 InitializeClass(NewsSource)
 

@@ -29,7 +29,7 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva NewsItem"
+    meta_type = "Silva News NewsItem"
     default_catalog = 'service_catalog'
 
     __implements__ = IVersionedContent

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -20,7 +20,7 @@ class AgendaViewer(NewsViewer):
 
     __implements__ = IContent
 
-    meta_type = "Silva AgendaViewer"
+    meta_type = "Silva News AgendaViewer"
 
     def __init__(self, id, title):
         AgendaViewer.inheritedAttribute('__init__')(self, id, title)

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -21,7 +21,7 @@ class NewsFilter(Filter):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva NewsFilter"
+    meta_type = "Silva News NewsFilter"
 
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)

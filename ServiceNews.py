@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 import Globals
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -19,7 +19,7 @@ class ServiceNews(SimpleItem):
     """
     __implements__ = IServiceNews
     security = ClassSecurityInfo()
-    meta_type = 'Silva ServiceNews'
+    meta_type = 'Silva News ServiceNews'
     manage_options = (
                       {'label': 'Edit', 'action': 'edit_tab'},
                       {'label': 'Info', 'action': 'info_tab'}
