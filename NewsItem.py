@@ -86,8 +86,18 @@ class NewsItemVersion(Version, CatalogPathAware):
         self._more_info_links = []
 
     # MANIPULATORS
-    # To be added in subclasses
-
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_subjects')
+    def set_subjects(self, subjects):
+        self._subjects = subjects
+        self.reindex_object()
+        
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_target_audiences')
+    def set_target_audiences(self, target_audiences):
+        self._target_audiences = target_audiences
+        self.reindex_object()
+      
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')
