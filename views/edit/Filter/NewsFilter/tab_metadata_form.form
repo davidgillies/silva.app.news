@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
 <form>
-  
+  <title></title>
   <name>tab_metadata_form</name>
   <action></action>
   <enctype>None</enctype>
@@ -9,7 +9,7 @@
 
   <groups>
     <group>
-      
+      <title>Default</title>
       <fields>
 
       <field><id>object_title</id> <type>TextAreaField</type>
@@ -25,7 +25,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Title</title>
           <description></description>
           <extra></extra>
         </values>
@@ -40,7 +40,7 @@
           <hidden type="int">0</hidden>
           <items>[]</items>
           <default>[]</default>
-          
+          <title>Subjects</title>
           <orientation>vertical</orientation>
           <description></description>
           <css_class></css_class>
@@ -58,7 +58,7 @@
           <hidden type="int">0</hidden>
           <items>[]</items>
           <default>[]</default>
-          
+          <title>Target audiences</title>
           <orientation>vertical</orientation>
           <description></description>
           <css_class></css_class>
@@ -78,7 +78,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Show agendaitems</title>
           <first_item type="int">0</first_item>
           <description>If set to 'yes', show agendaitems as well as newsitems.</description>
           <external_validator></external_validator>
