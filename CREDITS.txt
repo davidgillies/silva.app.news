@@ -1,0 +1,32 @@
+Copyright (c) 2002 Infrae. All rights reserved.
+See also LICENSE.txt
+
+Meta::
+
+  Valid for:  Silva News 0.1
+  Author:     Martijn Faassen, Guido Wesdorp
+  Email:      faassen@infrae.com, guido@infrae.com
+  CVS:        $Revision: 1.1 $
+
+Silva is developed by Infrae (http://www.infrae.com). Initial (and
+continued) development was for the Erasmus University Rotterdam
+(http://www.eur.nl).
+
+Infrae Silva team:
+
+  Martijn Faassen <faassen@infrae.com>
+  Kit Blake <kitblake@infrae.com>
+  Jan-Wijbrand Kolman <jw@infrae.com>
+  Guido Wesdorp <guido@infrae.com>
+
+Thanks to:
+
+  Clemens Klein-Robbenhaar for various bug reports,
+  suggestions and useful discussion on the mailinglist.
+
+  Holger Krekel for the CVS hosting and other development support.
+
+  The guys at ETH in Zurich for their feedback and support and examples.
+
+Many thanks go to Hans Verster <verster@daz.eur.nl> at the Erasmus
+University Rotterdam for his vision and support.
