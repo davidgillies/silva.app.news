@@ -11,7 +11,7 @@
 <span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(model.creation_datetime())"></span><br /><br />
 <b>Startdate/time:</b><br />
 <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(version.start_datetime())"></span><br /><br />
-<b>Locatie:</b><br />
+<b>Location:</b><br />
 <span tal:replace="structure python: version.location_manual().replace('\n', '<br />')"></span>
 </td>
 </tr>
