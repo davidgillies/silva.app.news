@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 
 import AgendaFilter, NewsFilter, ServiceNews
 import NewsSource, NewsViewer, AgendaViewer, RSSViewer
@@ -20,7 +20,7 @@ def initialize(context):
 
     extensionRegistry.register(
         'SilvaNews', 'Silva News', context, [
-        AgendaFilter, AgendaViewer, NewsFilter, NewsViewer, RSSViewer, NewsSource, PlainArticle, PlainAgendaItem],
+        NewsSource, NewsFilter, AgendaFilter, NewsViewer, AgendaViewer, RSSViewer, PlainArticle, PlainAgendaItem],
         install, depends_on='Silva')
 
     context.registerClass(
