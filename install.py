@@ -1,5 +1,4 @@
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from AccessControl import ModuleSecurityInfo
 from Products.Silva import SilvaPermissions
 from Globals import InitializeClass
 
@@ -110,6 +109,3 @@ class NewsInstaller:
         # (Should probably be ISO-8859-1, but the Splitter crashes Zope 2.5.1?)
         catalog.Indexes['fulltext'].manage_setPreferences('UnicodeVocabulary')
 
-modsec = ModuleSecurityInfo('Products.SilvaNews.install')
-modsec.declarePublic('NewsInstaller')
-modsec.apply(globals())

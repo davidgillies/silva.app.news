@@ -1,8 +1,14 @@
 import AgendaFilter, NewsFilter, ServiceNews
 import NewsSource, NewsViewer, AgendaViewer
 import PlainArticle, PlainAgendaItem
+from Products.PythonScripts.Utility import allow_module
+from AccessControl import ModuleSecurityInfo
 
 def initialize(context):
+
+    ModuleSecurityInfo('Products').declarePublic('SilvaNews')
+    ModuleSecurityInfo('Products.SilvaNews').declarePublic('install')
+    ModuleSecurityInfo('Products.SilvaNews.install').declarePublic('NewsInstaller')
 
     context.registerClass(
         AgendaFilter.AgendaFilter,
