@@ -1,80 +1,67 @@
 <tal:block define="global view here;
                    global model view/REQUEST/model;
-                   global results python:model.get_items();
+                   global result python:model.get_channel();
                    global silva_root view/silva_root;
                    " />
 
 <table border="0" cellpadding="0" cellspacing="5">
 <tr>
   <td colspan="2">
-    <h2><span class="folder-title" tal:content="python: model.rss_title() or model.get_title_html()">View News</span></h2>
-    <span tal:replace="model/rss_textinput_description" /><br />
-    <form tal:attributes="action model/rss_textinput_link" method="post" tal:condition="python: model.rss_textinput_title() and model.rss_textinput_name() and model.rss_textinput_link()">
-        <input type="text" tal:attributes="name model/rss_textinput_name"><input type="submit" tal:attributes="value python: model.rss_textinput_title()"><br /><br />
+    <h2><span class="folder-title" tal:content="python: result['title'] or model.get_title_html()">View News</span></h2>
+    <span tal:replace="result/textinput/description" tal:condition="python: result['textinput'] and result['textinput']['description']" /><br />
+    <form tal:attributes="action result/textinput/link" method="POST" tal:condition="python: result['textinput'] and result['textinput']['name'] and result['textinput']['link'] and result['textinput']['title']">
+        <input type="text" tal:attributes="name result/textinput/name" /><input type="submit" tal:attributes="value result/textinput/title" /><br /><br />
     </form>
   </td>
 </tr>
 <tr>
-  <td valign="top" colspan="2">
-    <a tal:attributes="href model/rss_image_link" tal:condition="model/rss_image_link"><img border="0" tal:condition="model/rss_image_url" tal:attributes="src model/rss_image_url; alt model/rss_image_title" style="margin-right: 5px; mergin-bottom: 5px; float: left;"></a>
-    <img border="0" tal:condition="python: model.rss_image_url() and not model.rss_image_link()" tal:attributes="src model/rss_image_url; alt model/rss_image_title" style="margin-right: 5px; mergin-bottom: 5px; float: left;">
-    <a tal:condition="model/rss_link" tal:attributes="href model/rss_link" tal:content="structure string:${model/rss_link}<br /><br />" />
-    <tal:block replace="structure string:${model/rss_description}<br /><br />" condition="model/rss_description" />
+  <td valign="top" colspan="2" tal:condition="python: result['image']">
+    <a tal:attributes="href result/image/link" tal:condition="result/image/link | nothing"><img border="0" tal:condition="result/image/url" tal:attributes="src result/image/url; alt result/image/title" style="margin-right: 5px; mergin-bottom: 5px; float: left;" /></a>
+    <img border="0" tal:condition="python: result['image']['url'] and not result['image']['link']" tal:attributes="src result/image/url; alt result/image/title" style="margin-right: 5px; mergin-bottom: 5px; float: left;" />
+    <a tal:condition="result/link" tal:attributes="href result/link">
+      <span tal:content="structure result/link" /><br /><br />
+    </a>
+    <tal:block condition="result/description">
+      <span tal:replace="structure result/description" /><br /><br />
+    </tal:block>
   </td>
 </tr>
 <tr>
   <td colspan="2">
-    <tal:block replace="structure string:${model/rss_copyright}<br /><br />" condition="model/rss_copyright" />
-    <tal:block replace="structure string:Published: ${model/rss_publication_date}" condition="model/rss_publication_date" />
+    <tal:block condition="result/copyright">
+      <span tal:replace="structure result/copyright" /><br /><br />
+    </tal:block>
+    <tal:block condition="result/pubdate">
+      <span replace="structure string:Published: ${result/pubdate}" />
+    </tal:block>
   </td>
 </tr>
 </table>
 <br />
-<tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
 <table width="100%" cellspacing="0" cellpadding="3" border="2"
   tal:attributes="cellspacing container/table_cellspacing;
                   cellpadding container/table_cellpadding;
                   border container/table_border">
 
-
-<span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
-  tal:repeat="obj results">
+  tal:repeat="item result/rssitems">
 
 <tr class="focus">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
-<h2 tal:content="structure obj/get_title_html">title</h2>
-<h3 tal:content="structure obj/subheader">subheader</h3>
+<h2 tal:content="structure item/title" tal:condition="item/title | nothing">title</h2>
 </td>
 </tr>
 
 <tr class="focus-cycle">
 <td align="left" valign="top">
-<b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
-<a href="#" tal:attributes="href obj/getURL">view article</a>
+<b tal:content="structure item/description" tal:condition="item/description | nothing">Lead</b><br /><br />
+<a href="#" tal:attributes="href item/link" tal:condition="item/link | nothing">view article</a>
 </td>
 </tr>
 
 </toc_entry>
-
-<span tal:replace="nothing"> ______________ if no records ______________ </span>
-<check tal:condition="python:len(results) == 0">
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-<tr class="focus-light">
-<td colspan="2">
-There are no articles.
-</td>
-</tr>
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-</check>
-<!-- /iteration -->
 
 </table><br />
