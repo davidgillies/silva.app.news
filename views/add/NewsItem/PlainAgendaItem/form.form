@@ -65,7 +65,7 @@
           <default_now type="int">0</default_now>
           <css_class></css_class>
           <title>Startdate/time</title>
-          <description></description>
+          <description>Format: DD/MM/YYYY</description>
         </values>
         <tales>
         </tales>
