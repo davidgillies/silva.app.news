@@ -18,11 +18,11 @@
                    " />
 
 <div class="margins">
-<h2>Manage <span class="folder-title" tal:content="structure string:&raquo;${model/get_title_html}&laquo;">title here</span></h2>
+<h2>Manage <span class="folder-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span></h2>
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
-<form action="." name="silvaSources" method="POST">
+<form action="." name="silvaObjects" method="POST">
 
 <table width="98%" cellspacing="0" cellpadding="3" border="0"
   tal:attributes="cellspacing container/table_cellspacing;
@@ -131,13 +131,13 @@ function toggleSelect() {
 <script type="text/javascript">
 <!--
 if (document.forms[0]) {
-  document.write('<input class="button" type="submit" name="selectButton" value="Select all" title="Select all items" onClick="toggleSelect(); return false">')
+  document.write('<input class="button" type="submit" name="selectButton" value="Select all" title="Select all items - alt-a" accesskey="a" onClick="toggleSelect(); return false">')
   }
 //-->
 </script>
 &nbsp;
 <input type="hidden" name="start" tal:attributes="value startat">
-<input class="button" type="submit" name="use_sources:method" value="Update sources" title="Use selected sources in this filter" />
+<input class="button" type="submit" name="use_sources:method" value="Update sources" title="Use selected sources in this filter - alt-u" accesskey="u" />
 &nbsp;
 </td>
 </tr>

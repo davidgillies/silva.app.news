@@ -38,16 +38,16 @@
     &nbsp;
     </tal:block>
     <tal:block condition="silva_permissions/ChangeSilvaContent">
-    &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_import:method" value=" Import..." title="Import XML data - alt-i" accesskey="i" />&nbsp;&nbsp;&nbsp;
-      <input class="button" type="submit" name="add_object:method" value=" New " title="Add a new item - alt-n" accesskey="n" />
-      <span style="color:#a2c9cc;">&#8211;</span>
-      <select name="meta_type" onChange="JavaScript:silvaObjects['add_object:method'].click();">
-      <option value="None" disabled="disabled">Select...</option>
-      <tal:block tal:repeat="addable model/get_silva_addables">
+      <input class="button" type="submit" name="add_object:method" value=" New:" title="Add a new item: alt-n" accesskey="n" />
+      <select name="meta_type" onChange="JavaScript:silvaObjects['add_object:method'].click();"  title="Select a new item: alt-s" accesskey="s">
+        <option value="None" disabled="disabled">Select...</option>
+        <tal:block tal:repeat="addable model/get_silva_addables">
         <option tal:condition="python:here.service_view_registry.has_view('add', addable['name'])"
-               tal:attributes="value addable/name" tal:content="addable/name"></option>
-       </tal:block>
-    </select>&nbsp;&nbsp;
+                tal:attributes="value addable/name" tal:content="addable/name"></option>
+        </tal:block>
+      </select>
+      &nbsp;&nbsp;
+      <input class="button" type="submit" name="tab_edit_import:method" value=" Import..." title="Import XML data: alt-i" accesskey="i" />&nbsp;
     </tal:block>
   </td>
 </tr>
@@ -426,20 +426,20 @@ There are no active content objects in this folder.
   <script type="text/javascript">
   <!--
   if (document.forms[0]) {
-    document.write('<input class="button" type="button" name="selectButton" value="Select all" title="Select all items in this folder" onClick="toggleSelect(); return false">')
+    document.write('<input class="button" type="button" name="selectButton" value="Select all" title="Select all items in this folder: alt-a" accesskey="a" onClick="toggleSelect(); return false">')
   }
   //-->
   </script>
   <tal:block condition="silva_permissions/ChangeSilvaContent">
-  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_rename:method" value="Rename" title="Rename and retitle an item" />
-  &nbsp;&nbsp;<input class="warningbutton" type="submit" name="tab_edit_delete:method" value="Delete" title="There's no undo" onClick="return confirm('Really delete?')" />
-  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_cut:method" value="Cut" title="Cut items" />
+  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_rename:method" value="Rename..." title="Rename and retitle an item: alt-r" accesskey="r" />
+  &nbsp;&nbsp;<input class="warningbutton" type="submit" name="tab_edit_delete:method" value=" Delete " title="There's no undo: alt-d" accesskey="d" onClick="return confirm('Really delete?')" />
+  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_cut:method" value=" Cut " title="Cut items: alt-x" accesskey="x" />
   </tal:block>
-  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_copy:method" value="Copy" title="Copy items" />
+  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_copy:method" value=" Copy " title="Copy items: alt-c" accesskey="c" />
   </tal:block>
   <tal:block condition="python:request.has_key('__cp') and silva_permissions['ChangeSilvaContent']">
-  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_paste:method" value="Paste" title="Paste items" />
-  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_paste_to_ghost:method" value="Paste as ghost" title="Paste (items on clipboard) as ghost objects" />
+  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_paste:method" value=" Paste " title="Paste items: alt-v" accesskey="v" />
+  &nbsp;&nbsp;<input class="button" type="submit" name="tab_edit_paste_to_ghost:method" value="Paste ghost" title="Paste (items on clipboard) as ghost objects: alt-g" accesskey="g" />
   </tal:block>
   </td>
 </tr>

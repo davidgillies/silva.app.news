@@ -54,7 +54,7 @@ function insertAssetReference(id, reference, wndw) {
 </script>
 <tal:block tal:define="dummy python: request.SESSION.set('filter', 'Image')" />
 
-<h2>Metadata for <span class="document-title" tal:content="structure string:&raquo;${model/get_title_html}&laquo;">title here</span></h2>
+<h2>Metadata for <span class="document-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span></h2>
 
 <init tal:omit-tag=""
   tal:define="global fields python:view.tab_metadata_form.get_fields()" />
@@ -137,8 +137,9 @@ If you choose an image here, it will be added to the RSS feed.</td>
 <tr class="controls">
 <td colspan="4" align="right">
 <input class="button" type="submit"
-       name="form_submitted" value=" change item "
-       tal:attributes="value string: Save metadata " />
+       name="form_submitted" value="Save metadata" 
+       title="Accesskey: alt-s" accesskey="s"
+       />
 </td>
 </tr>
 </table>

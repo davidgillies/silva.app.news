@@ -143,8 +143,9 @@ Target audiences:
 <td class="transparent" width="16">&nbsp;</td>
 <td colspan="4" align="right">
 <input class="button" type="submit"
-       name="form_submitted" value=" change item "
-       tal:attributes="value string: Save item " />
+       name="form_submitted" value="Save item"
+       title="Access key: alt-s" accesskey="s"
+       />
 </td>
 <td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
 </tr>
