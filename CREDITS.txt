@@ -1,14 +1,14 @@
-$Revision: 1.8 $
+$Revision: 1.9 $
 
-Copyright (c) 2002, 2004 Infrae. All rights reserved.
+Copyright (c) 2002 - 2004 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:  Silva News 0.9.1
+  Valid for:  Silva News 1.0
   Author:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
   Email:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
-  CVS:        $Revision: 1.8 $
+  CVS:        $Revision: 1.9 $
 
 SilvaNews is developed by Infrae (http://www.infrae.com). Initial (and
 continued) development was for the Erasmus University Rotterdam

@@ -1,14 +1,14 @@
-$Revision: 1.15 $
+$Revision: 1.16 $
 
-Copyright (c) 2002, 2004 Infrae. All rights reserved.
+Copyright (c) 2002 - 2004 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:   Silva News 0.9.1
+  Valid for:   Silva News 1.0
   Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
   Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
-  CVS:         $Revision: 1.15 $
+  CVS:         $Revision: 1.16 $
 
 Silva News
 
@@ -17,8 +17,7 @@ Silva News
   documents as well as edit existing documents using a web interface.
 
   Silva News is an extension to Silva to allow authors to place articles and
-  agendaitems on the Silva site and show them on a page. Silva News is a Silva
-  add-on which can be used on Silva versions 0.9.3 and up.
+  agendaitems on the Silva site and show them on a page.
 
   There are versions for older Silva versions available for download as well.
   No other products are required to use Silva News from Silva, besides the

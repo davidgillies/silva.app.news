@@ -3,7 +3,7 @@ See also LICENSE.txt
 
 SilvaNews changes
 
-  Current CVS trunk
+  1.0
 
     Bugs fixed
 

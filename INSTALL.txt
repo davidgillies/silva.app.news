@@ -1,24 +1,23 @@
-$Revision: 1.11 $
+$Revision: 1.12 $
 
 Copyright (c) 2002, 2004 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:   Silva News 0.9.1
+  Valid for:   Silva News 1.0
   Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
   Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
-  CVS:         $Revision: 1.11 $
+  CVS:         $Revision: 1.12 $
 
 Installing Silva News
 
-  This package requires Silva 0.9.3.
+  This package requires Silva 1.0.
 
-  Unpack the SilvaNews-0.9.tgz package into the Products directory of
-  your Zope installation and restart Zope. Go to the Silva root and
-  click on the 'service_extensions' object. Scroll to the SilvaNews
-  entry and click 'Install'. The product should now be installed
-  correctly.
+  Unpack the SilvaNews package into the Products directory of your
+  Zope installation and restart Zope. Go to the Silva root and click
+  on the 'service_extensions' object. Scroll to the SilvaNews entry
+  and click 'Install'. The product should now be installed correctly.
 
   Note: for SilvaNews to work correctly for news items to be published
   or expired in the future, a script needs to be registered to cron or
