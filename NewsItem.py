@@ -11,7 +11,7 @@ from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from INewsItem import INewsItem
+from INewsItem import INewsItem, INewsItemVersion
 
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
@@ -86,7 +86,7 @@ class NewsItemVersion(Version, CatalogPathAware):
 
     meta_type = "Silva NewsItem Version"
 
-    #__implements__ = Interfaces.Version
+    __implements__ = INewsItemVersion
 
     default_catalog = 'service_catalog'
 

@@ -8,7 +8,7 @@ from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from Products.SilvaNews.INewsItem import INewsItem
+from Products.SilvaNews.INewsItem import INewsItem, INewsItemVersion
 from Products.Silva.IVersionedContent import IVersionedContent
 
 # Silva

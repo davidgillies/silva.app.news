@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -13,6 +13,7 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
 from Filter import Filter, MetaTypeException
+from INewsItem import INewsItemVersion
 
 class NewsFilter(Filter):
     """Silva NewsFilter
@@ -162,8 +163,12 @@ class NewsFilter(Filter):
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
-        # FIXME: This should be generated instead of hard-coded...
-        return ['Silva News PlainArticle Version', 'Silva News PlainAgendaItem Version', 'Silva EUR News Announcement Version', 'Silva EUR News Article Version', 'Silva EUR News Event Version', 'Silva EUR News Promotion Version', 'Silva EUR News Oration Version', 'Silva EUR News ValedictoryLecture Version']
+        allowed = []
+        mts = self.filtered_meta_types()
+        for mt in mts:
+            if mt.has_key('instance') and INewsItemVersion.isImplementedByInstancesOf(mt['instance']):
+                allowed.append(mt['name'])
+        return allowed
 
 InitializeClass(NewsFilter)
 

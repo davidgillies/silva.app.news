@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -13,6 +13,7 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
 from Filter import Filter, MetaTypeException
+from IAgendaItem import IAgendaItemVersion
 
 class AgendaFilter(Filter):
     """Silva AgendaFilter
@@ -124,10 +125,15 @@ class AgendaFilter(Filter):
             IAgendaItem.isImplementedByInstancesOf(
             addable_dict['instance']))
 
+    security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
-        """Returns a list of allowed meta_types for this filter"""
-        # FIXME: This list should be generated instead of hard-coded
-        return ['Silva News PlainAgendaItem Version', 'Silva EUR News Event Version', 'Silva EUR News Oration Version', 'Silva EUR News Promotion Version', 'Silva EUR News Valedictory Lecture Version']
+        """Returns the allowed meta_types for this filter"""
+        allowed = []
+        mts = self.filtered_meta_types()
+        for mt in mts:
+            if mt.has_key('instance') and IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']):
+                allowed.append(mt['name'])
+        return allowed
 
 InitializeClass(AgendaFilter)
 

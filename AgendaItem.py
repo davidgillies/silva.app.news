@@ -8,8 +8,8 @@ from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from IAgendaItem import IAgendaItem
-from INewsItem import INewsItem
+from IAgendaItem import IAgendaItem, IAgendaItemVersion
+from INewsItem import INewsItem, INewsItemVersion
 
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
@@ -36,6 +36,8 @@ class AgendaItemVersion(NewsItemVersion):
     """Silva Agenda version.
     """
     security = ClassSecurityInfo()
+
+    __implements__ = IAgendaItemVersion, INewsItemVersion
 
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)
@@ -99,28 +101,6 @@ class AgendaItemVersion(NewsItemVersion):
         """Returns the content as a partial XML-doc
         """
         AgendaItemVersion.inheritedAttribute('to_xml')(self, context)
-        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))
-        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
-
-        context.f.write(xml)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_summary_xml')
-    def to_summary_xml(self, context):
-        """Returns a summary of the content as a partial XML-doc (for NewsBundle)
-        """
-        AgendaItemVersion.inheritedAttribute('to_summary_xml')(self, context)
-        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))
-        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
-
-        context.f.write(xml)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_small_xml')
-    def to_small_xml(self, context):
-        """Returns a small version of the content as a partial XML-doc (for NewsBundle)
-        """
-        AgendaItemVersion.inheritedAttribute('to_summary_xml')(self, context)
         xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))
         xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
 
