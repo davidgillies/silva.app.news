@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 """Install and Uninstall for Silva News
 """
@@ -28,7 +28,7 @@ def install(root):
 def uninstall(root):
     unregisterViews(root.service_view_registry)
     root.service_views.manage_delObjects(['SilvaNews'])
-    root.manage_delObjects('service_news')
+    root.manage_delObjects(['service_news'])
 
 def is_installed(root):
     return hasattr(root.service_views, 'SilvaNews')
