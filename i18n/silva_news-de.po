@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
 "POT-Creation-Date: Mon Dec 13 14:33:58 2004\n"
-"PO-Revision-Date: 2004-12-13 14:53+0100\n"
+"PO-Revision-Date: 2004-12-13 15:20+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -752,7 +752,7 @@ msgstr "RSS-Suche erlauben"
 
 #: /views/edit/Filter/NewsFilter/rssform.form:93
 msgid "If set to 'yes', extra information will be sent along with the RSS feed to enable searching this newsfilter using a remote form (the client will be sent to this Silva instance to view the results)."
-msgstr ""
+msgstr "Wenn auf ja gesetzt wird zusätzliche Information im RSS Feed übertragen, die eine Suche in diesem Newsfilter über ein Formular erlaubt (der Client wird zu diesem Silvaexemplar weitergeleitet)."
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:29
 msgid ""
@@ -778,7 +778,7 @@ msgstr "Agendaeinträge anzeigen"
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:71
 msgid "If set to 'yes', show agenda items as well as news items."
-msgstr ""
+msgstr "Wenn auf ja gesetzt, auch Agendaeinträge anzeigen."
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:29
 msgid "RSS form errors ${errors}"
