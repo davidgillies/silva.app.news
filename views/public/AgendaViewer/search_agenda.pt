@@ -28,17 +28,12 @@
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
   tal:repeat="obj results">
-<span tal:replace="nothing"> _______ subheader row _______ </span>
-
-<tr class="focus">
-<td valign="top" align="left"><b style="font-size: 14px;" tal:content="structure obj/subheader">Subheader</b></td>
-</tr>
-
 <tr class="focus">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
 <h2 tal:content="structure obj/get_title_html">title</h2>
+<h3 tal:content="structure obj/subheader">subheader</h3>
 </td>
 </tr>
 

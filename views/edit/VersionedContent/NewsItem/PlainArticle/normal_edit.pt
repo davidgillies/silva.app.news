@@ -60,7 +60,7 @@ Note
 </span>
 </td>
 <td align="left">
-<input tal:replace="structure python:field.render(getattr(editable, field.id)())" />
+<input tal:replace="structure python:field.render(view.REQUEST.get('field_%s' % field.id) or getattr(editable, field.id)())" />
 </td>
 <td>
 <span tal:replace="python:field.get_value('description')">
