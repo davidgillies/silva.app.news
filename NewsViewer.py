@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.25 $
+# $Revision: 1.26 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -319,6 +319,11 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('</item>\n')
         xml.write('</hasitem>\n')
         
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'can_set_title')
+    def can_set_title(self):
+        """return 1 so the title can be set"""
+        return 1
         
 InitializeClass(NewsViewer)
 
