@@ -46,11 +46,13 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
         NewsItem.inheritedAttribute('manage_afterAdd')(
             self, item, container)
         container._add_ordered_id(item)
+        self.reindex_object()
 
     def manage_beforeDelete(self, item, container):
         NewsItem.inheritedAttribute('manage_beforeDelete')(
             self, item, container)
         container._remove_ordered_id(item)
+        self.unindex_object()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
