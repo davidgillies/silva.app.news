@@ -79,4 +79,8 @@ if result['rss_search_description'] != model.rss_search_description():
     model.set_rss_search_description(result['rss_search_description'])
     changed_metadata.append(('rss_search_description', 'updated'))
 
+if context.REQUEST['rss_image'] != model.rss_image():
+    model.set_rss_image(context.REQUEST['rss_image'])
+    changed_metadata.append(('rss_image', 'updated'))
+
 return context.tab_metadata(message_type="feedback", message="Metadata changed for: %s"%(context.quotify_list(changed_metadata)))

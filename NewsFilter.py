@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -36,6 +36,7 @@ class NewsFilter(Filter):
         self._rss_copyright = ''
         self._allow_rss_search = 0
         self._rss_search_description = ''
+        self._rss_image = ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
@@ -283,6 +284,18 @@ class NewsFilter(Filter):
         """Sets the RSS copyright notice"""
         self._rss_copyright = value
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_image')
+    def rss_image(self):
+        """Returns the image to be used for the RSS feed"""
+        return self._rss_image
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_rss_image')
+    def set_rss_image(self, value):
+        """Sets the RSS image"""
+        self._rss_image = value
+
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
@@ -316,8 +329,20 @@ class NewsFilter(Filter):
 
         feed += '\n'
 
+        if self.rss_image():
+            imageobj = self.restrictedTraverse(self.rss_image())
+            feed += '<image>\n'\
+                    '<title>' + self._xml_preformat(imageobj.get_title_html()) + '</title>\n'\
+                    '<url>' + self._xml_preformat(imageobj.absolute_url()) + '/image</url>\n'\
+                    '<link>' + self._xml_preformat(self.rss_image()) + '</link>\n'\
+                    '</image>\n\n'
+
         last = self.get_last_items(15, 0)
         for item in last:
+            # add the start date to the title if the item is an agendaitem
+            title = item.get_title_html
+            if IAgendaItemVersion.isImplementedBy(item.getObject()):
+                title += ' (will take place %s)' % item.start_datetime.toZone('GMT').rfc822()
             # chop the last bit off lead if it's too large
             lead = item.lead
             if len(lead) > 256:
@@ -326,8 +351,8 @@ class NewsFilter(Filter):
                     lead = lead[:lead.rfind(' ')]
                 lead += '...'
             feed += '<item>\n'\
-                    '<title>' + self._xml_preformat(item.get_title_html) + '</title>\n'\
-                    '<link>' + self._xml_preformat(item.absolute_url()) + '</link>\n'\
+                    '<title>' + self._xml_preformat(title) + '</title>\n'\
+                    '<link>' + self._xml_preformat(item.getURL()) + '</link>\n'\
                     '<description>' + self._xml_preformat(lead) + '</description>\n'\
                     '</item>\n\n'
 

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -49,7 +49,7 @@ class AgendaFilter(Filter):
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'descending'
+        query['sort_order'] = 'ascending'
         result = getattr(self, self._catalog)(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
@@ -72,7 +72,7 @@ class AgendaFilter(Filter):
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
         query['sort_on'] = 'publication_datetime'
-        query['sort_order'] = 'descending'
+        query['sort_order'] = 'ascending'
 
         result = getattr(self, self._catalog)(query)
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
@@ -113,7 +113,7 @@ class AgendaFilter(Filter):
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'descending'
+        query['sort_order'] = 'ascending'
         result = getattr(self, self._catalog)(query)
         return [r for r in result if not r.object_path in self._excluded_items]
 
@@ -145,7 +145,7 @@ class AgendaFilter(Filter):
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
         query['sort_on'] = 'publication_datetime'
-        query['sort_order'] = 'descending'
+        query['sort_order'] = 'ascending'
         result = getattr(self, self._catalog)(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
@@ -178,7 +178,7 @@ class AgendaFilter(Filter):
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'descending'
+        query['sort_order'] = 'ascending'
         result = getattr(self, self._catalog)(query)
 
         return result

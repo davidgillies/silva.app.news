@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -127,7 +127,6 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
             results += res
 
         results = self._remove_doubles(results)
-        results.sort(self._sortresults)
         if not self._number_is_days:
             return results[:self._number_to_show]
         else:
@@ -146,7 +145,6 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
             results += res
 
         results = self._remove_doubles(results)
-        results.sort(self._sortresults)
         return results[:self._number_to_show]
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -162,11 +160,7 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
             results += res
 
         results = self._remove_doubles(results)
-        results.sort(self._sortresults)
         return results
-
-    def _sortresults(self, item1, item2):
-        return cmp(item1.publication_datetime, item2.publication_datetime)
 
     def _remove_doubles(self, resultlist):
         """Removes double items from a resultset from a ZCatalog-query
