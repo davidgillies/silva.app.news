@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 """Install and Uninstall for Silva Eur
 """
@@ -22,9 +22,13 @@ def install(root):
     # add and/or update catalog
     setup_catalog(root)
 
+    # and add a service_news to the Silva root
+    root.manage_addProduct['SilvaNews'].manage_addServiceNews('service_news', 'Service for News')
+
 def uninstall(root):
     unregisterViews(root.service_view_registry)
     root.service_views.manage_delObjects(['SilvaNews'])
+    root.manage_delObjects('service_news')
 
 def is_installed(root):
     return hasattr(root.service_views, 'SilvaNews')

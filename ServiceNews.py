@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 
 import Globals
 from AccessControl import ClassSecurityInfo
@@ -32,8 +32,8 @@ class ServiceNews(SimpleItem):
     def __init__(self, id, title):
         self.id = id
         self.title = title
-        self._subjects = {}
-        self._target_audiences = {}
+        self._subjects = {'Dummy': [None]}
+        self._target_audiences = {'Dummy': [None]}
 
     security.declareProtected('Setup ServiceNews',
                               'add_subject')
