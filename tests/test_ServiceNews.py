@@ -1,13 +1,13 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 
 import unittest
 import Zope
 from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
-from Products.Silva.tests.test_SilvaObject import hack_add_user
+from Products.Silva.tests.test_SilvaObject import hack_create_user
 
 def set(key, value):
     pass
@@ -27,8 +27,8 @@ class ServiceNewsBaseTestCase(unittest.TestCase):
         self.root = makerequest.makerequest(self.connection.root()['Application'])
         self.REQUEST = self.root.REQUEST
         self.REQUEST.set = lambda a, b: None
-        hack_add_user(self.REQUEST)
         self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
+        hack_create_user(self.sroot)
         self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
         self.service_news.remove_subject('Dummy')
         self.service_news.remove_target_audience('Dummy')

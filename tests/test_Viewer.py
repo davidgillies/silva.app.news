@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 
 import unittest
 import Zope
@@ -9,7 +9,7 @@ from Products.ZCatalog.ZCatalog import ZCatalog
 from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
-from Products.Silva.tests.test_SilvaObject import hack_add_user
+from Products.Silva.tests.test_SilvaObject import hack_create_user
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -42,8 +42,8 @@ class NewsViewerBaseTestCase(unittest.TestCase):
         self.root = makerequest.makerequest(self.connection.root()['Application'])
         self.REQUEST = self.root.REQUEST
         self.REQUEST.set = lambda a, b: None
-        hack_add_user(self.REQUEST)
         self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
+        hack_create_user(self.sroot)
         self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
         service_news.add_subject('test')
         service_news.add_subject('test2')
