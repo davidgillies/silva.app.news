@@ -70,43 +70,38 @@
         <tales>
         </tales>
       </field>
-      <field><id>location</id> <type>ListField</type>
+      <field><id>subjects</id> <type>MultiCheckBoxField</type>
         <values>
-          <size type="int">1</size>
           <alternate_name></alternate_name>
+          <description></description>
+          <required type="int">1</required>
           <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Onderwerpen</title>
+          <orientation>vertical</orientation>
           <css_class></css_class>
           <external_validator></external_validator>
-          <required type="int">1</required>
-          <items>[]</items>
-          <default></default>
-          <title>Location</title>
-          <first_item type="int">1</first_item>
-          <description></description>
-          <extra></extra>
         </values>
         <tales>
-          <items>python:form.service_news.locations()</items>
+          <items>python:form.service_news.subject_form_tree()</items>
         </tales>
       </field>
-      <field><id>location_manual</id> <type>TextAreaField</type>
+      <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">5</height>
-          <required type="int">0</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Location (if not in list)</title>
           <description></description>
-          <extra></extra>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Doelgroepen</title>
+          <orientation>vertical</orientation>
+          <css_class></css_class>
+          <external_validator></external_validator>
         </values>
         <tales>
+          <items>python:form.service_news.target_audience_form_tree()</items>
         </tales>
       </field>
       </fields>

@@ -21,7 +21,7 @@ try:
     result = view.form.validate_all(REQUEST)
 except FormValidationError, e:
     # in case of errors go back to add page and re-render form
-    return view.add(message_type="error", message=view.render_form_errors(e))
+    return view.add_form(message_type="error", message=view.render_form_errors(e))
 
 # get id and title from form, convert title to unicode
 id = result['object_id']
@@ -37,11 +37,26 @@ else:
 
 # if we don't have the right id, reject adding
 if not model.is_id_valid(id):
-  return view.add(message_type="error", message="%s is not a valid id." % view.quotify(id))
+  return view.add_form(message_type="error", message="%s is not a valid id." % view.quotify(id))
 
 # process data in result and add using validation result
-context.REQUEST.SESSION['result'] = result
-context.REQUEST.SESSION['id'] = id
-context.REQUEST.SESSION['title'] = title
+object = context.add_submit_helper(model, id, title, result)
 
-return context.continue_add()
+editable = object
+if hasattr(object, 'get_editable'):
+    editable = object.get_editable()
+
+# add any extra data to the object
+for key in result.keys():
+    if hasattr(editable, 'set_%s' % key):
+        getattr(editable, 'set_%s' % key)(result[key])
+
+# update last author info in new object
+object.sec_update_last_author_info()
+
+# now go to tab_edit in case of add and edit, back to container if not.
+if REQUEST.has_key('add_edit_submit'):
+    REQUEST.RESPONSE.redirect(object.absolute_url() + '/edit/tab_edit')
+else:
+    return view.tab_edit(message_type="feedback", 
+                         message="Added %s %s." % (object.meta_type, view.quotify(id)))

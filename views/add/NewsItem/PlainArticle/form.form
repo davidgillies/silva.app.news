@@ -51,44 +51,38 @@
         <tales>
         </tales>
       </field>
-      <field><id>subheader</id> <type>TextAreaField</type>
+      <field><id>subjects</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Subkop</title>
           <description></description>
-          <extra></extra>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Onderwerpen</title>
+          <orientation>vertical</orientation>
+          <css_class></css_class>
+          <external_validator></external_validator>
         </values>
         <tales>
+          <items>python:form.service_news.subject_form_tree()</items>
         </tales>
       </field>
-      <field><id>lead</id> <type>TextAreaField</type>
+      <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Lead</title>
           <description></description>
-          <extra></extra>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Doelgroepen</title>
+          <orientation>vertical</orientation>
+          <css_class></css_class>
+          <external_validator></external_validator>
         </values>
         <tales>
+          <items>python:form.service_news.target_audience_form_tree()</items>
         </tales>
       </field>
       </fields>
