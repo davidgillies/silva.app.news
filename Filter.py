@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 # Zope
 from OFS import SimpleItem
@@ -105,10 +105,13 @@ class Filter(Asset):
         """Verifies the sourcelist against the available sources
         """
         allowedsources = [s.getPath() for s in self.find_sources()]
+        do_reindex = 0
         for source in self._sources:
             if not source in allowedsources:
                 self._sources.remove(source)
-        self.reindex_object()
+                do_reindex = 1
+        if do_reindex:
+            self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_excluded_item')
@@ -136,6 +139,7 @@ class Filter(Asset):
             result = self._query(object_path=[item])
             if not str(item) in [str(i.object_path) for i in result]:
                 self._excluded_items.remove(item)
+                self.reindex_object()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'keep_to_path')
