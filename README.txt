@@ -1,4 +1,4 @@
-$Revision: 1.3 $
+$Revision: 1.4 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,7 +8,7 @@ Meta::
   Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.3 $
+  CVS:        $Revision: 1.4 $
 
 Silva News
 
@@ -19,7 +19,7 @@ Silva News
 
   Silva News is an extension to Silva to allow authors to place news- and agendaitems
   on the Silva site and show them on a page. Silva News is a plain Silva add-on which
-  can be used on Silva versions 0.8.x and up. No other products are required to use
+  can be used on Silva versions 0.8.6 and up. No other products are required to use
   Silva News from Silva, besides the products required to run Silva itself.
 
 Installing Silva News
