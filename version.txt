@@ -1,1 +1,1 @@
-SilvaNews 0.9.3a
+SilvaNews 0.9.3b
