@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -114,7 +114,7 @@ class AgendaFilter(Filter):
         query['sort_on'] = 'start_datetime'
         query['sort_order'] = 'descending'
         result = getattr(self, self._catalog)(query)
-
+        print "Unfiltered result:", result
         return [r for r in result if not r.object_path in self._excluded_items]
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -144,7 +144,7 @@ class AgendaFilter(Filter):
         query['subjects'] = self._subjects.keys()
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
-        query['sort_on'] = 'start_datetime'
+        query['sort_on'] = 'publication_datetime'
         query['sort_order'] = 'descending'
         result = getattr(self, self._catalog)(query)
 
