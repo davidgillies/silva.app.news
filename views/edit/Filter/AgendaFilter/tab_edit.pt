@@ -18,13 +18,12 @@
 
 <div class="margins">
 <h2>Manage <span class="folder-title" tal:content="structure string:&raquo;${model/get_title_html}&laquo;">title here</span></h2>
-</div>
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
 <form action="." name="silvaSources" method="POST">
 
-<table width="100%" cellspacing="0" cellpadding="3" border="0"
+<table width="98%" cellspacing="0" cellpadding="3" border="0"
   tal:attributes="cellspacing container/table_cellspacing;
                   cellpadding container/table_cellpadding;
                   border container/table_border">
@@ -33,9 +32,8 @@
 <span tal:replace="nothing"> ______________ table header ______________ </span>
 <tr tal:condition="python:len(sources) != 0">
 <th align="left" width="3%" nowrap="1">Use</th>
-<th align="left" width="12%">Id</th>
+<th align="left" width="40%">Id</th>
 <th align="left">Title</th>
-<th align="left">Comment</th>
 </tr>
 
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
@@ -82,12 +80,6 @@
 </tal:block>
 </td>
 
-<span tal:replace="nothing"> _______ comment cell _______ </span>
-<td>
-<span tal:condition="obj/container_comment" tal:replace="obj/container_comment"></span>
-<span tal:condition="not: obj/container_comment">No comment</span>
-</td>
-
 </tr>
 
 </cycle>
@@ -97,12 +89,12 @@
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
 <check tal:condition="python:len(sources) == 0 and not model.get_default()">
 <tr class="focus-light">
-<td colspan="4">
+<td colspan="3">
 There are no newssources available
 </td>
 </tr>
 <tr class="divider">
-<td colspan="4"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+<td colspan="3"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
 </tr>
 </check>
 <!-- /iteration -->
@@ -135,7 +127,7 @@ function toggleSelect() {
 <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
 <tr class="controls"
   tal:condition="python:user_role == 'Editor'">
-<td colspan="4">
+<td colspan="3">
 <script type="text/javascript">
 <!--
 if (document.forms[0]) {
@@ -162,6 +154,7 @@ if (document.forms[0]) {
 <td width="50%" align="right">&nbsp;<a href="#" tal:attributes="href string:${model/absolute_url}/edit/tab_edit?start:int=${next/first}&show_details=${show_details}" tal:condition="next">Next</a></td>
 </tr>
 </table>
+</div>
 
 <!-- ___________________________ end index_html/slot main ____________________________ -->
 </div>
