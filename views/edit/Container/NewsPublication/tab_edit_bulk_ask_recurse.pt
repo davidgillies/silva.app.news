@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html tal:omit-tag=""
-  lang="en"
-  xml:lang="en"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  lang="en"
+  xml:lang="en"
   tal:define="
     global vein string:contents;
 ">
@@ -57,27 +57,23 @@
               <span style="text-transform:lowercase;"
                 tal:content="model/meta_type">Meta type</span> 
               &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-              settings
+              <span i18n:translate="">settings</span>
             </h2>
           </td>
         </tr>
         <tr>
-          <td colspan="4">
-
-Some items of your selection are containers (folders, publications, newssources etc.). Select which items to recurse (walk through) to add to the list of objects to updated:<br /><br />
-
+          <td i18n:translate="" colspan="4">Some items of your selection are containers (folders, publications, newssources etc.). Select which items to recurse (walk through) to add to the list of objects to updated:<br /><br />
           </td>
         </tr>
-
       </thead>
 <tr>
   <th align="left" width="1%">
      &nbsp;#
   </th>
-  <th align="left" width="25%">
+  <th i18n:translate="" align="left" width="25%">
     Id
   </th>
-  <th align="left">
+  <th i18n:translate="" align="left">
     Title
   </th>
 </tr>
@@ -107,8 +103,9 @@ Some items of your selection are containers (folders, publications, newssources 
 <tr class="controls">
   <td colspan="3" class="align-right">
     <input class="button" type="submit"
-      name="form_submitted" value=" change item "
-      tal:attributes="value string: Continue " />
+      name="form_submitted" value="change item"
+      tal:attributes="value string: Continue "
+      i18n:attributes="value" />
   </td>
 </tr>
            

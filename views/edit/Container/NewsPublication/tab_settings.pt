@@ -1,6 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <tal:block define="global vein string:contents;" />
 <!-- ___________________________ start index_html ___________________________ -->
-<html metal:use-macro="here/macro_index/macros/master">
+<html
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  metal:use-macro="here/macro_index/macros/master"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+>
 <div metal:fill-slot="main" tal:omit-tag="">
 <!-- ___________________________ start index_html/slot main ___________________________ -->
 
@@ -18,7 +25,7 @@
 <tr valign="top">
 <td width="16"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="16" height="16" border="0" alt="not editable" /></td>
 <td colspan="3" width="98%">
-<div class="front3">&nbsp;News Publication settings</div>
+<div class="front3" i18n:translate="">&nbsp;News Publication settings</div>
 </td>
 <td width="60" align="right" valign="top">&nbsp;</td>
 </tr>
@@ -28,16 +35,16 @@
 <table width="100%" cellspacing="0" cellpadding="3" border="0">
 <tr>
 <td class="transparent" width="16">&nbsp;</td>
-<th align="left">
+<th i18n:translate="" align="left">
 Element
 </th>
-<th align="right">
+<th i18n:translate="" align="right">
 &nbsp;
 </th>
-<th align="left">
+<th i18n:translate="" align="left">
 Content
 </th>
-<th align="left" width="20%">
+<th i18n:translate="" align="left" width="20%">
 Note
 </th>
 <td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
@@ -52,7 +59,7 @@ Note
   tal:attributes="class python:test(oddrow, 'focus', 'focus-cycle')">
 <td class="transparent" width="16">&nbsp;</td>
 <td align="right">
-<span tal:replace="python:field['title'].capitalize() + ':'">Title</span>
+<span tal:replace="python:field['title'].capitalize() + ':'"><span i18n:translate="">Title</span></span>
 </td>
 <td align="right">
 <span class="warning"
@@ -94,7 +101,8 @@ comments here (field description)
 <td colspan="4" align="right">
 <input class="button" type="submit"
        name="form_submitted" value=" change item "
-       tal:attributes="value string: Save settings " />
+       tal:attributes="value string: Save settings "
+       i18n:attributes="value" />
 </td>
 <td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
 </tr>

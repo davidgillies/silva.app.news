@@ -6,6 +6,7 @@
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   tal:define="
     global active_tab string:tab_metadata;
     global parent_screen_name string:settings;
@@ -59,7 +60,7 @@
                     colspan="3">
                     <h2>
                       <img tal:replace="structure python:view.render_icon(model)" />
-                      addable settings for: 
+                      <span i18n:translate="">addable settings for: </span>
                       &#xab;<tal:block content="model/get_title_editable" />&#xbb;
                     </h2>
                   </td>
@@ -68,13 +69,13 @@
 
               <tbody>
                 <tr>
-                  <th class="align-right" width="12%">
+                  <th i18n:translate="" class="align-right" width="12%">
                     Element
                   </th>
-                  <th>
+                  <th i18n:translate="">
                     Content
                   </th>
-                  <th width="30%">
+                  <th i18n:translate="" width="30%">
                     Note
                   </th>
                 </tr>
@@ -110,6 +111,7 @@
                       value="Save addables data"
                       title="save addable settings for this publication: alt-a"
                       accesskey="a" 
+                      i18n:attributes="title value"
                     />
                   </td>
                 </tr>

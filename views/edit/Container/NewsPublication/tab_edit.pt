@@ -1,15 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html tal:omit-tag=""
-  lang="en"
-  xml:lang="en"
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
-  tal:define="
-    global vein string:contents;
-">
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  tal:define="global vein string:contents;"
+  i18n:domain="silva_news"
+  lang="en"
+>
 
 <metal:block use-macro="here/macro_index/macros/master">
 <metal:block fill-slot="main"
@@ -55,10 +54,11 @@
             colspan="2">
             <h2>
               <img tal:replace="structure python:view.render_icon(model)" />
-              <span style="text-transform:lowercase;"
-                tal:content="model/meta_type">Meta type</span> 
+              <span style="text-transform:lowercase;" tal:content="model/meta_type">
+                 Meta type
+              </span> 
               &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-              settings
+              <span i18n:translate="">settings</span>
             </h2>
           </td>
         </tr>
@@ -73,7 +73,7 @@
               tal:attributes="checked model/is_private"
             />
           </td>
-          <td>
+          <td i18n:translate="">
             Make news source private so it is picked up only by filters in the same path of the source and below.
           </td>
         </tr>
@@ -86,6 +86,7 @@
               value="open/close"
               title="change the public/private status of the news publication: alt-o"
               accesskey="o"
+              i18n:attributes="title value"
             />
           </td>
         </tr>
@@ -181,7 +182,7 @@
                 <th i18n:translate="author">
                   Author
                 </th>
-                <th class="nosort listing-right">
+                <th class="nosort listing-right" i18n:translate="shift">
                   &nbsp;&nbsp;Shift
                 </th>
               </tr>
@@ -191,7 +192,7 @@
               </tal:block>
               <tr class="odd"
                 tal:condition="python: not(default_document or publishables or assets)">
-                <td colspan="6" i18n:translate="no_content_objects_in_folder">
+                <td colspan="6" i18n:translate="">
                   There is no content here.
                 </td>
               </tr>

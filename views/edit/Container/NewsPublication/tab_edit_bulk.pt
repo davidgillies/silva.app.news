@@ -6,7 +6,7 @@
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:i18n="http://xml.zope.org/namespaces/tal/i18n"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   tal:define="
     global vein string:contents;
 ">
@@ -58,26 +58,25 @@
             colspan="4">
             <h2>
               <img tal:replace="structure python:view.render_icon(model)" />
-              <span style="text-transform:lowercase;"
-                tal:content="model/meta_type">Meta type</span> 
+              <span style="text-transform:lowercase;" tal:content="model/meta_type">Meta type</span> 
               &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-              settings
+              <span i18n:translate="">settings</span>
             </h2>
           </td>
         </tr>
       </thead>
 
 <tr>
-  <th align="left" width="15%">
+  <th i18n:translate="" align="left" width="15%">
     Element
   </th>
-  <th align="right">
+  <th i18n:translate="" align="right">
     &nbsp;
   </th>
-  <th align="left">
+  <th i18n:translate="" align="left">
     Content
   </th>
-  <th align="left" width="30%">
+  <th i18n:translate="" align="left" width="30%">
     Note
   </th>
 </tr>
@@ -102,7 +101,7 @@
     <input tal:replace="structure python:view.tab_edit_bulk_edit_form.get_field(key).render()" tal:condition="python: fields[key] == '__DO_NOT_FILL_FIELD__'" />
   </td>
   <td>
-    <span tal:condition="python: fields[key] == '__DO_NOT_FILL_FIELD__'" style="color:red">
+    <span i18n:translate="" tal:condition="python: fields[key] == '__DO_NOT_FILL_FIELD__'" style="color:red">
       The objects have different values.
     </span>
   </td>
@@ -120,7 +119,7 @@
 <tal:block condition="not:foundobjects">
 
 <tr class="focus">
-  <td colspan="4" align="left">
+  <td i18n:translate="" colspan="4" align="left">
     There are no publishable objects found.
   </td>
 </tr>
