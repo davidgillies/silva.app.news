@@ -1,23 +1,13 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
-
-import unittest
-import Zope
-Zope.startup()
+# $Revision: 1.10 $
+import os, sys
+if __name__ == '__main__':
+    execfile(os.path.join(sys.path[0], 'framework.py'))
+ 
+import SilvaTestCase
 
 from DateTime import DateTime
-from Products.ZCatalog.ZCatalog import ZCatalog
-from Testing import makerequest
-
-from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
-from Products.Silva.tests.test_SilvaObject import hack_create_user
-
-from Products.SilvaNews.install import install
-from Products.Silva.install import install as silva_install
-
-def set(key, value):
-    pass
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -27,38 +17,16 @@ def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
-class NewsFilterBaseTestCase(unittest.TestCase):
-    def setUp(self):
-        get_transaction().begin()
-        self.connection = Zope.DB.open()
-        self.root = makerequest.makerequest(
-            self.connection.root()['Application'])
-        self.root.REQUEST['URL1'] = ''
-        self.REQUEST = self.root.REQUEST
-        self.REQUEST.set = set
-        hack_create_user(self.root)
+class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
 
-        self.root.manage_addProduct['Silva'].manage_addRoot(
-            'root', 'Root')
-        self.sroot = self.root.root
-
-        install(self.sroot)
-
+    def afterSetUp(self):
+        self.sroot = self.root
+        
         self.service_news = service_news = self.sroot.service_news
         service_news.add_subject('test')
         service_news.add_subject('test2')
         service_news.add_target_audience('test')
         service_news.add_target_audience('test2')
-
-        #self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
-        #self.service_catalog = getattr(self.root, 'service_catalog')
-        #columns = ['is_private', 'object_path', 'fulltext', 'version_status', 'path', 'subjects', 'target_audiences',
-        #            'publication_datetime']
-        #indexes = [('meta_type', 'FieldIndex'), ('is_private', 'FieldIndex'), ('parent_path', 'FieldIndex'),
-        #            ('version_status', 'FieldIndex'), ('subjects', 'KeywordIndex'), ('target_audiences', 'KeywordIndex'),
-        #            ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex'), ('fulltext', 'TextIndex'),
-        #            ('path', 'PathIndex')]
-        #setup_catalog(self.root, columns, indexes)
 
         self.service_catalog = self.sroot.service_catalog
 
@@ -93,10 +61,6 @@ class NewsFilterBaseTestCase(unittest.TestCase):
         self.item1_3._update_publication_status()
 
         self.newsfilter = add_helper_news(self.sroot, 'NewsFilter', 'newsfilter', 'NewsFilter')
-
-    def tearDown(self):
-        get_transaction().abort()
-        self.connection.close()
 
 class NewsFilterTestCase(NewsFilterBaseTestCase):
     """Test the NewsFilter interface.
@@ -160,13 +124,12 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.assert_('art3' not in resids)
         self.assert_(len(resids) == 1)
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(NewsFilterTestCase, 'test'))
-    return suite
-
-def main():
-    unittest.TextTestRunner().run(test_suite())
 
 if __name__ == '__main__':
-    main()
+    framework()
+else:
+    import unittest
+    def test_suite():
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(NewsFilterTestCase))
+        return suite
