@@ -37,6 +37,8 @@ class PlainArticleVersion(NewsItemVersion):
 
     meta_type = "Silva News PlainArticle Version"
 
+    __implements__ = INewsItemVersion
+
     def __init__(self, id):
         PlainArticleVersion.inheritedAttribute('__init__')(self, id)
         self._subheader = ''
@@ -78,8 +80,7 @@ class PlainArticleVersion(NewsItemVersion):
         """
         parenttext = PlainArticleVersion.inheritedAttribute('fulltext')(self)
         content = self._flattenxml(str(self.content))
-        return "%s %s %s %s %s" % (parenttext, self._subheader, self._lead, self._pressnote,
-                                      content)
+        return "%s %s %s %s" % (parenttext, self._subheader, self._lead, content)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_xml')

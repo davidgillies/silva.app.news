@@ -26,7 +26,7 @@ class AgendaItem(NewsItem):
     """
     security = ClassSecurityInfo()
 
-    __implements__ = INewsItem, IAgendaItem, IVersionedContent
+    __implements__ = IAgendaItem, IVersionedContent
 
     # ACCESSORS
 
@@ -37,7 +37,7 @@ class AgendaItemVersion(NewsItemVersion):
     """
     security = ClassSecurityInfo()
 
-    __implements__ = IAgendaItemVersion, INewsItemVersion
+    __implements__ = IAgendaItemVersion
 
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)

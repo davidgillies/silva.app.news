@@ -10,7 +10,7 @@ from Products.ParsedXML.ParsedXML import ParsedXML
 # Silva interfaces
 from Products.Silva.IVersionedContent import IVersionedContent
 from Products.SilvaNews.INewsItem import INewsItem
-from Products.SilvaNews.IAgendaItem import IAgendaItem
+from Products.SilvaNews.IAgendaItem import IAgendaItem, IAgendaItemVersion
 
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
@@ -26,7 +26,7 @@ class PlainAgendaItem (AgendaItem):
 
     meta_type = "Silva News PlainAgendaItem"
 
-    __implements__ = INewsItem, IAgendaItem, IVersionedContent
+    __implements__ = IAgendaItem, IVersionedContent
 
 InitializeClass(PlainAgendaItem)
 
@@ -36,6 +36,8 @@ class PlainAgendaItemVersion(AgendaItemVersion):
     security = ClassSecurityInfo()
 
     meta_type = "Silva News PlainAgendaItem Version"
+
+    __implements__ = IAgendaItemVersion
 
     def __init__(self, id):
         PlainAgendaItemVersion.inheritedAttribute('__init__')(self, id)
@@ -49,7 +51,7 @@ class PlainAgendaItemVersion(AgendaItemVersion):
         """
         parenttext = PlainAgendaItemVersion.inheritedAttribute('fulltext')(self)
         content = self._flattenxml(str(self.content))
-        return "%s %s %s %s" % (parenttext, self._speakers, self._end_datetime, content)
+        return "%s %s" % (parenttext, content)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_xml')

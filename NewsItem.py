@@ -32,7 +32,7 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
     meta_type = "Silva NewsItem"
     default_catalog = 'service_catalog'
 
-    __implements__ = INewsItem, IVersionedContent
+    __implements__ = IVersionedContent
 
     _is_allowed_in_publication = 0
 
@@ -85,8 +85,6 @@ class NewsItemVersion(Version, CatalogPathAware):
     security = ClassSecurityInfo()
 
     meta_type = "Silva NewsItem Version"
-
-    __implements__ = INewsItemVersion
 
     default_catalog = 'service_catalog'
 
