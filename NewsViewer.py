@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.23 $
+# $Revision: 1.24 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -22,7 +22,11 @@ except ImportError:
 icon = 'www/news_viewer.png'
 
 class XMLBuffer:
-    """small file-like object that implicitly converts unicode to UTF-8"""
+    """small file-like object for XML
+    
+        implicitly converts unicode to UTF-8 and replaces characters to 
+        entities when required
+    """
 
     def __init__(self):
         self._buffer = []
@@ -39,8 +43,18 @@ class XMLBuffer:
             pointer
         """
         ret = ''.join(self._buffer)
-        ret = ret.encode('utf-8')
+        ret = self._convert(ret)
         return ret
+
+    def _convert(self, data):
+        """conversion to UTF-8 for XML (does entitizing as well)"""
+        data = data.encode('UTF-8')
+        data = data.replace('&', '&amp;')
+        data = data.replace('"', '&quot;')
+        data = data.replace('<', '&lt;')
+        data = data.replace('>', '&gt;')
+
+        return data
 
 RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n' 
               '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
