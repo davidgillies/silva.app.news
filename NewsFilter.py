@@ -1,6 +1,6 @@
 # Copyright (c) 2002, 2004 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.29 $
+# $Revision: 1.30 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -46,8 +46,6 @@ class NewsFilter(Filter):
 
         Return: dict holding the query parameters
         """
-        print 'prepare query'
-        print 'meta_types here:', meta_types
         self.verify_sources()
         self.verify_excluded_items()
         query = {}
@@ -112,7 +110,6 @@ class NewsFilter(Filter):
         any way because it requres start_datetime to be set. The
         NewsViewer uses only get_last_items.
         """
-        print 'meta_types:', meta_types
         date = DateTime()
         lastnight = DateTime(date.year(), date.month(), date.day(), 0, 0, 0)
         enddate = lastnight + numdays
@@ -193,11 +190,7 @@ class NewsFilter(Filter):
                             IAgendaItemVersion.isImplementedByInstancesOf(mt['instance'])) 
                         or (INewsItemVersion.isImplementedByInstancesOf(mt['instance']) and not
                             IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']))):
-                    print 'meta type:', mt['name']
-                    print 'show_agenda_items:', self._show_agenda_items
-                    print 'implements IAgendaItem:', IAgendaItemVersion.isImplementedBy(mt['instance'])
                     allowed.append(mt['name'])
-        print 'allowed:', allowed
         return allowed
 
 
