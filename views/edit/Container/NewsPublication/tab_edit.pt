@@ -74,7 +74,7 @@
             />
           </td>
           <td>
-            Make news source private so it is not picked up by any filters.
+            Make news source private so it is picked up only by filters in the same path of the source and below.
           </td>
         </tr>
 
