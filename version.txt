@@ -1,1 +1,1 @@
-SilvaNews 0.9.1
+SilvaNews 1.0b1
