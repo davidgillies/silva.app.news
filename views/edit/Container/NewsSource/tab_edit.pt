@@ -38,7 +38,7 @@
     &nbsp;
     </tal:block>
     <tal:block condition="silva_permissions/ChangeSilvaContent">
-      <input class="button" type="submit" name="tab_edit_new:method" value=" New:" title="Add a new item: alt-n" accesskey="n" />
+      <input class="button" type="submit" name="add_object:method" value=" New:" title="Add a new item: alt-n" accesskey="n" />
       <select name="meta_type" onChange="JavaScript:silvaObjects['add_object:method'].click();"  title="Select a new item: alt-s" accesskey="s">
         <option value="None">Select...</option>
         <tal:block tal:repeat="addable model/get_silva_addables">
