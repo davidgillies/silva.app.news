@@ -3,6 +3,19 @@ See also LICENSE.txt
 
 SilvaNews changes
 
+  1.2
+
+    Features
+
+      - Updated SilvaNews to work with Silva 1.2
+
+  1.1
+
+    Bugs fixed
+
+      - Changed the names of indexes so they're less likely to clash with 
+        names of user-generated objects - SEE UPGRADE.txt!
+
   1.0
 
     Bugs fixed
