@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 
 """Install and Uninstall for Silva News
 """
@@ -92,13 +92,6 @@ def unregisterViews(reg):
 def configureXMLWidgets(root):
     """Configure XMLWidgets registries, editor, etc'
     """
-    # create the core widgets from the filesystem
-    #manage_addDirectoryView(root,
-    #                        'Products/Silva/widgets', 'service_widgets')
-
-    # create the editor service
-    #root.manage_addProduct['XMLWidgets'].manage_addEditorService(
-    #    'service_editor')
     # create the services for XMLWidgets
     for name in ['service_news_sub_editor', 'service_news_sub_viewer']:
         if not hasattr(root, name):
@@ -151,11 +144,10 @@ def setup_catalog(silva_root):
 
     catalog.manage_addProduct['ZCatalog'].manage_addVocabulary('UnicodeVocabulary', 'UnicodeVocabulary', 1, 'UnicodeSplitter')
 
-    columns = ['academic', 'chair', 'co_promoter', 'contact_info', 'container_comment', 'end_datetime', 'expiration_datetime', 'get_title_html',
-            'id', 'info', 'lead', 'location', 'meta_type', 'object_path', 'pressheader', 'pressnote', 'promovendus',
-            'promoter', 'publication_datetime', 'source_path', 'sec_get_last_author_info', 'speakers',
-            'specific_contact_info', 'start_datetime', 'subheader', 'subjects', 'summary', 'target_audiences', 'title',
-            'version_status']
+    columns = ['contact_info', 'container_comment', 'expiration_datetime', 'get_title_html',
+            'id', 'location', 'meta_type', 'object_path', 'publication_datetime', 'source_path',
+            'sec_get_last_author_info', 'start_datetime', 'subheader', 'subjects', 'summary',
+            'target_audiences', 'title', 'version_status']
 
     indexes = [('creation_datetime', 'FieldIndex'), ('fulltext', 'TextIndex'), ('id', 'FieldIndex'),
             ('is_private', 'FieldIndex'), ('meta_type', 'FieldIndex'), ('object_path', 'KeywordIndex'),
