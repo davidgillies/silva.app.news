@@ -9,7 +9,7 @@
   tal:define="
     global active_tab string:tab_metadata;
     global parent_screen_name string:settings;
-    global vein addables;
+    global vein string:addables;
 ">
 
 <metal:block use-macro="here/macro_index/macros/master">
