@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -14,10 +14,10 @@ from Products.Silva.Document import Document
 from Products.Silva.helpers import add_and_edit
 
 class NewsViewer(Content, Folder.Folder):
-    """Used to show newsitems on a Silva site. When setting up
-    a newsviewer you can choose which news- or agendafilters it should use to get 
-    the items and how long back you want to go to get the items. The items
-    will then automatically be retrieved from the filter for each request.
+    """Used to show news items on a Silva site. When setting up
+    a newsviewer you can choose which news- or agendafilters it should use to 
+    retrieve the items, and how far back in time it should go. The items will 
+    then be automatically fetched via the filter for each page request.
     """
 
     security = ClassSecurityInfo()
