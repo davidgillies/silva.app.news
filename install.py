@@ -12,6 +12,10 @@ def install(root):
     # also register views
     registerViews(root.service_view_registry)
 
+    # and editor
+    registerNewsSubEditor(root)
+    registerNewsSubViewer(root)
+
     # add and/or update catalog
     setup_catalog(root)
 
@@ -77,6 +81,38 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva AgendaViewer')
     reg.unregister('add', 'Silva News PlainArticle')
     reg.unregister('add', 'Silva News PlainAgendaItem')
+
+def registerNewsSubEditor(root):
+    wr = root.service_news_sub_editor
+    wr.clearWidgets()
+
+    wr.addWidget('doc', ('service_widgets', 'top', 'doc', 'mode_normal'))
+
+    for nodeName in ['p', 'heading', 'list', 'pre', 'toc', 'image', 'table', 'nlist', 'dlist']:
+        wr.addWidget(nodeName,
+                     ('service_widgets', 'element', 'doc_elements', nodeName, 'mode_normal'))
+
+    wr.setDisplayName('doc', 'Title')
+    wr.setDisplayName('p', 'Paragraph')
+    wr.setDisplayName('heading', 'Heading')
+    wr.setDisplayName('list', 'List')
+    wr.setDisplayName('pre', 'Preformatted')
+    wr.setDisplayName('toc', 'Table of contents')
+    wr.setDisplayName('image', 'Image')
+    wr.setDisplayName('table', 'Table')
+    wr.setDisplayName('nlist', 'Complex list')
+    wr.setDisplayName('dlist', 'Definition list')
+
+    wr.setAllowed('doc', ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'toc', 'dlist'])
+
+def registerNewsSubViewer(root):
+    wr = root.service_news_sub_viewer
+    wr.clearWidgets()
+
+    wr.addWidget('doc', ('service_widgets', 'top', 'doc', 'mode_view'))
+
+    for name in ['p', 'list', 'heading', 'pre', 'toc', 'image', 'nlist', 'table', 'dlist']:
+        wr.addWidget(name, ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
 
 def setup_catalog(silva_root):
     """Sets the ZCatalog up"""

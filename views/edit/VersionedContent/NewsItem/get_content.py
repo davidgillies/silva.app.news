@@ -9,5 +9,5 @@
 ##
 model = context.REQUEST.model
 version = model.get_editable()
-context.service_editor.setViewer('service_sub_viewer')
+context.service_editor.setViewer('service_news_sub_viewer')
 return context.service_editor.getViewer().getWidget(version.content.documentElement).render()
