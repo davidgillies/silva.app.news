@@ -1,18 +1,13 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
-
-import unittest
-import Zope
-Zope.startup()
-
-from Testing import makerequest
+# $Revision: 1.8 $
+import os, sys
+if __name__ == '__main__':
+    execfile(os.path.join(sys.path[0], 'framework.py'))
+ 
+import SilvaTestCase
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
-from Products.Silva.tests.test_SilvaObject import hack_create_user
-
-def set(key, value):
-    pass
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -22,25 +17,13 @@ def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
-class ServiceNewsBaseTestCase(unittest.TestCase):
-    def setUp(self):
-        get_transaction().begin()
-        self.connection = Zope.DB.open()
-        self.root = makerequest.makerequest(self.connection.root()['Application'])
-        self.REQUEST = self.root.REQUEST
-        self.REQUEST['URL1'] = ''
-        self.REQUEST.set = lambda a, b: None
-        hack_create_user(self.root)
-        self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
-        self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
-
-    def tearDown(self):
-        get_transaction().abort()
-        self.connection.close()
-
-class ServiceNewsTestCase(ServiceNewsBaseTestCase):
+class ServiceNewsTestCase(SilvaTestCase.SilvaTestCase):
     """Test the ServiceNews interface.
     """
+
+    def afterSetUp(self):
+        self.service_news = self.root.service_news
+        
     # We're not going to test specific units here but just make a small general test of each datamember,
     # since the methods are very simple data-manipulating things, not really suited to test in units, also
     # the chance of anything going wrong here is minimal. Still it's nice to know that they work :)
@@ -70,13 +53,12 @@ class ServiceNewsTestCase(ServiceNewsBaseTestCase):
         self.service_news.remove_target_audience('test2')
         self.assert_(self.service_news.target_audience_tree() == [('test1', 0)])
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(ServiceNewsTestCase, 'test'))
-    return suite
-
-def main():
-    unittest.TextTestRunner().run(test_suite())
 
 if __name__ == '__main__':
-    main()
+    framework()
+else:
+    import unittest
+    def test_suite():
+        suite = unittest.TestSuite()
+        suite.addTest(unittest.makeSuite(ServiceNewsTestCase))
+        return suite
