@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 import Globals
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -33,7 +33,6 @@ class ServiceNews(SimpleItem):
         self.title = title
         self._subjects = {}
         self._target_audiences = {}
-        self._locations = {}
 
     security.declareProtected('Setup ServiceNews',
                               'add_subject')
@@ -59,17 +58,6 @@ class ServiceNews(SimpleItem):
         self._target_audiences[target_audience] = [parent]
         if parent:
             self._target_audiences[parent].append(target_audience)
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'add_location')
-    def add_location(self, location):
-        """Adds the subject to the dict, no parents or children
-        """
-        if self._locations.has_key(location):
-            message = "%s is already in the list of locations" % location
-            raise DuplicateError, message
-        self._locations[location] = 1
         self._p_changed = 1
 
     security.declareProtected('Setup ServiceNews',
@@ -104,17 +92,6 @@ class ServiceNews(SimpleItem):
         for key in self._target_audiences.keys():
             if target_audience in self._target_audiences[key]:
                 self._target_audiences[key].remove(target_audience)
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'remove_location')
-    def remove_location(self, location):
-        """Removes a location from the dict
-        """
-        if not self._locations.has_key(location):
-            message = "%s cannot be found in the list of locations" % location
-            raise KeyError, message
-        del(self._locations[location])
         self._p_changed = 1
 
     # ACCESSORS
@@ -198,15 +175,6 @@ class ServiceNews(SimpleItem):
                     returnvalue += self.target_audience_form_tree(key, depth+1)
         return returnvalue
 
-    security.declareProtected('View',
-                              'locations')
-    def locations(self):
-        """Returns a flat list of all locations
-        """
-        locations = self._locations.keys()
-        locations.sort()
-        return locations
-
     security.declareProtected('Setup ServiceNews',
                               'manage_add_subject')
     def manage_add_subject(self, REQUEST):
@@ -276,36 +244,6 @@ class ServiceNews(SimpleItem):
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(manage_tabs_message='Target audiences %s removed' % str(REQUEST['target_audiences']))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_add_location')
-    def manage_add_location(self, REQUEST):
-        """Add a location"""
-        if not REQUEST.has_key('location') or REQUEST['location'] == '':
-            return self.edit_tab(manage_tabs_message='No location specified')
-
-        try:
-            self.add_location(REQUEST['location'])
-        except DuplicateError, e:
-            return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Location %s added' % REQUEST['location'])
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_remove_location')
-    def manage_remove_location(self, REQUEST):
-        """Remove a location"""
-        if not REQUEST.has_key('location'):
-            return self.edit_tab(manage_tabs_message='No locations specified')
-
-        for location in REQUEST['locations']:
-            try:
-                self.remove_location(location)
-            except KeyError, e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Locations %s removed' % str(REQUEST['locations']))
-
 
 Globals.InitializeClass(ServiceNews)
 

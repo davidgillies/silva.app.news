@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -27,8 +27,10 @@ class NewsViewer(Content, TocSupport, Folder.Folder):
         self._number_is_days = 0
         self._filters = []
 
-    def is_published(self):
-        """Returns true, is used to let the viewer show up in TOC's"""
+    def always_show_in_tocs(self):
+        """Return true, for this object should always show up in tocs (even though there is no
+            published content)
+        """
         return 1
 
     meta_type = 'Silva NewsViewer'

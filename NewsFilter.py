@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -49,7 +49,6 @@ class NewsFilter(Filter):
         query['sort_on'] = 'creation_datetime'
         query['sort_order'] = 'descending'
         results = getattr(self, self._catalog)(query)
-
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

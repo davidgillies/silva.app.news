@@ -92,10 +92,15 @@ class NewsItemVersion(Version, CatalogPathAware):
         self.id = id
         self._subjects = []
         self._target_audiences = []
+        self._info_item = ""
 
-    # MANIPULATORS -- THE BULK-EDITING THE SET_DATA-WAY (1 MANIPULATOR FOR ALL THE
+    def manage_beforeDelete(self, item, container):
+        NewsItemVersion.inheritedAttribute('manage_beforeDelete')(self, item, container)
+        self.unindex_object()
+
+    # MANIPULATORS -- FOR BULK-EDITING THE SET_DATA-WAY (1 MANIPULATOR FOR ALL THE
     # DATA-FIELDS) DID NOT SUFFICE, THEREFORE THERE WILL BE 1 MANIPULATOR FOR EACH DATA-FIELD.
-    # THIS IS AN ADVANTAGE WHEN SUBCLASSING: ONLY 1 MANIPULATOR PER FIELD-TYPE HAS TO BE WRIITEN
+    # THIS IS AN ADVANTAGE WHEN SUBCLASSING: ONLY A MANIPULATOR PER FIELD-TYPE HAS TO BE WRIITEN
     # (IN THE CLASS THAT HOLDS THE DATA-DEFINITION)
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
@@ -107,6 +112,12 @@ class NewsItemVersion(Version, CatalogPathAware):
                               'set_target_audiences')
     def set_target_audiences(self, target_audiences):
         self._target_audiences = target_audiences
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_info_item')
+    def set_info_item(self, info_item):
+        self._info_item = info_item
         self.reindex_object()
 
     # ACCESSORS
@@ -156,14 +167,20 @@ class NewsItemVersion(Version, CatalogPathAware):
         return self._target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'info_item')
+    def info_item(self):
+        return self._info_item
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        return "%s %s %s %s" % (self.id,
+        return "%s %s %s %s %s" % (self.id,
                                       self.get_title_html(),
                                       " ".join(self._subjects),
-                                      " ".join(self._target_audiences))
+                                      " ".join(self._target_audiences),
+                                      self._info_item)
 
     def _flattenxml(self, xmlinput):
         """Cuts out all the XML-tags, helper for fulltext (for content-objects)
@@ -198,6 +215,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Returns the content as a partial XML-document
         """
         xml = u'<title>%s</title>\n' % self.get_title()
+        xml += u'<meta_type>%s</meta_type>\n' % self.meta_type
+        xml += u'<info>%s</info>\n' % self.info_item()
         for subject in self._subjects:
             xml += u'<subject>%s</subject>\n' % self._prepare_xml(subject)
         for audience in self._target_audiences:

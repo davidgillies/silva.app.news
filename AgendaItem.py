@@ -101,7 +101,7 @@ class AgendaItemVersion(NewsItemVersion):
         """Returns the content as a partial XML-doc
         """
         AgendaItemVersion.inheritedAttribute('to_xml')(self, context)
-        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))
+        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.rfc822())
         xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
 
         context.f.write(xml)
