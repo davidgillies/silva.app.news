@@ -32,10 +32,10 @@
 <th class="align-right" style="border-left:1px solid #617681;" width="15%">
 element
 </th>
-<th>
+<th i18n:translate="">
 content
 </th>
-<th width="20%">
+<th i18n:translate="" width="20%">
 note
 </th>
 <td class="invisible" width="60">&nbsp;</td>
@@ -70,7 +70,7 @@ comments here (field description)
 <tr comment="AgendaItem content" class="odd" valign="top"
   tal:attributes="class class" tal:define="class python:test(lastclass=='odd', 'even', 'odd'); global lastclass class">
   <td width="16" class="invisible" >&nbsp;</td>
-  <td class="field-title" style="border-left:1px solid #617681;"><div class="controls"><a href="content_mode"><a class="transport" href="content_mode">content editor...</a></div></td>
+  <td class="field-title" style="border-left:1px solid #617681;"><div class="controls"><a href="content_mode"><a class="transport" href="content_mode" i18n:translate="">content editor...</a></div></td>
   <td><p tal:replace="structure view/get_content" /><p tal:condition="not: view/get_content" tal:replace="structure string:(nothing filled in)" /></td>
   <td>&nbsp;</td>
   <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>
@@ -80,7 +80,7 @@ comments here (field description)
 
 <tr class="odd" valign="top" tal:attributes="class python:test(lastclass=='odd', 'even', 'odd')">
 <td class="invisible" width="16">&nbsp;</td>
-<td class="field-title" style="border-left:1px solid #617681;">
+<td i18n:translate="" class="field-title" style="border-left:1px solid #617681;">
 subjects
 </td>
 <td align="left">
@@ -96,7 +96,7 @@ subjects
 
 <tr class="odd" valign="top" tal:attributes="class lastclass">
 <td class="invisible" width="16">&nbsp;</td>
-<td class="field-title" style="border-left:1px solid #617681;">
+<td i18n:translate="" class="field-title" style="border-left:1px solid #617681;">
 target audiences
 </td>
 <td align="left">
@@ -113,11 +113,12 @@ target audiences
 <tr class="controls">
 <td class="invisible" width="16">&nbsp;</td>
 <td>&nbsp;</td>
-<td><div class="controls"><a class="transport" href="sta_mode">modify subjects and target audiences...</a></div></td>
+<td><div class="controls"><a class="transport" href="sta_mode" i18n:translate="">modify subjects and target audiences...</a></div></td>
 <td class="align-right" style="border-left:1px solid #617681;">
 <input class="button" type="submit"
        name="form_submitted" value="save item"
-       title="access key: alt-s" accesskey="s"
+       title="save item: alt-s" accesskey="s"
+       i18n:attributes="title value"
        />
 </td>
 <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>

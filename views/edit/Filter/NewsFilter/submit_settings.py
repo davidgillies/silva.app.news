@@ -26,32 +26,32 @@ except FormValidationError, e:
 try:
     rss_result = rssform.validate_all(context.REQUEST)
 except FormValidationError, e:
-    m = _('RSS form errors ${errors}')
+    m = _('RSS form errors ${errors}', 'silva_news')
     m.set_mapping({'errors':context.render_form_errors(e)})
     msg = unicode(m)
     return context.tab_edit(message_type="error", message=msg )
 
 if model.subjects() != result['subjects']:
     model.set_subjects(result['subjects'])
-    m = _('subjects changed')
+    m = _('subjects changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.target_audiences() != result['target_audiences']:
     model.set_target_audiences(result['target_audiences'])
-    m = _('target audiences changed')
+    m = _('target audiences changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.show_agenda_items() != result['show_agenda_items']:
     model.set_show_agenda_items(result['show_agenda_items'])
-    m = _('show agendaitems changed')
+    m = _('show agendaitems changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.keep_to_path() != result['keep_to_path']:
     model.set_keep_to_path(result['keep_to_path'])
-    m = _('stick to path changed')
+    m = _('stick to path changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
@@ -82,7 +82,7 @@ if model.rss_search_description() != rss_result['rss_search_description']:
     messages.append('rss search description')
 """
 
-m = _('Settings changed for: ')
+m = _('Settings changed for: ', 'silva_news')
 msg = unicode(m)
 
 msg = msg + u', '.join(messages)

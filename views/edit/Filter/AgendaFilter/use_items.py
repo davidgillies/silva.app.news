@@ -38,7 +38,7 @@ if request.has_key('month'):
     year = request['month']
 
 
-m = _('The filter is updated.')
+m = _('The filter is updated.', 'silva_news')
 msg = unicode(m)
 
 return view.tab_edit_items(message_type='feedback', message=msg, month=month, year=year)

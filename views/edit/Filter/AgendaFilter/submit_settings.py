@@ -19,31 +19,31 @@ messages = []
 try:
     result = form.validate_all(context.REQUEST)
 except FormValidationError, e:
-    m = _('Input form errors ${errors}')
+    m = _('Input form errors ${errors}', 'silva_news')
     m.set_mapping({'errors':context.render_form_errors(e)})
     msg = unicode(m)
     return context.tab_edit(message_type="error", message=msg )
 
 if model.subjects() != result['subjects']:
     model.set_subjects(result['subjects'])
-    m = _('subjects changed')
+    m = _('subjects changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.target_audiences() != result['target_audiences']:
     model.set_target_audiences(result['target_audiences'])
-    m = _('target audiences changed')
+    m = _('target audiences changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.keep_to_path() != result['keep_to_path']:
     model.set_keep_to_path(result['keep_to_path'])
-    m = _('stick to path changed')
+    m = _('stick to path changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 
-m = _('Settings changed for: ')
+m = _('Settings changed for: ', 'silva_news')
 msg = unicode(m)
 
 msg = msg + u', '.join(messages)

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 14:21:59 2004\n"
+"POT-Creation-Date: Mon Dec 13 14:53:59 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -32,26 +32,12 @@ msgstr ""
 msgid "The title will be publicly visible, and is used as the default link in indexes."
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:104
-#: /views/add/NewsItem/PlainArticle/form.form:85
-#: /views/edit/Filter/AgendaFilter/settingsform.form:44
-#: /views/edit/Filter/NewsFilter/settingsform.form:46
-msgid "target audiences"
-msgstr ""
-
 #: /views/add/NewsItem/PlainAgendaItem/form.form:70
 msgid "start date/time"
 msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:71
 msgid "Format: d/m/y, time is optional."
-msgstr ""
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:85
-#: /views/add/NewsItem/PlainArticle/form.form:66
-#: /views/edit/Filter/AgendaFilter/settingsform.form:25
-#: /views/edit/Filter/NewsFilter/settingsform.form:25
-msgid "subjects"
 msgstr ""
 
 #: /views/add/add_submit.py:66
@@ -428,11 +414,11 @@ msgid "properties of"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:61
-msgid "convert to publication"
+msgid "change Folder into Publication: alt-c"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:61
-msgid "change Folder into Publication: alt-c"
+msgid "convert to publication"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
@@ -500,12 +486,14 @@ msgstr ""
 
 #: /views/edit/Content/edit.pt:76
 #: /views/edit/Filter/AgendaFilter/edit.pt:67
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:35
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:31
 msgid "content"
 msgstr ""
 
 #: /views/edit/Content/edit.pt:77
 #: /views/edit/Filter/AgendaFilter/edit.pt:68
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:38
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:34
 msgid "note"
 msgstr ""
@@ -653,26 +641,31 @@ msgid "Setting to 'yes' keeps the filter local, showing only items in the conten
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:22
+# Default: "silva_news"
 msgid "Input form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Filter/NewsFilter/submit_settings.py:36
+# Default: "silva_news"
 msgid "subjects changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Filter/NewsFilter/submit_settings.py:42
+# Default: "silva_news"
 msgid "target audiences changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Filter/NewsFilter/submit_settings.py:54
+# Default: "silva_news"
 msgid "stick to path changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Filter/NewsFilter/submit_settings.py:85
+# Default: "silva_news"
 msgid "Settings changed for: "
 msgstr ""
 
@@ -786,10 +779,12 @@ msgid "If set to 'yes', show agenda items as well as news items."
 msgstr ""
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:29
+# Default: "silva_news"
 msgid "RSS form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:48
+# Default: "silva_news"
 msgid "show agendaitems changed"
 msgstr ""
 
@@ -820,6 +815,38 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:116
+msgid "modify subjects and target audiences..."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:118
+msgid "save item: alt-s"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:118
+msgid "save item"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:73
+msgid "content editor..."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:83
+#: /views/add/NewsItem/PlainAgendaItem/form.form:85
+#: /views/add/NewsItem/PlainArticle/form.form:66
+#: /views/edit/Filter/AgendaFilter/settingsform.form:25
+#: /views/edit/Filter/NewsFilter/settingsform.form:25
+msgid "subjects"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:99
+#: /views/add/NewsItem/PlainAgendaItem/form.form:104
+#: /views/add/NewsItem/PlainArticle/form.form:85
+#: /views/edit/Filter/AgendaFilter/settingsform.form:44
+#: /views/edit/Filter/NewsFilter/settingsform.form:46
+msgid "target audiences"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:21

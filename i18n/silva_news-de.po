@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Mon Dec 13 14:21:59 2004\n"
-"PO-Revision-Date: 2004-12-13 14:22+0100\n"
+"POT-Creation-Date: Mon Dec 13 14:33:58 2004\n"
+"PO-Revision-Date: 2004-12-13 14:53+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -40,13 +40,6 @@ msgstr "Id: Keine Leerzeichen oder Sonderzeichen mit Ausnahme von (_)."
 msgid "The title will be publicly visible, and is used as the default link in indexes."
 msgstr "Der Titel ist öffentlich sichtbar und wird als Link in Indizes verwendet."
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:104
-#: /views/add/NewsItem/PlainArticle/form.form:85
-#: /views/edit/Filter/AgendaFilter/settingsform.form:44
-#: /views/edit/Filter/NewsFilter/settingsform.form:46
-msgid "target audiences"
-msgstr "Zielgruppe"
-
 #: /views/add/NewsItem/PlainAgendaItem/form.form:70
 msgid "start date/time"
 msgstr "Beginn Datum/Zeit"
@@ -54,13 +47,6 @@ msgstr "Beginn Datum/Zeit"
 #: /views/add/NewsItem/PlainAgendaItem/form.form:71
 msgid "Format: d/m/y, time is optional."
 msgstr "Format: Tag/Monat/Jahr, Zeit ist optional"
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:85
-#: /views/add/NewsItem/PlainArticle/form.form:66
-#: /views/edit/Filter/AgendaFilter/settingsform.form:25
-#: /views/edit/Filter/NewsFilter/settingsform.form:25
-msgid "subjects"
-msgstr "Themen"
 
 #: /views/add/add_submit.py:66
 msgid "Added ${type} ${id}."
@@ -435,12 +421,12 @@ msgid "properties of"
 msgstr "Eigenschaften von"
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:61
-msgid "convert to publication"
-msgstr "In Publikation umwandeln"
-
-#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
 msgid "change Folder into Publication: alt-c"
 msgstr "Ordner in Publikation umwandeln: alt-c"
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:61
+msgid "convert to publication"
+msgstr "In Publikation umwandeln"
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
 msgid "&nbsp;News Publication settings"
@@ -507,12 +493,14 @@ msgstr "Element"
 
 #: /views/edit/Content/edit.pt:76
 #: /views/edit/Filter/AgendaFilter/edit.pt:67
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:35
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:31
 msgid "content"
 msgstr "Inhalt"
 
 #: /views/edit/Content/edit.pt:77
 #: /views/edit/Filter/AgendaFilter/edit.pt:68
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:38
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:34
 msgid "note"
 msgstr "Anmerkung"
@@ -653,7 +641,7 @@ msgstr "Im Pfad bleiben"
 #: /views/edit/Filter/AgendaFilter/settingsform.form:67
 #: /views/edit/Filter/NewsFilter/settingsform.form:90
 msgid "Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter."
-msgstr ""
+msgstr "Wenn auf 'ja' gesetzt, werden nur die Einträge angezeigt die sich unterhalb des Filters befinden."
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:22
 msgid "Input form errors ${errors}"
@@ -672,7 +660,7 @@ msgstr "Zielgruppe geändert"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Filter/NewsFilter/submit_settings.py:54
 msgid "stick to path changed"
-msgstr ""
+msgstr "Im Pfad bleiben geändert"
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Filter/NewsFilter/submit_settings.py:85
@@ -715,7 +703,7 @@ msgstr "(nicht ausgewählt)"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:160
 msgid "There are no published news items in this filter. Check that news sources are activated (go to the editor screen) and items in the sources are published."
-msgstr ""
+msgstr "Es sind keine publizierten Newseinträge in diesem Filter. Überprüfen Sie ob die Newsquellen aktiviert sind (Bearbeiten Formular) und die Einträge publiziert sind."
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:70
 msgid "expiration&nbsp;due&nbsp;"
@@ -732,7 +720,7 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/rssform.form:115
 msgid "Description added to the search form."
-msgstr ""
+msgstr "Beschreibung zum Suchenformular hinzugefügt."
 
 #: /views/edit/Filter/NewsFilter/rssform.form:31
 msgid "description"
@@ -827,6 +815,38 @@ msgstr "Artikeldaten geändert"
 
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
+msgstr "Zielgruppe"
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:116
+msgid "modify subjects and target audiences..."
+msgstr "Themen und Zielgruppen ändern..."
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:118
+msgid "save item: alt-s"
+msgstr "Eintrag speichern: alt-s"
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:118
+msgid "save item"
+msgstr "Eintrag speichern"
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:73
+msgid "content editor..."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:83
+#: /views/add/NewsItem/PlainAgendaItem/form.form:85
+#: /views/add/NewsItem/PlainArticle/form.form:66
+#: /views/edit/Filter/AgendaFilter/settingsform.form:25
+#: /views/edit/Filter/NewsFilter/settingsform.form:25
+msgid "subjects"
+msgstr "Themen"
+
+#: /views/edit/VersionedContent/NewsItem/normal_edit.pt:99
+#: /views/add/NewsItem/PlainAgendaItem/form.form:104
+#: /views/add/NewsItem/PlainArticle/form.form:85
+#: /views/edit/Filter/AgendaFilter/settingsform.form:44
+#: /views/edit/Filter/NewsFilter/settingsform.form:46
+msgid "target audiences"
 msgstr "Zielgruppe"
 
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:21
