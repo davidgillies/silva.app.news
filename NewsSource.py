@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.20 $
+# $Revision: 1.21 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -146,7 +146,7 @@ class NewsSource(Publication, CatalogPathAware):
             if self._is_silva_addable(addable_dict) and addable_dict.has_key('instance'):
                 addable_dict['doc'] = addable_dict['instance'].__doc__
                 result.append(addable_dict)
-        result.sort(lambda x, y: cmp(x['name'], y['name']))
+        # result.sort(lambda x, y: cmp(x['name'], y['name']))
         return result
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation, 'get_silva_addables')
