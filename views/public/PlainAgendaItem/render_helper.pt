@@ -14,7 +14,7 @@
 </td>
 <td width="20%" valign="top" style="font-size: 10px; padding-top:0.8em; text-align: right;">
 <tal:block 
-  define="creationdate python: mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStr()"
+  define="creationdate python: mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStrOptionalTime()"
   condition="python: creationdate != ''">
 <b>Creation date:</b><br />
 <span tal:replace="structure creationdate"></span><br /><br />

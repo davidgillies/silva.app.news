@@ -140,7 +140,7 @@
   <td valign="top">
   <tal:block condition="item/implements_versioning">
   <span tal:condition="python:item.get_next_version_publication_datetime() != None"
-    tal:replace="structure python:mangle.DateTime(item.get_next_version_publication_datetime()).toStr()" tal:omit-tag="">21 oct 2001 18:18</span>
+    tal:replace="structure python:mangle.DateTime(item.get_next_version_publication_datetime()).toStrOptionalTime()" tal:omit-tag="">21 oct 2001 18:18</span>
   <span tal:condition="python:item.get_next_version_publication_datetime() == None"
     tal:omit-tag="">&nbsp;</span>
   </tal:block>
