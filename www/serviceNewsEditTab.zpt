@@ -1,7 +1,7 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.4 $
+Version of this file: $Revision: 1.5 $
 -->
 <span tal:replace="structure here/manage_page_header">Header</span>
 
@@ -87,7 +87,7 @@ Version of this file: $Revision: 1.4 $
 </tal:repeat>
 <input type="submit" name="manage_remove_location:method" value="Remove location(s)" class="form-element">
 <br /><br />
-<div class="form-title"Add location:</div><br />
+<div class="form-title">Add location:</div><br />
 <div class="form-text">Location:</div>
 <input type="text" name="location"><br />
 <input type="submit" value="Add" name="manage_add_location:method" class="form-element">
