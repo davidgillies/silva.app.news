@@ -9,7 +9,7 @@
 ##
 months = []
 for i in range(12):
-    dt = DateTime("1970/%s/01" % str(i + 1))
+    dt = DateTime("1970/%s/01 01:00am" % str(i + 1))
     months.append(dt.aMonth())
 
 return months

@@ -1,6 +1,6 @@
 # Copyright (c) 2002, 2004 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.27 $
+# $Revision: 1.28 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -89,7 +89,7 @@ class NewsFilter(Filter):
         if number_is_days:
             # the number specified must be used to restrict the on number of days instead of the number of items
             now = DateTime()
-            last_night = DateTime(now.strftime("%Y/%m/%d"))
+            last_night = DateTime(now.strftime("%Y/%m/%d 01:00am"))
             query['silva-extrapublicationtime'] = {'query': [last_night - number, now],
                                                     'range': 'minmax'}
         result = self.service_catalog(query)
