@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -40,7 +40,7 @@ class AgendaViewer(NewsViewer):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues(['Silva AgendaFilter', 'Silva NewsFilter']):
+            for item in parent.objectValues(['Silva News AgendaFilter', 'Silva News NewsFilter']):
                 joinedpath = '/'.join(parentpath)
                 pairs.append(('%s (%s)' % (item.get_title_html(), joinedpath), "%s/%s" % (joinedpath, item.id)))
             if parentpath == ('',):
