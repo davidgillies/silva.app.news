@@ -1,7 +1,7 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.5 $
+Version of this file: $Revision: 1.6 $
 -->
 <span tal:replace="structure here/manage_page_header">Header</span>
 
@@ -11,7 +11,6 @@ Version of this file: $Revision: 1.5 $
 <tal:define define="global view here;
                     global subject_tree view/subject_tree;
                     global target_audience_tree view/target_audience_tree;
-                    global locations view/locations;
                     " />
 
 <table width="100%">
@@ -70,33 +69,6 @@ Version of this file: $Revision: 1.5 $
 </select>
 <input type="submit" value="Add" name="manage_add_target_audience:method" class="form-element">
 </form>
-
-</td>
-</tr>
-
-<tr><td colspan="2" height="20"><hr /></td></tr>
-
-<tr>
-<td width="50%" valign="top">
-
-<div class="form-title">Locations:</div><br />
-<form method="POST" action=".">
-<tal:repeat repeat="location locations">
-<input type="checkbox" name="locations:list" tal:attributes="value location" class="form-element">
-<span tal:content="location" class="form-text"></span><br />
-</tal:repeat>
-<input type="submit" name="manage_remove_location:method" value="Remove location(s)" class="form-element">
-<br /><br />
-<div class="form-title">Add location:</div><br />
-<div class="form-text">Location:</div>
-<input type="text" name="location"><br />
-<input type="submit" value="Add" name="manage_add_location:method" class="form-element">
-</form>
-
-</td>
-<td width="50%" valign="top">
-
-&nbsp;
 
 </td>
 </tr>
