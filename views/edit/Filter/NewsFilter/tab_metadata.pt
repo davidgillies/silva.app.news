@@ -52,6 +52,7 @@ function insertAssetReference(id, reference, wndw) {
 
 //-->
 </script>
+<tal:block tal:define="dummy python: request.SESSION.set('filter', 'Image')" />
 
 <h2>Metadata for <span class="document-title" tal:content="structure string:&raquo;${model/get_title_html}&laquo;">title here</span></h2>
 

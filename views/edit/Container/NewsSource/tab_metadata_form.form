@@ -23,7 +23,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          
+	  <title>Title</title>             
           <truncate type="int">0</truncate>
           <description></description>
           <extra></extra>
@@ -43,7 +43,7 @@
           <required type="int">0</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Short title</title>
           <truncate type="int">0</truncate>
           <description></description>
           <extra></extra>
@@ -57,7 +57,7 @@
           <hidden type="int">0</hidden>
           <css_class></css_class>
           <default type="int">0</default>
-          
+          <title>Is private</title>
           <description>If checked, restrict access to this source to filters in the same directory</description>
           <external_validator></external_validator>
           <extra></extra>
@@ -77,7 +77,7 @@
           <required type="int">0</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Contact name</title>
           <truncate type="int">0</truncate>
           <description>If blank, contact info will be inherited</description>
           <extra></extra>
@@ -96,7 +96,7 @@
           <required type="int">0</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Contact e-mail</title>
           <truncate type="int">0</truncate>
           <description>If blank, contact info will be inherited</description>
           <extra></extra>
@@ -117,7 +117,7 @@
           <required type="int">0</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Container comment</title>
           <description>For internal use</description>
           <extra></extra>
         </values>

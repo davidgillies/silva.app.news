@@ -25,7 +25,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          
+          <title>Title</title>
           <description></description>
           <extra></extra>
         </values>
@@ -40,7 +40,7 @@
           <hidden type="int">0</hidden>
           <css_class></css_class>
           <default>[]</default>
-          
+          <title>Subjects</title>
           <description></description>
           <external_validator></external_validator>
           <items>[]</items>
@@ -58,7 +58,7 @@
           <hidden type="int">0</hidden>
           <css_class></css_class>
           <default>[]</default>
-          
+          <title>Target audiences</title>
           <description></description>
           <external_validator></external_validator>
           <items>[]</items>
