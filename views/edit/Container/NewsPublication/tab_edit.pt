@@ -205,7 +205,7 @@
                   is_default python: item is default_document;
                   item_url item/absolute_url;
                   status_style python:item.get_object_status()[1];
-                  global iterate repeat/item/odd">
+                  iterate repeat/item/odd">
                   <tr tal:attributes="class python: iterate and 'odd' or 'even'">
                     <tal:block replace="nothing">
                       _______ checkbox + position cell _______
@@ -543,27 +543,19 @@
                       />
                     </tal:block>
                     <tal:block replace="nothing">
-                      ______________ paste (to ghost) controls exist even
+                      ______________ paste controls exist even
                       if there's no content (there should be something on 
                       the clipboard though). ______________
                     </tal:block>
                     <tal:block condition="python:request.has_key('__cp')">
                       <input class="button"
-                        name="tab_edit_paste:method"
-                        type="submit"
-                        value="paste"
-                        title="paste items: alt-v" 
-                        accesskey="v" 
-                        i18n:attributes="value title"
-                      />
-                      <input class="button"
-                        name="tab_edit_paste_to_ghost:method"
-                        type="submit"
-                        value="paste ghost"
-                        title="paste (items on clipboard) as ghost objects: alt-g"
-                        accesskey="g" 
-                        i18n:attributes="value title"
-                      />
+                             name="tab_edit_paste:method"
+                             type="submit"
+                             value="paste"
+                             title="paste items: alt-v" 
+                             accesskey="v" 
+                             i18n:attributes="value title"
+                             />
                     </tal:block>
                     <tal:block tal:condition="python:(default_document or publishables or assets)">
                       <input class="warning"
@@ -591,6 +583,7 @@
               </tr>
             </tfoot>
           </table>
+          </form>
         </td>
       </tr>
     </tbody>
