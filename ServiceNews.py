@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 import Globals
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -34,8 +34,6 @@ class ServiceNews(SimpleItem):
         self._subjects = {}
         self._target_audiences = {}
         self._locations = {}
-        self._common_infos = {}
-        self._specific_infos = {}
 
     security.declareProtected('Setup ServiceNews',
                               'add_subject')
@@ -72,28 +70,6 @@ class ServiceNews(SimpleItem):
             message = "%s is already in the list of locations" % location
             raise DuplicateError, message
         self._locations[location] = 1
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'add_common_info')
-    def add_common_info(self, common_info):
-        """Adds the common_info to the dict, no parents or children
-        """
-        if self._common_infos.has_key(common_info):
-            message = "%s is already in the list of common_info-items" % common_info
-            raise DuplicateError, message
-        self._common_infos[common_info] = 1
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'add_specific_info')
-    def add_specific_info(self, specific_info):
-        """Adds the specific_info to the dict, no parents or children
-        """
-        if self._specific_infos.has_key(specific_info):
-            message = "%s is already in the list of specific_info-items" % specific_info
-            raise DuplicateError, message
-        self._specific_infos[specific_info] = 1
         self._p_changed = 1
 
     security.declareProtected('Setup ServiceNews',
@@ -139,28 +115,6 @@ class ServiceNews(SimpleItem):
             message = "%s cannot be found in the list of locations" % location
             raise KeyError, message
         del(self._locations[location])
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'remove_common_info')
-    def remove_common_info(self, common_info):
-        """Removes a common_info from the dict
-        """
-        if not self._common_infos.has_key(common_info):
-            message = "%s cannot be found in the list of common_info-items" % common_info
-            raise KeyError, message
-        del(self._common_infos[common_info])
-        self._p_changed = 1
-
-    security.declareProtected('Setup ServiceNews',
-                              'remove_specific_info')
-    def remove_specific_info(self, specific_info):
-        """Removes a specific_info from the dict
-        """
-        if not self._specific_infos.has_key(specific_info):
-            message = "%s cannot be found in the list of specific_info-items" % specific_info
-            raise KeyError, message
-        del(self._specific_infos[specific_info])
         self._p_changed = 1
 
     # ACCESSORS
@@ -252,26 +206,6 @@ class ServiceNews(SimpleItem):
         locations = self._locations.keys()
         locations.sort()
         return locations
-
-    security.declareProtected('View',
-                              'common_infos')
-    def common_infos(self):
-        """Returns a flat list of all common_infos
-        """
-        common_infos = self._common_infos.keys()
-        common_infos.sort()
-        return common_infos
-
-    security.declareProtected('View',
-                              'specific_infos')
-    def specific_infos(self):
-        """Returns a flat list of all specific_infos
-        """
-        specific_infos = self._specific_infos.keys()
-        specific_infos.sort()
-        # send an empty option as well, so the user can choose not to provide any specific info...
-        specific_infos = ['Geen informatie'] + specific_infos
-        return specific_infos
 
     security.declareProtected('Setup ServiceNews',
                               'manage_add_subject')
@@ -372,63 +306,6 @@ class ServiceNews(SimpleItem):
 
         return self.edit_tab(manage_tabs_message='Locations %s removed' % str(REQUEST['locations']))
 
-    security.declareProtected('Setup ServiceNews',
-                              'manage_add_common_info')
-    def manage_add_common_info(self, REQUEST):
-        """Add a common_info"""
-        if not REQUEST.has_key('common_info') or REQUEST['common_info'] == '':
-            return self.edit_tab(manage_tabs_message='No common info item specified')
-
-        try:
-            self.add_common_info(REQUEST['common_info'])
-        except DuplicateError, e:
-            return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Common info item %s added' % REQUEST['common_info'])
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_remove_common_info')
-    def manage_remove_common_info(self, REQUEST):
-        """Remove a common_info"""
-        if not REQUEST.has_key('common_info'):
-            return self.edit_tab(manage_tabs_message='No common info items specified')
-
-        for common_info in REQUEST['common_infos']:
-            try:
-                self.remove_common_info(common_info)
-            except KeyError, e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Common info items %s removed' % str(REQUEST['common_infos']))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_add_specific_info')
-    def manage_add_specific_info(self, REQUEST):
-        """Add a specific_info"""
-        if not REQUEST.has_key('specific_info') or REQUEST['specific_info'] == '':
-            return self.edit_tab(manage_tabs_message='No specific info item specified')
-
-        try:
-            self.add_specific_info(REQUEST['specific_info'])
-        except DuplicateError, e:
-            return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Specific info item %s added' % REQUEST['specific_info'])
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_remove_specific_info')
-    def manage_remove_specific_info(self, REQUEST):
-        """Remove a specific_info"""
-        if not REQUEST.has_key('specific_info'):
-            return self.edit_tab(manage_tabs_message='No specific info items specified')
-
-        for specific_info in REQUEST['specific_infos']:
-            try:
-                self.remove_specific_info(specific_info)
-            except KeyError, e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(manage_tabs_message='Specific info items %s removed' % str(REQUEST['specific_infos']))
 
 Globals.InitializeClass(ServiceNews)
 
