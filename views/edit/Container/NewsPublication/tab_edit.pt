@@ -565,7 +565,7 @@
                         i18n:attributes="onClick value title"
                       />
                     </tal:block>
-                    <tal:block tal:condition="python:(default_document or publishables or assets)">
+                    <tal:block tal:condition="python:0 and (default_document or publishables or assets)">
                       <input class="navigation"
                         name="tab_edit_bulk_prepare:method"
                         type="submit"
