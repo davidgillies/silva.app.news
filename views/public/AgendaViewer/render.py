@@ -8,7 +8,4 @@
 ##title=
 ##
 model = context.REQUEST.model
-version = model.get_viewable()
-if version is None:
-   return "There is no public version of this resolution."
-return context.render_helper(version=version)
+return context.render_helper(version=model)

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.21 $
+# $Revision: 1.22 $
 
 """Install and Uninstall for Silva News
 """
@@ -72,6 +72,7 @@ def registerViews(reg):
                  'Silva Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
     reg.register('edit',
                  'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
+
     # public
     reg.register('public',
                  'Silva Agenda Filter', ['public', 'AgendaFilter'])
@@ -81,8 +82,9 @@ def registerViews(reg):
     reg.register('public', 'Silva News Viewer', ['public', 'NewsViewer'])
     reg.register('public', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
     reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
-    reg.register('public', 'Silva Article', ['public', 'PlainArticle'])
-    reg.register('public', 'Silva Agenda Item', ['public', 'PlainAgendaItem'])
+    reg.register('public', 'Silva Article Version', ['public', 'PlainArticle'])
+    reg.register('public', 'Silva Agenda Item Version', ['public', 'PlainAgendaItem'])
+    
     # add
     reg.register('add', 'Silva Agenda Filter', ['add', 'AgendaFilter'])
     reg.register('add', 'Silva News Filter', ['add', 'NewsFilter'])
