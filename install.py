@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 """Install and Uninstall for Silva News
 """
@@ -145,7 +145,7 @@ def setup_catalog(silva_root):
     catalog.manage_addProduct['ZCatalog'].manage_addVocabulary('UnicodeVocabulary', 'UnicodeVocabulary', 1, 'UnicodeSplitter')
 
     columns = ['contact_info', 'container_comment', 'expiration_datetime', 'get_title_html',
-            'id', 'location', 'meta_type', 'object_path', 'publication_datetime', 'source_path',
+            'id', 'lead', 'location', 'meta_type', 'object_path', 'publication_datetime', 'source_path',
             'sec_get_last_author_info', 'start_datetime', 'subheader', 'subjects', 'summary',
             'target_audiences', 'title', 'version_status']
 
