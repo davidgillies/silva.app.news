@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.25 $
+# $Revision: 1.26 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -47,6 +47,28 @@ class NewsFilter(Filter):
         self._rss_search_description = ''
         self._rss_image = ''
 
+    def _prepare_query ( self, meta_types ):
+        """private method preparing the common fields for a catalog query.
+
+        Return: dict holding the query parameters
+        """
+        self.verify_sources()
+        self.verify_excluded_items()
+        query = {}
+        query['path'] = self._sources
+        query['version_status'] = 'public'
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
+        if meta_types:
+            # query meta_type only if it was set initially
+            query['meta_type'] = meta_types
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'silva-extrapublicationtime'
+        query['sort_order'] = 'descending'
+        return query
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
     def get_all_items(self, meta_types=None):
@@ -56,23 +78,9 @@ class NewsFilter(Filter):
         AccessContentsInformation-security because it does not reveal
         any 'secret' information...
         """
-        self.verify_sources()
+        query = self._prepare_query(meta_types)
         if not self._sources:
             return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
-        query = {}
-        query['path'] = self._sources
-        query['version_status'] = 'public'
-        query['subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        query['meta_type'] = meta_types
-        # Workaround for ProxyIndex bug
-        query['sort_on'] = 'silva-extrapublicationtime'
-        query['sort_order'] = 'descending'
         results = self.service_catalog(query)
         return results
 
@@ -81,42 +89,28 @@ class NewsFilter(Filter):
     def get_last_items(self, number, number_is_days=0, meta_types=None):
         """Returns the last self._number_to_show published items
         """
-        self.verify_sources()
+        query = self._prepare_query(meta_types)
         if not self._sources:
             return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
-        query = {}
-        query['path'] = self._sources
-        query['version_status'] = 'public'
-        query['subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        query['meta_type'] = meta_types
         if number_is_days:
             # the number specified must be used to restrict the on number of days instead of the number of items
             now = DateTime()
             last_night = DateTime(now.strftime("%Y/%m/%d"))
             query['silva-extrapublicationtime'] = {'query': [last_night - number, now],
                                                     'range': 'minmax'}
-        # Workaround for ProxyIndex bug
-        query['sort_on'] = 'silva-extrapublicationtime'
-        query['sort_order'] = 'descending'
-
         result = self.service_catalog(query)
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
-        output = []
         if not number_is_days:
-            for i in range(len(filtered_result)):
-                if i < number:
-                    output.append(filtered_result[i])
-                else:
-                    break
+            # ouch...
+##             for i in range(len(filtered_result)):
+##                 if i < number:
+##                     output.append(filtered_result[i])
+##                 else:
+##                     break
+            # did you mean:
+            output = filtered_result[:number]
         else:
             output = filtered_result
-
         return output
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -129,27 +123,14 @@ class NewsFilter(Filter):
         any way because it requres start_datetime to be set. The
         NewsViewer uses only get_last_items.
         """
-        self.verify_sources()
-        if not self._sources:
-            return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
         date = DateTime()
         lastnight = DateTime(date.year(), date.month(), date.day(), 0, 0, 0)
         enddate = lastnight + numdays
-        query = {}
+        query = self._prepare_query(meta_types)
+        if not self._sources:
+            return []
         query['start_datetime'] = (lastnight, enddate)
         query['start_datetime_usage'] = 'range:min:max'
-        query['version_status'] = 'public'
-        query['path'] = self._sources
-        query['subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        query['meta_type'] = meta_types
-        query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'descending'
         result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
@@ -159,12 +140,6 @@ class NewsFilter(Filter):
     def get_items_by_date(self, month, year, meta_types=None):
         """Returns the last self._number_to_show published items
         """
-        self.verify_sources()
-        if not self._sources:
-            return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
         month = int(month)
         year = int(year)
         startdate = DateTime(year, month, 1)
@@ -173,19 +148,11 @@ class NewsFilter(Filter):
             endmonth = 1
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
-        query = {}
+        query = self._prepare_query(meta_types)
+        if not self._sources:
+            return []
         query['silva-extrapublicationtime'] = {'query': (startdate, enddate),
-                                                'range': 'minmax'}
-        query['version_status'] = 'public'
-        query['path'] = self._sources
-        query['subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        query['meta_type'] = meta_types
-        # Workaround for ProxyIndex bug
-        query['sort_on'] = 'silva-extrapublicationtime'
-        query['sort_order'] = 'descending'
+                                               'range': 'minmax'}
         result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in
@@ -202,32 +169,20 @@ class NewsFilter(Filter):
         returns all objects instead of only IAgendaItem-
         implementations)
         """
-        self.verify_sources()
-        if not self._sources:
-            return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
         month = int(month)
         year = int(year)
         startdate = DateTime(year, month, 1)
         endmonth = month + 1
-        if month == 12:
+        if month >= 12:
             endmonth = 1
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
-        query = {}
+
+        query = self._prepare_query(meta_types)
+        if not self._sources:
+            return []
         query['start_datetime'] = [startdate, enddate]
         query['start_datetime_usage'] = 'range:min:max'
-        query['version_status'] = 'public'
-        query['path'] = self._sources
-        query['subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        query['meta_type'] = meta_types
-        query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'descending'
         result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
