@@ -16,7 +16,7 @@ except FormValidationError, e:
     return view.tab_edit(message_type="error", message=view.render_form_errors(e))
 
 model.sec_update_last_author_info()
-model.set_title(result['object_title'])
+model.set_title(context.input_convert(result['object_title']))
 editable = model.get_editable()
 
 editable.set_start_datetime(result['start_datetime'])
