@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Mon Dec 13 10:52:44 2004\n"
-"PO-Revision-Date: 2004-12-13 10:52+0100\n"
+"POT-Creation-Date: Mon Dec 13 14:16:51 2004\n"
+"PO-Revision-Date: 2004-12-13 14:16+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,7 @@ msgstr "Autor"
 # Default: "&nbsp;&nbsp;Shift"
 #: /views/edit/Container/NewsPublication/tab_edit.pt:185
 msgid "shift"
-msgstr ""
+msgstr "Verschieben"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:195
 msgid "There is no content here."
@@ -198,11 +198,15 @@ msgstr "Position"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:498
 msgid "end"
-msgstr ""
+msgstr "Ende"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:505
 msgid "access key: alt-p"
 msgstr "Kurzwahl: alt-p"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:511
+msgid "move"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:511
 msgid "move selected items into position: alt-m"
@@ -353,11 +357,11 @@ msgstr "Ort (wenn nicht in Liste)"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:233
 msgid "Pressheader"
-msgstr ""
+msgstr "Pressetitel"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:254
 msgid "Subheader"
-msgstr ""
+msgstr "Untertitel"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:275
 msgid "Lead"
@@ -381,7 +385,7 @@ msgstr "Spezifische Info"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:358
 msgid "Specific info (if not in list)"
-msgstr ""
+msgstr "Besondere Info (wenn nicht in Liste)"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:379
 msgid "More info links"
@@ -484,6 +488,8 @@ msgstr ""
 msgid ""
 "List the URLs of RSS feeds (one per line) to use as sources of news items."
 msgstr ""
+"Geben Sie die URLs der RSS-Feeds (eine pro Zeile!) ein, aus denen die "
+"Newseinträge erzeugt werden sollen."
 
 #: /views/edit/Content/edit.pt:103 /views/edit/Filter/AgendaFilter/edit.pt:94
 msgid "save settings"
@@ -639,11 +645,11 @@ msgstr "Ansicht"
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:91
 #: /views/edit/Filter/NewsFilter/edit_items.pt:69
 msgid "publication&nbsp;due&nbsp;"
-msgstr ""
+msgstr "Zuletzt &nbsp; Publiziert &nbsp;"
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:92
 msgid "expiration&nbsp;due"
-msgstr ""
+msgstr "Läuft aus am:"
 
 #: /views/edit/Filter/AgendaFilter/settingsform.form:65
 #: /views/edit/Filter/NewsFilter/settingsform.form:88
@@ -724,7 +730,7 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:70
 msgid "expiration&nbsp;due&nbsp;"
-msgstr ""
+msgstr "Läuft aus am"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:89
 #: /views/edit/Filter/NewsFilter/edit_items.pt:96
@@ -780,6 +786,8 @@ msgid ""
 "            Select the news subjects to filter on.\n"
 "          "
 msgstr ""
+"\n"
+"         Themen für Filter auswählen.\n"
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:50
 msgid ""
@@ -787,6 +795,8 @@ msgid ""
 "            Select the target audiences to filter on.\n"
 "          "
 msgstr ""
+"\n"
+"         Zielgruppe für Filter auswählen.\n"
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:69
 msgid "show agenda items"
@@ -798,7 +808,7 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:29
 msgid "RSS form errors ${errors}"
-msgstr ""
+msgstr "RSS Fehler: ${errors}"
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:48
 msgid "show agendaitems changed"
@@ -819,7 +829,7 @@ msgstr "Enddatum und -zeit"
 
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:94
 msgid "location"
-msgstr ""
+msgstr "Ort"
 
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/submit.py:31
 msgid "AgendaItem-data changed"
@@ -835,15 +845,15 @@ msgstr "Zielgruppe"
 
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:21
 msgid "Article filtering"
-msgstr ""
+msgstr "Artikelfilterung"
 
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:74
 msgid "save subjects and target audiences"
-msgstr ""
+msgstr "Themen und Zielgruppen speichern"
 
 #: /views/edit/VersionedContent/NewsItem/sta_edit.pt:76
 msgid "back to article..."
-msgstr ""
+msgstr "Zurück zum Artikel..."
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
 msgid "Data changed"

@@ -514,7 +514,7 @@
                           value="move"
                           title="move selected items into position: alt-m"
                           accesskey="m"
-                          i18n:attributes="title"
+                          i18n:attributes="value title"
                         />
                       </div>
                       &nbsp;

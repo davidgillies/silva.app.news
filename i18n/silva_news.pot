@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 10:52:44 2004\n"
+"POT-Creation-Date: Mon Dec 13 14:16:51 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -198,6 +198,10 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:505
 msgid "access key: alt-p"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:511
+msgid "move"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:511
