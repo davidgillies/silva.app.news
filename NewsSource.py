@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -193,7 +193,7 @@ class NewsSource(Publication, CatalogPathAware):
             meta_type = addable_dict['name']
             if allowed and meta_type not in allowed:
                 continue
-            if self._is_silva_addable(addable_dict) and addable_dict.has_key('instance') and not addable_dict['instance']._is_allowed_in_publication:
+            if self._is_silva_addable(addable_dict) and addable_dict.has_key('instance'):
                 result.append(addable_dict)
         result.sort(lambda x, y: cmp(x['name'], y['name']))
         return result
@@ -212,7 +212,7 @@ class NewsSource(Publication, CatalogPathAware):
             (INewsItem.isImplementedByInstancesOf(
             addable_dict['instance']) or
             IAgendaItem.isImplementedByInstancesOf(
-            addable_dict['instance'])))
+            addable_dict['instance'])) or addable_dict['name'] == 'Silva NewsSource')
 
 InitializeClass(NewsSource)
 
