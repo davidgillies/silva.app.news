@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 import unittest
 import Zope
 from DateTime import DateTime
@@ -8,7 +8,18 @@ from Products.ZCatalog.ZCatalog import ZCatalog
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
 
+class FakeRequest:
+    def __init__(self):
+        pass
+
+class FakeAuthenticatedUser:
+    def getUserName(self):
+        return "Johnny"
+
 def add_helper(object, typename, id, title):
+    object.REQUEST = FakeRequest()
+    object.REQUEST.AUTHENTICATED_USER = ''
+    object.REQUEST.AUTHENTICATED_USER = FakeAuthenticatedUser()
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
