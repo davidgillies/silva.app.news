@@ -1,6 +1,7 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
+
 import unittest
 import Zope
 from Testing import makerequest

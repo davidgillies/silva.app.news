@@ -1,6 +1,7 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
+
 import unittest
 import Zope
 from DateTime import DateTime
