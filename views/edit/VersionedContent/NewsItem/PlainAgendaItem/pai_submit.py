@@ -23,6 +23,4 @@ editable.set_start_datetime(result['start_datetime'])
 editable.set_location(result['location'])
 editable.set_location_manual(result['location_manual'])
 
-model.set_unapproved_version_publication_datetime(result['publication_datetime'])
-
 return view.tab_edit(message_type="feedback", message="AgendaItem-data changed")

@@ -23,6 +23,4 @@ version = model.get_editable()
 version.set_subheader(result['subheader'])
 version.set_lead(result['lead'])
 
-model.set_unapproved_version_publication_datetime(result['publication_datetime'])
-
 return view.tab_edit(message_type="feedback", message="Article data changed")
