@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 14:16:51 2004\n"
+"POT-Creation-Date: Mon Dec 13 14:21:59 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -188,71 +188,75 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:491
+#: /views/edit/Container/NewsPublication/tab_edit.pt:486
+msgid "move selected items to"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:492
 msgid "position"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:498
+#: /views/edit/Container/NewsPublication/tab_edit.pt:499
 msgid "end"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:505
+#: /views/edit/Container/NewsPublication/tab_edit.pt:506
 msgid "access key: alt-p"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:511
+#: /views/edit/Container/NewsPublication/tab_edit.pt:512
 msgid "move"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:511
+#: /views/edit/Container/NewsPublication/tab_edit.pt:512
 msgid "move selected items into position: alt-m"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:521
+#: /views/edit/Container/NewsPublication/tab_edit.pt:522
 msgid "rename..."
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:521
+#: /views/edit/Container/NewsPublication/tab_edit.pt:522
 msgid "rename and retitle items: alt-r"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:529
+#: /views/edit/Container/NewsPublication/tab_edit.pt:530
 msgid "cut"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:529
+#: /views/edit/Container/NewsPublication/tab_edit.pt:530
 msgid "cut items: alt-x"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:537
+#: /views/edit/Container/NewsPublication/tab_edit.pt:538
 msgid "copy"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:537
+#: /views/edit/Container/NewsPublication/tab_edit.pt:538
 msgid "copy items: alt-c"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:552
+#: /views/edit/Container/NewsPublication/tab_edit.pt:553
 msgid "paste items: alt-v"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:552
+#: /views/edit/Container/NewsPublication/tab_edit.pt:553
 msgid "paste"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:562
+#: /views/edit/Container/NewsPublication/tab_edit.pt:563
 msgid "delete"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:562
+#: /views/edit/Container/NewsPublication/tab_edit.pt:563
 msgid "there's no undo: alt-d"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:573
+#: /views/edit/Container/NewsPublication/tab_edit.pt:574
 msgid "bulk edit..."
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:573
+#: /views/edit/Container/NewsPublication/tab_edit.pt:574
 msgid "bulk edit items: alt-b"
 msgstr ""
 

@@ -486,7 +486,8 @@
                         <select class="manipulator"
                           name="new_position"
                           title="move selected items to"
-                          tal:define="length python: len(publishables) - test(default_document, 1, 0)">
+                          tal:define="length python: len(publishables) - test(default_document, 1, 0)"
+                          i18n:attributes="title">
                           <option value="Position">
                             <span i18n:translate="position">position</span>:
                           </option>
