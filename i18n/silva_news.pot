@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Wed Dec  8 14:41:42 2004\n"
+"POT-Creation-Date: Thu Dec  9 11:28:27 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -625,22 +625,28 @@ msgid "Input form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:29
+#: /views/edit/Filter/NewsFilter/submit_settings.py:36
 msgid "subjects changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:35
+#: /views/edit/Filter/NewsFilter/submit_settings.py:42
 msgid "target audiences changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
+#: /views/edit/Filter/NewsFilter/submit_settings.py:54
 msgid "stick to path changed"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
+#: /views/edit/Filter/NewsFilter/submit_settings.py:85
 msgid "Settings changed for: "
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/use_items.py:41
+#: /views/edit/Filter/NewsFilter/use_items.py:40
+#: /views/edit/Filter/use_sources.py:40
 msgid "The filter is updated."
 msgstr ""
 
@@ -745,6 +751,14 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:71
 msgid "If set to 'yes', show agenda items as well as news items."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/submit_settings.py:29
+msgid "RSS form errors ${errors}"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/submit_settings.py:48
+msgid "show agendaitems changed"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:53
