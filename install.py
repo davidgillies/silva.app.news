@@ -1,18 +1,18 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 """Install and Uninstall for Silva News
 """
 
 from Products.FileSystemSite.DirectoryView import manage_addDirectoryView
+from Products.Silva.install import add_fss_directory_view
 
 def install(root):
     """The view infrastructure for Silva.
     """
     # create the core views from filesystem
-    manage_addDirectoryView(root.service_views,
-                            'Products/SilvaNews/views', 'SilvaNews')
+    add_fss_directory_view(root.service_views, 'SilvaNews', __file__, 'views')
     # also register views
     registerViews(root.service_view_registry)
 
