@@ -1,3 +1,4 @@
+<tal:define define="global location string:Metadata" />
 <!-- ___________________________ start index_html ___________________________ -->
 <html  metal:use-macro="here/macro_index/macros/master">
 

@@ -7,7 +7,7 @@
 <div class="margins" metal:fill-slot="main">
 <!-- ___________________________ start index_html/slot main ___________________________ -->
 
-<h2>Add new <span tal:replace="here/title" /></h2>
+<h2>Add new item</h2>
 
 <form name="focusbox" action="add_submit" method="POST" enctype="multipart/form-data">
 <table width="96%" cellspacing="0" cellpadding="5" border="0"
