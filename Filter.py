@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 
 # Zope
 from OFS import SimpleItem
@@ -59,8 +59,17 @@ class Filter(Asset, CatalogPathAware):
         query = {'meta_type': ['Silva NewsSource'], 'sort_on': 'id', 'is_private': 0}
         results = self.service_catalog(query)
         query['is_private'] = 1
-        query['parent_path'] = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
+        pp = []
+        cpp = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
+        while 1:
+            if cpp == '':
+                break
+            pp.append(cpp)
+            cpp = cpp[:cpp.rfind('/')]
+            print cpp
+        query['parent_path'] = pp
         results += self.service_catalog(query)
+        print query
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
