@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Fri Dec  3 15:03:16 2004\n"
+"POT-Creation-Date: Mon Dec  6 10:38:05 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -11,7 +11,7 @@ msgstr ""
 
 #: /views/add/AgendaFilter/form.form:28
 #: /views/add/AgendaViewer/form.form:28
-#: /views/add/NewsFilter/form.form:28
+#: /views/add/NewsFilter/form.form:31
 #: /views/add/NewsFolder/form.form:28
 #: /views/add/NewsItem/PlainAgendaItem/form.form:28
 #: /views/add/NewsItem/PlainArticle/form.form:28
@@ -23,19 +23,19 @@ msgstr ""
 
 #: /views/add/AgendaFilter/form.form:45
 #: /views/add/AgendaViewer/form.form:45
-#: /views/add/NewsFilter/form.form:45
+#: /views/add/NewsFilter/form.form:48
 #: /views/add/NewsFolder/form.form:45
 #: /views/add/NewsItem/PlainAgendaItem/form.form:45
 #: /views/add/NewsItem/PlainArticle/form.form:47
 #: /views/add/NewsPublication/form.form:48
 #: /views/add/RSSAggregator/form.form:45
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:28
-#: /views/edit/VersionedContent/NewsItem/PlainArticle/form.form:28
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:31
+#: /views/edit/VersionedContent/NewsItem/PlainArticle/form.form:31
 msgid "title"
 msgstr ""
 
 #: /views/add/AgendaViewer/form.form:46
-#: /views/add/NewsFilter/form.form:47
+#: /views/add/NewsFilter/form.form:50
 #: /views/add/NewsFolder/form.form:46
 #: /views/add/NewsItem/PlainAgendaItem/form.form:46
 #: /views/add/NewsItem/PlainArticle/form.form:48
@@ -48,7 +48,7 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:101
 #: /views/add/NewsItem/PlainArticle/form.form:82
 #: /views/edit/Filter/AgendaFilter/settingsform.form:41
-#: /views/edit/Filter/NewsFilter/settingsform.form:43
+#: /views/edit/Filter/NewsFilter/settingsform.form:46
 msgid "target audiences"
 msgstr ""
 
@@ -63,7 +63,7 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainArticle/form.form:63
 #: /views/edit/Filter/AgendaFilter/settingsform.form:22
-#: /views/edit/Filter/NewsFilter/settingsform.form:22
+#: /views/edit/Filter/NewsFilter/settingsform.form:25
 msgid "subjects"
 msgstr ""
 
@@ -112,6 +112,7 @@ msgid "add a new item: alt-n"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:129
+#: /views/edit/Filter/NewsFilter/edit.pt:115
 msgid "access key: alt-s"
 msgstr ""
 
@@ -125,6 +126,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:173
 #: /views/edit/Container/NewsPublication/tab_edit.pt:404
+#: /views/edit/Filter/NewsFilter/edit_items.pt:67
 # Default: "Edit"
 msgid "edit"
 msgstr ""
@@ -157,7 +159,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit.pt:246
 #: /views/add/AgendaFilter/form.form:26
 #: /views/add/AgendaViewer/form.form:26
-#: /views/add/NewsFilter/form.form:26
+#: /views/add/NewsFilter/form.form:29
 #: /views/add/NewsFolder/form.form:26
 #: /views/add/NewsItem/PlainAgendaItem/form.form:26
 #: /views/add/NewsItem/PlainArticle/form.form:26
@@ -284,6 +286,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:71
 #: /views/edit/Container/NewsPublication/settings_addables.pt:74
 #: /views/edit/Container/NewsPublication/tab_settings.pt:39
+#: /views/edit/Filter/NewsFilter/edit.pt:86
 msgid "Element"
 msgstr ""
 
@@ -295,12 +298,14 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:77
 #: /views/edit/Container/NewsPublication/settings_addables.pt:77
 #: /views/edit/Container/NewsPublication/tab_settings.pt:45
+#: /views/edit/Filter/NewsFilter/edit.pt:87
 msgid "Content"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:80
 #: /views/edit/Container/NewsPublication/settings_addables.pt:80
 #: /views/edit/Container/NewsPublication/tab_settings.pt:48
+#: /views/edit/Filter/NewsFilter/edit.pt:88
 msgid "Note"
 msgstr ""
 
@@ -309,10 +314,12 @@ msgid "Some items of your selection are containers (folders, publications, newss
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
+#: /views/edit/Filter/NewsFilter/edit.pt:152
 msgid "Id"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
+#: /views/edit/Filter/NewsFilter/edit.pt:153
 #: /views/add/NewsViewer/form.form:45
 #: /views/edit/Container/NewsPublication/form.form:29
 msgid "Title"
@@ -420,11 +427,11 @@ msgid "<span>x</span> &#xab; &#xbb;"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:62
-msgid "change Folder into Publication: alt-c"
+msgid "convert to publication"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:62
-msgid "convert to publication"
+msgid "change Folder into Publication: alt-c"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
@@ -465,91 +472,182 @@ msgid "List the URLs of RSS feeds (one per line) to use as sources of news items
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/settingsform.form:62
-#: /views/edit/Filter/NewsFilter/settingsform.form:85
+#: /views/edit/Filter/NewsFilter/settingsform.form:88
 msgid "stick to path"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/settingsform.form:64
-#: /views/edit/Filter/NewsFilter/settingsform.form:87
+#: /views/edit/Filter/NewsFilter/settingsform.form:90
 msgid "Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:111
+#: /views/edit/Filter/NewsFilter/edit.pt:115
+msgid " save settings "
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:142
+msgid "sources"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:151
+msgid "In use"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:172
+msgid "Edit this source"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:178
+msgid "Edit this item"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:189
+msgid "(not activated)"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:206
+msgid "There are no newssources available."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:273
+msgid "update sources"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:273
+msgid "Use selected sources in this filter: alt-u"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:287
+#: /views/edit/Filter/NewsFilter/edit_items.pt:238
+msgid "Previous"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:291
+#: /views/edit/Filter/NewsFilter/edit_items.pt:242
+msgid "Next"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit.pt:77
+msgid "general settings"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:104
+msgid "Preview this item"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:110
+msgid "(deselected)"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:160
+msgid "There are no published news items in this filter. Check that news sources are activated (go to the editor screen) and items in the sources are published."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:223
+msgid "use selected items in this filter: alt-u"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:223
+msgid "update"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:66
+msgid "in use"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:68
+msgid "view"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:69
+msgid "publication&nbsp;due&nbsp;"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:70
+msgid "expiration&nbsp;due&nbsp;"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/edit_items.pt:89
+#: /views/edit/Filter/NewsFilter/edit_items.pt:96
+msgid "edit this item"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:114
 msgid "search description"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:112
+#: /views/edit/Filter/NewsFilter/rssform.form:115
 msgid "Description added to the search form."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:28
+#: /views/edit/Filter/NewsFilter/rssform.form:31
 msgid "description"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:29
+#: /views/edit/Filter/NewsFilter/rssform.form:32
 msgid "Describe the type of news this filter delivers."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:48
+#: /views/edit/Filter/NewsFilter/rssform.form:51
 msgid "link"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:50
+#: /views/edit/Filter/NewsFilter/rssform.form:53
 msgid "Enter the URL where the RSS feed should point to for information."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:69
+#: /views/edit/Filter/NewsFilter/rssform.form:72
 msgid "copyright"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:71
+#: /views/edit/Filter/NewsFilter/rssform.form:74
 msgid "Enter a copyright notice (not used if left empty)."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:88
+#: /views/edit/Filter/NewsFilter/rssform.form:91
 msgid "allow RSS search"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/rssform.form:90
+#: /views/edit/Filter/NewsFilter/rssform.form:93
 msgid "If set to 'yes', extra information will be sent along with the RSS feed to enable searching this newsfilter using a remote form (the client will be sent to this Silva instance to view the results)."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/settingsform.form:26
+#: /views/edit/Filter/NewsFilter/settingsform.form:29
 msgid ""
 "\n"
 "            Select the news subjects to filter on.\n"
 "          "
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/settingsform.form:47
+#: /views/edit/Filter/NewsFilter/settingsform.form:50
 msgid ""
 "\n"
 "            Select the target audiences to filter on.\n"
 "          "
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/settingsform.form:66
+#: /views/edit/Filter/NewsFilter/settingsform.form:69
 msgid "show agenda items"
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/settingsform.form:68
+#: /views/edit/Filter/NewsFilter/settingsform.form:71
 msgid "If set to 'yes', show agenda items as well as news items."
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:50
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:53
 msgid "date and time"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:51
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:72
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:54
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:75
 msgid "Format: d/m/y, time is optional"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:71
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:74
 msgid "end date and time"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:91
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:94
 msgid "location"
 msgstr ""
 
