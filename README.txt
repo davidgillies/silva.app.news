@@ -1,4 +1,4 @@
-$Revision: 1.9 $
+$Revision: 1.10 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,7 +8,7 @@ Meta::
   Valid for:  Silva News 0.7
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.9 $
+  CVS:        $Revision: 1.10 $
 
 Silva News
 
@@ -80,7 +80,7 @@ Using Silva News
     routing the items to newsviewers. When editing a news or agenda item,
     keep in mind that the first heading placed in the content editor is
     considered to be the subheader of the newsitem, and the first paragraph
-    as the lead (both will show up in the previes on the viewers).
+    as the lead (both will show up in the previews on the viewers).
 
   Adding news filters
 
