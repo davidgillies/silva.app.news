@@ -1,7 +1,7 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.1 $
+Version of this file: $Revision: 1.2 $
 -->
 <h1 tal:replace="structure here/manage_page_header">Header</h1>
 
@@ -14,7 +14,7 @@ Version of this file: $Revision: 1.1 $
   The Service News provides means of managing the lists of subjects and target audiences
   nessecary for Silva Browser-objects (e.g. NewsBrowsers, AgendaBrowsers). The lists
   can be managed from the 'edit'-tab. This service should contain as much of the data
-  as possible before such ibjects are added.
+  as possible before such objects are added.
 </p>
 
 <h1 tal:replace="structure here/manage_page_footer">Footer</h1>
