@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -119,11 +119,20 @@ class NewsSource(Publication, CatalogPathAware):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation, 'get_silva_addables')
     def get_silva_addables(self):
-        result = [addable_dict
-                for addable_dict in self.filtered_meta_types()
-                if self._is_silva_addable(addable_dict)]
+        result = []
+        allowed = self.get_silva_addables_allowed()
+        for addable_dict in self.filtered_meta_types():
+            meta_type = addable_dict['name']
+            if allowed and meta_type not in allowed:
+                continue
+            if self._is_silva_addable(addable_dict) and addable_dict.has_key('instance') and not addable_dict['instance']._is_allowed_in_publication:
+                result.append(addable_dict)
         result.sort(lambda x, y: cmp(x['name'], y['name']))
         return result
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation, 'get_silva_addables')
+    def get_all_addables_allowed_in_newssource(self):
+        return [a['name'] for a in self.filtered_meta_types() if self._is_silva_addable(a)]
 
     def _is_silva_addable(self, addable_dict):
         """Given a dictionary from filtered_meta_types, check whether this
