@@ -1,9 +1,17 @@
-<init tal:define="global silva_root here/silva_root;
-  global model request/model; 
-  global view here;
-  global fields python:view.form_subjects_target_audiences.get_fields();
-  global split_render_after string:code;
-  global editable python:model.get_editable()" />
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+  tal:define="global silva_root here/silva_root;
+    model request/model; 
+    view here;
+    fields python:view.form_subjects_target_audiences.get_fields();
+    split_render_after string:code;
+    editable python:model.get_editable()"
+  tal:omit-tag=""
+>
  
 <form method="POST" name="form" action="sta_submit">
 <table class="listing">
@@ -76,3 +84,4 @@ comments here (field description)
 
 <p class="halfline">&nbsp;</p>
 
+</span>

@@ -8,6 +8,11 @@
 ##title=
 ##
 from Products.Formulator.Errors import ValidationError, FormValidationError
+
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
+
 model = context.REQUEST.model
 view = context
 try:
@@ -23,4 +28,7 @@ editable.set_start_datetime(result['start_datetime'])
 editable.set_end_datetime(result['end_datetime'])
 editable.set_location(result['location'])
 
-return view.tab_edit(message_type="feedback", message="AgendaItem-data changed")
+m = _("AgendaItem-data changed")
+msg = unicode(m)
+
+return view.tab_edit(message_type="feedback", message=msg)

@@ -8,6 +8,11 @@
 ##title=
 ##
 from Products.Formulator.Errors import ValidationError, FormValidationError
+
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
+
 model = context.REQUEST.model
 view = context
 try:
@@ -20,4 +25,7 @@ editable = model.get_editable()
 editable.set_subjects(result['subjects'])
 editable.set_target_audiences(result['target_audiences'])
 
-return view.tab_edit(message_type="feedback", message="Data changed")
+m = _("Data changed")
+msg= unicode(m)
+
+return view.tab_edit(message_type="feedback", message=msg)

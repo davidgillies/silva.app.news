@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Thu Dec  9 14:21:47 2004\n"
+"POT-Creation-Date: Thu Dec  9 15:25:33 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -382,7 +382,7 @@ msgid "Embargo Datetime"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:414
-#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:22
+#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:25
 msgid "Subjects"
 msgstr ""
 
@@ -542,8 +542,15 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
 #: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit_items.pt:176
+msgid "select all"
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/edit.pt:204
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
 #: /views/edit/Filter/NewsFilter/edit.pt:226
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
@@ -555,13 +562,6 @@ msgstr ""
 #: /views/edit/Filter/NewsFilter/edit.pt:226
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "select all items: alt-a"
-msgstr ""
-
-#: /views/edit/Filter/AgendaFilter/edit.pt:204
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
-#: /views/edit/Filter/NewsFilter/edit.pt:226
-#: /views/edit/Filter/NewsFilter/edit_items.pt:176
-msgid "select all"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:261
@@ -803,7 +803,19 @@ msgstr ""
 msgid "location"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:40
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/submit.py:31
+msgid "AgendaItem-data changed"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/PlainArticle/submit.py:29
+msgid "Article data changed"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
+msgid "Data changed"
 msgstr ""
 

@@ -1,11 +1,21 @@
-<init tal:define="global silva_root here/silva_root;
-  global model request/model; 
-  global view here;
-  global fields python:view.form.get_fields();
-  global split_render_after string:code;
-  global lastclass string:even;
-  global editable python:model.get_editable()" 
-tal:omit-tag="" />
+<span
+  xml:lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="global silva_root here/silva_root;
+    model request/model; 
+    view here;
+    fields python:view.form.get_fields();
+    split_render_after string:code;
+    lastclass string:even;
+    editable python:model.get_editable()"
+  tal:omit-tag=""
+>
  
 <form method="POST" name="form" action="submit">
 <table class="listing" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -117,3 +127,5 @@ target audiences
 </form>
 
 <p class="halfline">&nbsp;</p>
+
+</span>
