@@ -1,0 +1,147 @@
+<!--
+Copyright (c) 2002 Infrae. All rights reserved.
+See also LICENSE.txt
+Version of this file: $Revision: 1.1 $
+-->
+<span tal:replace="structure here/manage_page_header">Header</span>
+
+<span tal:define="manage_tabs_message options/manage_tabs_message | nothing"
+    tal:replace="structure here/manage_tabs">Tabs</span>
+
+<tal:define define="global view here;
+                    global subject_tree view/subject_tree;
+                    global target_audience_tree view/target_audience_tree;
+                    global common_infos view/common_infos;
+                    global specific_infos view/specific_infos;
+                    global locations view/locations;
+                    " />
+
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
+
+<div class="form-title">Onderwerpen:</div><br />
+<form method="POST" action=".">
+<tal:repeat repeat="subjecttuple subject_tree">
+<tal:define define="subject python:subjecttuple[0]; depth python:int(subjecttuple[1])">
+<input type="checkbox" name="subjects:list" tal:attributes="value subject" class="form-element">
+<span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="subject" class="form-text"></span><br />
+</tal:define>
+</tal:repeat>
+<input type="submit" name="manage_remove_subject:method" value="Onderwerp(en) verwijderen" class="form-element">
+<br /><br />
+<div class="form-title">Onderwerp toevoegen:</div><br />
+<div class="form-text">Onderwerp:</div>
+<input type="text" name="subject"><br />
+<div class="form-text">Plaats onder (parent):</div>
+<select name="parent" class="form-element">
+<option value="" class="form-element">Root (top)</option>
+<tal:repeat repeat="subjecttuple subject_tree">
+<tal:define define="subject python:subjecttuple[0]; depth python:int(subjecttuple[1])">
+<option tal:content="structure python:depth * 2 * '&nbsp;' + subject" tal:attributes="value python:subject" class="form-element"></option>
+</tal:define>
+</tal:repeat>
+</select>
+<input type="submit" value="Toevoegen" name="manage_add_subject:method" class="form-element">
+</form>
+
+</td>
+<td valign="top">
+
+<div class="form-title">Doelgroepen:</div><br />
+<form method="POST" action=".">
+<tal:repeat repeat="tatuple target_audience_tree">
+<tal:define define="target_audience python:tatuple[0]; depth python:int(tatuple[1])">
+<input type="checkbox" name="target_audiences:list" tal:attributes="value target_audience" class="form-element">
+<span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="target_audience" class="form-text"></span><br />
+</tal:define>
+</tal:repeat>
+<input type="submit" name="manage_remove_target_audience:method" value="Doelgroep(en) verwijderen" class="form-element">
+<br /><br />
+<div class="form-title">Doelgroep toevoegen:</div><br />
+<div class="form-text">Doelgroep</div>
+<input type="text" name="target_audience" class="form-element"><br />
+<div class="form-text">Plaats onder (parent):</div>
+<select name="parent" class="form-element">
+<option value="" class="form-element">Root (top)</option>
+<tal:repeat repeat="tatuple target_audience_tree">
+<tal:define define="target_audience python:tatuple[0]; depth python:int(tatuple[1])">
+<option tal:content="structure python:depth * 2 * '&nbsp;' + target_audience" tal:attributes="value python:target_audience" class="form-element"></option>
+</tal:define>
+</tal:repeat>
+</select>
+<input type="submit" value="Toevoegen" name="manage_add_target_audience:method" class="form-element">
+</form>
+
+</td>
+</tr>
+
+<tr><td colspan="2" height="20"><hr /></td></tr>
+
+<tr>
+<td width="50%" valign="top">
+
+<div class="form-title">Nadere informatie algemeen:</div><br />
+<form method="POST" action=".">
+<tal:repeat repeat="item common_infos">
+<input type="checkbox" name="common_infos:list" tal:attributes="value item" class="form-element">
+<span tal:content="item" class="form-text"></span><br />
+</tal:repeat>
+<input type="submit" name="manage_remove_common_info:method" value="Item(s) verwijderen" class="form-element">
+<br /><br />
+<div class="form-title">Item toevoegen:</div><br />
+<div class="form-text">Item:</div>
+<input type="text" name="common_info"><br />
+<input type="submit" value="Toevoegen" name="manage_add_common_info:method" class="form-element">
+</form>
+
+</td>
+<td valign="top">
+
+<div class="form-title">Nadere informatie specifiek:</div><br />
+<form method="POST" action=".">
+<tal:repeat repeat="item specific_infos">
+<input type="checkbox" name="specific_infos:list" tal:attributes="value item" class="form-element">
+<span tal:content="item" class="form-text"></span><br />
+</tal:repeat>
+<input type="submit" name="manage_remove_specific_info:method" value="Item(s) verwijderen" class="form-element">
+<br /><br />
+<div class="form-title">Item toevoegen:</div><br />
+<div class="form-text">Item:</div>
+<input type="text" name="specific_info"><br />
+<input type="submit" value="Toevoegen" name="manage_add_specific_info:method" class="form-element">
+</form>
+
+</td>
+</tr>
+
+<tr><td colspan="2" height="20"><hr /></td></tr>
+
+<tr>
+<td width="50%" valign="top">
+
+<div class="form-title">Locaties:</div><br />
+<form method="POST" action=".">
+<tal:repeat repeat="location locations">
+<input type="checkbox" name="locations:list" tal:attributes="value location" class="form-element">
+<span tal:content="location" class="form-text"></span><br />
+</tal:repeat>
+<input type="submit" name="manage_remove_location:method" value="Locatie(s) verwijderen" class="form-element">
+<br /><br />
+<div class="form-title">Locatie toevoegen:</div><br />
+<div class="form-text">Locatie:</div>
+<input type="text" name="location"><br />
+<input type="submit" value="Toevoegen" name="manage_add_location:method" class="form-element">
+</form>
+
+</td>
+<td width="50%" valign="top">
+
+&nbsp;
+
+</td>
+</tr>
+
+</table>
+
+<span tal:replace="structure here/manage_page_footer">Footer</span>
