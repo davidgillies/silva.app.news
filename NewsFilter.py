@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -20,7 +20,12 @@ from INewsFilter import INewsFilter
 from IAgendaItem import IAgendaItemVersion
 
 class NewsFilter(Filter):
-    """Silva NewsFilter
+    """To enable editors to channel newsitems on his/her site, all items
+    are passed from newssource to newsviewer through filters. On a filter
+    you can choose which newssources you want to channel items for and
+    filter the items on several criteria as well as individually. Also
+    newsfilters can be set up to forward their items to other systems
+    as an RSS stream.
     """
     security = ClassSecurityInfo()
 

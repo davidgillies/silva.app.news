@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 from urllib import urlopen
 import time
@@ -124,7 +124,9 @@ class RSSBrain:
 InitializeClass(RSSBrain)
 
 class RSSViewer(NewsViewer):
-    """Silva RSSViewer, supports RSS versions 0.91 and 1.0
+    """A viewer for (external) RSS streams. Supports RSS versions
+    0.9, 0.91 and 1.0. Also supports images to be sent along with
+    the stream and remote search.
     """
 
     security = ClassSecurityInfo()

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -23,7 +23,7 @@ from Products.Silva.helpers import add_and_edit
 from AgendaItem import AgendaItem, AgendaItemVersion
 
 class PlainAgendaItem (AgendaItem):
-    """A  News item for events. Includes date and location
+    """A News item for events. Includes date and location
        metadata, as well settings for subjects and audiences.
     """
     security = ClassSecurityInfo()
