@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 
 # Zope
 from OFS import SimpleItem
@@ -35,6 +35,8 @@ class Filter(Asset, CatalogPathAware):
 
     _sources = []
 
+    _allowed_source_types = ['Silva News NewsSource']
+
     def __init__(self, id, title):
         Filter.inheritedAttribute('__init__')(self, id, title)
         self._keep_to_path = 1
@@ -56,7 +58,7 @@ class Filter(Asset, CatalogPathAware):
     def find_sources(self):
         """Returns all the sources available for querying
         """
-        query = {'meta_type': ['Silva News NewsSource'], 'sort_on': 'id', 'is_private': 0}
+        query = {'meta_type': self._allowed_source_types, 'sort_on': 'id', 'is_private': 0}
         results = self.service_catalog(query)
         query['is_private'] = 1
         pp = []
