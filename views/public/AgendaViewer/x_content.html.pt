@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<div tal:replace="nothing"> _______ Silva version 0.8.3 _______ </div>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="container/layout_macro.html/macros/layout">
+   
+  <!-- only comments starting with a capital letter appear in the rendered HTML source -->
+  <head>
+    <!-- delete this title slot to use the automatic document title in layout_macro.html -->
+    <title metal:fill-slot="title" tal:content="here/get_title_html">Local or custom title (in content.html)</title>
+    <div metal:fill-slot="meta" tal:omit-tag="">
+      <!-- Meta slot (empty) -->
+    </div>
+    <div metal:fill-slot="style" tal:omit-tag="">
+      <!-- Start style slot -->
+      <link rel="stylesheet" href="frontend.css" type="text/css" />
+      <!-- End style slot -->
+    </div>
+    <div metal:fill-slot="script" tal:omit-tag="">
+      <!-- Script slot (empty) -->
+    </div>
+  </head>
+
+  <body>
+    <div metal:fill-slot="page_header" tal:omit-tag="">
+      <!-- Page header slot (empty) -->
+    </div>
+    <div metal:fill-slot="navigation" class="margins">
+      <!-- Start navigation slot -->
+      <span class="breadcrumb"><span tal:repeat="item python:here.get_breadcrumbs()" tal:omit-tag=""> 
+        <a tal:attributes="href item/absolute_url" tal:content="structure item/get_title_html">Name</a>
+        <span tal:condition="not:repeat/item/end" tal:omit-tag="">/</span></span>
+      </span>
+      <!-- End navigation slot -->
+    </div>
+    <div metal:fill-slot="table_of_contents" tal:omit-tag="">
+      <!-- Table of Contents slot (empty) -->
+    </div>
+    <!-- start Silva content -->
+    <div metal:fill-slot="main" class="margins" 
+      tal:define="view here; view_method view/REQUEST/view | options/view | string:view_news;" tal:content="structure python:getattr(here, view_method)()">
+      <!-- this comment gets replaced by the Silva document content -->
+    </div>
+    <!-- end Silva content -->
+    <div metal:fill-slot="page_footer" tal:omit-tag="">
+      <!-- Page footer slot (empty) -->
+    </div>
+  </body>
+</html>

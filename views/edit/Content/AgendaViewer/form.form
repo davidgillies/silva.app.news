@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<form>
+  <title></title>
+  <name>form</name>
+  <action></action>
+  <enctype>None</enctype>
+  <method>POST</method>
+
+  <groups>
+    <group>
+      <title>Default</title>
+      <fields>
+
+      <field><id>object_title</id> <type>TextAreaField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
+          <external_validator></external_validator>
+          <height type="int">2</height>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Titel</title>
+          <description></description>
+          <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      <field><id>filters</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default>[]</default>
+          <title>Filters</title>
+          <description></description>
+          <external_validator></external_validator>
+          <items>[]</items>
+          <orientation>vertical</orientation>
+        </values>
+        <tales>
+          <items>python: form.REQUEST.model.findfilters_pairs()</items>
+        </tales>
+      </field>
+      <field><id>days_to_show</id> <type>IntegerField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <start></start>
+          <external_validator></external_validator>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">20</display_width>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Aantal berichten</title>
+          <description></description>
+          <end></end>
+          <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      </fields>
+    </group>
+  </groups>
+</form>

@@ -1,0 +1,64 @@
+<init tal:define="global model request/model; global view here; global version options/version" />
+
+<table cellspacing="0" width="100%" border="0">
+
+<tr>
+<td>
+<h2 tal:content="structure python:model.output_convert_html(model.get_title())">Title</h2>
+<h3 tal:content="version/subheader"></h3><br />
+</td>
+<td rowspan="6" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
+<b>Aanmaakdatum:</b><br />
+<span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(model.creation_datetime())"></span><br /><br />
+<b>Hoogleraar:</b><br />
+<span tal:replace="version/academic"></span><br /><br />
+<b>Leerstoel:</b><br />
+<span tal:replace="version/chair"></span><br /><br />
+<b>Locatie:</b><br />
+<span tal:replace="version/location" tal:condition="not: version/location_manual"></span>
+<span tal:replace="version/location_manual" tal:condition="version/location_manual"></span>
+<br /><br />
+<b>Van:</b><br />
+<span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(version.start_datetime())"></span><br /><br />
+<b>Tot:</b><br />
+<span tal:replace="python: version.end_datetime().strftime('%H:%M')"></span><br /><br />
+</td>
+</tr>
+
+<tr>
+<td>
+<span tal:content="version/lead" style="font-weight: bold;"></span>
+</td>
+</tr>
+
+<tr>
+<td>
+<p tal:content="structure python: view.get_content(version)"></p>
+</td>
+</tr>
+
+<tr>
+<td>
+<br />
+<b>Nadere informatie:</b><br />
+<p tal:replace="version/info"></p>
+</td>
+</tr>
+
+<tr>
+<td>
+<br />
+<b>Noot aan de pers:</b><br />
+<p tal:replace="version/pressnote"></p>
+</td>
+</tr>
+
+<tr>
+<td>
+<br />
+<b>Contact:</b><br />
+<p tal:replace="version/specific_contact_info"></p><br /><br />
+<b tal:content="version/contact_info"></b>
+</td>
+</tr>
+</table>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<form>
+  <title></title>
+  <name>subjects_target_audiences_form</name>
+  <action></action>
+  <enctype>None</enctype>
+  <method>POST</method>
+
+  <groups>
+    <group>
+      <title>Default</title>
+      <fields>
+
+      <field><id>subjects</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default>[]</default>
+          <title>Subjects</title>
+          <description></description>
+          <external_validator></external_validator>
+          <items>[]</items>
+          <orientation>vertical</orientation>
+        </values>
+        <tales>
+          <items>python:form.service_news.subject_form_tree()</items>
+        </tales>
+      </field>
+      <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default>[]</default>
+          <title>Target audiences</title>
+          <description></description>
+          <external_validator></external_validator>
+          <items>[]</items>
+          <orientation>vertical</orientation>
+        </values>
+        <tales>
+          <items>python:form.service_news.target_audience_form_tree()</items>
+        </tales>
+      </field>
+      </fields>
+    </group>
+  </groups>
+</form>

@@ -1,0 +1,68 @@
+<tal:block define="global view here;
+                   global model view/REQUEST/model;
+                   global results python:model.get_items();
+                   global silva_root view/silva_root;
+                   " />
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td>
+  <div class="margins">
+    <h2><span class="folder-title">View Agenda</span></h2>
+  </div>
+</td>
+<td align="right">
+<form tal:attributes="action string:." method="post"><input type="text" name="query"><input type="submit" value="Search"></form>
+</td>
+</tr>
+</table>
+
+<tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="2"
+  tal:attributes="cellspacing container/table_cellspacing;
+                  cellpadding container/table_cellpadding;
+                  border container/table_border">
+
+
+<span tal:replace="nothing"> ______________ listing iteration ______________ </span>
+<toc_entry tal:omit-tag=""
+  tal:repeat="obj results">
+<cycle tal:define="oddrow repeat/obj/odd" tal:omit-tag="">
+<tr class="focus-cycle"
+  tal:attributes="class python:test(oddrow, 'focus', 'focus-cycle')">
+
+<span tal:replace="nothing"> _______ title cell _______ </span>
+<td valign="top" align="left">
+<h2 tal:content="structure obj/get_title_html">title</h2>
+</td>
+</tr>
+
+<tr class="focus-cycle">
+<td align="left" valign="top"><b tal:content="obj/lead">Lead</b><br /><br />
+<a href="#" tal:attributes="href obj/getURL">view article</a>
+</td>
+</tr>
+
+</cycle>
+</toc_entry>
+
+<span tal:replace="nothing"> ______________ if no records ______________ </span>
+<check tal:condition="python:len(results) == 0">
+<tr class="divider">
+<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+<tr class="focus-light">
+<td colspan="2">
+There are no articles.
+</td>
+</tr>
+<tr class="divider">
+<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+</check>
+<!-- /iteration -->
+
+</table>
+
+<a href="#" tal:attributes="href string:?view=view_archive">Archive</a>

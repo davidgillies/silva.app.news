@@ -1,0 +1,28 @@
+<init tal:define="global model request/model; global view here; global version options/version" />
+
+<table cellspacing="0" width="100%" border="0">
+
+<tr>
+<td>
+<h2 tal:content="structure python:model.output_convert_html(model.get_title())">Title</h2>
+<h3 style="font-weight: bold;" tal:content="version/subheader">Subheader</h3><br />
+</td>
+<td rowspan="6" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
+<b>Creation date:</b><br />
+<span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(model.creation_datetime())"></span><br /><br />
+</td>
+</tr>
+
+<tr>
+<td>
+<p style="font-weight: bold;" tal:content="version/lead"></p>
+</td>
+</tr>
+
+<tr>
+<td>
+<p tal:content="structure python: view.get_content(version)"></p>
+</td>
+</tr>
+
+</table>

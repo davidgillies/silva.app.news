@@ -1,0 +1,100 @@
+<!-- ___________________________ start index_html ___________________________ -->
+<html metal:use-macro="here/macro_index/macros/master">
+<div metal:fill-slot="main" tal:omit-tag="">
+<!-- ___________________________ start index_html/slot main ___________________________ -->
+
+<dummy tal:omit-tag="" tal:define="dummy python:model.security_trigger()" />
+
+<init tal:define="global silva_root here/silva_root;
+  global model request/model; 
+  global view here;
+  global fields python:view.form.get_fields();
+  global split_render_after string:code;
+  global editable python:model.get_editable()" />
+ 
+<br />
+<table width="100%" cellspacing="0" cellpadding="1" border="0">
+<tr valign="top">
+<td width="16"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="16" height="16" border="0" alt="not editable" /></td>
+<td class="frontend" colspan="3" width="98%">
+<div class="front3">&nbsp;NewsViewer settings</div>
+</td>
+<td width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</table>
+
+<form method="POST" name="form" action="newsviewer_submit">
+<table width="100%" cellspacing="0" cellpadding="3" border="0">
+<tr>
+<td class="transparent" width="16">&nbsp;</td>
+<th align="left">
+Element
+</th>
+<th align="right">
+&nbsp;
+</th>
+<th align="left">
+Content
+</th>
+<th align="left" width="20%">
+Note
+</th>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+
+<fieldset tal:omit-tag=""
+  tal:repeat="field fields">
+<rowset tal:omit-tag=""
+  tal:define="global oddrow repeat/field/odd">
+
+<tr class="focus" valign="top"
+  tal:attributes="class python:test(oddrow, 'focus', 'focus-cycle')">
+<td class="transparent" width="16">&nbsp;</td>
+<td align="right">
+<span tal:replace="python:field['title'].capitalize() + ':'">Title</span>
+</td>
+<td align="right">
+<span class="warning"
+  tal:condition="python:field.is_required()">
+*
+</span>
+<span tal:omit-tag=""
+  tal:condition="not:python:field.is_required()">
+&nbsp;
+</span>
+</td>
+<td align="left">
+<input tal:replace="structure python:field.render(getattr(editable, field.id)())" />
+</td>
+<td>
+<span tal:replace="python:field.get_value('description')">
+comments here (field description)
+</span>&nbsp;
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</rowset>
+
+</fieldset>
+
+<tr class="controls">
+<td class="transparent" width="16">&nbsp;</td>
+<td colspan="4" align="right">
+<input class="button" type="submit"
+       name="form_submitted" value=" change item "
+       tal:attributes="value string: Save settings " />
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</table>
+
+</form>
+
+<p class="halfline">&nbsp;</p>
+
+<!-- ___________________________ end index_html/slot main ___________________________ -->
+</div>
+
+</html>
+<!-- ___________________________ end index_html ___________________________ -->
+

@@ -1,0 +1,132 @@
+<tal:block define="global view here;
+                   global model view/REQUEST/model;
+                   global currentmonth request/month | options/month | view/currentmonth;
+                   global currentyear request/year | options/year | view/currentyear;
+                   global months view/get_months;
+                   global results python:model.get_items_by_date(currentmonth, currentyear);
+                   global user_role view/get_user_role;
+                   global silva_root view/silva_root;
+                   " />
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+<td>
+  <div class="margins">
+    <h2>Archive <span class="folder-title">View Archive</span></h2>
+  </div>
+</td>
+<td align="right">
+<form tal:attributes="action string:." method="post"><input type="text" name="query"><input type="submit" value="Search"></form>
+</td>
+</tr>
+</table>
+
+
+<tal:comment condition="nothing"> __________ date-table __________ </tal:comment>
+<table width="100%" border="0">
+<tr>
+<td><a href="3" tal:content="python: '<< %s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a></td>
+<tal:repeat repeat="month months">
+<tal:define define="id repeat/month/index">
+<td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'border: 1px solid #666666;;', '');">
+<a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a></td>
+</tal:define>
+</tal:repeat>
+<td><a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a></td>
+</tr>
+</table>
+
+<tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+
+<table width="100%" cellspacing="0" cellpadding="3" border="2"
+  tal:attributes="cellspacing container/table_cellspacing;
+                  cellpadding container/table_cellpadding;
+                  border container/table_border">
+
+
+<span tal:replace="nothing"> ______________ table header ______________ </span>
+<tr tal:condition="python:len(results) != 0">
+<th align="left" width="20%" nowrap="1">Date</th>
+<th align="left">View</th>
+<th align="left" width="20%">Author</th>
+</tr>
+
+<span tal:replace="nothing"> ______________ listing iteration ______________ </span>
+<toc_entry tal:omit-tag=""
+  tal:repeat="obj results">
+<cycle tal:define="oddrow repeat/obj/odd" tal:omit-tag="">
+<tr class="focus-cycle"
+  tal:attributes="class python:test(oddrow, 'focus', 'focus-cycle')">
+
+<span tal:replace="nothing"> _______ date _______ </span>
+<td nowrap="1" valign="top" align="left">
+<span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(obj.publication_datetime)" />
+</td>
+
+<span tal:replace="nothing"> _______ title cell _______ </span>
+<td valign="top" align="left">
+<tal:block condition="python:obj.get_title_html != ''">
+<!-- <img style="height:100%" width="32" height="18" align="left"
+  tal:attributes="src string:${silva_root}/globals/pixel.gif" /> -->
+<a class="blacklink" title="View this item"
+  tal:attributes="href string:${obj/getURL}">
+<span tal:content="structure string:${obj/get_title_html}" style="font-size: 14px; font-weight: bold;">title</span>
+</a>
+</tal:block>
+<tal:block condition="python:obj.get_title_html == ''">
+<img style="height:100%" width="32" height="18" align="left"
+  tal:attributes="src string:${silva_root}/globals/pixel.gif" />
+<a class="blacklink" title="View this item"
+  tal:attributes="href string:${obj/getURL}">
+<span tal:replace="obj/id">title</span>
+</a>
+</tal:block>
+</td>
+
+<span tal:replace="nothing"> _______ author _______ </span>
+<td nowrap="1" valign="top" align="left">
+<span tal:replace="python:obj.sec_get_last_author_info['cn']" />
+</td>
+
+</tr>
+
+<tr class="divider">
+<td colspan="3"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+
+</cycle>
+</toc_entry>
+
+<span tal:replace="nothing"> ______________ if no records ______________ </span>
+<check tal:condition="python:len(results) == 0">
+<tr class="divider">
+<td colspan="3"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+<tr class="focus-light">
+<td colspan="3">
+There are no articles for this period.
+</td>
+</tr>
+<tr class="divider">
+<td colspan="3"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+</check>
+<!-- /iteration -->
+
+</table>
+
+<tal:comment condition="nothing"> __________ date-table __________ </tal:comment>
+<table width="100%" border="0">
+<tr>
+<td><a href="3" tal:content="python: '<< %s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a></td>
+<tal:repeat repeat="month months">
+<tal:define define="id repeat/month/index">
+<td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'border: 1px solid #666666;;', '');">
+<a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a></td>
+</tal:define>
+</tal:repeat>
+<td><a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a></td>
+</tr>
+</table>
+
+<a href="#" tal:attributes="href string:?view=view_agenda">Agenda</a>

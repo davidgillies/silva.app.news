@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<form>
+  <title></title>
+  <name>form</name>
+  <action></action>
+  <enctype>None</enctype>
+  <method>POST</method>
+
+  <groups>
+    <group>
+      <title>Default</title>
+      <fields>
+
+      <field><id>object_title</id> <type>TextAreaField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
+          <external_validator></external_validator>
+          <height type="int">2</height>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Title</title>
+          <description></description>
+          <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      <field><id>start_datetime</id> <type>DateTimeField</type>
+        <values>
+          <date_only type="int">0</date_only>
+          <alternate_name></alternate_name>
+          <input_style>text</input_style>
+          <input_order>dmy</input_order>
+          <hidden type="int">0</hidden>
+          <time_separator>:</time_separator>
+          <date_separator>/</date_separator>
+          <external_validator></external_validator>
+          <required type="int">1</required>
+          <default_now type="int">0</default_now>
+          <css_class></css_class>
+          <title>Startdate/time</title>
+          <description></description>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      <field><id>location</id> <type>ListField</type>
+        <values>
+          <size type="int">1</size>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <external_validator></external_validator>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Location</title>
+          <first_item type="int">1</first_item>
+          <description></description>
+          <extra></extra>
+        </values>
+        <tales>
+          <items>python:form.service_news.locations()</items>
+        </tales>
+      </field>
+      <field><id>location_manual</id> <type>TextAreaField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
+          <external_validator></external_validator>
+          <height type="int">5</height>
+          <required type="int">0</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Location (if not in list)</title>
+          <description></description>
+          <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      </fields>
+    </group>
+  </groups>
+</form>
