@@ -1,3 +1,5 @@
+$Revision: 1.3 $
+
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
 
@@ -6,17 +8,21 @@ Meta::
   Valid for:  Silva News 0.8
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.2 $
+  CVS:        $Revision: 1.3 $
 
 Installing Silva News
 
- This package requires Silva 0.8.x (tested with 0.8.4 and 0.8.5)
+  This package requires Silva 0.8.x (tested with 0.8.4 and 0.8.5)
 
- Unpack SilvaNews.tar.gz into your Products-directory. Import silva_news_installer.zexp into
- Zope. Now go to the 'test'-tab of /silva_news_installer/install (in the ZMI) and enter the id
- of your Silva root (usually silva). The product will install itself.
+  Unpack SilvaNews.tar.gz into your Products-directory. Import silva_news_installer.zexp into
+  Zope. Now go to the 'test'-tab of /silva_news_installer/install (in the ZMI) and enter the id
+  of your Silva root (usually silva). The product will install itself.
 
- During the installation process a copy of all objects that are overwritten will be placed
- in /silva_news_installer/backup. The installer might unregister some of Silva's icons,
- which can be fixed by manually merging /silva_news_installer/backup/edit/render_icon with
- <silva_root>/service_view_registry/edit/render_icon.
+  During the installation process a copy of all objects that are overwritten will be placed
+  in /silva_news_installer/backup. The installer might unregister some of Silva's icons,
+  which can be fixed by manually merging /silva_news_installer/backup/edit/render_icon with
+  <silva_root>/service_view_registry/edit/render_icon.
+
+Using Silva News
+
+  For more information on how to use Silva News, see README.txt
