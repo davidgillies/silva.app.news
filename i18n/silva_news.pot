@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Fri Dec 10 14:55:50 2004\n"
+"POT-Creation-Date: Fri Dec 10 15:23:14 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -604,11 +604,6 @@ msgstr ""
 msgid "update"
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:71
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:277
-msgid "month"
-msgstr ""
-
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:82
 msgid "Begin PublicationTable"
 msgstr ""
@@ -846,6 +841,7 @@ msgstr ""
 #: /views/public/NewsFilter/search_news.pt:58
 #: /views/public/NewsViewer/search_news.pt:57
 #: /views/public/NewsViewer/view_news.pt:35
+#: /views/public/RSSAggregator/render_helper.pt:37
 msgid "view article"
 msgstr ""
 
@@ -931,5 +927,18 @@ msgstr ""
 
 #: /views/public/NewsViewer/view_news.pt:70
 msgid "View archive"
+msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:28
+#: /views/public/PlainArticle/render_helper.pt:26
+msgid "Creation date:"
+msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:31
+msgid "Date and time:"
+msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:38
+msgid "Location:"
 msgstr ""
 

@@ -68,7 +68,7 @@
           <tal:repeat repeat="month months">
             <tal:define define="id repeat/month/index">
               <td class="align-center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#"  i18n:translate="" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)">month</a>
+                <a href="#" i18n:translate="" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
               </td>
             </tal:define>
           </tal:repeat>
@@ -274,7 +274,7 @@
           <tal:repeat repeat="month months">
             <tal:define define="id repeat/month/index">
               <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#"  i18n:translate="" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)">month</a>
+                <a href="#"  i18n:translate="" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
               </td>
             </tal:define>
           </tal:repeat>

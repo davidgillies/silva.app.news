@@ -1,8 +1,17 @@
-<tal:block define="view here;
+<span 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="view here;
                    model view/REQUEST/model;
                    result python:model.get_merged_feed_contents();
                    silva_root view/silva_root;
-                   " >
+                   "
+ >
 
   <table class="listing sublisting"> 
     <tr class="top-controls">
@@ -25,7 +34,7 @@
             <b tal:content="structure item/description">Lead</b>
             <br />
           </tal:block>
-          <a tal:attributes="href item/link" tal:condition="item/link | nothing">view article</a>
+          <a tal:attributes="href item/link" tal:condition="item/link | nothing" i18n:translate="">view article</a>
         </td>
       </tr>
 
@@ -35,4 +44,4 @@
     </toc_entry>
 
   </table>
-</tal:block>
+</span>

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Fri Dec 10 14:55:50 2004\n"
+"POT-Creation-Date: Fri Dec 10 15:23:14 2004\n"
 "PO-Revision-Date: 2004-12-09 12:35+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -613,11 +613,6 @@ msgstr "Ausgewählte Einträge in diesem Filter verwenden: alt-u"
 msgid "update"
 msgstr "Erneuern"
 
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:71
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:277
-msgid "month"
-msgstr "Monat"
-
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:82
 msgid "Begin PublicationTable"
 msgstr ""
@@ -863,6 +858,7 @@ msgstr ""
 #: /views/public/NewsFilter/search_news.pt:58
 #: /views/public/NewsViewer/search_news.pt:57
 #: /views/public/NewsViewer/view_news.pt:35
+#: /views/public/RSSAggregator/render_helper.pt:37
 msgid "view article"
 msgstr ""
 
@@ -949,3 +945,19 @@ msgstr ""
 #: /views/public/NewsViewer/view_news.pt:70
 msgid "View archive"
 msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:28
+#: /views/public/PlainArticle/render_helper.pt:26
+msgid "Creation date:"
+msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:31
+msgid "Date and time:"
+msgstr ""
+
+#: /views/public/PlainAgendaItem/render_helper.pt:38
+msgid "Location:"
+msgstr ""
+
+#~ msgid "month"
+#~ msgstr "Monat"

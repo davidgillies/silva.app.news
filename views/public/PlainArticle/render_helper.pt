@@ -1,4 +1,12 @@
-<init tal:define="global model request/model; global view here; global version options/version; global mangle modules/Products/Silva/mangle" tal:omit-tag="" />
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="global model request/model; global view here; global version options/version; global mangle modules/Products/Silva/mangle" tal:omit-tag="" >
 
 <table class="silvatable newstable" cellspacing="0" cellpadding="1" width="100%" border="0">
 
@@ -15,9 +23,11 @@
 <tal:block 
   define="creationdate python: mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStrOptionalTime()"
   condition="python: creationdate != ''">
-<b>Creation date:</b><br />
+<b i18n:translate="">Creation date:</b><br />
 <span tal:replace="structure creationdate"></span><br /><br />
 </tal:block>
 </td>
 </tr>
 </table>
+
+</span>
