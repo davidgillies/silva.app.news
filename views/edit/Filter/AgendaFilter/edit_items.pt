@@ -79,7 +79,7 @@
       </tbody>
     </table>
 
-    <tal:comment condition="nothing" i18n:translate="">Begin PublicationTable</tal:comment>
+    <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
     <table class="listing interlisting">
 

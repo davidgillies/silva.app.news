@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 15:53:10 2004\n"
+"POT-Creation-Date: Tue Dec 14 09:53:59 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -414,11 +414,11 @@ msgid "properties of"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:61
-msgid "change Folder into Publication: alt-c"
+msgid "convert to publication"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_metadata.pt:61
-msgid "convert to publication"
+msgid "change Folder into Publication: alt-c"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_settings.pt:29
@@ -601,10 +601,6 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:254
 #: /views/edit/Filter/NewsFilter/edit_items.pt:233
 msgid "update"
-msgstr ""
-
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:82
-msgid "Begin PublicationTable"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:88
