@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Fri Dec 10 15:31:48 2004\n"
+"POT-Creation-Date: Mon Dec 13 10:18:55 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -816,50 +816,62 @@ msgid "Data changed"
 msgstr ""
 
 #: /views/get_months.py:15
+# Default: "silva_news"
 msgid "Jan"
 msgstr ""
 
 #: /views/get_months.py:16
+# Default: "silva_news"
 msgid "Feb"
 msgstr ""
 
 #: /views/get_months.py:17
+# Default: "silva_news"
 msgid "Mar"
 msgstr ""
 
 #: /views/get_months.py:18
+# Default: "silva_news"
 msgid "Apr"
 msgstr ""
 
 #: /views/get_months.py:19
+# Default: "silva_news"
 msgid "May"
 msgstr ""
 
 #: /views/get_months.py:20
+# Default: "silva_news"
 msgid "Jun"
 msgstr ""
 
 #: /views/get_months.py:21
+# Default: "silva_news"
 msgid "Jul"
 msgstr ""
 
 #: /views/get_months.py:22
+# Default: "silva_news"
 msgid "Aug"
 msgstr ""
 
 #: /views/get_months.py:23
+# Default: "silva_news"
 msgid "Sep"
 msgstr ""
 
 #: /views/get_months.py:24
+# Default: "silva_news"
 msgid "Oct"
 msgstr ""
 
 #: /views/get_months.py:25
+# Default: "silva_news"
 msgid "Nov"
 msgstr ""
 
 #: /views/get_months.py:26
+# Default: "silva_news"
 msgid "Dec"
 msgstr ""
 
@@ -930,6 +942,7 @@ msgid "There are no articles for this period."
 msgstr ""
 
 #: /views/public/AgendaViewer/view_archive.pt:29
+#: /views/public/NewsViewer/view_archive.pt:29
 msgid "Archive of"
 msgstr ""
 
