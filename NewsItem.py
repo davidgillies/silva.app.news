@@ -114,7 +114,7 @@ class NewsItemVersion(Version, CatalogPathAware):
                               'object_title')
     def object_title(self):
         # HACK: happens through acquisition
-        return self.get_title()
+        return self.get_title_editable()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
@@ -161,7 +161,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Returns all data as a flat string for full text-search
         """
         return "%s %s %s %s" % (self.id,
-                                      self.get_title(),
+                                      self.get_title_html(),
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences))
 
@@ -169,6 +169,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Cuts out all the XML-tags, helper for fulltext (for content-objects)
         """
         # FIXME: should take care of CDATA-chunks as well...
+        xmlinput = xmlinput.encode('cp1252')
         while 1:
             ltpos = xmlinput.find('<')
             gtpos = xmlinput.find('>')

@@ -79,7 +79,7 @@ class PlainArticleVersion(NewsItemVersion):
         """Deliver the contents as plain text, for full-text search
         """
         parenttext = PlainArticleVersion.inheritedAttribute('fulltext')(self)
-        content = self._flattenxml(str(self.content))
+        content = self._flattenxml(repr(self.content))
         return "%s %s %s %s" % (parenttext, self._subheader, self._lead, content)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

@@ -50,7 +50,7 @@ class PlainAgendaItemVersion(AgendaItemVersion):
         """Deliver the contents as plain text, for full-text search
         """
         parenttext = PlainAgendaItemVersion.inheritedAttribute('fulltext')(self)
-        content = self._flattenxml(str(self.content))
+        content = self._flattenxml(repr(self.content))
         return "%s %s" % (parenttext, content)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
