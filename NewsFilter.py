@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -54,7 +54,7 @@ class NewsFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_last_items')
-    def get_last_items(self, number, meta_types=None):
+    def get_last_items(self, number, number_is_days=0, meta_types=None):
         """Returns the last self._number_to_show published items
         """
         self.verify_sources()
@@ -69,16 +69,22 @@ class NewsFilter(Filter):
         query['subjects'] = self._subjects.keys()
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
+        if number_is_days:
+            # the number specified must be used to restrict the on number of days instead of the number of items
+            now = DateTime()
+            last_night = DateTime(now.strftime("%Y/%m/%d"))
+            query['publication_datetime'] = {'query': [last_night - number, now], 'usage': 'range:min:max'}
         query['sort_on'] = 'publication_datetime'
         query['sort_order'] = 'descending'
         result = getattr(self, self._catalog)(query)
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
         output = []
-        for i in range(len(filtered_result)):
-            if i < number:
-                output.append(filtered_result[i])
-            else:
-                break
+        if not number_is_days:
+            for i in range(len(filtered_result)):
+                if i < number:
+                    output.append(filtered_result[i])
+                else:
+                    break
 
         return output
 
@@ -118,7 +124,7 @@ class NewsFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')
-    def search_items(self, keywords, meta_types=None):
+    def search_items(self, keywords, number, number_is_days, meta_types=None):
         """Returns the items from the catalog that have keywords in fulltext
         """
         self.verify_sources()
@@ -138,18 +144,28 @@ class NewsFilter(Filter):
         query['subjects'] = self._subjects.keys()
         query['target_audiences'] = self._target_audiences.keys()
         query['meta_type'] = meta_types
+        if number_is_days:
+            # the number specified must be used to restrict the on number of days instead of the number of items
+            now = DateTime()
+            last_night = DateTime(now.strftime("%Y/%m/%d"))
+            query['publication_datetime'] = {'query': [last_night - number, now], 'usage': 'range:min:max'}
         query['sort_on'] = 'publication_datetime'
         query['sort_order'] = 'descending'
         result = getattr(self, self._catalog)(query)
 
-        return [r for r in result if not r.object_path in
+        result =  [r for r in result if not r.object_path in
                 self._excluded_items]
+
+        if not number_is_days:
+            return result[:number]
+        else:
+            return result
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
         # FIXME: This should be generated instead of hard-coded...
-        return ['Silva EUR News Announcement Version', 'Silva EUR News Article Version']
+        return ['Silva EUR News Announcement Version', 'Silva EUR News Article Version', 'Silva EUR News Event Version', 'Silva EUR News Promotion Version', 'Silva EUR News Oration Version', 'Silva EUR News ValedictoryLecture Version']
 
 InitializeClass(NewsFilter)
 
