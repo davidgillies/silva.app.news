@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -56,7 +56,7 @@ class AgendaItemVersion(NewsItemVersion):
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_start_datetime')
+                              'set_end_datetime')
     def set_end_datetime(self, value):
         self._end_datetime = value
         self.reindex_object()
