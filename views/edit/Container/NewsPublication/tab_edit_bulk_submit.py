@@ -9,6 +9,9 @@
 ##
 from Products.Formulator.Errors import ValidationError, FormValidationError
 
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
 view = context
 request = view.REQUEST
 session = request.SESSION
@@ -34,10 +37,13 @@ for path in session['paths']:
                             linklist.append([entry, entry])
                     value = linklist
                 getattr(version, 'set_%s' % key)(value)
-                messages[path] = '%s is updated' % path[-1]
+                m = _('${path} is updated', 'silva_news')
+                m.set_mapping('path':path[-1])
+                messages[path] = unicode(m)
+##                 messages[path] = '%s is updated' % path[-1]
 
 del session['ids']
 del session['fields']
 del session['paths']
 
-return view.tab_edit(message_type='feedback', message=', '.join(messages.values()))
+return view.tab_edit(message_type='feedback', message=u', '.join(messages.values()))

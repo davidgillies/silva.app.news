@@ -7,6 +7,10 @@
 ##parameters=
 ##title=
 ##
+
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
 view = context
 request = view.REQUEST
 model = request.model
@@ -18,7 +22,8 @@ is_private = request.has_key('is_private')
 
 if is_private != current_private:
     model.set_private(is_private)
-    message = 'Settings changed.'
+    m = _('Settings changed.', 'silva_news')
+    message = unicode(m)
     message_type = 'feedback'
     model.sec_update_last_author_info()
 
