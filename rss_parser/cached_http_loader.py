@@ -57,7 +57,10 @@ class CachedHTTPLoader:
             h = HTTPConnection(host, port)
         
         # make the request
-        t = TimeoutWrapper(h.request, ('GET', path), {'headers': headers})
+        method = 'GET'
+        if last_etag or last_modified:
+            method = 'HEAD'
+        t = TimeoutWrapper(h.request, (method, path), {'headers': headers})
         # for now set the timeout to 30 seconds
         if not t.run_with_timeout(30):
             raise TimeoutException, 'The request to %s timed out' % host
@@ -73,6 +76,18 @@ class CachedHTTPLoader:
             data = cached['data']
             wascached = 1
         elif r.status == 200:
+            if method == 'HEAD':
+                # make the requestagain, but this time with GET method instead of HEAD
+                t = TimeoutWrapper(h.request, ('GET', path), {'headers': headers})
+                # for now set the timeout to 30 seconds
+                if not t.run_with_timeout(30):
+                    raise TimeoutException, 'The request to %s timed out' % host
+
+                r = h.getresponse()
+
+                if r.status != 200:
+                    raise HTTPException, 'Errorcode %s returned from the server' % r.status
+
             # return returned data and add info to cache
             data = r.read()
             cached = {}
