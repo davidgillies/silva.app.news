@@ -1,4 +1,4 @@
-$Revision: 1.8 $
+$Revision: 1.9 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,15 +8,25 @@ Meta::
   Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.8 $
+  CVS:        $Revision: 1.9 $
 
 Installing Silva News
 
   This package requires Silva 0.9
 
-  Unpack the SilvaNews.tar.gz package into the Products directory of your Zope installation
-  and restart Zope. Go to the Silva root and click on the 'service_extensions' object. Scroll
-  to the SilvaNews entry and click 'Install'. The product should now be installed correctly.
+  Unpack the SilvaNews.tar.gz package into the Products directory of your Zope 
+  installation and restart Zope. Go to the Silva root and click on the 
+  'service_extensions' object. Scroll to the SilvaNews entry and click 
+  'Install'. The product should now be installed correctly.
+
+  Note: for SilvaNews to work correctly, a script needs to be registered to 
+  cron so it calls a URL in a certain interval that will search Silva for 
+  versions of which the publication status should be updated, and updates that 
+  status. This makes that objects that don't get called directly (only using
+  the catalog, like News does) get their publication status updated, which 
+  would usually happen by calling them through the web (viewing).
+  A helper script to call a URL from cron can be found in the 'utils' 
+  directory of the Silva core package.
 
 Using Silva News
 
