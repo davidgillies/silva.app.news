@@ -1,7 +1,7 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
-from Interfaces import Base
+# $Revision: 1.2 $
+from Interface import Base
 
 class INewsFilter(Base):
     """NewsFilter object, a small object that shows a couple

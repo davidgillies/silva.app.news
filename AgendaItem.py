@@ -5,15 +5,21 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
 from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
+from Products.ParsedXML.ParsedXML import ParsedXML
+
+# Silva interfaces
+from IAgendaItem import IAgendaItem
+from INewsItem import INewsItem
+
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.IVersionedContent import IVersionedContent
 from Products.Silva.helpers import add_and_edit
-from Products.ParsedXML.ParsedXML import ParsedXML
+
+# SilvaNews
 from NewsItem import NewsItem, NewsItemVersion
-from Interfaces import INewsItem, IAgendaItem
 
 class AgendaItem(NewsItem):
     """Silva News AgendaItem, superclass for some agendaitems

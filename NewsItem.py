@@ -1,5 +1,6 @@
 # Python
 from StringIO import StringIO
+
 # Zope
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -7,15 +8,18 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
 from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
+from Products.ParsedXML.ParsedXML import ParsedXML
+
+# Silva interfaces
+from INewsItem import INewsItem
+
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import CataloguedVersionedContent
 from Products.Silva.IVersionedContent import IVersionedContent
 from Products.Silva.helpers import add_and_edit
-from Products.ParsedXML.ParsedXML import ParsedXML
 from Products.Silva.Version import Version
-from Interfaces import INewsItem
 
 # XXX necessary for override of _update_publication_status
 empty_version = (None, None, None)

@@ -1,6 +1,8 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
+
+# Zope
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -8,14 +10,15 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 import OFS
+
+# Silva interfaces
+from INewsItem import INewsItem
+
 # Silva
 from Products.Silva.Asset import Asset
 from Products.Silva.IAsset import IAsset
 import Products.Silva.SilvaPermissions as SilvaPermissions
-# misc
 from Products.Silva.helpers import add_and_edit
-
-from Interfaces import INewsItem
 
 class MetaTypeException(Exception):
     pass
