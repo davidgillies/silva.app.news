@@ -7,4 +7,5 @@
 ##parameters=
 ##title=
 ##
-return "This object has no public view."
+version = context.REQUEST.model
+return context.render_helper(version=version)
