@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 
 from urllib import urlopen
 import time
@@ -14,7 +14,6 @@ from OFS import Folder
 from DateTime import DateTime
 
 from Products.Silva.IContent import IContent
-from Products.Silva.TocSupport import TocSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 from Products.Silva.Document import Document

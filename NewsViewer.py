@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -8,13 +8,12 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS import Folder
 
 from Products.Silva.IContent import IContent
-from Products.Silva.TocSupport import TocSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 from Products.Silva.Document import Document
 from Products.Silva.helpers import add_and_edit
 
-class NewsViewer(Content, TocSupport, Folder.Folder):
+class NewsViewer(Content, Folder.Folder):
     """Silva NewsViewer
     """
 
