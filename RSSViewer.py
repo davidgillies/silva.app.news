@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 
 from urllib import urlopen
 from xml.dom.minidom import parseString
@@ -19,6 +19,14 @@ from Products.Silva.helpers import add_and_edit
 
 from Products.SilvaNews.NewsViewer import NewsViewer
 
+def get_text_from_children(node):
+    """Returns all textnode values concatenated"""
+    retval = ''
+    for n in node.childNodes:
+        if n.nodeType == 3:
+            retval += n.nodeValue.encode('cp1252', 'replace')
+    return retval
+
 class RSSBrain:
     """Wrapper around RSS items so they can be used in the same code that uses ZCatalog NewsItem Brains"""
 
@@ -34,17 +42,11 @@ class RSSBrain:
 
         for node in itemnode.childNodes:
             if node.nodeName == u'title':
-                for textNode in node.childNodes:
-                    if textNode.nodeType == 3:
-                        self.get_title_html += textNode.nodeValue.encode('cp1252', 'replace')
+                self.get_title_html = get_text_from_children(node)
             elif node.nodeName == u'link':
-                for textNode in node.childNodes:
-                    if textNode.nodeType == 3:
-                        self.url += textNode.nodeValue.encode('cp1252', 'replace')
+                self.url = get_text_from_children(node)
             elif node.nodeName == u'description':
-                for textNode in node.childNodes:
-                    if textNode.nodeType == 3:
-                        self.lead += textNode.nodeValue.encode('cp1252', 'replace')
+                self.lead = get_text_from_children(node)
 
     def getURL(self):
         return self.url
@@ -64,13 +66,21 @@ class RSSViewer(NewsViewer):
     def __init__(self, id, title):
         RSSViewer.inheritedAttribute('__init__')(self, id, title)
         self._rss_feed = ''
-        self._rss_title = ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items')
     def get_items(self):
         """Gets the items from the RSS feed
         """
+        # I declare properties here, since they need to be flushed anyway
+        self._rss_title = ''
+        self._rss_link = ''
+        self._rss_description = ''
+        self._rss_copyright = ''
+        self._rss_publication_date = ''
+        self._rss_image_title = ''
+        self._rss_image_url = ''
+        self._rss_image_link = ''
         results = []
         feedxml = urlopen(self._rss_feed).read()
         dom = parseString(feedxml)
@@ -83,23 +93,48 @@ class RSSViewer(NewsViewer):
                 if node.nodeName == u'channel':
                     for n in node.childNodes:
                         if n.nodeName == u'title':
-                            self._rss_title = ''
-                            for t in n.childNodes:
-                                if t.nodeType == 3:
-                                    self._rss_title += t.nodeValue
+                            self._rss_title = get_text_from_children(n)
+                        elif n.nodeName == u'link':
+                            self._rss_link = get_text_from_children(n)
+                        elif n.nodeName == u'description':
+                            self._rss_description = get_text_from_children(n)
+                        elif n.nodeName == u'copyright':
+                            self._rss_copyright = get_text_from_children(n)
+                        elif n.nodeName == u'pubDate':
+                            self._rss_publication_date = get_text_from_children(n)
+                        elif n.nodeName == u'image':
+                            for inode in n.childNodes:
+                                if inode.nodeName == u'title':
+                                    self._rss_image_title = get_text_from_children(inode)
+                                elif inode.nodeName == u'link':
+                                    self._rss_image_link = get_text_from_children(inode)
+                                elif inode.nodeName == u'url':
+                                    self._rss_image_url = get_text_from_children(inode)
                         elif n.nodeName == u'item':
                             results.append(RSSBrain(n))
         elif rssnode.nodeName == u'rdf:RDF':
+            # RSS version 1.0
             for node in rssnode.childNodes:
                 if node.nodeName == u'channel':
-                    print "Found channel node"
                     for n in node.childNodes:
                         if n.nodeName == u'title':
-                            print "Found title node"
-                            self._rss_title = ''
-                            for t in n.childNodes:
-                                if t.nodeType == 3:
-                                    self._rss_title += t.nodeValue
+                            self._rss_title = get_text_from_children(n)
+                        elif n.nodeName == u'link':
+                            self._rss_link = get_text_from_children(n)
+                        elif n.nodeName == u'description':
+                            self._rss_description = get_text_from_children(n)
+                        elif n.nodeName == u'dc:rights':
+                            self._rss_copyright = get_text_from_children(n)
+                        elif n.nodeName == u'dc:date':
+                            self._rss_publication_date = get_text_from_children(n)
+                elif node.nodeName == u'image':
+                    for inode in node.childNodes:
+                        if inode.nodeName == u'title':
+                            self._rss_image_title = get_text_from_children(inode)
+                        elif inode.nodeName == u'link':
+                            self._rss_image_link = get_text_from_children(inode)
+                        elif inode.nodeName == u'url':
+                            self._rss_image_url = get_text_from_children(inode)
                 elif node.nodeName == u'item':
                     results.append(RSSBrain(node))
         return results
@@ -121,6 +156,48 @@ class RSSViewer(NewsViewer):
     def rss_title(self):
         """Returns the title of the RSS feed"""
         return self._rss_title
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_link')
+    def rss_link(self):
+        """Returns the link to the URL of the RSS feed's site"""
+        return self._rss_link
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_description')
+    def rss_description(self):
+        """Returns the description of the RSS feed"""
+        return self._rss_description
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_copyright')
+    def rss_copyright(self):
+        """Returns the copyright notice of the RSS feed"""
+        return self._rss_copyright
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_publication_date')
+    def rss_publication_date(self):
+        """Returns the publication date of the RSS feed"""
+        return self._rss_publication_date
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_image_url')
+    def rss_image_url(self):
+        """Returns the URL of the image (if any)"""
+        return self._rss_image_url
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_image_title')
+    def rss_image_title(self):
+        """Returns the title of the image (if any)"""
+        return self._rss_image_title
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_image_link')
+    def rss_image_link(self):
+        """Returns the URL of the image (if any)"""
+        return self._rss_image_link
 
 InitializeClass(RSSViewer)
 
