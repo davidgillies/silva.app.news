@@ -1,7 +1,7 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.1 $
+Version of this file: $Revision: 1.2 $
 -->
 <span tal:replace="structure here/manage_page_header">Header</span>
 
@@ -59,8 +59,8 @@ Version of this file: $Revision: 1.1 $
 <input type="submit" name="manage_remove_target_audience:method" value="Doelgroep(en) verwijderen" class="form-element">
 <br /><br />
 <div class="form-title">Doelgroep toevoegen:</div><br />
-<div class="form-text">Doelgroep</div>
-<input type="text" name="target_audience" class="form-element"><br />
+<div class="form-text">Doelgroep:</div>
+<input type="text" name="target_audience"><br />
 <div class="form-text">Plaats onder (parent):</div>
 <select name="parent" class="form-element">
 <option value="" class="form-element">Root (top)</option>

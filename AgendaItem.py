@@ -45,6 +45,23 @@ class AgendaItemVersion(NewsItemVersion):
         self._location_manual = ''
 
     # MANIPULATORS
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_start_datetime')
+    def set_start_datetime(self, value):
+        self._start_datetime = value
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_location')
+    def set_location(self, value):
+        self._location = value
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_location_manual')
+    def set_location_manual(self, value):
+        self._location_manual = value
+        self.reindex_object()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -74,7 +91,7 @@ class AgendaItemVersion(NewsItemVersion):
         """Deliver the contents as plain text, for full-text search
         """
         parenttext = AgendaItemVersion.inheritedAttribute('fulltext')(self)
-        return "%s %s %s %s" % (parenttext, self._location, self._location_manual, self._info)
+        return "%s %s %s" % (parenttext, self._location, self._location_manual)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_xml')
@@ -91,6 +108,17 @@ class AgendaItemVersion(NewsItemVersion):
                               'to_summary_xml')
     def to_summary_xml(self, context):
         """Returns a summary of the content as a partial XML-doc (for NewsBundle)
+        """
+        AgendaItemVersion.inheritedAttribute('to_summary_xml')(self, context)
+        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))
+        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
+
+        context.f.write(xml)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'to_small_xml')
+    def to_small_xml(self, context):
+        """Returns a small version of the content as a partial XML-doc (for NewsBundle)
         """
         AgendaItemVersion.inheritedAttribute('to_summary_xml')(self, context)
         xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.strftime("%d-%m-%Y %H:%M:%S"))

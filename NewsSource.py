@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -12,6 +12,7 @@ from Products.Silva.IPublication import IPublication
 from Products.Silva import SilvaPermissions
 #misc
 from Products.Silva.helpers import add_and_edit
+from Products.SilvaNews.INewsItem import INewsItem
 
 class NewsSource(Publication, CatalogPathAware):
     """Source
@@ -67,6 +68,55 @@ class NewsSource(Publication, CatalogPathAware):
         self.reindex_object()
         self._p_changed = 1
         self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'get_fields_for_bulk_editing')
+    def get_fields_for_bulk_editing(self, field_keys, objectids, startpoint=None):
+        """Creates a dictionary of values for each field in field_keys, if the value is None
+        the field should not be shown (the objects do not have the field available at all),
+        if it is a string containing '__DO_NOT_FILL_FIELD__', the field should be created but
+        not filled (some of the objects have the field, but the value is different for them)
+        and if the value is something else, the field should be filled (some of the objects
+        contain the field, and the value is the same for all of them (which is the value of the
+        dictionary-item"""
+        if startpoint is None:
+            startpoint = self
+        versionpaths = []
+        fields = {}
+        for key in field_keys:
+            fields[key] = None
+
+        # walk through the objects, they should be in direct children of this object
+        for item in objectids:
+            currentobj = getattr(startpoint, item)
+            if INewsItem.isImplementedBy(currentobj):
+                version = currentobj.get_editable()
+                versionpaths.append(currentobj.getPhysicalPath())
+                if not version:
+                    # no editable version
+                    continue
+                for key in fields.keys():
+                    if hasattr(version, key):
+                        value = getattr(version, key)()
+                        if fields[key] is None:
+                            fields[key] = value
+                        elif fields[key] != value:
+                            fields[key] = '__DO_NOT_FILL_FIELD__'
+            elif currentobj.implements_container() or currentobj.implements_publication():
+                # this is a folder, so walk through it...
+                morefields, morepaths = self.get_fields_for_bulk_editing(field_keys, currentobj.objectIds(), currentobj)
+                versionpaths += morepaths
+                for key in morefields.keys():
+                    if fields[key] != morefields[key]:
+                        if morefields[key] == '__DO_NOT_FILL_FIELD__':
+                            fields[key] = '__DO_NOT_FILL_FIELD__'
+                        elif morefields[key] is not None and fields[key] is None:
+                            fields[key] = morefields[key]
+                        elif morefields[key] is not None and fields[key] is not None:
+                            fields[key] = '__DO_NOT_FILL_FIELD__'
+        print fields
+
+        return (fields, versionpaths)
 
 InitializeClass(NewsSource)
 

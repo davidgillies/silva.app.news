@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -121,6 +121,22 @@ class NewsViewer(Content, Folder.Folder):
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
             res = obj.get_items_by_date(month, year)
+            results += res
+
+        results = self._remove_doubles(results)
+        results.sort(self._sortresults)
+        return results[:self._number_to_show]
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'search_items')
+    def search_items(self, keywords):
+        """Search the items in the filters
+        """
+        self.verify_filters()
+        results = []
+        for newsfilter in self._filters:
+            obj = self.aq_inner.restrictedTraverse(newsfilter)
+            res = obj.search_items(keywords)
             results += res
 
         results = self._remove_doubles(results)
