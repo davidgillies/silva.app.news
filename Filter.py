@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 
 # Zope
 from OFS import SimpleItem
@@ -227,9 +227,6 @@ class Filter(Asset):
         self.verify_sources()
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
-        else:
-            print 'using meta types argument'
-        print 'meta types:', meta_types
         self.verify_excluded_items()
 
         # replace +'es with spaces so the effect is the same...
@@ -248,7 +245,6 @@ class Filter(Asset):
         result =  [r for r in result if not r.object_path in
                    self._excluded_items]
 
-        print 'res:', [r.meta_type for r in result]
         return result
 
     def _query(self, **kw):
