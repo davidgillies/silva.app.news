@@ -16,7 +16,7 @@ except FormValidationError, e:
     return view.tab_edit(message_type="error", message=view.render_form_errors(e))
 
 model.sec_update_last_author_info()
-model.set_title(result['object_title'])
+model.set_title(context.input_convert(result['object_title']))
 
 if model.number_to_show() != result['number_to_show']:
     model.set_number_to_show(result['number_to_show'])
