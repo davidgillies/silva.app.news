@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Thu Dec  9 15:25:33 2004\n"
+"POT-Creation-Date: Fri Dec 10 14:55:50 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -623,6 +623,7 @@ msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:90
 #: /views/edit/Filter/NewsFilter/edit_items.pt:68
+#: /views/public/AgendaViewer/view_archive.pt:60
 msgid "view"
 msgstr ""
 
@@ -817,5 +818,118 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
 msgid "Data changed"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:21
+msgid "Search Agenda"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:35
+#: /views/public/AgendaViewer/view_agenda.pt:61
+#: /views/public/AgendaViewer/view_archive.pt:146
+#: /views/public/NewsFilter/search_news.pt:34
+#: /views/public/NewsViewer/search_news.pt:34
+#: /views/public/NewsViewer/view_archive.pt:144
+#: /views/public/NewsViewer/view_news.pt:56
+msgid "Do a full text search: alt-s"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:35
+#: /views/public/AgendaViewer/view_archive.pt:146
+#: /views/public/NewsFilter/search_news.pt:34
+#: /views/public/NewsViewer/search_news.pt:34
+msgid "Search"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:57
+#: /views/public/AgendaViewer/view_agenda.pt:38
+#: /views/public/NewsFilter/search_news.pt:58
+#: /views/public/NewsViewer/search_news.pt:57
+#: /views/public/NewsViewer/view_news.pt:35
+msgid "view article"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:69
+#: /views/public/NewsFilter/search_news.pt:71
+#: /views/public/NewsViewer/search_news.pt:71
+msgid "There are no articles corresponding to your query."
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:81
+#: /views/public/AgendaViewer/view_archive.pt:154
+msgid "View Agenda"
+msgstr ""
+
+#: /views/public/AgendaViewer/search_agenda.pt:82
+#: /views/public/AgendaViewer/view_agenda.pt:70
+#: /views/public/NewsViewer/search_news.pt:84
+msgid "View Archive"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_agenda.pt:35
+msgid "Start date/time:"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_agenda.pt:48
+msgid "There are no articles."
+msgstr ""
+
+#: /views/public/AgendaViewer/view_agenda.pt:61
+#: /views/public/NewsViewer/view_archive.pt:144
+#: /views/public/NewsViewer/view_news.pt:56
+msgid "search"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_archive.pt:111
+#: /views/public/NewsViewer/view_archive.pt:110
+msgid "There are no articles for this period."
+msgstr ""
+
+#: /views/public/AgendaViewer/view_archive.pt:29
+msgid "Archive of"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_archive.pt:59
+#: /views/public/NewsViewer/view_archive.pt:59
+msgid "Date"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_archive.pt:61
+#: /views/public/NewsViewer/view_archive.pt:61
+msgid "Author"
+msgstr ""
+
+#: /views/public/AgendaViewer/view_archive.pt:79
+#: /views/public/AgendaViewer/view_archive.pt:87
+#: /views/public/NewsViewer/view_archive.pt:80
+#: /views/public/NewsViewer/view_archive.pt:88
+msgid "View this item"
+msgstr ""
+
+#: /views/public/NewsFilter/search_news.pt:20
+#: /views/public/NewsViewer/search_news.pt:20
+msgid "Search News"
+msgstr ""
+
+#: /views/public/NewsFilter/search_news.pt:56
+#: /views/public/NewsViewer/search_news.pt:55
+msgid "Startdate/time:"
+msgstr ""
+
+#: /views/public/NewsViewer/search_news.pt:83
+#: /views/public/NewsViewer/view_archive.pt:151
+msgid "View News"
+msgstr ""
+
+#: /views/public/NewsViewer/view_archive.pt:60
+msgid "View"
+msgstr ""
+
+#: /views/public/NewsViewer/view_news.pt:47
+msgid "There are no articles available."
+msgstr ""
+
+#: /views/public/NewsViewer/view_news.pt:70
+msgid "View archive"
 msgstr ""
 

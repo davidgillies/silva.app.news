@@ -1,13 +1,21 @@
-<tal:block define="global view here;
-                   global model view/REQUEST/model;
-                   global currentmonth request/month | options/month | view/currentmonth;
-                   global currentyear request/year | options/year | view/currentyear;
-                   global months view/get_months;
-                   global results python:model.get_items_by_date(currentmonth, currentyear);
-                   global user_role view/get_user_role;
-                   global silva_root view/silva_root;
-                   global mangle modules/Products/Silva/mangle;
-                   " />
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="view here;
+              model view/REQUEST/model;
+              currentmonth request/month | options/month | view/currentmonth;
+              currentyear request/year | options/year | view/currentyear;
+              months view/get_months;
+              results python:model.get_items_by_date(currentmonth, currentyear);
+              user_role view/get_user_role;
+              silva_root view/silva_root;
+              mangle modules/Products/Silva/mangle;"
+>
 
 <style type="text/css">
 table.listing a:link {
@@ -48,9 +56,9 @@ table.listing a:visited {
 
 <span tal:replace="nothing"> ______________ table header ______________ </span>
 <tr tal:condition="python:len(results) != 0">
-<th align="left" width="20%" colspan="3" nowrap="1">Date</th>
-<th align="left" colspan="8">View</th>
-<th align="left" width="20%" colspan="3">Author</th>
+  <th i18n:translate="" align="left" width="20%" colspan="3" nowrap="1">Date</th>
+  <th i18n:translate="" align="left" colspan="8">View</th>
+  <th i18n:translate="" align="left" width="20%" colspan="3">Author</th>
 </tr>
 
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
@@ -70,7 +78,7 @@ table.listing a:visited {
 <td valign="top" align="left" colspan="8">
 <tal:block condition="python:object.get_title() != ''">
 <a title="View this item"
-  tal:attributes="href python: object.object().absolute_url()">
+  tal:attributes="href python: object.object().absolute_url()" i18n:attributes="title">
 <b tal:content="object/get_title">title</b>
 </a>
 </tal:block>
@@ -78,7 +86,7 @@ table.listing a:visited {
 <img style="height:100%" width="32" height="18" align="left"
   tal:attributes="src string:${silva_root}/globals/pixel.gif" />
 <a title="View this item"
-  tal:attributes="href python: object.object().absolute_url()">
+  tal:attributes="href python: object.object().absolute_url()" i18n:attributes="title">
 <span tal:replace="obj/id">title</span>
 </a>
 </tal:block>
@@ -99,7 +107,7 @@ table.listing a:visited {
 <td colspan="14"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
 </tr>
 <tr class="odd">
-<td colspan="14">
+<td i18n:translate="" colspan="14">
 There are no articles for this period.
 </td>
 </tr>
@@ -132,12 +140,14 @@ There are no articles for this period.
 <tr class="controls">
 <td class="align-right" colspan="14">
 <form tal:attributes="action model/absolute_url" method="post">
-<input type="text" name="query" />
-<input class="button" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s"/>
+  <input type="text" name="query" />
+  <input class="button" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s" i18n:attributes="value title" />
 </form>
 </td>
 </tr>
       </tbody>
     </table>
     
-<a href="#" tal:attributes="href string:?view=view_news">View News</a>
+<a href="#" tal:attributes="href string:?view=view_news" i18n:translate="">View News</a>
+
+</span>

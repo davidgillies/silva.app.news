@@ -1,9 +1,17 @@
-<tal:block define="global view here;
-                   global model view/REQUEST/model;
-                   global results python:model.get_items();
-                   global silva_root view/silva_root;
-                   global mangle modules/Products/Silva/mangle;
-                   " />
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="view here;
+              model view/REQUEST/model;
+              results python:model.get_items();
+              silva_root view/silva_root;
+              mangle modules/Products/Silva/mangle;"
+>
 
 <h2><span tal:replace="model/get_title">View Agenda</span></h2>
 
@@ -24,9 +32,10 @@
       <tal:block condition="object/get_intro">
         <tal:block content="structure object/get_intro">Lead</tal:block><br /><br />
       </tal:block>
-      <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(object.start_datetime()).toStrOptionalTime()"
+      <span i18n:translate="">Start date/time: </span>
+      <span tal:replace="structure python: '%s<br />' % mangle.DateTime(object.start_datetime()).toStrOptionalTime()"
         tal:condition="object/start_datetime | nothing">DateTime</span>
-      <a tal:attributes="href python:object.object().absolute_url()">view article</a>
+      <a tal:attributes="href python:object.object().absolute_url()" i18n:translate="">view article</a>
       <br /><br />
     </td>
   </tr>
@@ -36,7 +45,7 @@
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
 <check tal:condition="python:len(results) == 0">
 <tr class="odd">
-<td colspan="2">
+<td i18n:translate="" colspan="2">
 There are no articles.
 </td>
 </tr>
@@ -49,7 +58,8 @@ There are no articles.
 <td class="align-right" colspan="2">
 <form tal:attributes="action model/absolute_url" method="post">
 <input type="text" name="query" />&nbsp;
-<input class="button" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s" />
+<input class="button" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s"
+  i18n:attributes="title value" />
 </form>
 </td>
 </tr>
@@ -57,4 +67,6 @@ There are no articles.
 
 </table><br />
 
-<a href="#" tal:attributes="href string:?view=view_archive">View Archive</a>
+<a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">View Archive</a>
+
+</span>

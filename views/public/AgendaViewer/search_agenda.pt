@@ -1,15 +1,24 @@
-<tal:block define="global view here;
-                   global model view/REQUEST/model;
+<span
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+
+  tal:define="view here;
+        model view/REQUEST/model;
                    global results python:model.search_items(view.REQUEST['query']);
                    global silva_root view/silva_root;
                    global mangle modules/Products/Silva/mangle;
-                   " />
+                   "
+>
 
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 <td>
   <div class="margins">
-    <h2><span class="folder-title">Search Agenda</span></h2>
+    <h2><span class="folder-title" i18n:translate="">Search Agenda</span></h2>
   </div>
 </td>
 </tr>
@@ -23,7 +32,8 @@
 <td class="align-right" colspan="2">
 <form tal:attributes="action model/absolute_url" method="post">
 <input type="text" name="query" />&nbsp;
-<input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" />
+<input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s"
+  i18n:attributes="title value" />
 </form>
 </td>
 </tr>
@@ -44,7 +54,7 @@
 <td valign="top">
 <tal:block content="structure obj/get_intro">Lead</tal:block><br /><br />
 <span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/start_datetime">DateTime</span>
-<a href="#" tal:attributes="href python:obj.get_content().absolute_url()">view article</a>
+<a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">view article</a>
 </td>
 </tr>
 </tal:block>
@@ -56,7 +66,7 @@
 <td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
 </tr>
 <tr class="odd">
-<td colspan="2">
+<td colspan="2" i18n:translate="">
 There are no articles corresponding to your query.
 </td>
 </tr>
@@ -68,5 +78,7 @@ There are no articles corresponding to your query.
 
 </table><br />
 
-<a href="#" tal:attributes="href string:?view=view_agenda">View Agenda</a><br />
-<a href="#" tal:attributes="href string:?view=view_archive">View Archive</a>
+<a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">View Agenda</a><br />
+<a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">View Archive</a>
+
+</span>
