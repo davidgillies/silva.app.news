@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
@@ -77,7 +77,7 @@ class NewsViewerTestCase(NewsViewerBaseTestCase):
         self.assert_(self.newsviewer.findfilters() == ['/root/newsfilter'])
 
     def test_findfilters_pairs(self):
-        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter (/root/newsfilter)', '/root/newsfilter')])
+        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter (<a href="/root/newsfilter/edit">/root/newsfilter</a>)', '/root/newsfilter')])
 
     def test_verify_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])
@@ -85,6 +85,8 @@ class NewsViewerTestCase(NewsViewerBaseTestCase):
         self.assert_(self.newsviewer.filters() == [])
 
     def test_get_items(self):
+        self.newsfilter.set_subjects(['test', 'test2'])
+        self.newsfilter.set_target_audiences(['test', 'test2'])
         iops = [i.object_path for i in self.newsviewer.get_items()]
         self.assert_(('', 'root', 'source1', 'art1') in iops)
         self.assert_(('', 'root', 'source1', 'art2') in iops)
