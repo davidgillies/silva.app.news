@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -54,7 +54,7 @@ class PlainAgendaItemVersion(AgendaItemVersion):
         """Deliver the contents as plain text, for full-text search
         """
         parenttext = PlainAgendaItemVersion.inheritedAttribute('fulltext')(self)
-        content = self._flattenxml(repr(self.content))
+        content = self._flattenxml(self.content_xml())
         return "%s %s" % (parenttext, content)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
