@@ -177,7 +177,7 @@ if (document.forms[0]) {
 </script>
 &nbsp;
 <input type="hidden" name="start" tal:attributes="value startat">
-<input class="button" type="submit" name="use_items:method" value="Use items" title="Use selected items in this filter" />
+<input class="button" type="submit" name="use_items:method" value="Update" title="Use selected items in this filter" />
 &nbsp;
 </td>
 </tr>

@@ -187,7 +187,7 @@ if (document.forms[0]) {
 &nbsp;
 <input type="hidden" name="year" value="" tal:attributes="value currentyear">
 <input type="hidden" name="month" value="" tal:attributes="value currentmonth">
-<input class="button" type="submit" name="use_items:method" value="Use items" title="Use selected items in this filter" />
+<input class="button" type="submit" name="use_items:method" value="Update" title="Use selected items in this filter" />
 &nbsp;
 </td>
 <td align="right" colspan="3" nowrap="1">
