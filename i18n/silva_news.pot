@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec  6 10:38:05 2004\n"
+"POT-Creation-Date: Mon Dec  6 15:13:24 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -9,59 +9,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/translation_files/extract.py\n"
 
-#: /views/add/AgendaFilter/form.form:28
-#: /views/add/AgendaViewer/form.form:28
+#: /views/add/AgendaFilter/form.form:31
+#: /views/add/AgendaViewer/form.form:31
 #: /views/add/NewsFilter/form.form:31
-#: /views/add/NewsFolder/form.form:28
-#: /views/add/NewsItem/PlainAgendaItem/form.form:28
-#: /views/add/NewsItem/PlainArticle/form.form:28
+#: /views/add/NewsFolder/form.form:31
+#: /views/add/NewsItem/PlainAgendaItem/form.form:31
+#: /views/add/NewsItem/PlainArticle/form.form:31
 #: /views/add/NewsPublication/form.form:31
-#: /views/add/NewsViewer/form.form:28
-#: /views/add/RSSAggregator/form.form:28
+#: /views/add/NewsViewer/form.form:31
+#: /views/add/RSSAggregator/form.form:31
 msgid "id: no spaces or special characters besides an underscore (_)."
 msgstr ""
 
-#: /views/add/AgendaFilter/form.form:45
-#: /views/add/AgendaViewer/form.form:45
+#: /views/add/AgendaFilter/form.form:48
+#: /views/add/AgendaViewer/form.form:48
 #: /views/add/NewsFilter/form.form:48
-#: /views/add/NewsFolder/form.form:45
-#: /views/add/NewsItem/PlainAgendaItem/form.form:45
-#: /views/add/NewsItem/PlainArticle/form.form:47
+#: /views/add/NewsFolder/form.form:48
+#: /views/add/NewsItem/PlainAgendaItem/form.form:48
+#: /views/add/NewsItem/PlainArticle/form.form:50
 #: /views/add/NewsPublication/form.form:48
-#: /views/add/RSSAggregator/form.form:45
+#: /views/add/RSSAggregator/form.form:48
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:31
 #: /views/edit/VersionedContent/NewsItem/PlainArticle/form.form:31
 msgid "title"
 msgstr ""
 
-#: /views/add/AgendaViewer/form.form:46
+#: /views/add/AgendaViewer/form.form:49
 #: /views/add/NewsFilter/form.form:50
-#: /views/add/NewsFolder/form.form:46
-#: /views/add/NewsItem/PlainAgendaItem/form.form:46
-#: /views/add/NewsItem/PlainArticle/form.form:48
+#: /views/add/NewsFolder/form.form:49
+#: /views/add/NewsItem/PlainAgendaItem/form.form:49
+#: /views/add/NewsItem/PlainArticle/form.form:51
 #: /views/add/NewsPublication/form.form:49
-#: /views/add/NewsViewer/form.form:46
-#: /views/add/RSSAggregator/form.form:46
+#: /views/add/NewsViewer/form.form:49
+#: /views/add/RSSAggregator/form.form:49
 msgid "The title will be publicly visible, and is used as the default link in indexes."
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:101
-#: /views/add/NewsItem/PlainArticle/form.form:82
+#: /views/add/NewsItem/PlainAgendaItem/form.form:104
+#: /views/add/NewsItem/PlainArticle/form.form:85
 #: /views/edit/Filter/AgendaFilter/settingsform.form:41
 #: /views/edit/Filter/NewsFilter/settingsform.form:46
 msgid "target audiences"
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:67
+#: /views/add/NewsItem/PlainAgendaItem/form.form:70
 msgid "start date/time"
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:68
+#: /views/add/NewsItem/PlainAgendaItem/form.form:71
 msgid "Format: d/m/y, time is optional."
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:82
-#: /views/add/NewsItem/PlainArticle/form.form:63
+#: /views/add/NewsItem/PlainAgendaItem/form.form:85
+#: /views/add/NewsItem/PlainArticle/form.form:66
 #: /views/edit/Filter/AgendaFilter/settingsform.form:22
 #: /views/edit/Filter/NewsFilter/settingsform.form:25
 msgid "subjects"
@@ -157,15 +157,15 @@ msgid "There is no content here."
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:246
-#: /views/add/AgendaFilter/form.form:26
-#: /views/add/AgendaViewer/form.form:26
+#: /views/add/AgendaFilter/form.form:29
+#: /views/add/AgendaViewer/form.form:29
 #: /views/add/NewsFilter/form.form:29
-#: /views/add/NewsFolder/form.form:26
-#: /views/add/NewsItem/PlainAgendaItem/form.form:26
-#: /views/add/NewsItem/PlainArticle/form.form:26
+#: /views/add/NewsFolder/form.form:29
+#: /views/add/NewsItem/PlainAgendaItem/form.form:29
+#: /views/add/NewsItem/PlainArticle/form.form:29
 #: /views/add/NewsPublication/form.form:29
-#: /views/add/NewsViewer/form.form:26
-#: /views/add/RSSAggregator/form.form:26
+#: /views/add/NewsViewer/form.form:29
+#: /views/add/RSSAggregator/form.form:29
 # Default: ""
 msgid "id"
 msgstr ""
@@ -279,7 +279,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:64
 #: /views/edit/Container/NewsPublication/tab_edit.pt:61
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
-#: /views/edit/Content/edit.pt:58
+#: /views/edit/Content/edit.pt:65
 msgid "settings"
 msgstr ""
 
@@ -320,7 +320,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
 #: /views/edit/Filter/NewsFilter/edit.pt:153
-#: /views/add/NewsViewer/form.form:45
+#: /views/add/NewsViewer/form.form:48
 #: /views/edit/Container/NewsPublication/form.form:29
 msgid "Title"
 msgstr ""
