@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.20 $
+# $Revision: 1.21 $
 
 """Install and Uninstall for Silva News
 """
@@ -64,8 +64,6 @@ def registerViews(reg):
                  'Silva News Publication', ['edit', 'Container', 'NewsPublication'])
     reg.register('edit',
                  'Silva News Viewer', ['edit', 'Content', 'NewsViewer'])
-##     reg.register('edit',
-##                  'Silva RSS Viewer', ['edit', 'Content', 'RSSViewer'])
     reg.register('edit',
                  'Silva RSS Aggregator', ['edit', 'Content', 'RSSAggregator'])
     reg.register('edit',
@@ -81,7 +79,6 @@ def registerViews(reg):
                  'Silva News Filter', ['public', 'NewsFilter'])
     reg.register('public', 'Silva News Publication', ['public', 'NewsPublication'])
     reg.register('public', 'Silva News Viewer', ['public', 'NewsViewer'])
-##     reg.register('public', 'Silva RSS Viewer', ['public', 'RSSViewer'])
     reg.register('public', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
     reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
     reg.register('public', 'Silva Article', ['public', 'PlainArticle'])
@@ -91,7 +88,6 @@ def registerViews(reg):
     reg.register('add', 'Silva News Filter', ['add', 'NewsFilter'])
     reg.register('add', 'Silva News Publication', ['add', 'NewsPublication'])
     reg.register('add', 'Silva News Viewer', ['add', 'NewsViewer'])
-##     reg.register('add', 'Silva RSS Viewer', ['add', 'RSSViewer'])
     reg.register('add', 'Silva RSS Aggregator', ['add', 'RSSAggregator'])
     reg.register('add', 'Silva Agenda Viewer', ['add', 'AgendaViewer'])
     reg.register('add', 'Silva Article', ['add', 'NewsItem', 'PlainArticle'])
@@ -105,7 +101,6 @@ def unregisterViews(reg):
     reg.unregister('edit', 'Silva News Filter')
     reg.unregister('edit', 'Silva News Publication')
     reg.unregister('edit', 'Silva News Viewer')
-    reg.unregister('edit', 'Silva RSS Viewer')
     reg.unregister('edit', 'Silva RSS Aggregator')
     reg.unregister('edit', 'Silva Agenda Viewer')
     reg.unregister('edit', 'Silva Article')
@@ -115,7 +110,6 @@ def unregisterViews(reg):
     reg.unregister('public', 'Silva News Filter')
     reg.unregister('public', 'Silva News Publication')
     reg.unregister('public', 'Silva News Viewer')
-    reg.unregister('public', 'Silva RSS Viewer')
     reg.unregister('public', 'Silva RSS Aggregator')
     reg.unregister('public', 'Silva Agenda Viewer')
     reg.unregister('public', 'Silva Article')
@@ -125,7 +119,6 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva News Filter')
     reg.unregister('add', 'Silva News Publication')
     reg.unregister('add', 'Silva News Viewer')
-    reg.unregister('add', 'Silva RSS Viewer')
     reg.unregister('add', 'Silva RSS Aggregator')
     reg.unregister('add', 'Silva Agenda Viewer')
     reg.unregister('add', 'Silva Article')
@@ -226,7 +219,6 @@ def setupMetadata(root):
             {'type': 'Silva News Filter', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva News Publication', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva News Viewer', 'chain': 'silva-content, silva-extra'},
-            {'type': 'Silva RSS Viewer', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva RSS Aggregator', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva Agenda Viewer', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva Article Version', 'chain': 'silva-content, silva-extra'},
@@ -248,7 +240,6 @@ def configureSecurity(root):
         'Add Silva News Filters',
         'Add Silva News Publications',
         'Add Silva News Viewers',
-##         'Add Silva RSS Viewers',
         'Add Silva RSS Aggregators',
         ]
 
@@ -264,7 +255,6 @@ def configureAddables(root):
                         'Silva News Filter',
                         'Silva News Publication',
                         'Silva News Viewer',
-##                         'Silva RSS Viewer',
                         'Silva RSS Aggregator',
                         'Silva Agenda Viewer'
                         ]
