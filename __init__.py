@@ -1,48 +1,7 @@
-import Event, Article, Announcement, AgendaFilter, NewsFilter, ServiceNews
-import NewsSource, NewsViewer, AgendaViewer, NewsBundle
+import AgendaFilter, NewsFilter, ServiceNews
+import NewsSource, NewsViewer, AgendaViewer
 
 def initialize(context):
-    context.registerClass(
-        Event.Event,
-        constructors = (Event.manage_addEventForm,
-                        Event.manage_addEvent),
-        icon="www/silvaresolution.gif"
-        )
-
-    context.registerClass(
-        Event.EventVersion,
-        constructors = (Event.manage_addEventVersionForm,
-                        Event.manage_addEventVersion),
-        icon="www/silvaresolutionversion.gif"
-        )
-
-    context.registerClass(
-        Article.Article,
-        constructors = (Article.manage_addArticleForm,
-                        Article.manage_addArticle),
-        icon="www/silvaresolution.gif"
-        )
-
-    context.registerClass(
-        Article.ArticleVersion,
-        constructors = (Article.manage_addArticleVersionForm,
-                        Article.manage_addArticleVersion),
-        icon="www/silvaresolutionversion.gif"
-        )
-
-    context.registerClass(
-        Announcement.Announcement,
-        constructors = (Announcement.manage_addAnnouncementForm,
-                        Announcement.manage_addAnnouncement),
-        icon="www/silvaresolution.gif"
-        )
-
-    context.registerClass(
-        Announcement.AnnouncementVersion,
-        constructors = (Announcement.manage_addAnnouncementVersionForm,
-                        Announcement.manage_addAnnouncementVersion),
-        icon="www/silvaresolutionversion.gif"
-        )
 
     context.registerClass(
         AgendaFilter.AgendaFilter,
@@ -86,9 +45,3 @@ def initialize(context):
         icon="www/silvaresolution.gif"
         )
 
-    context.registerClass(
-        NewsBundle.NewsBundle,
-        constructors = (NewsBundle.manage_addNewsBundleForm,
-                        NewsBundle.manage_addNewsBundle),
-        icon="www/silvaresolution.gif"
-        )
