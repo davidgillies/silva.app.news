@@ -20,7 +20,7 @@
 <table width="100%" cellspacing="0" cellpadding="3" border="2" class="plain">
 
 <tr class="topcontrols" valign="bottom">
-<td style="align-right" colspan="2">
+<td class="align-right" colspan="2">
 <form tal:attributes="action model/absolute_url" method="post">
 <input type="text" name="query" />&nbsp;
 <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" />

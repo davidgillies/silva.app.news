@@ -18,7 +18,7 @@ table.listing a:visited {
 }
 </style>
 
-<h2 style="margin-bottom:0.5em">Archive of <span tal:replace="model/get_title">View Archive</span></h2>
+<h2>Archive of <span tal:replace="model/get_title">View Archive</span></h2>
 
 <table class="listing">
    <tr class="divider">
@@ -132,8 +132,8 @@ There are no articles for this period.
 <tr class="controls">
 <td class="align-right" colspan="14">
 <form tal:attributes="action model/absolute_url" method="post">
-<input style="border-width:1px" type="text" name="query" />
-<input class="button" style="border:1px solid #6bb591;" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s"/>
+<input type="text" name="query" />
+<input class="button" type="submit" value="search" title="Do a full text search: alt-s" accesskey="s"/>
 </form>
 </td>
 </tr>

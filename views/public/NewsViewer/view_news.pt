@@ -5,7 +5,7 @@
                    global mangle modules/Products/Silva/mangle;
                    " />
 
-<h2 style="margin-bottom:0.4em"><span tal:replace="model/get_title">View News</span></h2>
+<h2><span tal:replace="model/get_title">View News</span></h2>
 
 <table class="listing">
   <tr class="divider">
@@ -18,12 +18,10 @@
   <tal:block define="obj python:brain.getObject()">
 
   <tr class="even">
-    <td style="border-bottom-width:2px;">
-      <h4 style="margin-top:0.5em"
-        tal:content="structure obj/get_title">title</h4>
-      <h5 style="margin-top:0.3em"
-        tal:content="structure obj/subheader"
-        tal:condition="obj/subheader">subheader</h5>
+    <td>
+      <h4 tal:content="structure obj/get_title">title</h4>
+      <h5 tal:content="structure obj/subheader"
+          tal:condition="obj/subheader">subheader</h5>
       <b tal:content="structure string:${obj/lead}<br />"
         tal:condition="obj/lead">Lead</b>
       <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()"
@@ -48,11 +46,8 @@
   <tr class="controls">
     <td class="align-right">
       <form tal:attributes="action model/absolute_url" method="post">
-        <input style="border-width:1px" 
-          type="text" 
-          name="query" />&nbsp;
+        <input type="text" name="query" />&nbsp;
         <input class="button"
-          style="border:1px solid #6bb591;"
           type="submit"
           value="search"
           title="Do a full text search: alt-s"
