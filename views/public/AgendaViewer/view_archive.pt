@@ -62,7 +62,7 @@ table.listing a:visited {
 
 <span tal:replace="nothing"> _______ date _______ </span>
 <td nowrap="1" valign="top" align="left" colspan="3">
-<span tal:replace="structure python:mangle.DateTime(object.publication_datetime()).toStr()" />
+<span tal:replace="structure python:mangle.DateTime(object.publication_datetime()).toStrOptionalTime()" />
 </td>
 
 <span tal:replace="nothing"> _______ title cell _______ </span>

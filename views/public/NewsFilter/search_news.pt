@@ -45,7 +45,7 @@
 <tr class="focus-cycle">
 <td align="left" valign="top">
 <b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStr()" tal:condition="obj/start_datetime | nothing">DateTime</span>
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/start_datetime | nothing">DateTime</span>
 <a href="#" tal:attributes="href python: obj.object().absolute_url()">view article</a>
 </td>
 </tr>

@@ -27,7 +27,7 @@
         tal:condition="object/subheader">subheader</h5>
       <b tal:content="structure string:${object/lead}<br />"
         tal:condition="object/lead">Lead</b>
-      <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(object.start_datetime()).toStr()"
+      <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(object.start_datetime()).toStrOptionalTime()"
         tal:condition="object/start_datetime | nothing">DateTime</span>
       <a tal:attributes="href python:object.object().absolute_url()">view article</a>
       <br /><br />

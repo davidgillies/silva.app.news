@@ -44,7 +44,7 @@
 <tr class="even">
 <td valign="top">
 <b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStr()" tal:condition="obj/start_datetime">DateTime</span>
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/start_datetime">DateTime</span>
 <a href="#" tal:attributes="href python:obj.get_content().absolute_url()">view article</a>
 </td>
 </tr>

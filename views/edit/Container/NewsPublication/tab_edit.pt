@@ -235,7 +235,7 @@
                     <tal:block replace="nothing">
                       _______ id cell _______
                     </tal:block>
-                    <td>
+                    <td style="white-space: nowrap">
                       <a class="icon"
                         tal:attributes="
                           href python:here.get_editor_link(item);

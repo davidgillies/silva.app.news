@@ -20,9 +20,9 @@
 <span tal:replace="structure creationdate"></span><br /><br />
 </tal:block>
 <b>Date and time:</b><br />
-Start: <span tal:replace="structure python: mangle.DateTime(version.start_datetime()).toStr()"></span><br />
+Start: <span tal:replace="structure python: mangle.DateTime(version.start_datetime()).toStrOptionalTime()"></span><br />
 <tal:block condition="version/end_datetime">
-End: <span tal:replace="structure python: mangle.DateTime(version.end_datetime()).toStr()"></span><br />
+End: <span tal:replace="structure python: mangle.DateTime(version.end_datetime()).toStrOptionalTime()"></span><br />
 </tal:block>
 <br />
 <tal:block condition="version/location">
