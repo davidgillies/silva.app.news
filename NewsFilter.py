@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.16 $
+# $Revision: 1.17 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -16,6 +16,7 @@ from Products.Silva.helpers import add_and_edit
 
 from Filter import Filter, MetaTypeException
 from INewsItem import INewsItemVersion
+from INewsFilter import INewsFilter
 from IAgendaItem import IAgendaItemVersion
 
 class NewsFilter(Filter):
@@ -27,6 +28,7 @@ class NewsFilter(Filter):
 
     search = ViewAttribute('public', 'index_html')
 
+    __implements__ = INewsFilter
 
     # backward compatiblitly
     _rss_description = ''

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 # Python
 from StringIO import StringIO
@@ -18,7 +18,6 @@ from Products.ParsedXML.ParsedXML import ParsedXML
 from INewsItem import INewsItem, INewsItemVersion
 
 # Silva
-from Products.Silva.EditorSupportNested import EditorSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import CatalogedVersionedContent
 from Products.Silva.IVersionedContent import IVersionedContent
@@ -28,7 +27,7 @@ from Products.Silva.Version import Version
 # XXX necessary for override of _update_publication_status
 empty_version = (None, None, None)
 
-class NewsItem(CatalogedVersionedContent, EditorSupport):
+class NewsItem(CatalogedVersionedContent):
     """Silva NewsItem, superclass for all kinds of newsitems.
     """
     security = ClassSecurityInfo()
@@ -135,7 +134,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         content = self.content
         for child in content.childNodes[0].childNodes:
             if child.nodeName == u'heading':
-                return self.render_heading_as_html(child)
+                return self.service_editorsupport.render_heading_as_html(child)
         return ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -146,7 +145,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         content = self.content
         for child in content.childNodes[0].childNodes:
             if child.nodeName == u'p':
-                return self.render_text_as_html(child)
+                return self.service_editorsupport.render_text_as_html(child)
         return ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
