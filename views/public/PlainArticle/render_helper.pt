@@ -8,7 +8,7 @@
 </td>
 <td rowspan="3" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
 <b>Creation date:</b><br />
-<span tal:replace="structure python:mangle.DateTime(view.get_metadata_element('silva-extra', 'creationtime')).toStr()"></span><br /><br />
+<span tal:replace="structure python:mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStr()"></span><br /><br />
 </td>
 </tr>
 
