@@ -1,4 +1,4 @@
-$Revision: 1.5 $
+$Revision: 1.6 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,7 +8,7 @@ Meta::
   Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.5 $
+  CVS:        $Revision: 1.6 $
 
 Silva News
 
@@ -53,24 +53,8 @@ Using Silva News
     except it doesn't have a default document or view and can not contain
     anything other then newsitems and newssources (adding newssources to
     other newssources allows for a more structured setup of the
-    newssource). 
-  
-  List tab
-  
-    You can add newsitems by choosing a specific type from the addables
-    menu in this tab. Newssources also have a tab not available in other
-    containers, called 'lists'. This tab allows managing of (currently) one
-    list of locations. This works in the same way as managing lists in
-    service_news: you can add an item by filling in the textfield and
-    clicking on 'add' and remove one by checking the checkbox in front of
-    it and clicking on 'remove'. This list of locations will be used in the
-    newsitems, where authors of agendaitems (a specific type of newsitem
-    that has datafields for a date/time when the event starts and the
-    location of the event) can choose from the items added here. Note that
-    this list must be filled in (at least partially) before authors can
-    actually edit agendaitems, since the location datafield is a required
-    field in the edit-forms of agendaitems (in other words: add at least
-    one item to this list to make the system function correctly). 
+    newssource).You can add newsitems by choosing a specific type from the
+    addables menu in this tab.
 
   Metadata tab
 
@@ -81,7 +65,7 @@ Using Silva News
     'private', make it available only to for example 1 department.
 
   Adding news items
-  
+
     Now authors can add newsitems. As stated before, there are two types of
     newsitems: plain newsitems and agendaitems. The main differences are
     that agendaitems must contain a date/time on which the event described
@@ -96,16 +80,16 @@ Using Silva News
     routing the items to newsviewers.
 
   Adding news filters
-  
+
     The next thing to do to make the system work is adding one or more
     news- and agendafilters. These are objects used by editors or chief-
     editors to filter a stream of newsitems. The items can be filtered on
     subject and target audience (so for instance a newsfilter can route
     only newsitems with a specific subject or meant for a specific target
     audience to the viewers) and/or on individual newsitems.
-  
+
   The Sources tab
-  
+
     The edit tab of a newsfilter (called 'Sources' instead of 'Edit') shows
     a list of all available newssources (excluding the one made private by
     checking the 'restrict access' checkbox that are not in the same folder
@@ -119,8 +103,8 @@ Using Silva News
     service_news again, and in newsfilters also a couple of radiobuttons to
     select whether the filter should route agendaitems as well as
     newsitems. These criteria can be used to distribute news- and
-    agendaitems in different ways across the Silva instance to newsviewers. 
-  
+    agendaitems in different ways across the Silva instance to newsviewers.
+
     For example: a number of different newssources
     can now contain both news- and agendaitems of different subjects and
     targeting different audiences, and the newsfilters filter and
