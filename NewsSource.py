@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -37,6 +37,11 @@ class NewsSource(Publication, CatalogPathAware):
     def manage_beforeDelete(self, item, container):
         NewsSource.inheritedAttribute('manage_beforeDelete')(self, item, container)
         self.unindex_object()
+
+    def is_published(self):
+        """Returns None, so the source is not shown in TOC's, even if they contain
+        published items"""
+        return None
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')

@@ -1,18 +1,19 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.7 $
+# $Revision: 1.8 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from OFS import Folder
 
 from Products.Silva.IContent import IContent
+from Products.Silva.TocSupport import TocSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 from Products.Silva.Document import Document
 from Products.Silva.helpers import add_and_edit
 
-class NewsViewer(Content, Folder.Folder):
+class NewsViewer(Content, TocSupport, Folder.Folder):
     """Silva NewsViewer
     """
 
@@ -25,6 +26,10 @@ class NewsViewer(Content, Folder.Folder):
         self._number_to_show = 25
         self._number_is_days = 0
         self._filters = []
+
+    def is_published(self):
+        """Returns true, is used to let the viewer show up in TOC's"""
+        return 1
 
     meta_type = 'Silva NewsViewer'
 
