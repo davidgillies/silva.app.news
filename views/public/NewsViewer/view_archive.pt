@@ -84,7 +84,7 @@
 
 <span tal:replace="nothing"> _______ author _______ </span>
 <td nowrap="1" valign="top" align="left">
-<span tal:replace="python:obj.sec_get_last_author_info['cn']" />
+<span tal:replace="python:obj.last_author_fullname" />
 </td>
 
 </tr>

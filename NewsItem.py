@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.19 $
+# $Revision: 1.20 $
 
 # Python
 from StringIO import StringIO
@@ -191,6 +191,15 @@ class NewsItemVersion(Version, CatalogPathAware):
                               'info_item')
     def info_item(self):
         return self._info_item
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'last_author_fullname')
+    def last_author_fullname(self):
+        """Returns the userid of the last author, to be used in combination with the ZCatalog.
+        The data this method returns can, in opposite to the sec_get_last_author_info data,
+        be stored in the ZCatalog without any problems.
+        """
+        return self.sec_get_last_author_info().fullname()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
