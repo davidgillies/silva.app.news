@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.28 $
+# $Revision: 1.29 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -67,6 +67,7 @@ def quote_xml ( data ):
 
 RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n' 
               '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
+              'xmlns:silvanews="http://infrae.com/namespaces/silvanews" '
               'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://purl.org/rss/1.0/">\n')
 
 class NewsViewer(Content, Folder.Folder):
@@ -300,6 +301,22 @@ class NewsViewer(Content, Folder.Folder):
                   quote_xml(mdbinding.get('silva-extra', 'creator')))
         xml.write('<dc:date>%s</dc:date>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'creationtime').HTML4()))
+                  
+        # SilvaNews specific elements
+        if hasattr(item, 'location'):
+            xml.write('<silvanews:location>%s</silvanews:location>\n' %
+                  quote_xml(item.location()))
+
+        if hasattr(item, 'start_datetime'):
+            xml.write('<silvanews:startdt>%s</silvanews:startdt>\n' %
+                  quote_xml(item.start_datetime().HTML4()))
+
+        if hasattr(item, 'end_datetime'):
+            edt = item.end_datetime()
+            if edt:
+                xml.write('<silvanews:enddt>%s</silvanews:enddt>\n' %
+                    quote_xml(item.end_datetime().HTML4()))
+
         xml.write('</item>\n')
         return
 
