@@ -34,8 +34,8 @@ def registerViews(reg):
     reg.register('edit', 'Silva News PlainArticle', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
     reg.register('edit', 'Silva News PlainAgendaItem', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
     # public
-    reg.register('public', 'Silva AgendaFilter', ['public', 'Filter', 'AgendaFilter'])
-    reg.register('public', 'Silva NewsFilter', ['public', 'Filter', 'NewsFilter'])
+    reg.register('public', 'Silva AgendaFilter', ['public', 'AgendaFilter'])
+    reg.register('public', 'Silva NewsFilter', ['public', 'NewsFilter'])
     reg.register('public', 'Silva NewsSource', ['public', 'NewsSource'])
     reg.register('public', 'Silva NewsViewer', ['public', 'NewsViewer'])
     reg.register('public', 'Silva AgendaViewer', ['public', 'AgendaViewer'])

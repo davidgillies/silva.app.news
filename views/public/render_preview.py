@@ -1,4 +1,4 @@
-## Script (Python) "currentyear"
+## Script (Python) "render_preview"
 ##bind container=container
 ##bind context=context
 ##bind namespace=
@@ -7,4 +7,4 @@
 ##parameters=
 ##title=
 ##
-return DateTime().year()
+return "This object is not viewable"
