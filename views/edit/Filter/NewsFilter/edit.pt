@@ -1,4 +1,12 @@
 <html tal:omit-tag=""
+  lang="en"
+  xml:lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
   tal:define="
     view here;
     model request/model;
@@ -66,7 +74,7 @@
               <span style="text-transform:lowercase;"
                 tal:content="model/meta_type">Meta type</span> 
               &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-              general settings
+              <span i18n:translate="">general settings</span>
             </h2>
           </td>
         </tr>
@@ -75,9 +83,9 @@
       <!-- ______________ table header ______________ -->
       <tbody>
         <tr>
-          <th align="left" width="15%" nowrap="1">Element</th>
-          <th align="left" width="40%">Content</th>
-          <th align="left">Note</th>
+          <th i18n:translate="" align="left" width="15%" nowrap="1">Element</th>
+          <th i18n:translate="" align="left" width="40%">Content</th>
+          <th i18n:translate="" align="left">Note</th>
         </tr>
 
         <!-- ______________ form content ____________ -->
@@ -110,6 +118,7 @@
               value=" save settings "
               title="access key: alt-s"
               accesskey="s"
+              i18n:attributes="title value"
             />
           </td>
         </tr>
@@ -130,7 +139,7 @@
             <h2>
               <img tal:replace="structure python:view.render_icon(model)" />
               &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-              sources
+              <span i18n:translate="">sources</span>
             </h2>
           </td>
         </tr>
@@ -139,9 +148,9 @@
       <span tal:replace="nothing"> ______________ table header ______________ </span>
       <tbody>
         <tr tal:condition="python:len(sources) != 0">
-          <th align="left" width="3%" nowrap="1">In use</th>
-          <th align="left" width="40%">Id</th>
-          <th align="left">Title</th>
+          <th i18n:translate="" align="left" width="3%" nowrap="1">In use</th>
+          <th i18n:translate="" align="left" width="40%">Id</th>
+          <th i18n:translate="" align="left">Title</th>
         </tr>
 
         <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
@@ -160,13 +169,13 @@
                 <td nowrap="1">
                   <input type="checkbox" name="cb:list" value="value"
                       tal:attributes="value string:cb_${id}; checked source/check_checkbox" />
-                  <a href="edit" title="Edit this source"
+                  <a href="edit" title="Edit this source" i18n:attributes="title"
                       tal:attributes="href string:${object_url}/edit/tab_edit"><img tal:replace="structure python:view.render_icon(object)" /></a>
                 </td>
 
                 <span tal:replace="nothing"> _______ id cell _______ </span>
                 <td>
-                  <a title="Edit this item"
+                  <a title="Edit this item" i18n:attributes="title"
                     tal:attributes="href string:${object_url}/edit"
                     tal:content="object_url">id</a>
                 </td>
@@ -177,7 +186,7 @@
                     <span tal:replace="structure string:${obj/get_title}">title</span>
                   </tal:block>
                   <span class="warning" tal:condition="not: source/check_checkbox">
-                    &nbsp;(not activated)
+                    &nbsp;<span i18n:translate="">(not activated)</span>
                   </span>
                   <tal:block condition="python:obj.get_title == ''">
                     &nbsp;
@@ -194,7 +203,7 @@
         <check tal:condition="python:len(sources) == 0 and not model.get_default()">
           <tr class="focus-light">
             <td colspan="3">
-              <i>There are no newssources available.</i>
+              <i i18n:translate="">There are no newssources available.</i>
             </td>
           </tr>
           <tr class="divider">
@@ -261,7 +270,7 @@
               </script>
               &nbsp;
               <input type="hidden" name="start" tal:attributes="value startat">
-              <input class="button" type="submit" name="use_sources:method" value="update sources" title="Use selected sources in this filter: alt-u" accesskey="u" />
+              <input class="button" type="submit" name="use_sources:method" value="update sources" title="Use selected sources in this filter: alt-u" accesskey="u"  i18n:attributes="title value"/>
             </td>
           </tr>
 
@@ -275,11 +284,11 @@
   <tr>
     <td width="50%" align="left">
       &nbsp;
-      <a href="#" tal:attributes="href string:${model/absolute_url}/edit/tab_edit?start:int=${previous/first}&show_details=${show_details}" tal:condition="previous">Previous</a>
+      <a href="#" tal:attributes="href string:${model/absolute_url}/edit/tab_edit?start:int=${previous/first}&show_details=${show_details}" tal:condition="previous" i18n:translate="">Previous</a>
     </td>
     <td width="50%" align="right">
       &nbsp;
-      <a href="#" tal:attributes="href string:${model/absolute_url}/edit/tab_edit?start:int=${next/first}&show_details=${show_details}" tal:condition="next">Next</a></td>
+      <a href="#" tal:attributes="href string:${model/absolute_url}/edit/tab_edit?start:int=${next/first}&show_details=${show_details}" tal:condition="next" i18n:translate="">Next</a></td>
   </tr>
 </table>
 
