@@ -1,14 +1,14 @@
-$Revision: 1.10 $
+$Revision: 1.11 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:  Silva News 0.7
+  Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.10 $
+  CVS:        $Revision: 1.11 $
 
 Silva News
 
@@ -18,7 +18,8 @@ Silva News
 
   Silva News is an extension to Silva to allow authors to place news- and
   agendaitems on the Silva site and show them on a page. Silva News is a
-  Silva add-on which can be used on Silva versions 0.8.x and up. No other
+  Silva add-on which can be used on Silva versions 0.9.1b and up. There are
+  versions for older Silva versions available for download as well. No other
   products are required to use Silva News from Silva, besides the products
   required to run Silva itself.
 
@@ -80,7 +81,7 @@ Using Silva News
     routing the items to newsviewers. When editing a news or agenda item,
     keep in mind that the first heading placed in the content editor is
     considered to be the subheader of the newsitem, and the first paragraph
-    as the lead (both will show up in the previews on the viewers).
+    as the lead (both will show up in the previes on the viewers).
 
   Adding news filters
 
@@ -89,7 +90,18 @@ Using Silva News
     editors to filter a stream of newsitems. The items can be filtered on
     subject and target audience (so for instance a newsfilter can route
     only newsitems with a specific subject or meant for a specific target
-    audience to the viewers) and/or as individual newsitems.
+    audience to the viewers) and/or as individual newsitems. NewsFilters
+    (as opposed to AgendaFilters) can also function as RSS sources: in
+    the Metadata tab you can set up the filter as a RSS channel. To do
+    so, make sure the 'Allow RSS export' radiobutton is set to 'Yes'.
+    Optionally you can set a description, a link to your site and an
+    image to the channel. Also, if you choose 'Yes' as the setting for
+    'Allow RSS Search' (and optionally add a search description) the
+    channel will contain some extra information with which the RSS client
+    (read: the other side) can show a search form (which will point to
+    your site, so if a client on the other side chooses to search the
+    channel, he will be sent to your site). The format of the RSS feed
+    is compliant with RSS version 0.91.
 
   The Sources tab
 
@@ -141,6 +153,15 @@ Using Silva News
     viewers will be available to the public and show news- and/or
     agendaitems, together with an archive (that allows showing items for a
     particular month) and a search option.
+
+  RSS Viewers
+
+    There is a third type of viewer available, called the RSSViewer,
+    which allows displaying an RSS channel from another site on your site.
+    This viewer is very basic to set up: you will just have to enter the
+    URL of the feed in the 'RSS-feed' textfield in the Edit tab of the
+    viewer. The viewer will then show the channel. All versions of RSS
+    are supported (0.9, 0.91, 0.92, 1.0 and 2.0).
 
 License
 
