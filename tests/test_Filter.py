@@ -1,25 +1,19 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 import unittest
 import Zope
 from DateTime import DateTime
 from Products.ZCatalog.ZCatalog import ZCatalog
+from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
+from Products.Silva.tests.test_SilvaObject import hack_add_user
 
-class FakeRequest:
-    def __init__(self):
-        pass
-
-class FakeAuthenticatedUser:
-    def getUserName(self):
-        return "Johnny"
+def set(key, value):
+    pass
 
 def add_helper(object, typename, id, title):
-    object.REQUEST = FakeRequest()
-    object.REQUEST.AUTHENTICATED_USER = ''
-    object.REQUEST.AUTHENTICATED_USER = FakeAuthenticatedUser()
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
@@ -47,7 +41,11 @@ class NewsFilterBaseTestCase(unittest.TestCase):
     def setUp(self):
         get_transaction().begin()
         self.connection = Zope.DB.open()
-        self.root = self.connection.root()['Application']
+        self.root = makerequest.makerequest(self.connection.root()['Application'])
+        self.REQUEST = self.root.REQUEST
+        self.REQUEST.set = set
+        hack_add_user(self.REQUEST)
+
         self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
         self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
         service_news.add_subject('test')
