@@ -23,7 +23,6 @@
     vein string:edit;
     fields view/settingsform/get_fields;
 ">
-<!--    rssfields view/rssform/get_fields; -->
 
   <table class="columns columns2">
     <tbody>
@@ -43,24 +42,6 @@
 
 
   <form action="." name="silvaObjects" method="POST">
-    <script language="JavaScript">
-      <!--
-
-        function switchRssFormVisibility(on) {
-            var table = document.getElementById('settingstable');
-            var heads = table.getElementsByTagName('thead');
-            var bodies = table.getElementsByTagName('tbody');
-            if (on) {
-                heads[1].style.display = "table-header-group";
-                bodies[1].style.display = "table-row-group";
-            } else {
-                heads[1].style.display = "none";
-                bodies[1].style.display = "none";
-            };
-        };
-      
-      // -->
-    </script>
     <table id="settingstable" class="listing">
       <thead>
         <tal:block replace="nothing">
