@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
+# $Revision: 1.18 $
 
 # Python
 from StringIO import StringIO
@@ -18,7 +18,7 @@ from Products.ParsedXML.ParsedXML import ParsedXML
 from INewsItem import INewsItem, INewsItemVersion
 
 # Silva
-from Products.Silva.EditorSupport import EditorSupport
+from Products.Silva.EditorSupportNested import EditorSupport
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import CatalogedVersionedContent
 from Products.Silva.IVersionedContent import IVersionedContent
