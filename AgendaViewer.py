@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -110,12 +110,10 @@ class AgendaViewer(NewsViewer):
         allowed_meta_types = self.get_allowed_meta_types()
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            print obj.absolute_url()
             res = obj.search_items(keywords, allowed_meta_types)
             results += res
 
         results = self._remove_doubles(results)
-        print [r.getObject().meta_type for r in results]
         results.sort(self._sortresults)
         if not self._number_is_days:
             return results[:self._number_to_show]
