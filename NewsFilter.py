@@ -1,6 +1,6 @@
 # Copyright (c) 2002, 2004 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.32 $
+# $Revision: 1.33 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -188,7 +188,6 @@ class NewsFilter(Filter):
         allowed = self._article_meta_types[:]
         if self.show_agenda_items():
             allowed += self._agenda_item_meta_types[:]
-        print allowed
         return allowed
 
     # MANIPULATORS
@@ -196,7 +195,6 @@ class NewsFilter(Filter):
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_show_agenda_items')
     def set_show_agenda_items(self, value):
-        print 'show_agenda_items set to', value
         self._show_agenda_items = not not int(value)
 
 InitializeClass(NewsFilter)
