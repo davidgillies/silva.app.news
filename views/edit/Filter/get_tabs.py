@@ -8,8 +8,11 @@
 ##title=
 ##
 # define name, id, up_id
-return [('Sources', 'tab_edit', 'tab_edit'),
-        ('Items', 'tab_edit_items', 'tab_edit'),
-        ('Metadata', 'tab_metadata', 'tab_metadata'),
-        ('Access', 'tab_access', 'tab_access'),
+# define:
+# name, id, up_id, toplink_accesskey, tab_accesskey, uplink_accesskey
+tabs = [('Sources', 'tab_edit', 'tab_edit', '!', '1', '6'),
+        ('Items', 'tab_edit_items', 'tab_edit', '@', '2', '7'),
+        ('Metadata', 'tab_metadata', 'tab_metadata', '#', '3', '8'),
+        ('Access', 'tab_access', 'tab_access', '$', '4', '9'),
        ]
+return tabs
