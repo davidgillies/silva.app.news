@@ -1,6 +1,6 @@
 # Copyright (c) 2002, 2004 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.30 $
+# $Revision: 1.31 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -34,6 +34,9 @@ class NewsFilter(Filter):
     search = ViewAttribute('public', 'index_html')
 
     #__implements__ = INewsFilter
+
+    _article_meta_types = ['Silva Article Version']
+    _agenda_item_meta_types = ['Silva Agenda Item Version']
 
     def __init__(self, id):
         NewsFilter.inheritedAttribute('__init__')(self, id)
@@ -182,17 +185,10 @@ class NewsFilter(Filter):
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
-        allowed = []
-        mts = self.get_root().filtered_meta_types()
-        for mt in mts:
-            if mt.has_key('instance'):
-                if ((self._show_agenda_items and 
-                            IAgendaItemVersion.isImplementedByInstancesOf(mt['instance'])) 
-                        or (INewsItemVersion.isImplementedByInstancesOf(mt['instance']) and not
-                            IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']))):
-                    allowed.append(mt['name'])
+        allowed = self._article_meta_types
+        if self.show_agenda_items():
+            allowed += self._agenda_item_meta_types
         return allowed
-
 
     # MANIPULATORS
 

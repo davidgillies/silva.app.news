@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -29,6 +29,8 @@ class AgendaFilter(Filter):
     security = ClassSecurityInfo()
 
     meta_type = "Silva Agenda Filter"
+
+    _allowed_meta_types = ['Silva Agenda Item Version']
 
     def __init__(self, id):
         AgendaFilter.inheritedAttribute('__init__')(self, id)
@@ -210,13 +212,7 @@ class AgendaFilter(Filter):
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
-        allowed = []
-        mts = self.get_root().filtered_meta_types()
-        for mt in mts:
-            if (mt.has_key('instance') and
-                IAgendaItemVersion.isImplementedByInstancesOf(mt['instance'])):
-                allowed.append(mt['name'])
-        return allowed
+        return self._allowed_meta_types
 
 InitializeClass(AgendaFilter)
 
