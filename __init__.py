@@ -54,9 +54,23 @@ def initialize(context):
         )
 
     context.registerClass(
+        PlainArticle.PlainArticleVersion,
+        constructors = (PlainArticle.manage_addPlainArticleVersionForm,
+                        PlainArticle.manage_addPlainArticleVersion),
+        icon="www/silvaresolution.gif"
+        )
+
+    context.registerClass(
         PlainAgendaItem.PlainAgendaItem,
         constructors = (PlainAgendaItem.manage_addPlainAgendaItemForm,
                         PlainAgendaItem.manage_addPlainAgendaItem),
+        icon="www/silvaresolution.gif"
+        )
+
+    context.registerClass(
+        PlainAgendaItem.PlainAgendaItemVersion,
+        constructors = (PlainAgendaItem.manage_addPlainAgendaItemVersionForm,
+                        PlainAgendaItem.manage_addPlainAgendaItemVersion),
         icon="www/silvaresolution.gif"
         )
 
