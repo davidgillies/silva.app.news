@@ -1,7 +1,7 @@
 from Interface import Base
 
 class INewsItem(Base):
-    """Silva News NewsItem interface
+    """Silva News Item interface
     """
     def in_filter(self, filter):
         """Returns true if the item should appear in filter, false if not

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -13,7 +13,7 @@ from Products.Silva.Document import Document
 from Products.Silva.helpers import add_and_edit
 
 class NewsViewer(Content, Folder.Folder):
-    """Silva News NewsViewer
+    """Silva NewsViewer
     """
 
     security = ClassSecurityInfo()
@@ -25,7 +25,7 @@ class NewsViewer(Content, Folder.Folder):
         self._number_to_show = 25
         self._filters = []
 
-    meta_type = 'Silva News NewsViewer'
+    meta_type = 'Silva NewsViewer'
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')
@@ -62,7 +62,7 @@ class NewsViewer(Content, Folder.Folder):
         """Returns a list of paths to all filters
         """
         # Happened through searching in the catalog, but must happen through aquisition now...
-        #query = {'meta_type': 'Silva News NewsFilter', 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
+        #query = {'meta_type': 'Silva NewsFilter', 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
         #print "Query: %s" % query
         #results = self.service_catalog(query)
 
@@ -80,7 +80,7 @@ class NewsViewer(Content, Folder.Folder):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues('Silva News NewsFilter'):
+            for item in parent.objectValues('Silva NewsFilter'):
                 pairs.append((item.get_title_html(), "%s/%s" % ('/'.join(parentpath), item.id)))
             if parent.meta_type == 'Silva Root':
                 break
@@ -90,8 +90,6 @@ class NewsViewer(Content, Folder.Folder):
 
     def verify_filters(self):
         allowed_filters = self.findfilters()
-        print "Allowed filters: %s" % allowed_filters
-        print "Current filters: %s" % self._filters
         for newsfilter in self._filters:
             if newsfilter not in allowed_filters:
                 self._filters.remove(newsfilter)

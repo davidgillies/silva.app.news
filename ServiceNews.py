@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 import Globals
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -284,13 +284,11 @@ class ServiceNews(SimpleItem):
             try:
                 self.add_subject(REQUEST['subject'], REQUEST['parent'])
             except DuplicateError, e:
-                print "Exception"
                 return self.edit_tab(manage_tabs_message=e)
         else:
             try:
                 self.add_subject(REQUEST['subject'])
             except DuplicateError, e:
-                print "Exception"
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(manage_tabs_message='Subject %s added' % REQUEST['subject'])

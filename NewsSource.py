@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -18,7 +18,7 @@ class NewsSource(Publication, CatalogPathAware):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News NewsSource"
+    meta_type = "Silva NewsSource"
 
     __implements__ = IPublication
 

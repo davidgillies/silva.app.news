@@ -16,7 +16,7 @@ from INewsItem import INewsItem
 # Silva
 from Products.Silva.EditorSupport import EditorSupport
 from Products.Silva import SilvaPermissions
-from Products.Silva.VersionedContent import CataloguedVersionedContent
+from Products.Silva.VersionedContent import CatalogedVersionedContent
 from Products.Silva.IVersionedContent import IVersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.Version import Version
@@ -24,12 +24,12 @@ from Products.Silva.Version import Version
 # XXX necessary for override of _update_publication_status
 empty_version = (None, None, None)
 
-class NewsItem(CataloguedVersionedContent, EditorSupport):
-    """Silva News NewsItem, superclass for all kinds of newsitems.
+class NewsItem(CatalogedVersionedContent, EditorSupport):
+    """Silva NewsItem, superclass for all kinds of newsitems.
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News NewsItem"
+    meta_type = "Silva NewsItem"
     default_catalog = 'service_catalog'
 
     __implements__ = IVersionedContent, INewsItem
@@ -41,10 +41,13 @@ class NewsItem(CataloguedVersionedContent, EditorSupport):
     # MANIPULATORS
     # XXX shouldn't this be moved to SilvaObject or so?
     def manage_afterAdd(self, item, container):
+        NewsItem.inheritedAttribute('manage_afterAdd')(
+            self, item, container)
         container._add_ordered_id(item)
 
     def manage_beforeDelete(self, item, container):
-        NewsItem.inheritedAttribute('manage_beforeDelete')(self, item, container)
+        NewsItem.inheritedAttribute('manage_beforeDelete')(
+            self, item, container)
         container._remove_ordered_id(item)
 
     # ACCESSORS
@@ -64,18 +67,17 @@ class NewsItem(CataloguedVersionedContent, EditorSupport):
 InitializeClass(NewsItem)
 
 class NewsItemVersion(Version, CatalogPathAware):
-    """Silva EUR NewsItemVersion superclass.
+    """Silva NewsItemVersion superclass.
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva EUR NewsItem Version"
+    meta_type = "Silva NewsItem Version"
 
     #__implements__ = Interfaces.Version
 
     default_catalog = 'service_catalog'
 
     def __init__(self, id):
-        NewsItemVersion.inheritedAttribute('__init__')(self, id)
         self.id = id
         self._common_info = ''
         self._specific_info = ''
@@ -111,7 +113,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Returns the path to the source containing this item
         """
         obj = self.aq_inner.aq_parent
-        while obj.getPhysicalPath() != ('',) and not obj.meta_type == 'Silva News NewsSource':
+        while (obj.getPhysicalPath() != ('',) and
+               not obj.meta_type == 'Silva NewsSource'):
             obj = obj.aq_parent
         if obj.getPhysicalPath() != ('',):
             return '/'.join(obj.getPhysicalPath())
@@ -186,7 +189,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         return "%s %s %s %s %s %s" % (self.id,
                                       self.get_title(),
                                       self._common_info,
-                                      self._manual_specific_info or self._specific_info,
+                                      self._manual_specific_info or
+                                      self._specific_info,
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences))
 
@@ -204,10 +208,11 @@ class NewsItemVersion(Version, CatalogPathAware):
         return xmlinput
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'content_documentElement_xml')
+                              'content_xml')
     def content_xml(self):
         """Returns the documentElement of the content's XML
-        WILL BE USED IN SOME BUT NOT ALL SUBCLASSES but would be messy to move it to those classes
+        WILL BE USED IN SOME BUT NOT ALL SUBCLASSES
+        but would be messy to move it to those classes
         """
         s = StringIO()
         self.content.documentElement.writeStream(s)
@@ -240,7 +245,6 @@ class NewsItemVersion(Version, CatalogPathAware):
 
         context.f.write(xml)
 
-
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_summary_xml')
     def to_summary_xml(self, context):
@@ -249,8 +253,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         xml = u'<title>%s</title>\n' % self.get_title()
         xml += u'<common_info>%s</common_info>\n' % self._prepare_xml(self._common_info)
         xml += u'<specific_info>%s</specific_info>\n' % self._prepare_xml(self._manual_specific_info or self._specific_info)
-
         context.f.write(xml)
+        
     def _prepare_xml(self, inputstring):
         inputstring = unicode(inputstring, 'cp1252')
         inputstring = inputstring.replace('&', '&amp;')

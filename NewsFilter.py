@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -15,19 +15,18 @@ from Products.Silva.helpers import add_and_edit
 from Filter import Filter, MetaTypeException
 
 class NewsFilter(Filter):
-    """Silva News NewsFilter
+    """Silva NewsFilter
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News NewsFilter"
+    meta_type = "Silva NewsFilter"
 
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)
-        self._allowed_meta_types = ['Silva News Article Version', 'Silva News Announcement Version']
-
+    
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
-    def get_all_items(self, meta_types=['Silva News Article Version']):
+    def get_all_items(self, meta_types):
         """Returns all items available to this filter. This function will probably only
         be used in the back-end, but nevertheless has AccessContentsInformation-security
         because it does not reveal any 'secret' information...
@@ -36,7 +35,6 @@ class NewsFilter(Filter):
         if not self._sources:
             return []
         self.verify_excluded_items()
-        #self._check_meta_types(meta_types)
         query = {}
         query['path'] = self._sources
         query['version_status'] = 'public'
@@ -51,14 +49,13 @@ class NewsFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_last_items')
-    def get_last_items(self, number, meta_types=['Silva News Article Version']):
+    def get_last_items(self, number, meta_types):
         """Returns the last self._number_to_show published items
         """
         self.verify_sources()
         if not self._sources:
             return []
         self.verify_excluded_items()
-        #self._check_meta_types(meta_types)
         query = {}
         query['path'] = self._sources
         query['version_status'] = 'public'
@@ -67,11 +64,8 @@ class NewsFilter(Filter):
         query['meta_type'] = meta_types
         query['sort_on'] = 'publication_datetime'
         query['sort_order'] = 'descending'
-        print "Query: %s" % query
         result = getattr(self, self._catalog)(query)
-        print "Result: %s" % result
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
-        print "Filtered result: %s" % filtered_result
         output = []
         for i in range(len(filtered_result)):
             if i < number:
@@ -83,7 +77,7 @@ class NewsFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=['Silva News Article Version']):
+    def get_items_by_date(self, month, year, meta_types):
         """Returns the last self._number_to_show published items
         """
         self.verify_sources()
@@ -98,7 +92,6 @@ class NewsFilter(Filter):
             endmonth = 1
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
-        #self._check_meta_types(meta_types)
         query = {}
         query['publication_datetime'] = (startdate, enddate)
         query['publication_datetime_usage'] = 'range:min:max'
@@ -111,7 +104,8 @@ class NewsFilter(Filter):
         query['sort_order'] = 'descending'
         result = getattr(self, self._catalog)(query)
 
-        return [r for r in result if not r.object_path in self._excluded_objects]
+        return [r for r in result if not r.object_path in
+                self._excluded_objects]
 
 InitializeClass(NewsFilter)
 

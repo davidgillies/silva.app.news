@@ -22,7 +22,7 @@ from Products.Silva.helpers import add_and_edit
 from NewsItem import NewsItem, NewsItemVersion
 
 class AgendaItem(NewsItem):
-    """Silva News AgendaItem, superclass for some agendaitems
+    """Silva AgendaItem, superclass for some agendaitems
     """
     security = ClassSecurityInfo()
 
@@ -33,7 +33,7 @@ class AgendaItem(NewsItem):
 InitializeClass(AgendaItem)
 
 class AgendaItemVersion(NewsItemVersion):
-    """Silva News Agenda version.
+    """Silva Agenda version.
     """
     security = ClassSecurityInfo()
 

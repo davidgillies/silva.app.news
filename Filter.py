@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 
 # Zope
 from OFS import SimpleItem
@@ -37,7 +37,6 @@ class Filter(Asset, CatalogPathAware):
 
     def __init__(self, id, title):
         Filter.inheritedAttribute('__init__')(self, id, title)
-        #self._allowed_meta_types = ['Silva News Article', 'Silva News Announcement', 'Silva News Event', 'Silva News Oration', 'Silva News Promotion', 'Silva News ValedictoryLecture']
         self._keep_to_path = 1
         self._subjects = {}
         self._target_audiences = {}
@@ -57,7 +56,7 @@ class Filter(Asset, CatalogPathAware):
     def find_sources(self):
         """Returns all the sources available for querying
         """
-        query = {'meta_type': ['Silva News NewsSource'], 'sort_on': 'id', 'is_private': 0}
+        query = {'meta_type': ['Silva NewsSource'], 'sort_on': 'id', 'is_private': 0}
         results = self.service_catalog(query)
         query['is_private'] = 1
         query['parent_path'] = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
@@ -96,8 +95,6 @@ class Filter(Asset, CatalogPathAware):
         """Verifies the sourcelist against the available sources
         """
         allowedsources = [s.getPath() for s in self.find_sources()]
-        print "Allowed sources: %s" % allowedsources
-        print "Currentsources: %s" % self._sources
         for source in self._sources:
             if not source in allowedsources:
                 self._sources.remove(source)

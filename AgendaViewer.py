@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -13,14 +13,14 @@ from Products.Silva.IContent import IContent
 from NewsViewer import NewsViewer
 
 class AgendaViewer(NewsViewer):
-    """Silva News AgendaViewer
+    """Silva AgendaViewer
     """
 
     security = ClassSecurityInfo()
 
     __implements__ = IContent
 
-    meta_type = "Silva News AgendaViewer"
+    meta_type = "Silva AgendaViewer"
 
     def __init__(self, id, title):
         AgendaViewer.inheritedAttribute('__init__')(self, id, title)
@@ -39,7 +39,7 @@ class AgendaViewer(NewsViewer):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues('Silva News AgendaFilter'):
+            for item in parent.objectValues('Silva AgendaFilter'):
                 pairs.append((item.get_title_html(), "%s/%s" % ('/'.join(parentpath), item.id)))
             if parentpath == ('',):
                 break
@@ -47,7 +47,7 @@ class AgendaViewer(NewsViewer):
 
         return pairs
 
-    meta_type = 'Silva News AgendaViewer'
+    meta_type = 'Silva AgendaViewer'
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'days_to_show')
