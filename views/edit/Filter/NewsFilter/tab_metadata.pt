@@ -155,7 +155,7 @@ If you choose an image here, it will be added to the RSS feed.</td>
   </td>
   <td>&nbsp;</td>
   <td align="left">
-    <span tal:replace="python:', '.join([ch['cn'] for ch in here.get_nearest_chiefeditors()])" />
+    <span tal:replace="python:', '.join([ch.fullname() for ch in here.get_nearest_chiefeditors()])" />
   </td>
   <td width="30%">&nbsp;</td>
 </tr>
@@ -166,7 +166,7 @@ If you choose an image here, it will be added to the RSS feed.</td>
   </td>
   <td>&nbsp;</td>
   <td align="left">
-    <span tal:replace="python:', '.join([m['cn'] for m in here.get_nearest_managers()])" /> <br />
+    <span tal:replace="python:', '.join([m.fullname() for m in here.get_nearest_managers()])" /> <br />
   </td>
   <td>&nbsp;</td>
 </tr>
