@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -55,8 +55,6 @@ class NewsViewer(Content, Folder.Folder):
         """Returns the value of number_is_days (which controls whether the filter should show <n>
         items or items of <n> days back)
         """
-        print "Number is days:", self._number_is_days
-        print "Type:", type(self._number_is_days)
         return self._number_is_days
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -74,10 +72,9 @@ class NewsViewer(Content, Folder.Folder):
         """
         # Happened through searching in the catalog, but must happen through aquisition now...
         #query = {'meta_type': 'Silva NewsFilter', 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
-        #print "Query: %s" % query
         #results = self.service_catalog(query)
-
-        return [pair[1] for pair in self.findfilters_pairs()]
+        filters = [str(pair[1]) for pair in self.findfilters_pairs()]
+        return filters
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'findfilters_pairs')
@@ -104,7 +101,7 @@ class NewsViewer(Content, Folder.Folder):
         for newsfilter in self._filters:
             if newsfilter not in allowed_filters:
                 self._filters.remove(newsfilter)
-                self._p_chenged = 1
+                self._p_changed = 1
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items')
@@ -185,7 +182,7 @@ class NewsViewer(Content, Folder.Folder):
     def set_number_is_days(self, onoff):
         """Sets the number of items to show
         """
-        self._number_is_days = onoff
+        self._number_is_days = int(onoff)
         self._p_changed = 1
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,

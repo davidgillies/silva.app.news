@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 
 # Zope
 from OFS import SimpleItem
@@ -66,10 +66,8 @@ class Filter(Asset, CatalogPathAware):
                 break
             pp.append(cpp)
             cpp = cpp[:cpp.rfind('/')]
-            print cpp
         query['parent_path'] = pp
         results += self.service_catalog(query)
-        print query
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -126,6 +124,7 @@ class Filter(Asset, CatalogPathAware):
     def excluded_items(self):
         """Returns a list of object-paths of all excluded items
         """
+        self.verify_excluded_items()
         return self._excluded_items
 
     def verify_excluded_items(self):
@@ -142,7 +141,6 @@ class Filter(Asset, CatalogPathAware):
                               'keep_to_path')
     def keep_to_path(self):
         """Returns true if the item should keep to path
-        THIS METHOD IS NOT IN USE RIGHT NOW... delete?
         """
         return self._keep_to_path
 

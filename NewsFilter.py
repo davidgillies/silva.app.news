@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -47,9 +47,6 @@ class NewsFilter(Filter):
         query['sort_order'] = 'descending'
         results = getattr(self, self._catalog)(query)
 
-        print "Query: %s" % query
-        print "Results: %s" % results
-
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -76,6 +73,7 @@ class NewsFilter(Filter):
             query['publication_datetime'] = {'query': [last_night - number, now], 'usage': 'range:min:max'}
         query['sort_on'] = 'publication_datetime'
         query['sort_order'] = 'descending'
+
         result = getattr(self, self._catalog)(query)
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
         output = []
@@ -165,7 +163,7 @@ class NewsFilter(Filter):
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
         # FIXME: This should be generated instead of hard-coded...
-        return ['Silva EUR News Announcement Version', 'Silva EUR News Article Version', 'Silva EUR News Event Version', 'Silva EUR News Promotion Version', 'Silva EUR News Oration Version', 'Silva EUR News ValedictoryLecture Version']
+        return ['Silva News PlainArticle Version', 'Silva News PlainAgendaItem Version', 'Silva EUR News Announcement Version', 'Silva EUR News Article Version', 'Silva EUR News Event Version', 'Silva EUR News Promotion Version', 'Silva EUR News Oration Version', 'Silva EUR News ValedictoryLecture Version']
 
 InitializeClass(NewsFilter)
 

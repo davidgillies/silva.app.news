@@ -1,6 +1,6 @@
 import AgendaFilter, NewsFilter, ServiceNews
 import NewsSource, NewsViewer, AgendaViewer
-import PlainArticle
+import PlainArticle, PlainAgendaItem
 
 def initialize(context):
 
@@ -50,6 +50,13 @@ def initialize(context):
         PlainArticle.PlainArticle,
         constructors = (PlainArticle.manage_addPlainArticleForm,
                         PlainArticle.manage_addPlainArticle),
+        icon="www/silvaresolution.gif"
+        )
+
+    context.registerClass(
+        PlainAgendaItem.PlainAgendaItem,
+        constructors = (PlainAgendaItem.manage_addPlainAgendaItemForm,
+                        PlainAgendaItem.manage_addPlainAgendaItem),
         icon="www/silvaresolution.gif"
         )
 

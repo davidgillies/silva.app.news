@@ -138,7 +138,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         """Returns whether the object is in a private source
         """
         source = self.source_path()
-        if source and source.restrictedTraverse().is_private():
+        if source and self.restrictedTraverse(source).is_private():
             return 1
         else:
             return 0

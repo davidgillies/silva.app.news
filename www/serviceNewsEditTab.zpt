@@ -1,7 +1,7 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.2 $
+Version of this file: $Revision: 1.3 $
 -->
 <span tal:replace="structure here/manage_page_header">Header</span>
 
@@ -11,8 +11,6 @@ Version of this file: $Revision: 1.2 $
 <tal:define define="global view here;
                     global subject_tree view/subject_tree;
                     global target_audience_tree view/target_audience_tree;
-                    global common_infos view/common_infos;
-                    global specific_infos view/specific_infos;
                     global locations view/locations;
                     " />
 
@@ -71,45 +69,6 @@ Version of this file: $Revision: 1.2 $
 </tal:repeat>
 </select>
 <input type="submit" value="Toevoegen" name="manage_add_target_audience:method" class="form-element">
-</form>
-
-</td>
-</tr>
-
-<tr><td colspan="2" height="20"><hr /></td></tr>
-
-<tr>
-<td width="50%" valign="top">
-
-<div class="form-title">Nadere informatie algemeen:</div><br />
-<form method="POST" action=".">
-<tal:repeat repeat="item common_infos">
-<input type="checkbox" name="common_infos:list" tal:attributes="value item" class="form-element">
-<span tal:content="item" class="form-text"></span><br />
-</tal:repeat>
-<input type="submit" name="manage_remove_common_info:method" value="Item(s) verwijderen" class="form-element">
-<br /><br />
-<div class="form-title">Item toevoegen:</div><br />
-<div class="form-text">Item:</div>
-<input type="text" name="common_info"><br />
-<input type="submit" value="Toevoegen" name="manage_add_common_info:method" class="form-element">
-</form>
-
-</td>
-<td valign="top">
-
-<div class="form-title">Nadere informatie specifiek:</div><br />
-<form method="POST" action=".">
-<tal:repeat repeat="item specific_infos">
-<input type="checkbox" name="specific_infos:list" tal:attributes="value item" class="form-element">
-<span tal:content="item" class="form-text"></span><br />
-</tal:repeat>
-<input type="submit" name="manage_remove_specific_info:method" value="Item(s) verwijderen" class="form-element">
-<br /><br />
-<div class="form-title">Item toevoegen:</div><br />
-<div class="form-text">Item:</div>
-<input type="text" name="specific_info"><br />
-<input type="submit" value="Toevoegen" name="manage_add_specific_info:method" class="form-element">
 </form>
 
 </td>

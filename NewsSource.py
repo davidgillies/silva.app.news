@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -52,7 +52,7 @@ class NewsSource(Publication, CatalogPathAware):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
     def parent_path(self):
-        """Returns the path of this source
+        """Returns the path of the parent of this source
         """
         return '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
 

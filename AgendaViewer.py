@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.2 $
+# $Revision: 1.3 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -46,8 +46,6 @@ class AgendaViewer(NewsViewer):
             obj = parent
 
         return pairs
-
-    meta_type = 'Silva AgendaViewer'
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'days_to_show')

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -127,7 +127,7 @@ class AgendaFilter(Filter):
     def get_allowed_meta_types(self):
         """Returns a list of allowed meta_types for this filter"""
         # FIXME: This list should be generated instead of hard-coded
-        return ['Silva EUR News Event Version', 'Silva EUR News Oration Version', 'Silva EUR News Promotion Version', 'Silva EUR News Valedictory Lecture Version']
+        return ['Silva News PlainAgendaItem Version', 'Silva EUR News Event Version', 'Silva EUR News Oration Version', 'Silva EUR News Promotion Version', 'Silva EUR News Valedictory Lecture Version']
 
 InitializeClass(AgendaFilter)
 
