@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.26 $
+# $Revision: 1.27 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -284,24 +284,31 @@ class NewsViewer(Content, Folder.Folder):
                   quote_xml(mdbinding.get('silva-extra', 'content_description')))
         xml.write('<dc:creator>%s</dc:creator>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'creator')))
-        xml.write('<dc:date>%s</dc:date>\n' %
-                  quote_xml(creationdate.ISO()))
+	date = creationdate.HTML4()
+        xml.write('<dc:date>%s</dc:date>\n' % quote_xml(date))
 
-        # loop over the items and create a RSS/RDF item
+	# output <items> list
+	# and store items in a list
+	itemlist = []
+	xml.write('<items>\n<rdf:Seq>\n')
         for item in items:
             item = item.getObject()
+	    itemlist.append(item)
+	    url = item.object().absolute_url()
+	    xml.write('<rdf:li resource="%s" />\n' % url)
+	xml.write('</rdf:Seq>\n</items>\n')
+        xml.write('</channel>\n\n')
+        # loop over the itemslist and create a RSS/RDF item elements
+        for item in itemlist:
             self._rss_item_helper(item, xml)
-            
-        xml.write('</channel>\n')
+        # DONE
         xml.write('</rdf:RDF>\n')
-            
         # return XML
         return xml.read()
 
     def _rss_item_helper(self, item, xml):
         """convert a single Silva object to an RSS/RDF 'hasitem' element"""
         version_container = item.object()
-        xml.write('<hasitem>\n')
         xml.write('<item rdf:about="%s">\n' % version_container.absolute_url())
         mdbinding = self.service_metadata.getMetadata(item)
         # RSS elements
@@ -315,9 +322,8 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('<dc:creator>%s</dc:creator>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'creator')))
         xml.write('<dc:date>%s</dc:date>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'creationtime').ISO()))
+                  quote_xml(mdbinding.get('silva-extra', 'creationtime').HTML4()))
         xml.write('</item>\n')
-        xml.write('</hasitem>\n')
         
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'can_set_title')
