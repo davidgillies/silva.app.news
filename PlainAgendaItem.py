@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -42,30 +42,6 @@ class PlainAgendaItemVersion(AgendaItemVersion):
     meta_type = "Silva News PlainAgendaItem Version"
 
     __implements__ = IAgendaItemVersion
-
-    def __init__(self, id):
-        PlainAgendaItemVersion.inheritedAttribute('__init__')(self, id)
-        self.content = ParsedXML('content', '<doc></doc>')
-
-    # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'fulltext')
-    def fulltext(self):
-        """Deliver the contents as plain text, for full-text search
-        """
-        parenttext = PlainAgendaItemVersion.inheritedAttribute('fulltext')(self)
-        content = self._flattenxml(self.content_xml())
-        return "%s %s" % (parenttext, content)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_xml')
-    def to_xml(self, context):
-        """Returns the content as a partial XML-document
-        """
-        PlainAgendaItemVersion.inheritedAttribute('to_xml')(self, context)
-        xml = u'<content>\n%s\n</content>\n' % self.content_xml()
-
-        context.f.write(xml)
 
 InitializeClass(PlainAgendaItemVersion)
 

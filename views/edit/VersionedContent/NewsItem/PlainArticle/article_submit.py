@@ -20,7 +20,4 @@ model.set_title(context.input_convert(result['object_title']))
 
 version = model.get_editable()
 
-version.set_subheader(result['subheader'])
-version.set_lead(result['lead'])
-
 return view.tab_edit(message_type="feedback", message="Article data changed")

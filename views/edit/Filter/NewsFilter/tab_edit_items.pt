@@ -4,7 +4,8 @@
 <div metal:fill-slot="main" tal:omit-tag="">
 <!-- ___________________________ start index_html/slot main ____________________________ -->
 
-<tal:block define="global view here;
+<tal:block define="global dummy model/security_trigger;
+                   global view here;
                    global model here/REQUEST/model;
                    global user_role view/get_user_role;
                    global silva_root view/silva_root;

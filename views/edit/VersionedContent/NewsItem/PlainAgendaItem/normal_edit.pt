@@ -71,7 +71,7 @@ comments here (field description)
 </rowset>
 
 <content-editor tal:omit-tag=""
-  tal:condition="python:field.id == 'lead'">
+  tal:condition="python:field.id == 'object_title'">
 <tr comment="AgendaItem Content" class="focus" valign="top"
   tal:attributes="class class" tal:define="class python:test(lastclass=='focus', 'focus-cycle', 'focus'); global lastclass class">
   <td width="16" class="transparent" ><a href="content_mode"><img tal:attributes="src string:${silva_root}/globals/edit_element.gif" width="16" height="16" border="0" alt="edit element" /></a></td>

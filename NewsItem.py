@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 # Python
 from StringIO import StringIO
@@ -98,8 +98,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         self.id = id
         self._subjects = []
         self._target_audiences = []
-        self._subheader = ''
-        self._lead = ''
+        self.content = ParsedXML('content', '<doc></doc>')
 
     def manage_beforeDelete(self, item, container):
         NewsItemVersion.inheritedAttribute('manage_beforeDelete')(self, item, container)
@@ -109,18 +108,6 @@ class NewsItemVersion(Version, CatalogPathAware):
     # DATA-FIELDS) DID NOT SUFFICE, THEREFORE THERE WILL BE 1 MANIPULATOR FOR EACH DATA-FIELD.
     # THIS IS AN ADVANTAGE WHEN SUBCLASSING: ONLY A MANIPULATOR PER FIELD-TYPE HAS TO BE WRIITEN
     # (IN THE CLASS THAT HOLDS THE DATA-DEFINITION)
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_subheader')
-    def set_subheader(self, value):
-        self._subheader = value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_lead')
-    def set_lead(self, value):
-        self._lead = value
-        self.reindex_object()
-
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
     def set_subjects(self, subjects):
@@ -143,16 +130,24 @@ class NewsItemVersion(Version, CatalogPathAware):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'subheader')
     def subheader(self):
-        """Returns subheader
+        """Returns subheader, subheader is the first header in the content (or '' if no headers in content are defined)
         """
-        return self._subheader
+        content = self.content
+        for child in content.childNodes[0].childNodes:
+            if child.nodeName == u'heading':
+                return self.render_heading_as_html(child)
+        return ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'lead')
     def lead(self):
-        """Returns the lead
+        """Returns lead, lead is the first paragraph of the content (or '' if not paragraph is found)
         """
-        return self._lead
+        content = self.content
+        for child in content.childNodes[0].childNodes:
+            if child.nodeName == u'p':
+                return self.render_text_as_html(child)
+        return ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
@@ -203,12 +198,12 @@ class NewsItemVersion(Version, CatalogPathAware):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        return "%s %s %s %s %s %s" % (self.id,
+        content = self._flattenxml(self.content_xml())
+        return "%s %s %s %s %s" % (self.id,
                                       self.get_title_html(),
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences),
-                                      self._subheader,
-                                      self._lead)
+                                      content)
 
     def _flattenxml(self, xmlinput):
         """Cuts out all the XML-tags, helper for fulltext (for content-objects)
@@ -228,8 +223,6 @@ class NewsItemVersion(Version, CatalogPathAware):
                               'content_xml')
     def content_xml(self):
         """Returns the documentElement of the content's XML
-        WILL BE USED IN SOME BUT NOT ALL SUBCLASSES
-        but would be messy to move it to those classes
         """
         s = StringIO()
         self.content.documentElement.writeStream(s)
@@ -244,8 +237,7 @@ class NewsItemVersion(Version, CatalogPathAware):
         """
         xml = u'<title>%s</title>\n' % self.get_title()
         xml += u'<meta_type>%s</meta_type>\n' % self.meta_type
-        xml += u'<subheader>%s</subheader>\n' % self._prepare_xml(self._subheader)
-        xml += u'<lead>%s</lead>\n' % self._prepare_xml(self._lead)
+        xml += u'<content>\n%s\n</content>\n' % self.content_xml()
         for subject in self._subjects:
             xml += u'<subject>%s</subject>\n' % self._prepare_xml(subject)
         for audience in self._target_audiences:

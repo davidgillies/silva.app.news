@@ -4,7 +4,8 @@
 <div metal:fill-slot="main" tal:omit-tag="">
 <!-- ___________________________ start index_html/slot main ____________________________ -->
 
-<tal:block define="global view here;
+<tal:block define="global dummy model/security_trigger;
+                   global view here;
                    global model here/REQUEST/model;
                    global user_role view/get_user_role;
                    global silva_root view/silva_root;
@@ -70,10 +71,7 @@
 <tal:block condition="python:obj.get_title_html != ''">
 <img style="height:100%" width="32" height="18" align="left"
   tal:attributes="src string:${silva_root}/globals/pixel.gif" />
-<a class="blacklink" title="Preview this item"
-  tal:attributes="href string:${object_url}/edit/tab_preview">
 <b tal:content="structure string:${obj/get_title_html}">title</b>
-</a>
 </tal:block>
 <tal:block condition="python:obj.get_title_html == ''">
 &nbsp;

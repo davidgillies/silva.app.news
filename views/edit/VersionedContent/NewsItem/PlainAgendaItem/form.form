@@ -32,46 +32,6 @@
         <tales>
         </tales>
       </field>
-      <field><id>subheader</id> <type>TextAreaField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Subheader</title>
-          <description></description>
-          <extra></extra>
-        </values>
-        <tales>
-        </tales>
-      </field>
-      <field><id>lead</id> <type>TextAreaField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">5</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Lead</title>
-          <description></description>
-          <extra></extra>
-        </values>
-        <tales>
-        </tales>
-      </field>
       <field><id>start_datetime</id> <type>DateTimeField</type>
         <values>
           <date_only type="int">0</date_only>
