@@ -193,7 +193,7 @@
           <items>python: [''] + form.service_news.locations()</items>
         </tales>
       </field>
-      <field><id>location_manual</id> <type>TextAreaField</type>
+      <field><id>location</id> <type>TextAreaField</type>
         <values>
           <alternate_name></alternate_name>
           <hidden type="int">0</hidden>

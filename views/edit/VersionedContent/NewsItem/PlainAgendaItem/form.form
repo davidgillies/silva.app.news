@@ -54,7 +54,28 @@
           <time_separator>python:form.get_time_punctuation()</time_separator>
           <date_separator>python:form.get_date_punctuation()</date_separator>        </tales>
       </field>
-      <field><id>location_manual</id> <type>TextAreaField</type>
+      <field><id>end_datetime</id> <type>DateTimeField</type>
+        <values>
+          <allow_empty_time type="int">1</allow_empty_time>
+          <date_only type="int">0</date_only>
+          <alternate_name></alternate_name>
+          <input_style>text</input_style>
+          <input_order>dmy</input_order>
+          <hidden type="int">0</hidden>
+          <time_separator>:</time_separator>
+          <date_separator>/</date_separator>
+          <external_validator></external_validator>
+          <required type="int">0</required>
+          <default_now type="int">0</default_now>
+          <css_class></css_class>
+          <title>End date and time</title>
+          <description>Format: DD/MM/YYYY</description>
+        </values>
+        <tales>
+          <time_separator>python:form.get_time_punctuation()</time_separator>
+          <date_separator>python:form.get_date_punctuation()</date_separator>        </tales>
+      </field>
+      <field><id>location</id> <type>TextAreaField</type>
         <values>
           <alternate_name></alternate_name>
           <hidden type="int">0</hidden>
@@ -64,7 +85,7 @@
           <width type="int">40</width>
           <external_validator></external_validator>
           <height type="int">2</height>
-          <required type="int">1</required>
+          <required type="int">0</required>
           <css_class></css_class>
           <default></default>
           <title>Location</title>

@@ -20,6 +20,6 @@ editable = model.get_editable()
 
 editable.set_title(result['object_title'])
 editable.set_start_datetime(result['start_datetime'])
-editable.set_location_manual(result['location_manual'])
+editable.set_location(result['location'])
 
 return view.tab_edit(message_type="feedback", message="AgendaItem-data changed")

@@ -11,8 +11,10 @@
 <span tal:replace="structure python: mangle.DateTime(version.get_metadata_element('silva-extra', 'creationtime')).toStr()"></span><br /><br />
 <b>Date and time:</b><br />
 <span tal:replace="structure python: mangle.DateTime(version.start_datetime()).toStr()"></span><br /><br />
+<tal:block condition="version/location">
 <b>Location:</b><br />
-<span tal:replace="structure python: version.location_manual().replace('\n', '<br />')"></span>
+<span tal:replace="structure python: version.location().replace('\n', '<br />')"></span>
+</tal:block>
 </td>
 </tr>
 

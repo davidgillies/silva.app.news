@@ -61,7 +61,7 @@ class IAgendaItemVersion(INewsItemVersion):
         """Returns location
         """
 
-    def location_manual(self):
+    def location(self):
         """Returns manually entered location
         """
 
@@ -71,7 +71,7 @@ class IAgendaItemVersion(INewsItemVersion):
     def set_location(self, value):
         """Sets the location"""
 
-    def set_location_manual(self, value):
+    def set_location(self, value):
         """Sets the manual location"""
 
 

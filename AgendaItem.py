@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -45,7 +45,8 @@ class AgendaItemVersion(NewsItemVersion):
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)
         self._start_datetime = None
-        self._location_manual = ''
+        self._end_datetime = None
+        self._location = ''
 
     # MANIPULATORS
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -55,9 +56,15 @@ class AgendaItemVersion(NewsItemVersion):
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_location_manual')
-    def set_location_manual(self, value):
-        self._location_manual = value
+                              'set_start_datetime')
+    def set_end_datetime(self, value):
+        self._end_datetime = value
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_location')
+    def set_location(self, value):
+        self._location = value
         self.reindex_object()
 
     # ACCESSORS
@@ -69,11 +76,18 @@ class AgendaItemVersion(NewsItemVersion):
         return self._start_datetime
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'location_manual')
-    def location_manual(self):
+                              'end_datetime')
+    def end_datetime(self):
+        """Returns the start date/time
+        """
+        return self._end_datetime
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'location')
+    def location(self):
         """Returns location manual
         """
-        return self._location_manual
+        return self._location
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
@@ -81,7 +95,7 @@ class AgendaItemVersion(NewsItemVersion):
         """Deliver the contents as plain text, for full-text search
         """
         parenttext = AgendaItemVersion.inheritedAttribute('fulltext')(self)
-        return "%s %s" % (parenttext, self._location_manual)
+        return "%s %s" % (parenttext, self._location)
 
     def content_xml(self, context):
         """Returns the content as a partial XML-doc
@@ -90,7 +104,7 @@ class AgendaItemVersion(NewsItemVersion):
         xml = u'<start_datetime>%s</start_datetime>' % self._prepare_xml(
             self._start_datetime.rfc822())
         xml += u'<location>%s</location>' % self._prepare_xml(
-            self._location_manual)
+            self._location)
 
         context.f.write(xml)
 
