@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.19 $
+# $Revision: 1.20 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -25,7 +25,7 @@ class NewsFilter(Filter):
     you can choose which newssources you want to channel items for and
     filter the items on several criteria as well as individually. Also
     newsfilters can be set up to forward their items to other systems
-    as an RSS stream.
+    as an RSS stream (RSS version 0.91).
     """
     security = ClassSecurityInfo()
 

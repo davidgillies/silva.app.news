@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -14,7 +14,7 @@ from Products.Silva.IContent import IContent
 from NewsViewer import NewsViewer
 
 class AgendaViewer(NewsViewer):
-    """Used to actually show agendaitems on a Silva site. When setting up
+    """Used to show agendaitems on a Silva site. When setting up
     an agendaviewer you can choose which agendafilters it should use to get 
     the items from and how long in advance you want the items shown. The items
     will then automatically be retrieved from the agendafilter for each request.
