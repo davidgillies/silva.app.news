@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 
 # Zope
 from OFS import SimpleItem
@@ -219,6 +219,38 @@ class Filter(Asset, CatalogPathAware):
 
         self.reindex_object()
         return removed_subjects + removed_target_audiences
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'search_items')
+    def search_items(self, keywords, meta_types=None):
+        """Returns the items from the catalog that have keywords in fulltext.
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+        self.verify_excluded_items()
+
+        # replace +'es with spaces so the effect is the same...
+        keywords = keywords.replace('+', ' ')
+
+        query = {}
+        query['fulltext'] = keywords.split(' ')
+        query['version_status'] = 'public'
+        query['path'] = self._sources
+        query['subjects'] = self._subjects.keys()
+        query['target_audiences'] = self._target_audiences.keys()
+        query['meta_type'] = meta_types
+        query['sort_on'] = 'publication_datetime'
+        query['sort_order'] = 'descending'
+
+        result = getattr(self, self._catalog)(query)
+
+        result =  [r for r in result if not r.object_path in
+                self._excluded_items]
+
+        return result
 
     def _check_meta_types(self, meta_types):
         for type in meta_types:

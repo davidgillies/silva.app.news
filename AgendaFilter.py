@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -24,7 +24,7 @@ class AgendaFilter(Filter):
 
     def __init__(self, id, title):
         AgendaFilter.inheritedAttribute('__init__')(self, id, title)
-    
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_next_items')
     def get_next_items(self, numdays, meta_types=None):
@@ -54,8 +54,39 @@ class AgendaFilter(Filter):
         return [r for r in result if not r.object_path in self._excluded_items]
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_last_items')
+    def get_last_items(self, number, dummy=0, meta_types=None):
+        """Returns the last self._number_to_show published items
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+        self.verify_excluded_items()
+        query = {}
+        query['path'] = self._sources
+        query['version_status'] = 'public'
+        query['subjects'] = self._subjects.keys()
+        query['target_audiences'] = self._target_audiences.keys()
+        query['meta_type'] = meta_types
+        query['sort_on'] = 'publication_datetime'
+        query['sort_order'] = 'descending'
+
+        result = getattr(self, self._catalog)(query)
+        filtered_result = [r for r in result if not r.object_path in self._excluded_items]
+        output = []
+        for i in range(len(filtered_result)):
+            if i < number:
+                output.append(filtered_result[i])
+            else:
+                break
+
+        return output
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None):
+    def get_agenda_items_by_date(self, month, year, meta_types=None):
         """Returns non-excluded published items for a particular month
         """
         self.verify_sources()
