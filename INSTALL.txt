@@ -3,10 +3,10 @@ See also LICENSE.txt
 
 Meta::
 
-  Valid for:  Silva News 0.1
-  Author:     Martijn Faassen, Guido Wesdorp
-  Email:      faassen@infrae.com, guido@infrae.com
-  CVS:        $Revision: 1.1 $
+  Valid for:  Silva News 0.8
+  Author:     Guido Wesdorp, Martijn Faassen
+  Email:      guido@infrae.com, faassen@infrae.com
+  CVS:        $Revision: 1.2 $
 
 Installing Silva News
 
