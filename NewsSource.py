@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -33,7 +33,6 @@ class NewsSource(Publication, CatalogPathAware):
         NewsSource.inheritedAttribute('__init__')(self, id, title)
         self._is_private = 0
         self._locations = []
-        self._info_items = []
 
     def manage_afterAdd(self, item, container):
         NewsSource.inheritedAttribute('manage_afterAdd')(self, item, container)
@@ -106,57 +105,6 @@ class NewsSource(Publication, CatalogPathAware):
     def locations(self):
         """Returns the list of locations"""
         return self._locations
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'add_info_item')
-    def add_info_item(self, item):
-        """Adds an item to the list of info_items"""
-        if not item in self._info_items:
-            self._info_items.append(item)
-            self._p_changed = 1
-        else:
-            raise DuplicateError, 'Item is already in the list'
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'remove_info_item')
-    def remove_info_item(self, item):
-        """Removes an item from the list of info_items"""
-        self._info_items.remove(item)
-        self._p_changed = 1
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'info_items')
-    def info_items(self):
-        """Returns the list of info_items"""
-        return self._info_items
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'manage_addInfoItem')
-    def manage_addInfoItem(self, REQUEST):
-        """Manage method for adding an info_item"""
-        try:
-            self.add_info_item(REQUEST['info_item'])
-        except DuplicateError:
-            return self.edit['tab_lists'](message_type='error', message='Item %s is already in the list' % REQUEST['info_item'])
-        else:
-            return self.edit['tab_lists'](message_type='feedback', message='Item %s added' % REQUEST['info_item'])
-
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'manage_removeInfoItem')
-    def manage_removeInfoItem(self, REQUEST):
-        """Manage method for removing info_items"""
-        errors = []
-        for item in REQUEST['info_items']:
-            try:
-                self.remove_info_item(item)
-            except KeyError:
-                errors.append(item)
-        if not errors:
-            return self.edit['tab_lists'](message_type='feedback', message='Item(s) %s removed' % ', '.join(REQUEST['info_items']))
-        else:
-            return self.edit['tab_lists'](message_type='error',
-                message='Item(s) %s removed, items %s did not exist' % (', '.join(REQUEST['info_items'] - errors), ', '.join(errors)))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')
