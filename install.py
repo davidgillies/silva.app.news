@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.23 $
+# $Revision: 1.24 $
 
 """Install and Uninstall for Silva News
 """
@@ -181,15 +181,15 @@ def setup_catalog(silva_root):
     """Sets the ZCatalog up"""
     catalog = silva_root.service_catalog
     
-    columns = ['object_path',]
+    columns = ['idx_object_path',]
 
     indexes = [
-        ('is_private', 'FieldIndex'),
-        ('object_path', 'FieldIndex'),
-        ('parent_path', 'FieldIndex'),
-        ('start_datetime', 'DateIndex'),
-        ('subjects', 'KeywordIndex'),
-        ('target_audiences', 'KeywordIndex'),
+        ('idx_is_private', 'FieldIndex'),
+        ('idx_object_path', 'FieldIndex'),
+        ('idx_parent_path', 'FieldIndex'),
+        ('idx_start_datetime', 'DateIndex'),
+        ('idx_subjects', 'KeywordIndex'),
+        ('idx_target_audiences', 'KeywordIndex'),
         ]
 
     existing_columns = catalog.schema()

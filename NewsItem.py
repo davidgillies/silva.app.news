@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.26 $
+# $Revision: 1.27 $
 
 # Python
 from StringIO import StringIO
@@ -141,6 +141,10 @@ class NewsItemVersion(DocumentVersion):
             return 0
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'idx_is_private')
+    idx_is_private = is_private
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'subjects')
     def subjects(self):
         """Returns the subjects
@@ -148,11 +152,19 @@ class NewsItemVersion(DocumentVersion):
         return self._subjects
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'idx_subjects')
+    idx_subjects = subjects
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'target_audiences')
     def target_audiences(self):
         """Returns the target audiences
         """
         return self._target_audiences
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'idx_target_audiences')
+    idx_target_audiences = target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'info_item')
