@@ -566,7 +566,7 @@
                         title="there's no undo: alt-d"
                         accesskey="d"
                         onClick="return confirm('Really delete?')"
-                        i18n:attributes="onClick value title"
+                        i18n:attributes="value title"
                       />
                     </tal:block>
                     <tal:block tal:condition="python:0 and (default_document or publishables or assets)">

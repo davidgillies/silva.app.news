@@ -1,4 +1,11 @@
 <html tal:omit-tag=""
+  xml:lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:notal="http://www.infrae.com/silva/notal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
   tal:define="
     view here;
     model request/model;
@@ -61,7 +68,7 @@
           <tal:repeat repeat="month months">
             <tal:define define="id repeat/month/index">
               <td class="align-center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+                <a href="#"  i18n:translate="" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)">month</a>
               </td>
             </tal:define>
           </tal:repeat>
@@ -72,17 +79,17 @@
       </tbody>
     </table>
 
-    <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+    <tal:comment condition="nothing" i18n:translate="">Begin PublicationTable</tal:comment>
 
     <table class="listing interlisting">
 
       <span tal:replace="nothing"> ______________ table header ______________ </span>
       <tr tal:condition="python:len(objects) != 0">
-        <th width="3%">type</th>
-        <th>modify</th>
-        <th>view</th>
-        <th>publication&nbsp;due&nbsp;</th>
-        <th>expiration&nbsp;due</th>
+        <th i18n:translate="" width="3%">type</th>
+        <th i18n:translate="">modify</th>
+        <th i18n:translate="">view</th>
+        <th i18n:translate="">publication&nbsp;due&nbsp;</th>
+        <th i18n:translate="">expiration&nbsp;due</th>
       </tr>
 
       <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
@@ -100,7 +107,7 @@
       <td nowrap="1">
       <input type="checkbox" name="cb:list" value="value"
        tal:attributes="value string:cb_${id}; checked object/check_checkbox" />
-      <a href="edit" title="sdit this item"
+      <a href="edit" title="Edit this item" i18n:attributes="title"
         tal:attributes="href string:${object_url}/edit/tab_edit">
       <img tal:replace="structure python:view.render_icon(obj.object())" />
       </a>
@@ -108,7 +115,7 @@
 
       <span tal:replace="nothing"> _______ id cell _______ </span>
       <td>
-      <a title="Edit this item"
+      <a title="Edit this item" i18n:attributes="title"
         tal:attributes="href string:${object_url}/edit;
                         class python:view.get_status_style(object_status)"
         tal:content="object_url">id
@@ -118,7 +125,7 @@
       <span tal:replace="nothing"> _______ title cell _______ </span>
       <td>
       <tal:block condition="python:obj.get_title != ''">
-      <a class="blacklink" title="Preview this item"
+      <a class="blacklink" title="Preview this item" i18n:attributes="title"
         tal:attributes="href string:${object_url}">
       <span tal:replace="structure string:${obj/get_title}">title</span>
       </a>
@@ -170,7 +177,7 @@
       </tr>
       <tr class="odd">
       <td colspan="6">
-      <i>There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published.</i>
+      <i i18n:translate="">There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published.</i>
       </td>
       </tr>
       <tr>
@@ -234,7 +241,7 @@
       &nbsp;
       <input type="hidden" name="year" value="" tal:attributes="value currentyear">
       <input type="hidden" name="month" value="" tal:attributes="value currentmonth">
-      <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" />
+      <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" i18n:attributes="title value"/>
       &nbsp;
       </td>
       <td align="right" colspan="3" nowrap="1">
@@ -257,7 +264,7 @@
           <tal:repeat repeat="month months">
             <tal:define define="id repeat/month/index">
               <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+                <a href="#"  i18n:translate="" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)">month</a>
               </td>
             </tal:define>
           </tal:repeat>
