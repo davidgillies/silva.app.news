@@ -236,7 +236,7 @@
                       _______ id cell _______
                     </tal:block>
                     <td>
-                      <a class="image"
+                      <a class="icon"
                         tal:attributes="
                           href python:here.get_editor_link(item);
                           title item/meta_type;">
@@ -252,17 +252,6 @@
                       >
                         id
                       </a>
-                      <img alt="content approved or published"
-                        border="0"
-                        height="10"
-                        title="content is approved or published"
-                        width="10"
-                        tal:define="
-                          is_published item/is_version_published | nothing;
-                          is_approved item/is_version_approved | nothing"
-                        tal:condition="python:is_published or is_approved"
-                        tal:attributes="src string:${root_url}/globals/checkmark.gif" />
-
                     </td>
                     <tal:block replace="nothing">
                       _______ title cell _______
@@ -301,6 +290,18 @@
                       _______ author/status downlink cell _______
                     </tal:block>
                     <td tal:define="last_author python:(item.sec_get_last_author_info().fullname() or default)">
+                      <a style="float: right;" 
+                          title="content approved, or published..." 
+                          tal:attributes="href item/absolute_url" 
+                          tal:condition="python: item.is_version_published() or item.is_version_approved()">
+                      <img alt="content approved or published"
+                        border="0"
+                        height="10"
+                        title="content is approved or published"
+                        width="10"
+                        tal:attributes="src string:${root_url}/globals/checkmark.gif" />
+                      </a>
+
                       <a class="blacklink" title="status"
                         tal:condition="python:not item.implements_container() and item.implements_versioned_content()"
                         tal:attributes="href string:${item_url}/edit/tab_status"
@@ -326,7 +327,7 @@
                     </tal:block>
                     <td class="listing-right">
                       <tal:block condition="python:may_change_content and not is_default">
-                        <a class="image"
+                        <a class="icon"
                           title="move down"
                           tal:attributes="href string:${url}/edit/tab_edit_move_down?id=${item/id}"
                           i18n:attributes="title"
@@ -337,7 +338,7 @@
                             width="16"
                             tal:attributes="src string:${root_url}/globals/down.gif" />
                         </a>
-                        <a class="image"
+                        <a class="icon"
                           title="move up"
                           tal:attributes="href string:${url}/edit/tab_edit_move_up?id=${item/id}"
                           i18n:attributes="title"
