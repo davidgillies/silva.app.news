@@ -188,10 +188,31 @@
 
 
       <check tal:condition="python:len(objects) != 0">
+
+      <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
+      <tr class="controls"
+        tal:condition="python:user_role == 'Editor'">
+      <td colspan="3">
+      <input style="display: none"
+              id="select_all_button"
+              class="button" 
+              type="submit" 
+              name="selectButton" 
+              value="deselect all" 
+              sel_value="select all"
+              desel_value="deselect all"
+              title="select all items: alt-a" 
+              accesskey="a" 
+              onClick="toggleSelect(this); return false"
+              i18n:attributes="value;sel_value;desel_value;title">
       <script type="text/javascript">
       // <![CDATA[
 
-        isSelected = false;
+        if (document.forms[0]) {
+          document.getElementById('select_all_button').style.display = 'inline';
+        }
+
+        isSelected = true;
 
         function toggleSelect(button) {
           var form = button.form;
@@ -211,7 +232,6 @@
             };
             if (check) {
               child.setAttribute('checked', true);
-              button.setAttribute('value', 'deselect all');
             } else {
               // make very sure the checkbox is unchecked, the 
               // setAttribute works on IE but not on Moz, the 
@@ -219,24 +239,14 @@
               // seem to clash and who knows IE 8 will require both ;)
               child.setAttribute('checked', null);
               child.removeAttribute('checked');
-              button.setAttribute('value', 'select all');
             };
           };
+          var newvalue = isSelected ? button.getAttribute('desel_value') :
+                          button.getAttribute('sel_value');
+          button.setAttribute('value', newvalue);
         };
         
       // ]]>
-      </script>
-
-      <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
-      <tr class="controls"
-        tal:condition="python:user_role == 'Editor'">
-      <td colspan="3">
-      <script type="text/javascript">
-      <!--
-      if (document.forms[0]) {
-        document.write('<input class="button" type="submit" name="selectButton" value="select all" accesskey="a" title="select all items on and below this level: alt-a" onClick="toggleSelect(this); return false">')
-        }
-      //-->
       </script>
       &nbsp;
       <input type="hidden" name="year" value="" tal:attributes="value currentyear">
