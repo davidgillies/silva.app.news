@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.21 $
+# $Revision: 1.22 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -323,11 +323,11 @@ class NewsFilter(Filter):
         """Returns the top 15 records as an RSS feed (RSS version 0.91)"""
         if not self.allow_rss_export():
             raise Exception, 'RSS export not allowed!'
-        feed = '<?xml version="1.0" ?>\n'\
+        feed = '<?xml version="1.0" encoding="ISO_8859-1" ?>\n'\
                 '<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/ formats/rss-0.91.dtd">\n'\
                 '<rss version="0.91" encoding="ISO_8859-1">\n'\
                 '<channel>\n'\
-                '<title>' + self._xml_preformat(self.get_title_html()) + '</title>\n'\
+                '<title>' + self._xml_preformat(self._title.encode('utf-8')) + '</title>\n'\
                 '<description>' + self._xml_preformat(self.rss_description()) + '</description>\n'\
                 '<link>' + (self._xml_preformat(self.rss_link()) or self._xml_preformat(self.get_publication().absolute_url())) + '</link>\n'\
                 '<language>en-us</language>\n'
@@ -383,7 +383,7 @@ class NewsFilter(Filter):
         text = text.replace('<', '&lt;')
         text = text.replace('>', '&gt;')
 
-        return unicode(text, codepage)
+        return text
 
 InitializeClass(NewsFilter)
 
