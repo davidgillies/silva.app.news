@@ -1,18 +1,18 @@
-$Revision: 1.4 $
+$Revision: 1.5 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:  Silva News 0.8
+  Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.4 $
+  CVS:        $Revision: 1.5 $
 
 Installing Silva News
 
-  This package requires Silva 0.8.6
+  This package requires Silva 0.8.7
 
   Unpack the SilvaNews.tar.gz package into the Products directory of your Zope installation
   and restart Zope. Go to the Silva root and click on the 'service_extensions' object. Scroll

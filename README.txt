@@ -1,4 +1,4 @@
-$Revision: 1.6 $
+$Revision: 1.7 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,7 +8,7 @@ Meta::
   Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.6 $
+  CVS:        $Revision: 1.7 $
 
 Silva News
 
@@ -62,7 +62,7 @@ Using Silva News
     access'. When this is checked, the source can only be found by news-
     and agendafilters in the same folder the source is on and each
     subfolder of that folder. This can be used to make the newssource
-    'private', make it available only to for example 1 department.
+    'private', making it available only to for example 1 department.
 
   Adding news items
 
@@ -77,7 +77,10 @@ Using Silva News
     datafields required for the system to work correctly are 'subjects' and
     'target audiences', which the author can use to classify the newsitem.
     These fields will later be used by the newsfilters as criteria for
-    routing the items to newsviewers.
+    routing the items to newsviewers. When editing a news or agenda item,
+    keep in mind that the first heading placed in the content editor is
+    considered to be the subheader of the newsitem, and the first paragraph
+    as the lead (both will show up in the previes on the viewers).
 
   Adding news filters
 
@@ -86,7 +89,7 @@ Using Silva News
     editors to filter a stream of newsitems. The items can be filtered on
     subject and target audience (so for instance a newsfilter can route
     only newsitems with a specific subject or meant for a specific target
-    audience to the viewers) and/or on individual newsitems.
+    audience to the viewers) and/or as individual newsitems.
 
   The Sources tab
 
@@ -122,12 +125,12 @@ Using Silva News
     be routed by a filter. To filter out a specific item, uncheck the
     checkbox in front of it and choose 'update'.
 
-    Now the news- and agendaviewers can be placed. The viewers are the
-    objects responsible for showing the news- and agendaitems to the
-    public. An author can place viewers where he wants news to be shown.
-    The viewers show a list of items routed by the filters.
+  Now the news- and agendaviewers can be placed. The viewers are the
+  objects responsible for showing the news- and agendaitems to the
+  public. An author can place viewers where he wants news to be shown.
+  The viewers show a list of items routed by the filters.
 
-  The NewsViewer Edit tab
+  The Viewer's Edit tab
 
     The viewers are quite easy to set up: the only tab that matters is the
     first one (edit), where you can set the number of days the viewer will
