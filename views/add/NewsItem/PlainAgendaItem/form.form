@@ -68,7 +68,8 @@
           <description>Format: DD/MM/YYYY</description>
         </values>
         <tales>
-        </tales>
+          <time_separator>python:form.get_time_punctuation()</time_separator>
+          <date_separator>python:form.get_date_punctuation()</date_separator>        </tales>
       </field>
       <field><id>subjects</id> <type>MultiCheckBoxField</type>
         <values>

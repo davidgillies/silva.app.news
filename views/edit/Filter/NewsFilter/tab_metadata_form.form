@@ -22,7 +22,7 @@
           <width type="int">40</width>
           <external_validator></external_validator>
           <height type="int">2</height>
-          <required type="int">1</required>
+          <required type="int">0</required>
           <css_class></css_class>
           <default></default>
           <title>Title</title>
@@ -160,7 +160,7 @@
           <required type="int">0</required>
           <css_class></css_class>
           <default></default>
-          <title>RSS copyright</title>
+          <title>RSS&amp;nbsp;copyright</title>
           <truncate type="int">0</truncate>
           <description>Enter a copyright notice (not used if left empty).</description>
           <extra></extra>

@@ -54,7 +54,10 @@ function insertAssetReference(id, reference, wndw) {
 </script>
 <tal:block tal:define="dummy python: request.SESSION.set('filter', 'Image')" />
 
-<h2>Metadata for <span class="document-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span></h2>
+<h2><img src="%s" width="16" height="16" alt="%s"
+     tal:replace="structure python:view.render_icon(model.meta_type)" />&nbsp;
+  Metadata for <span class="document-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span>
+</h2>
 
 <init tal:omit-tag=""
   tal:define="global fields python:view.tab_metadata_form.get_fields()" />
@@ -128,7 +131,8 @@ Select image:
 &nbsp;
 </td>
 <td align="left">
-<input type="text" name="rss_image" size="60" tal:attributes="value model/rss_image" /><input type="button" tal:attributes="onClick string:getAssetReference('${model/absolute_url}/edit/asset_lookup', '_reference_', 'form', 'rss_image', 0);" value=" Find " />
+<input class="button" type="button" tal:attributes="onClick string:getAssetReference('${model/absolute_url}/edit/asset_lookup', '_reference_', 'form', 'rss_image', 0);" value=" Locate " /><br />
+<input type="text" name="rss_image" size="60" tal:attributes="value model/rss_image" />
 </td>
 <td>
 If you choose an image here, it will be added to the RSS feed.</td>
@@ -144,6 +148,7 @@ If you choose an image here, it will be added to the RSS feed.</td>
 </tr>
 </table>
 </form>
+<br />
 
 <span tal:replace="structure here/tab_metadata_extra | nothing" tal:omit-tag="" />
 

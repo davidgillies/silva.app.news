@@ -10,7 +10,9 @@
   " />
 
 <div class="margins">
-  <h2>Contents of <span class="folder-title" tal:content="structure string:&laquo;${model/get_title_html}&raquo;">title here</span>
+  <h2><img src="%s" width="16" height="16" alt="%s"
+       tal:replace="structure python:view.render_icon(model.meta_type)" />&nbsp;
+    Contents of <span class="folder-title" tal:content="structure string:&laquo;${model/get_title_html}&raquo;">title here</span>
   </h2>
 </div>
 
@@ -20,12 +22,12 @@
 <tr class="topcontrols" valign="bottom">
   <!-- top row of complete table with sidebar -->
   <td width="22%" nowrap="1">
-    <img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="2" height="16" /><a href="treelink" title="Up to containing publication"
+    <img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="2" height="16" /><a href="treelink" title="Up to containing publication: alt-[" accesskey="["
       tal:condition="python:model != model.get_root()"
       tal:attributes="href python:model.aq_parent.get_publication().absolute_url() + '/edit/tab_edit'"><img width="16" height="16" border="0" alt="Up to containing Publication" hspace="3"
       tal:attributes="src python:test(model.get_publication() == model, '%s/globals/up_publication_gray.gif'%silva_root, '%s/globals/up_tree_gray.gif'%silva_root)" /></a>
     <span class="tablehead3">Publication</span>
-    <a href="../../edit/tab_edit" title="Up one level"
+    <a href="../../edit/tab_edit" title="Up one level: alt-]" accesskey="]"
       tal:condition="python:model != model.get_root()"><img tal:attributes="src string:${silva_root}/globals/up_level_gray.gif" width="16" height="16" border="0" alt="Up one level" hspace="5" /></a>
   </td>
   <td class="divider"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="22" /></td>

@@ -16,7 +16,10 @@
                    global user_role view/get_user_role;" />
 
 <div class="margins">
-<h2>Manage <span class="folder-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span></h2>
+<h2><img src="%s" width="16" height="16" alt="%s"
+     tal:replace="structure python:view.render_icon(model.meta_type)" />&nbsp;
+  Items in <span class="folder-title" tal:content="structure string:&#xab;${model/get_title_html}&#xbb;">title here</span>
+</h2>
 </div>
 
 <tal:comment condition="nothing">__________ date table __________</tal:comment>

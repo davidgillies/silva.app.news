@@ -16,7 +16,10 @@
   </div>
 </td>
 <td align="right">
-<form tal:attributes="action string:." method="post"><input type="text" name="query"><input type="submit" value="Search"></form>
+<form tal:attributes="action string:." method="post">
+<input type="text" name="query" />
+<input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s"/>
+</form>
 </td>
 </tr>
 </table>

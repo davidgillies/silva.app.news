@@ -11,19 +11,24 @@
     <h2><span class="folder-title">View News</span></h2>
   </div>
 </td>
-<td align="right">
-<form tal:attributes="action string:." method="post"><input type="text" name="query"><input type="submit" value="Search"></form>
-</td>
 </tr>
 </table>
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
-<table width="100%" cellspacing="0" cellpadding="3" border="2"
+<table width="100%" 
   tal:attributes="cellspacing container/table_cellspacing;
                   cellpadding container/table_cellpadding;
                   border container/table_border">
 
+<tr class="topcontrols" valign="bottom">
+<td align="right" colspan="2">
+<form tal:attributes="action string:." method="post">
+<input type="text" name="query" />&nbsp;
+<input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" />
+</form>
+</td>
+</tr>
 
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
@@ -50,9 +55,6 @@
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
 <check tal:condition="python:len(results) == 0">
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
 <tr class="focus-light">
 <td colspan="2">
 There are no articles.
