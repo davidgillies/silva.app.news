@@ -46,6 +46,6 @@ if model.keep_to_path() != result['keep_to_path']:
 m = _('Settings changed for: ')
 msg = unicode(m)
 
-msg = msg + u','.join(messages)
+msg = msg + u', '.join(messages)
 
 return context.tab_edit(message_type="feedback", message=msg)

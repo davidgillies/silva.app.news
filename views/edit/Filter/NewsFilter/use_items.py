@@ -7,6 +7,11 @@
 ##parameters=
 ##title=
 ##
+
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
+
 view = context
 request = view.REQUEST
 sesslist = request.SESSION['objects']
@@ -32,4 +37,7 @@ month = ''
 if request.has_key('month'):
     year = request['month']
 
-return view.tab_edit_items(message_type='feedback', message='The filter is updated.', month=month, year=year)
+m = _('The filter is updated.')
+msg = unicode(m)
+
+return view.tab_edit_items(message_type='feedback', message=msg, month=month, year=year)
