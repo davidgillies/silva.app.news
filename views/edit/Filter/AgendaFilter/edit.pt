@@ -206,7 +206,7 @@
                       class="button" 
                       type="submit" 
                       name="selectButton" 
-                      value="deselect all" 
+                      value="select all" 
                       sel_value="select all"
                       desel_value="deselect all"
                       title="select all items: alt-a" 
@@ -220,7 +220,7 @@
                   document.getElementById('select_all_button').style.display = 'inline';
                 }
 
-                isSelected = true;
+                isSelected = false;
 
                 function toggleSelect(button) {
                   var form = button.form;
