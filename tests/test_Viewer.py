@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 import unittest
 import Zope
@@ -58,8 +58,6 @@ class NewsViewerBaseTestCase(unittest.TestCase):
         setup_catalog(self.root, columns, indexes)
 
         self.source1 = add_helper_news(self.sroot, 'NewsSource', 'source1', 'Source 1')
-        self.source1.add_location('test')
-        self.source1.add_location('test2')
 
         self.item1_1 = add_helper_news(self.source1, 'PlainArticle', 'art1', 'Article 1')
         self.item1_1.set_next_version_publication_datetime(DateTime())
@@ -77,14 +75,10 @@ class NewsViewerBaseTestCase(unittest.TestCase):
 
         self.source2 = add_helper_news(self.sroot, 'NewsSource', 'source2', 'Source 2')
         self.source2.set_private(1)
-        self.source2.add_location('test')
-        self.source2.add_location('test2')
 
         self.folder = add_helper(self.sroot, 'Folder', 'somefolder', 'Some Folder')
         self.source3 = add_helper_news(self.folder, 'NewsSource', 'source3', 'Source 3')
         self.source3.set_private(1)
-        self.source3.add_location('test')
-        self.source3.add_location('test2')
 
         self.item1_3 = add_helper_news(self.source3, 'PlainArticle', 'art3', 'Article 3')
         self.item1_3.set_next_version_publication_datetime(DateTime())

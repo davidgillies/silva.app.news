@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 
 import unittest
 import Zope
@@ -30,6 +30,8 @@ class ServiceNewsBaseTestCase(unittest.TestCase):
         hack_add_user(self.REQUEST)
         self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
         self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
+        self.service_news.remove_subject('Dummy')
+        self.service_news.remove_target_audience('Dummy')
 
     def tearDown(self):
         get_transaction().abort()
