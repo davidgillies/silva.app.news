@@ -43,7 +43,9 @@
 </tr>
 
 <tr class="focus-cycle">
-<td align="left" valign="top"><b tal:content="obj/lead">Lead</b><br /><br />
+<td align="left" valign="top">
+<b tal:content="obj/lead">Lead</b><br /><br />
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
 <a href="#" tal:attributes="href obj/getURL">view article</a>
 </td>
 </tr>
@@ -66,7 +68,7 @@ There are no articles corresponding to your query.
 </check>
 <!-- /iteration -->
 
-</table>
+</table><br />
 
-<a href="#" tal:attributes="href string:?view=view_news">News</a>
-<a href="#" tal:attributes="href string:?view=view_archive">Archive</a>
+<a href="#" tal:attributes="href string:?view=view_news">View News</a><br />
+<a href="#" tal:attributes="href string:?view=view_archive">View Archive</a>
