@@ -12,25 +12,6 @@
       <title>Default</title>
       <fields>
 
-      <field><id>filters</id> <type>MultiCheckBoxField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <required type="int">1</required>
-          <hidden type="int">0</hidden>
-          <css_class></css_class>
-          <default>[]</default>
-          <title>filters</title>
-          <description></description>
-          <external_validator></external_validator>
-          <items>[]</items>
-          <orientation>vertical</orientation>
-          <unicode type="int">1</unicode>
-        </values>
-        <tales>
-          <items>python: form.REQUEST.model.findfilters_pairs()</items>
-          <default>python: form.REQUEST.model.filters()</default>
-        </tales>
-      </field>
       <field><id>days_to_show</id> <type>IntegerField</type>
         <values>
           <alternate_name></alternate_name>
@@ -49,6 +30,25 @@
         </values>
         <tales>
           <default>python: form.REQUEST.model.days_to_show()</default>
+        </tales>
+      </field>
+      <field><id>filters</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default>[]</default>
+          <title>filters</title>
+          <description></description>
+          <external_validator></external_validator>
+          <items>[]</items>
+          <orientation>vertical</orientation>
+          <unicode type="int">1</unicode>
+        </values>
+        <tales>
+          <items>python: form.REQUEST.model.findfilters_pairs()</items>
+          <default>python: form.REQUEST.model.filters()</default>
         </tales>
       </field>
       </fields>
