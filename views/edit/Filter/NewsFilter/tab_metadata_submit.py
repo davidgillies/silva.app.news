@@ -71,4 +71,12 @@ if not not result['allow_rss_export'] != model.allow_rss_export():
     model.set_allow_rss_export(result['allow_rss_export'])
     changed_metadata.append(('allow_rss_export', 'changed'))
 
+if not not result['allow_rss_search'] != model.allow_rss_search():
+    model.set_allow_rss_search(result['allow_rss_search'])
+    changed_metadata.append(('allow_rss_search', 'changed'))
+
+if result['rss_search_description'] != model.rss_search_description():
+    model.set_rss_search_description(result['rss_search_description'])
+    changed_metadata.append(('rss_search_description', 'updated'))
+
 return context.tab_metadata(message_type="feedback", message="Metadata changed for: %s"%(context.quotify_list(changed_metadata)))

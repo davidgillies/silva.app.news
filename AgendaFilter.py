@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.11 $
+# $Revision: 1.12 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -193,7 +193,7 @@ class AgendaFilter(Filter):
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
         allowed = []
-        mts = self.filtered_meta_types()
+        mts = self.get_root().filtered_meta_types()
         for mt in mts:
             if mt.has_key('instance') and IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']):
                 allowed.append(mt['name'])

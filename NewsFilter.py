@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.13 $
+# $Revision: 1.14 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -10,6 +10,7 @@ from DateTime import DateTime
 import OFS
 # Silva
 import Products.Silva.SilvaPermissions as SilvaPermissions
+from Products.Silva.ViewRegistry import ViewAttribute
 # misc
 from Products.Silva.helpers import add_and_edit
 
@@ -24,6 +25,8 @@ class NewsFilter(Filter):
 
     meta_type = "Silva News NewsFilter"
 
+    search = ViewAttribute('public', 'index_html')
+
     def __init__(self, id, title):
         NewsFilter.inheritedAttribute('__init__')(self, id, title)
         self._show_agenda_items = 0
@@ -31,6 +34,8 @@ class NewsFilter(Filter):
         self._allow_rss_export = 0
         self._rss_link = ''
         self._rss_copyright = ''
+        self._allow_rss_search = 0
+        self._rss_search_description = ''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
@@ -231,6 +236,30 @@ class NewsFilter(Filter):
         self._allow_rss_export = not not yesorno
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'allow_rss_search')
+    def allow_rss_search(self):
+        """Returns true if searching through RSS is allowed"""
+        return self._allow_rss_search
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_allow_rss_search')
+    def set_allow_rss_search(self, yesorno):
+        """Sets allow_rss_search"""
+        self._allow_rss_search = not not yesorno
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss_search_description')
+    def rss_search_description(self):
+        """Returns RSS search description"""
+        return self._rss_search_description
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_rss_search_description')
+    def set_rss_search_description(self, value):
+        """Sets the description"""
+        self._rss_search_description = value
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'rss_link')
     def rss_link(self):
         """Returns the link to be used as the 'link' tag value for the RSS feed"""
@@ -258,7 +287,7 @@ class NewsFilter(Filter):
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
         allowed = []
-        mts = self.filtered_meta_types()
+        mts = self.get_root().filtered_meta_types()
         for mt in mts:
             if mt.has_key('instance'):
                 if INewsItemVersion.isImplementedByInstancesOf(mt['instance']):
@@ -301,6 +330,14 @@ class NewsFilter(Filter):
                     '<link>' + self._xml_preformat(item.absolute_url()) + '</link>\n'\
                     '<description>' + self._xml_preformat(lead) + '</description>\n'\
                     '</item>\n\n'
+
+        if self.allow_rss_search():
+            feed += '<textinput>\n'\
+                    '<title>Search</title>\n'\
+                    '<name>query</name>\n'\
+                    '<description>' + self.rss_search_description() + '</description>\n'\
+                    '<link>' + self.aq_inner.absolute_url() + '/search</link>\n'\
+                    '</textinput>\n\n'
 
         feed += '</channel>\n'\
                 '</rss>\n'
