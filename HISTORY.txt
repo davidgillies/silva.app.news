@@ -1,0 +1,27 @@
+Copyright (c) 2004 Infrae. All rights reserved.
+See also LICENSE.txt
+
+SilvaNews changes
+
+  Not yet released
+
+    Bugs fixed
+ 
+      - Silva News really depends on Silva Document, not just Silva core.
+
+  0.9
+
+    Features
+
+      - RSS 1.0 overviews on NewsViewers and Aggregators.
+        By adding /rss to the URL of a NewsViews, one will
+        get the RSS 1.0 feed for this viewer or aggregator.
+
+      - Removed the RSSViewer (replaced by the RSSAggregator).
+
+    Bugs fixed
+
+      - Fixed just about all Silva 0.9.3 conversion issues.
+
+    Note: SilvaNews 0.9 is incompatible with previously released
+    versions.

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.4 $
+# $Revision: 1.5 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -24,12 +24,12 @@ class DuplicateError(Exception):
     pass
 
 icon = 'www/news_source.png'
+addable_priority = 3
 
 class NewsPublication(ObjectTitle, Publication):
-    """A special Silva publication for news items and agenda items.
-
-    News filters and agenda filters can pick up news sources from
-    within a silva site.
+    """A special publication type (a.k.a. News Source) for news 
+    and agenda items. News Filters and Agenda Filters can pick up 
+    news from these sources anywhere in a Silva site.
     """
     security = ClassSecurityInfo()
 
@@ -44,6 +44,9 @@ class NewsPublication(ObjectTitle, Publication):
     def __init__(self, id):
         NewsPublication.inheritedAttribute('__init__')(self, id)
         self._is_private = 0
+
+
+    # ACCESSORS
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_private')
@@ -60,18 +63,18 @@ class NewsPublication(ObjectTitle, Publication):
         return '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
 
     # MANIPULATORS
+
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_private')
     def set_private(self, on_or_off):
         """
-        Sets the is_private-setting for this source, is_private can
-        restrict the availability of this source towards the
+        Sets the is_private-setting for this source.
+
+        is_private can restrict the availability of this source towards the
         outside-world (when set, the source can only be found by
         filters in the same subdirectory)
         """
         self._is_private = on_or_off
-        self.reindex_object()
-        self._p_changed = 1
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -127,6 +130,8 @@ class NewsPublication(ObjectTitle, Publication):
         return (fields, versionpaths)
 
 InitializeClass(NewsPublication)
+
+###
 
 manage_addNewsPublicationForm = PageTemplateFile(
     "www/newsPublicationAdd", globals(),
