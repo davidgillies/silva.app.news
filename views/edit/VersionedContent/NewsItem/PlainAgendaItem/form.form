@@ -32,25 +32,6 @@
         <tales>
         </tales>
       </field>
-      <field><id>start_datetime</id> <type>DateTimeField</type>
-        <values>
-          <date_only type="int">0</date_only>
-          <alternate_name></alternate_name>
-          <input_style>text</input_style>
-          <input_order>dmy</input_order>
-          <hidden type="int">0</hidden>
-          <time_separator>:</time_separator>
-          <date_separator>/</date_separator>
-          <external_validator></external_validator>
-          <required type="int">1</required>
-          <default_now type="int">0</default_now>
-          <css_class></css_class>
-          <title>Startdate/time</title>
-          <description></description>
-        </values>
-        <tales>
-        </tales>
-      </field>
       <field><id>subheader</id> <type>TextAreaField</type>
         <values>
           <alternate_name></alternate_name>
@@ -87,6 +68,25 @@
           <title>Lead</title>
           <description></description>
           <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
+      <field><id>start_datetime</id> <type>DateTimeField</type>
+        <values>
+          <date_only type="int">0</date_only>
+          <alternate_name></alternate_name>
+          <input_style>text</input_style>
+          <input_order>dmy</input_order>
+          <hidden type="int">0</hidden>
+          <time_separator>:</time_separator>
+          <date_separator>/</date_separator>
+          <external_validator></external_validator>
+          <required type="int">1</required>
+          <default_now type="int">0</default_now>
+          <css_class></css_class>
+          <title>Startdate/time</title>
+          <description></description>
         </values>
         <tales>
         </tales>
