@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.13 $
+# $Revision: 1.14 $
 
 """Install and Uninstall for Silva News
 """
@@ -42,24 +42,24 @@ def registerViews(reg):
     reg.register('edit', 'Silva News NewsSource', ['edit', 'Container', 'NewsSource'])
     reg.register('edit', 'Silva News NewsViewer', ['edit', 'Content', 'NewsViewer'])
     reg.register('edit', 'Silva News AgendaViewer', ['edit', 'Content', 'AgendaViewer'])
-    reg.register('edit', 'Silva News PlainArticle', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
-    reg.register('edit', 'Silva News PlainAgendaItem', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
+    reg.register('edit', 'Silva News Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
+    reg.register('edit', 'Silva News AgendaItem', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
     # public
     reg.register('public', 'Silva News AgendaFilter', ['public', 'AgendaFilter'])
     reg.register('public', 'Silva News NewsFilter', ['public', 'NewsFilter'])
     reg.register('public', 'Silva News NewsSource', ['public', 'NewsSource'])
     reg.register('public', 'Silva News NewsViewer', ['public', 'NewsViewer'])
     reg.register('public', 'Silva News AgendaViewer', ['public', 'AgendaViewer'])
-    reg.register('public', 'Silva News PlainArticle', ['public', 'PlainArticle'])
-    reg.register('public', 'Silva News PlainAgendaItem', ['public', 'PlainAgendaItem'])
+    reg.register('public', 'Silva News Article', ['public', 'PlainArticle'])
+    reg.register('public', 'Silva News AgendaItem', ['public', 'PlainAgendaItem'])
     # add
     reg.register('add', 'Silva News AgendaFilter', ['add', 'AgendaFilter'])
     reg.register('add', 'Silva News NewsFilter', ['add', 'NewsFilter'])
     reg.register('add', 'Silva News NewsSource', ['add', 'NewsSource'])
     reg.register('add', 'Silva News NewsViewer', ['add', 'NewsViewer'])
     reg.register('add', 'Silva News AgendaViewer', ['add', 'AgendaViewer'])
-    reg.register('add', 'Silva News PlainArticle', ['add', 'NewsItem', 'PlainArticle'])
-    reg.register('add', 'Silva News PlainAgendaItem', ['add', 'NewsItem', 'PlainAgendaItem'])
+    reg.register('add', 'Silva News Article', ['add', 'NewsItem', 'PlainArticle'])
+    reg.register('add', 'Silva News AgendaItem', ['add', 'NewsItem', 'PlainAgendaItem'])
 
 def unregisterViews(reg):
     """Unregister core views on registry.
@@ -70,24 +70,24 @@ def unregisterViews(reg):
     reg.unregister('edit', 'Silva News NewsSource')
     reg.unregister('edit', 'Silva News NewsViewer')
     reg.unregister('edit', 'Silva News AgendaViewer')
-    reg.unregister('edit', 'Silva News PlainArticle')
-    reg.unregister('edit', 'Silva News PlainAgendaItem')
+    reg.unregister('edit', 'Silva News Article')
+    reg.unregister('edit', 'Silva News AgendaItem')
     # public
     reg.unregister('public', 'Silva News AgendaFilter')
     reg.unregister('public', 'Silva News NewsFilter')
     reg.unregister('public', 'Silva News NewsSource')
     reg.unregister('public', 'Silva News NewsViewer')
     reg.unregister('public', 'Silva News AgendaViewer')
-    reg.unregister('public', 'Silva News PlainArticle')
-    reg.unregister('public', 'Silva News PlainAgendaItem')
+    reg.unregister('public', 'Silva News Article')
+    reg.unregister('public', 'Silva News AgendaItem')
     # add
     reg.unregister('add', 'Silva News AgendaFilter')
     reg.unregister('add', 'Silva News NewsFilter')
     reg.unregister('add', 'Silva News NewsSource')
     reg.unregister('add', 'Silva News NewsViewer')
     reg.unregister('add', 'Silva News AgendaViewer')
-    reg.unregister('add', 'Silva News PlainArticle')
-    reg.unregister('add', 'Silva News PlainAgendaItem')
+    reg.unregister('add', 'Silva News Article')
+    reg.unregister('add', 'Silva News AgendaItem')
 
 def configureXMLWidgets(root):
     """Configure XMLWidgets registries, editor, etc'

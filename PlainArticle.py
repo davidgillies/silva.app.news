@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -28,7 +28,7 @@ class PlainArticle(NewsItem):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News PlainArticle"
+    meta_type = "Silva News Article"
 
     __implements__ = INewsItem, IVersionedContent
 
