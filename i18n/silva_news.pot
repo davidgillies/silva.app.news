@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Thu Dec  9 11:28:27 2004\n"
+"POT-Creation-Date: Thu Dec  9 14:21:47 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -539,24 +539,49 @@ msgstr ""
 msgid "There are no news sources available."
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit.pt:251
+#: /views/edit/Filter/AgendaFilter/edit.pt:204
+#: /views/edit/Filter/AgendaFilter/edit.pt:204
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
+#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit_items.pt:176
+#: /views/edit/Filter/NewsFilter/edit_items.pt:176
+msgid "deselect all"
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/edit.pt:204
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
+#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit_items.pt:176
+msgid "select all items: alt-a"
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/edit.pt:204
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:196
+#: /views/edit/Filter/NewsFilter/edit.pt:226
+#: /views/edit/Filter/NewsFilter/edit_items.pt:176
+msgid "select all"
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/edit.pt:261
 msgid "use selected sources in this filter: alt-u"
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit.pt:251
-#: /views/edit/Filter/NewsFilter/edit.pt:273
+#: /views/edit/Filter/AgendaFilter/edit.pt:261
+#: /views/edit/Filter/NewsFilter/edit.pt:283
 msgid "update sources"
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit.pt:265
-#: /views/edit/Filter/NewsFilter/edit.pt:287
-#: /views/edit/Filter/NewsFilter/edit_items.pt:238
+#: /views/edit/Filter/AgendaFilter/edit.pt:275
+#: /views/edit/Filter/NewsFilter/edit.pt:297
+#: /views/edit/Filter/NewsFilter/edit_items.pt:248
 msgid "Previous"
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit.pt:269
-#: /views/edit/Filter/NewsFilter/edit.pt:291
-#: /views/edit/Filter/NewsFilter/edit_items.pt:242
+#: /views/edit/Filter/AgendaFilter/edit.pt:279
+#: /views/edit/Filter/NewsFilter/edit.pt:301
+#: /views/edit/Filter/NewsFilter/edit_items.pt:252
 msgid "Next"
 msgstr ""
 
@@ -569,18 +594,18 @@ msgstr ""
 msgid "There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published."
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:244
-#: /views/edit/Filter/NewsFilter/edit_items.pt:223
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:254
+#: /views/edit/Filter/NewsFilter/edit_items.pt:233
 msgid "use selected items in this filter: alt-u"
 msgstr ""
 
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:244
-#: /views/edit/Filter/NewsFilter/edit_items.pt:223
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:254
+#: /views/edit/Filter/NewsFilter/edit_items.pt:233
 msgid "update"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:71
-#: /views/edit/Filter/AgendaFilter/edit_items.pt:267
+#: /views/edit/Filter/AgendaFilter/edit_items.pt:277
 msgid "month"
 msgstr ""
 
@@ -666,7 +691,7 @@ msgstr ""
 msgid "There are no newssources available."
 msgstr ""
 
-#: /views/edit/Filter/NewsFilter/edit.pt:273
+#: /views/edit/Filter/NewsFilter/edit.pt:283
 msgid "Use selected sources in this filter: alt-u"
 msgstr ""
 
