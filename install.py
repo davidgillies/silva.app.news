@@ -13,8 +13,7 @@ def install(root):
     registerViews(root.service_view_registry)
 
     # and editor
-    registerNewsSubEditor(root)
-    registerNewsSubViewer(root)
+    configureXMLWidgets(root)
 
     # add and/or update catalog
     setup_catalog(root)
@@ -82,17 +81,35 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva News PlainArticle')
     reg.unregister('add', 'Silva News PlainAgendaItem')
 
+def configureXMLWidgets(root):
+    """Configure XMLWidgets registries, editor, etc'
+    """
+    # create the core widgets from the filesystem
+    #manage_addDirectoryView(root,
+    #                        'Products/Silva/widgets', 'service_widgets')
+
+    # create the editor service
+    #root.manage_addProduct['XMLWidgets'].manage_addEditorService(
+    #    'service_editor')
+    # create the services for XMLWidgets
+    for name in ['service_news_sub_editor', 'service_news_sub_viewer']:
+        if not hasattr(root, name):
+            root.manage_addProduct['XMLWidgets'].manage_addWidgetRegistry(name)
+
+    # now register all widgets
+    registerNewsSubEditor(root)
+    registerNewsSubViewer(root)
+
 def registerNewsSubEditor(root):
     wr = root.service_news_sub_editor
     wr.clearWidgets()
 
-    wr.addWidget('doc', ('service_widgets', 'top', 'doc', 'mode_normal'))
+    wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_normal'))
 
-    for nodeName in ['p', 'heading', 'list', 'pre', 'toc', 'image', 'table', 'nlist', 'dlist']:
+    for nodeName in ['p', 'heading', 'list', 'pre', 'image', 'table', 'nlist', 'dlist']:
         wr.addWidget(nodeName,
                      ('service_widgets', 'element', 'doc_elements', nodeName, 'mode_normal'))
 
-    wr.setDisplayName('doc', 'Title')
     wr.setDisplayName('p', 'Paragraph')
     wr.setDisplayName('heading', 'Heading')
     wr.setDisplayName('list', 'List')
@@ -103,15 +120,15 @@ def registerNewsSubEditor(root):
     wr.setDisplayName('nlist', 'Complex list')
     wr.setDisplayName('dlist', 'Definition list')
 
-    wr.setAllowed('doc', ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'toc', 'dlist'])
+    wr.setAllowed('doc', ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'dlist'])
 
 def registerNewsSubViewer(root):
     wr = root.service_news_sub_viewer
     wr.clearWidgets()
 
-    wr.addWidget('doc', ('service_widgets', 'top', 'doc', 'mode_view'))
+    wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_view'))
 
-    for name in ['p', 'list', 'heading', 'pre', 'toc', 'image', 'nlist', 'table', 'dlist']:
+    for name in ['p', 'list', 'heading', 'pre', 'image', 'nlist', 'table', 'dlist']:
         wr.addWidget(name, ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
 
 def setup_catalog(silva_root):
