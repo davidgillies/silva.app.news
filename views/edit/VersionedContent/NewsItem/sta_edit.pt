@@ -18,20 +18,20 @@
 <tr valign="top">
 <td class="invisible" width="16"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" border="0" alt="not editable" /></td>
 <td class="invisible" colspan="3" width="98%">
-<div class="front3" style="margin-bottom:0.5em">Article filtering</div>
+<div class="front3" style="margin-bottom:0.5em" i18n:translate="">Article filtering</div>
 </td>
 <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>
 </tr>
 
 <tr>
 <td claa="invisible"  width="16">&nbsp;</td>
-<th style="border-left:1px solid #617681;">
+<th i18n:translate="" style="border-left:1px solid #617681;">
 element
 </th>
-<th width="60%">
+<th i18n:translate="" width="60%">
 content
 </th>
-<th width="20%">
+<th i18n:translate="" width="20%">
 note
 </th>
 <td class="invisible" width="60">&nbsp;</td>
@@ -46,7 +46,7 @@ note
   tal:define="class python:test(oddrow, 'odd', 'even'); global lastclass class" tal:attributes="class class">
 <td class="invisible" width="16">&nbsp;</td>
 <td  class="field-title" style="border-left:1px solid #617681;">
-<span tal:replace="python:field['title'].lower()">title</span><span class="warning"
+<span tal:replace="python: unicode(field.get_value('title')).lower()">title</span><span class="warning"
   tal:condition="python:field.is_required()">*</span>
 <span tal:omit-tag=""
   tal:condition="not:python:field.is_required()">
@@ -72,8 +72,8 @@ comments here (field description)
 <td colspan="2" style="vertical-align:bottom">
 <div class="controls">
 <input class="button" type="submit"
-       name="form_submitted" value="save subjects and target audiences" />
-<a class="transport" href="normal_mode">back to article...</a>
+       name="form_submitted" value="save subjects and target audiences" i18n:attributes="value" />
+<a class="transport" href="normal_mode" i18n:translate="">back to article...</a>
 </div>
 </td>
 <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>

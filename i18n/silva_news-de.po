@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Mon Dec 13 10:18:55 2004\n"
-"PO-Revision-Date: 2004-12-13 10:13+0100\n"
+"POT-Creation-Date: Mon Dec 13 10:52:44 2004\n"
+"PO-Revision-Date: 2004-12-13 10:52+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -182,11 +182,11 @@ msgstr "n/v"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:331
 msgid "move down"
-msgstr ""
+msgstr "Nach unten"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:342
 msgid "move up"
-msgstr ""
+msgstr "Nach oben"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:443
 msgid "unknown"
@@ -194,7 +194,7 @@ msgstr "Unbekannt"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:491
 msgid "position"
-msgstr ""
+msgstr "Position"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:498
 msgid "end"
@@ -329,11 +329,11 @@ msgstr "Titel"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:109
 msgid "Co-promoter"
-msgstr ""
+msgstr "Co-Organisator"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:131
 msgid "Speakers"
-msgstr ""
+msgstr "Sprecher"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:153
 msgid "Startdate and time"
@@ -345,11 +345,11 @@ msgstr "Enddatum und -zeit"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:189
 msgid "Location"
-msgstr ""
+msgstr "Ort"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:212
 msgid "Location (if not in list)"
-msgstr ""
+msgstr "Ort (wenn nicht in Liste)"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:233
 msgid "Pressheader"
@@ -361,7 +361,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:275
 msgid "Lead"
-msgstr ""
+msgstr "Einführung"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:29
 msgid "Academic"
@@ -369,7 +369,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:296
 msgid "Pressnote"
-msgstr ""
+msgstr "Pressenotiz"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:314
 msgid "Common Info"
@@ -501,14 +501,17 @@ msgstr ""
 "URL ist:"
 
 #: /views/edit/Content/edit.pt:74 /views/edit/Filter/AgendaFilter/edit.pt:66
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:28
 msgid "element"
 msgstr "Element"
 
 #: /views/edit/Content/edit.pt:76 /views/edit/Filter/AgendaFilter/edit.pt:67
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:31
 msgid "content"
 msgstr "Inhalt"
 
 #: /views/edit/Content/edit.pt:77 /views/edit/Filter/AgendaFilter/edit.pt:68
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:34
 msgid "note"
 msgstr "Anmerkung"
 
@@ -829,6 +832,18 @@ msgstr "Artikeldaten geändert"
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
 msgstr "Zielgruppe"
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:21
+msgid "Article filtering"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:74
+msgid "save subjects and target audiences"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:76
+msgid "back to article..."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
 msgid "Data changed"

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Mon Dec 13 10:18:55 2004\n"
+"POT-Creation-Date: Mon Dec 13 10:52:44 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -486,16 +486,19 @@ msgstr ""
 
 #: /views/edit/Content/edit.pt:74
 #: /views/edit/Filter/AgendaFilter/edit.pt:66
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:28
 msgid "element"
 msgstr ""
 
 #: /views/edit/Content/edit.pt:76
 #: /views/edit/Filter/AgendaFilter/edit.pt:67
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:31
 msgid "content"
 msgstr ""
 
 #: /views/edit/Content/edit.pt:77
 #: /views/edit/Filter/AgendaFilter/edit.pt:68
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:34
 msgid "note"
 msgstr ""
 
@@ -809,6 +812,18 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:21
+msgid "Article filtering"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:74
+msgid "save subjects and target audiences"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/sta_edit.pt:76
+msgid "back to article..."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
