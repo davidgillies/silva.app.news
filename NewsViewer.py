@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -33,7 +33,7 @@ class NewsViewer(Content, Folder.Folder):
     def object_title(self):
         """Returns the title
         """
-        return self._title
+        return self.get_title_editable()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_visible')
