@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.21 $
+# $Revision: 1.22 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -14,7 +14,37 @@ from Products.SilvaDocument.Document import Document
 from Products.Silva.helpers import add_and_edit
 from Products.Silva import mangle
 
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 icon = 'www/news_viewer.png'
+
+class XMLBuffer:
+    """small file-like object that implicitly converts unicode to UTF-8"""
+
+    def __init__(self):
+        self._buffer = []
+
+    def write(self, data):
+        if type(data) != type(u''):
+            data = unicode(str(data))
+        self._buffer.append(data)
+        
+    def read(self):
+        """the semantics are different from the plain file interface's read
+            
+            this will return the full buffer always, and won't move the 
+            pointer
+        """
+        ret = ''.join(self._buffer)
+        ret = ret.encode('utf-8')
+        return ret
+
+RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n' 
+              '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
+              'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://purl.org/rss/1.0/">\n')
 
 class NewsViewer(Content, Folder.Folder):
     """Used to show news items on a Silva site. When setting up
@@ -196,6 +226,66 @@ class NewsViewer(Content, Folder.Folder):
         """Returns 1 so the object will be shown in TOCs and such"""
         return 1
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'rss')
+    def rss(self, REQUEST=None):
+        """return the contents of this viewer as an RSS/RDF (RSS 1.0) feed"""
+        if REQUEST is not None:
+            REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml;charset=UTF-8')
+        # get the newest items
+        items = self.get_items()
+        
+        # create RDF/XML for the channel
+        xml = XMLBuffer()
+        xml.write(RDF_HEADER)
+
+        # get the metadata binding to get the metadata for this viewer
+        mdbinding = self.service_metadata.getMetadata(self)
+        creationdate = mdbinding.get('silva-extra', 'creationtime')
+        
+        # create RDF/XML
+        xml.write('<channel rdf:about="%s">\n' % self.absolute_url())
+        xml.write('<title>%s</title>\n' % self.get_title())
+        xml.write('<link>%s</link>\n' % self.absolute_url())
+        xml.write('<description>%s</description>\n' % mdbinding.get('silva-extra', 'description'))
+        
+        # create DC
+        xml.write('<dc:creator>%s</dc:creator>\n' % mdbinding.get('silva-extra', 'creator'))
+        xml.write('<dc:date>%s</dc:date>\n' % creationdate.ISO())
+
+        # for each item
+        for item in items:
+            item = item.getObject()
+            self._rss_item_helper(item, xml)
+            
+        xml.write('</channel>\n')
+        xml.write('</rdf:RDF>\n')
+            
+        # return XML
+        return xml.read()
+
+    def _rss_item_helper(self, item, xml):
+        """convert a single Silva object to an RSS/RDF 'hasitem' element"""
+        version_container = item.object()
+        xml.write('<hasitem>\n')
+        xml.write('<item rdf:about="%s">\n' % version_container.absolute_url())
+    
+        mdbinding = self.service_metadata.getMetadata(item)
+
+        # RSS elements
+        xml.write('<title>%s</title>\n' % item.get_title())
+        xml.write('<link>%s</link>\n' % version_container.absolute_url())
+        xml.write('<description>%s</description>\n' % mdbinding.get('silva-extra', 'description'))
+
+        # DC elements
+        xml.write('<dc:subject>%s</dc:subject>\n' % mdbinding.get('silva-extra', 'subject'))
+        xml.write('<dc:creator>%s</dc:creator>\n' % mdbinding.get('silva-extra', 'creator'))
+        xml.write('<dc:date>%s</dc:date>\n' % mdbinding.get('silva-extra', 'creationtime').ISO())
+        
+        xml.write('</item>\n')
+        xml.write('</hasitem>\n')
+        
+        
 InitializeClass(NewsViewer)
 
 manage_addNewsViewerForm = PageTemplateFile(
