@@ -144,7 +144,7 @@ Target audiences:
 <td colspan="4" align="right">
 <input class="button" type="submit"
        name="form_submitted" value=" change item "
-       tal:attributes="value string: Save article " />
+       tal:attributes="value string: Save item " />
 </td>
 <td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
 </tr>

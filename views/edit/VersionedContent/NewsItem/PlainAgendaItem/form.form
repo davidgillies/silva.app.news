@@ -51,23 +51,44 @@
         <tales>
         </tales>
       </field>
-      <field><id>location</id> <type>ListField</type>
+      <field><id>subheader</id> <type>TextAreaField</type>
         <values>
-          <size type="int">1</size>
           <alternate_name></alternate_name>
           <hidden type="int">0</hidden>
-          <items>[]</items>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
           <external_validator></external_validator>
+          <height type="int">2</height>
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>Location</title>
-          <first_item type="int">1</first_item>
+          <title>Subheader</title>
           <description></description>
           <extra></extra>
         </values>
         <tales>
-          <items>python:form.service_news.locations()</items>
+        </tales>
+      </field>
+      <field><id>lead</id> <type>TextAreaField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <max_linelength></max_linelength>
+          <max_length></max_length>
+          <max_lines></max_lines>
+          <width type="int">40</width>
+          <external_validator></external_validator>
+          <height type="int">5</height>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Lead</title>
+          <description></description>
+          <extra></extra>
+        </values>
+        <tales>
         </tales>
       </field>
       <field><id>location_manual</id> <type>TextAreaField</type>
@@ -79,11 +100,11 @@
           <max_lines></max_lines>
           <width type="int">40</width>
           <external_validator></external_validator>
-          <height type="int">5</height>
-          <required type="int">0</required>
+          <height type="int">2</height>
+          <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>Location (if not in list)</title>
+          <title>Location</title>
           <description></description>
           <extra></extra>
         </values>

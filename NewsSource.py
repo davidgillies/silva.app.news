@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -33,7 +33,6 @@ class NewsSource(Publication, CatalogPathAware):
     def __init__(self, id, title):
         NewsSource.inheritedAttribute('__init__')(self, id, title)
         self._is_private = 0
-        self._locations = ['Dummy location']
 
     def manage_afterAdd(self, item, container):
         NewsSource.inheritedAttribute('manage_afterAdd')(self, item, container)
@@ -56,56 +55,6 @@ class NewsSource(Publication, CatalogPathAware):
         """Returns None, so the source is not shown in TOC's, even if they contain
         published items"""
         return None
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'add_location')
-    def add_location(self, location):
-        """Add a location to the list of locations"""
-        if not location in self._locations:
-            self._locations.append(location)
-            self._p_changed = 1
-        else:
-            raise DuplicateError, 'Location is already in the list'
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'remove_location')
-    def remove_location(self, location):
-        """Remove a location from the list of locations"""
-        self._locations.remove(location)
-        self._p_changed = 1
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'manage_addLocation')
-    def manage_addLocation(self, REQUEST):
-        """Manage method for adding a location"""
-        try:
-            self.add_location(REQUEST['location'])
-        except DuplicateError:
-            return self.edit['tab_lists'](message_type='error', message='Location %s is already in the list' % REQUEST['location'])
-        else:
-            return self.edit['tab_lists'](message_type="feedback", message="Location %s added" % REQUEST['location'])
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'manage_removeLocation')
-    def manage_removeLocation(self, REQUEST):
-        """Manage method for removing a location"""
-        errors = []
-        for location in REQUEST['locations']:
-            try:
-                self.remove_location(location)
-            except KeyError:
-                errors.append(location)
-        if not errors:
-            return self.edit['tab_lists'](message_type="feedback", message="Location(s) %s removed" % ', '.join(REQUEST['locations']))
-        else:
-            return self.edit['tab_lists'](message_type="error",
-                message="Location(s) %s removed, locations %s do not exist" % (', '.join(REQUEST['locations'] - errors), ', '.join(errors)))
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'locations')
-    def locations(self):
-        """Returns the list of locations"""
-        return self._locations
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')

@@ -61,7 +61,7 @@
           <max_lines></max_lines>
           <width type="int">40</width>
           <external_validator></external_validator>
-          <height type="int">2</height>
+          <height type="int">5</height>
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -47,7 +47,6 @@ class AgendaItemVersion(NewsItemVersion):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)
         self.id = id
         self._start_datetime = None
-        self._location = ''
         self._location_manual = ''
 
     # MANIPULATORS
@@ -55,12 +54,6 @@ class AgendaItemVersion(NewsItemVersion):
                               'set_start_datetime')
     def set_start_datetime(self, value):
         self._start_datetime = value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_location')
-    def set_location(self, value):
-        self._location = value
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -76,13 +69,6 @@ class AgendaItemVersion(NewsItemVersion):
         """Returns the start date/time
         """
         return self._start_datetime
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'location')
-    def location(self):
-        """Returns location
-        """
-        return self._location
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'location_manual')
@@ -106,7 +92,7 @@ class AgendaItemVersion(NewsItemVersion):
         """
         AgendaItemVersion.inheritedAttribute('to_xml')(self, context)
         xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.rfc822())
-        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual or self._location)
+        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual)
 
         context.f.write(xml)
 

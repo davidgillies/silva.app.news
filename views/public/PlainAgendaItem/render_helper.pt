@@ -5,15 +5,21 @@
 <tr>
 <td>
 <h2 tal:content="structure python:model.get_title_html()">Title</h2>
+<h3 style="font-weight: bold;" tal:content="version/subheader">Subheader</h3><br />
 </td>
-<td rowspan="4" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
+<td rowspan="3" width="20%" valign="top" style="font-size: 10px; background-color: #eeeeee; text-align: right;">
 <b>Creation date:</b><br />
 <span tal:replace="structure python:view.service_utils.frontend_datetime_to_str(model.creation_datetime())"></span><br /><br />
 <b>Startdate/time:</b><br />
 <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(version.start_datetime())"></span><br /><br />
 <b>Locatie:</b><br />
-<span tal:replace="version/location" tal:condition="not: version/location_manual"></span>
-<span tal:replace="version/location_manual" tal:condition="version/location_manual"></span>
+<span tal:replace="structure python: version.location_manual().replace('\n', '<br />')"></span>
+</td>
+</tr>
+
+<tr>
+<td>
+<p style="font-weight: bold;" tal:content="version/lead"></p>
 </td>
 </tr>
 

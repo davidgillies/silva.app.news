@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.14 $
+# $Revision: 1.15 $
 
 # Python
 from StringIO import StringIO
@@ -44,7 +44,6 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
         NewsItem.inheritedAttribute("__init__")(self, id, title)
         self._creation_datetime = DateTime()
 
-    # MANIPULATORS
     # XXX shouldn't this be moved to SilvaObject or so?
     def manage_afterAdd(self, item, container):
         NewsItem.inheritedAttribute('manage_afterAdd')(
@@ -58,6 +57,7 @@ class NewsItem(CatalogedVersionedContent, EditorSupport):
         container._remove_ordered_id(item)
         self.unindex_object()
 
+    # MANIPULATORS
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'creation_datetime')
@@ -98,7 +98,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         self.id = id
         self._subjects = []
         self._target_audiences = []
-        self._info_item = ""
+        self._subheader = ''
+        self._lead = ''
 
     def manage_beforeDelete(self, item, container):
         NewsItemVersion.inheritedAttribute('manage_beforeDelete')(self, item, container)
@@ -108,6 +109,18 @@ class NewsItemVersion(Version, CatalogPathAware):
     # DATA-FIELDS) DID NOT SUFFICE, THEREFORE THERE WILL BE 1 MANIPULATOR FOR EACH DATA-FIELD.
     # THIS IS AN ADVANTAGE WHEN SUBCLASSING: ONLY A MANIPULATOR PER FIELD-TYPE HAS TO BE WRIITEN
     # (IN THE CLASS THAT HOLDS THE DATA-DEFINITION)
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_subheader')
+    def set_subheader(self, value):
+        self._subheader = value
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_lead')
+    def set_lead(self, value):
+        self._lead = value
+        self.reindex_object()
+
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
     def set_subjects(self, subjects):
@@ -120,18 +133,26 @@ class NewsItemVersion(Version, CatalogPathAware):
         self._target_audiences = target_audiences
         self.reindex_object()
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_info_item')
-    def set_info_item(self, info_item):
-        self._info_item = info_item
-        self.reindex_object()
-
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'object_title')
     def object_title(self):
         # HACK: happens through acquisition
         return self.get_title_editable()
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'subheader')
+    def subheader(self):
+        """Returns subheader
+        """
+        return self._subheader
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'lead')
+    def lead(self):
+        """Returns the lead
+        """
+        return self._lead
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
@@ -182,11 +203,12 @@ class NewsItemVersion(Version, CatalogPathAware):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        return "%s %s %s %s %s" % (self.id,
+        return "%s %s %s %s %s %s" % (self.id,
                                       self.get_title_html(),
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences),
-                                      self._info_item)
+                                      self._subheader,
+                                      self._lead)
 
     def _flattenxml(self, xmlinput):
         """Cuts out all the XML-tags, helper for fulltext (for content-objects)
@@ -222,7 +244,8 @@ class NewsItemVersion(Version, CatalogPathAware):
         """
         xml = u'<title>%s</title>\n' % self.get_title()
         xml += u'<meta_type>%s</meta_type>\n' % self.meta_type
-        xml += u'<info>%s</info>\n' % self.info_item()
+        xml += u'<subheader>%s</subheader>\n' % self._prepare_xml(self._subheader)
+        xml += u'<lead>%s</lead>\n' % self._prepare_xml(self._lead)
         for subject in self._subjects:
             xml += u'<subject>%s</subject>\n' % self._prepare_xml(subject)
         for audience in self._target_audiences:
