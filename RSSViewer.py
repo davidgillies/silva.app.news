@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 from urllib import urlopen
 import time
@@ -34,10 +34,12 @@ class TimeoutWrapper:
     else:
         raise Exception, 'Operation timed out'
 
-    When calling the 'run_with_timeout' method, <method> is called with arguments <args> and keyword arguments <kwargs>.
-    If the method succeeds within the requested time, 1 is returned, and the result of the call can be retrieved using 
-    the 'return_value' method. If this process takes longer then <timeout> (seconds), 0 is returned by the 
-    'run_with_timeout' method (and 'return_value' returns None).
+    When calling the 'run_with_timeout' method, <method> is called with
+    arguments <args> and keyword arguments <kwargs>. If the method succeeds 
+    within the requested time, 1 is returned, and the result of the call can 
+    be retrieved using the 'return_value' method. If this process takes 
+    longer then <timeout> (seconds), 0 is returned by the 'run_with_timeout' 
+    method (and 'return_value' returns None).
     """
     
     def __init__(self, handler, args=(), kwargs={}):
@@ -46,8 +48,10 @@ class TimeoutWrapper:
         Arguments are:
         
         - handler: a reference to the method to be called
-        - args: a list of non-keyword arguments that should be passed to the method
-        - kwargs: a dict of keyword arguments that should be passed to the method
+        - args: a list of non-keyword arguments that should be passed to the 
+                method
+        - kwargs: a dict of keyword arguments that should be passed to the 
+                method
         """
         self._handler = handler
         self._args = args
@@ -92,7 +96,10 @@ def get_text_from_children(node):
     return retval
 
 class RSSBrain:
-    """Wrapper around RSS items so they can be used in the same code that uses ZCatalog NewsItem Brains"""
+    """Wrapper around RSS items
+    
+    Makes sure they can be used in the same code that uses ZCatalog NewsItem 
+    Brains"""
 
     security = ClassSecurityInfo()
     security.setDefaultAccess("allow")
@@ -127,8 +134,6 @@ class RSSViewer(NewsViewer):
 
     meta_type = 'Silva News RSSViewer'
 
-
-
     def __init__(self, id, title):
         RSSViewer.inheritedAttribute('__init__')(self, id, title)
         self._rss_feed = ''
@@ -146,49 +151,47 @@ class RSSViewer(NewsViewer):
         
         Will try to cache in 2 different ways:
         
-        1. Using a time setting - the manager of the RSS viewer can set a minimal amount of time the content should be cached,
-                                            before this time is due the viewer will use cached data (if any), regardless of whether there
-                                            is new data available on the server
-        2. Using HTTP caching headers - if the server sends out an HTTP Last-Modified header, this is checked against the last 
-                                            received Last-Modified header, and if those two are the same then the viewer will use
-                                            cached data (if any). FIXME: It would be nice to just send a HEAD request instead of the full monty...
+        1. Using a time setting - the manager of the RSS viewer can set a 
+                                            minimal amount of time the content 
+                                            should be cached, before this time 
+                                            is due the viewer will use cached 
+                                            data (if any), regardless of 
+                                            whether there is new data 
+                                            available on the server.
+        2. Using HTTP caching headers - if the server sends out an HTTP 
+                                            Last-Modified header, this is 
+                                            checked against the last  received 
+                                            Last-Modified header, and if those 
+                                            two are the same then the viewer 
+                                            will use cached data (if any). 
+                                            FIXME: It would be nice to just 
+                                            send a HEAD request instead of the 
+                                            full monty...
         """
         result = []
-        # check if we want to use the cached version because of time settings, if so:
         if (self._last_result and 
             self._rss_feed == self._last_rss_feed and 
             self._caching_period != 0 and 
             (time.time() - self._last_request_time) < self._caching_period):
             print "Using cached version because of timeout settings"
-            # use the cached version
             result = self._last_result
-            # update the timestamps
             self._last_request_time = time.time()
-        # if we're not gonna use the cached version because of caching_period settings:
         else:
-            # download the data (with a timeout)
-            t = TimeoutWrapper(urlopen, (self._rss_feed,))
+            t = TimeoutWrapper(urlopen, (self._rss_feed, ))
             success = t.run_with_timeout(self._rss_timeout)
-            # if successful:
             if success:
-                # get the headers and data
                 ret = t.return_value()
                 info = ret.info()
                 data = ret.read()
-                # check if there is a new version (using Last-Modified), if there isn't:
                 lm = info.getheader('Last-Modified', None)
                 if lm and lm == self._rss_last_modified:
-                    print "Using cached version because of Last-Modified header"
-                    # use the cached version
+                    print "Using cached version because of header"
                     result = self._last_result
-                    # update the timestamps
                     self._last_request_time = time.time()
-                # if there is a new version or the Last-Modified header is not set:
                 else:
                     print "Headers:"
                     print info.headers
                     print "Retrieving new data"
-                    # parse the new version
                     result = self._parse_rss_stream(data)
                     # update the caches
                     self._last_result = result
@@ -233,74 +236,103 @@ class RSSViewer(NewsViewer):
                 rssnode = node
         if not rssnode:
             raise Exception, 'RSS format not supported!'
-        elif (rssnode.nodeName == u'rss' and 'version' in rssnode._attrs.keys() and rssnode._attrs['version'].nodeValue == u'0.91'):
+        elif (rssnode.nodeName == u'rss' and 
+                'version' in rssnode._attrs.keys() and 
+                rssnode._attrs['version'].nodeValue == u'0.91'):
             # RSS version 0.91
             for node in rssnode.childNodes:
                 if node.nodeName == u'channel':
                     for n in node.childNodes:
                         if n.nodeName == u'title':
-                            self._rss_title = get_text_from_children(n)
+                            self._rss_title = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'link':
-                            self._rss_link = get_text_from_children(n)
+                            self._rss_link = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'description':
-                            self._rss_description = get_text_from_children(n)
+                            self._rss_description = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'copyright':
-                            self._rss_copyright = get_text_from_children(n)
+                            self._rss_copyright = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'pubDate':
-                            self._rss_publication_date = get_text_from_children(n)
+                            self._rss_publication_date = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'image':
                             for inode in n.childNodes:
                                 if inode.nodeName == u'title':
-                                    self._rss_image_title = get_text_from_children(inode)
+                                    self._rss_image_title = \
+                                        get_text_from_children(inode)
                                 elif inode.nodeName == u'link':
-                                    self._rss_image_link = get_text_from_children(inode)
+                                    self._rss_image_link = \
+                                        get_text_from_children(inode)
                                 elif inode.nodeName == u'url':
-                                    self._rss_image_url = get_text_from_children(inode)
+                                    self._rss_image_url = \
+                                        get_text_from_children(inode)
                         elif n.nodeName == u'textinput':
                             for inode in n.childNodes:
                                 if inode.nodeName == u'title':
-                                    self._rss_textinput_title = get_text_from_children(inode)
+                                    self._rss_textinput_title = \
+                                        get_text_from_children(inode)
                                 if inode.nodeName == u'description':
-                                    self._rss_textinput_description = get_text_from_children(inode)
+                                    self._rss_textinput_description = \
+                                        get_text_from_children(inode)
                                 if inode.nodeName == u'name':
-                                    self._rss_textinput_name = get_text_from_children(inode)
+                                    self._rss_textinput_name = \
+                                        get_text_from_children(inode)
                                 if inode.nodeName == u'link':
-                                    self._rss_textinput_link = get_text_from_children(inode)
+                                    self._rss_textinput_link = \
+                                        get_text_from_children(inode)
                         elif n.nodeName == u'item':
                             results.append(RSSBrain(n))
-        elif rssnode.nodeName == u'rdf:RDF' and 'xmlns' in rssnode._attrs.keys() and (rssnode._attrs['xmlns'].nodeValue.startswith(u'http://purl.org/rss/1.0') or rssnode._attrs['xmlns'].nodeValue.startswith(u'http://my.netscape.com/rdf/simple/0.9/')):
+        elif (rssnode.nodeName == u'rdf:RDF' and 
+                'xmlns' in rssnode._attrs.keys() and 
+                (rssnode._attrs['xmlns'].nodeValue.startswith(u'http://purl.org/rss/1.0') or 
+                rssnode._attrs['xmlns'].nodeValue.startswith(u'http://my.netscape.com/rdf/simple/0.9/'))):
             # RSS version 1.0
             for node in rssnode.childNodes:
                 if node.nodeName == u'channel':
                     for n in node.childNodes:
                         if n.nodeName == u'title':
-                            self._rss_title = get_text_from_children(n)
+                            self._rss_title = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'link':
-                            self._rss_link = get_text_from_children(n)
+                            self._rss_link = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'description':
-                            self._rss_description = get_text_from_children(n)
+                            self._rss_description = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'dc:rights':
-                            self._rss_copyright = get_text_from_children(n)
+                            self._rss_copyright = \
+                                get_text_from_children(n)
                         elif n.nodeName == u'dc:date':
-                            self._rss_publication_date = get_text_from_children(n)
+                            self._rss_publication_date = \
+                                get_text_from_children(n)
                 elif node.nodeName == u'image':
                     for inode in node.childNodes:
                         if inode.nodeName == u'title':
-                            self._rss_image_title = get_text_from_children(inode)
+                            self._rss_image_title = \
+                                get_text_from_children(inode)
                         elif inode.nodeName == u'link':
-                            self._rss_image_link = get_text_from_children(inode)
+                            self._rss_image_link = \
+                                get_text_from_children(inode)
                         elif inode.nodeName == u'url':
-                            self._rss_image_url = get_text_from_children(inode)
+                            self._rss_image_url = \
+                                get_text_from_children(inode)
                 elif node.nodeName == u'textinput':
                     for inode in node.childNodes:
                         if inode.nodeName == u'title':
-                            self._rss_textinput_title = get_text_from_children(inode)
+                            self._rss_textinput_title = \
+                                get_text_from_children(inode)
                         if inode.nodeName == u'description':
-                            self._rss_textinput_description = get_text_from_children(inode)
+                            self._rss_textinput_description = \
+                                get_text_from_children(inode)
                         if inode.nodeName == u'name':
-                            self._rss_textinput_name = get_text_from_children(inode)
+                            self._rss_textinput_name = \
+                                get_text_from_children(inode)
                         if inode.nodeName == u'link':
-                            self._rss_textinput_link = get_text_from_children(inode)
+                            self._rss_textinput_link = \
+                                get_text_from_children(inode)
                 elif node.nodeName == u'item':
                     results.append(RSSBrain(node))
         else:
