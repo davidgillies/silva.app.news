@@ -1,6 +1,6 @@
-# Copyright (c) 2002-2005 Infrae. All rights reserved.
+ Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -39,7 +39,7 @@ class NewsPublication(ObjectTitle, Publication):
 
     hide_from_tocs = 1
     
-    _addables_allowed_in_publication = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Folder']
+    _addables_allowed_in_publication = ['Silva Article', 'Silva Agenda Item'] # , 'Silva Publication', 'Silva Folder']
 
     def __init__(self, id):
         NewsPublication.inheritedAttribute('__init__')(self, id)
