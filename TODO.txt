@@ -1,0 +1,33 @@
+Copyright (c) 2002 Infrae. All rights reserved.
+See also LICENSE.txt
+$Revision: 1.2 $
+
+SilvaNews TODO
+
+  0.8
+	
+	- Icons:
+
+	    Since Silva 0.8.6, there has been a major change in the Silva core
+	    that makes it impossible for other products to access certain 
+	    folders in the ZODB. One of these folders is the 'globals' folder
+	    in the Silva root, where the icons reside. For now, this means that
+	    no icons will be shown for SilvaNews objects in the ZMI and the
+	    SMI. This will be fixed in a future release
+
+	- RSS versions
+
+	    RSSViewer should be able to handle RSS versions 0.92 and 2.0 as well
+
+	- Viewers
+
+	    A couple of viewers should be added, for instance in-line viewers
+	    to be used in documents
+
+        - Scalability
+
+            There are a few issues with scalability, which should be solved in 
+            the future. One of them is the issue with many newssources and
+            subnewssources: they will all end up in the lists of addable 
+            newssources in filters, which doesn't scale at all.
+	    
