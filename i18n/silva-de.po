@@ -1,0 +1,324 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: Thu Dec  2 12:10:16 2004\n"
+"PO-Revision-Date: 2004-12-02 12:42+0100\n"
+"Last-Translator: Guido Goldstein <gst@infrae.com>\n"
+"Language-Team: Silva i18n team <walco@infrae.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/translation_files/extract.py\n"
+"Project-Id-Version: Silva\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+
+#: /views/add/AgendaFilter/form.form:26
+#: /views/add/AgendaViewer/form.form:26
+#: /views/add/NewsFilter/form.form:26
+#: /views/add/NewsFolder/form.form:26
+#: /views/add/NewsItem/PlainAgendaItem/form.form:26
+#: /views/add/NewsItem/PlainArticle/form.form:26
+#: /views/add/NewsPublication/form.form:29
+#: /views/add/NewsViewer/form.form:26
+#: /views/add/RSSAggregator/form.form:26
+msgid "id"
+msgstr ""
+
+#: /views/add/AgendaFilter/form.form:28
+#: /views/add/AgendaViewer/form.form:28
+#: /views/add/NewsFilter/form.form:28
+#: /views/add/NewsFolder/form.form:28
+#: /views/add/NewsItem/PlainAgendaItem/form.form:28
+#: /views/add/NewsItem/PlainArticle/form.form:28
+#: /views/add/NewsPublication/form.form:31
+#: /views/add/NewsViewer/form.form:28
+#: /views/add/RSSAggregator/form.form:28
+msgid "id: no spaces or special characters besides an underscore (_)."
+msgstr "Id: Keine Leerzeichen oder Sonderzeichen mit Ausnahme von (_)."
+
+#: /views/add/AgendaFilter/form.form:45
+#: /views/add/AgendaViewer/form.form:45
+#: /views/add/NewsFilter/form.form:45
+#: /views/add/NewsFolder/form.form:45
+#: /views/add/NewsItem/PlainAgendaItem/form.form:45
+#: /views/add/NewsItem/PlainArticle/form.form:47
+#: /views/add/NewsPublication/form.form:48
+#: /views/add/RSSAggregator/form.form:45
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:28
+#: /views/edit/VersionedContent/NewsItem/PlainArticle/form.form:28
+msgid "title"
+msgstr "Titel"
+
+#: /views/add/AgendaViewer/form.form:46
+#: /views/add/NewsFilter/form.form:47
+#: /views/add/NewsFolder/form.form:46
+#: /views/add/NewsItem/PlainAgendaItem/form.form:46
+#: /views/add/NewsItem/PlainArticle/form.form:48
+#: /views/add/NewsPublication/form.form:49
+#: /views/add/NewsViewer/form.form:46
+#: /views/add/RSSAggregator/form.form:46
+msgid "The title will be publicly visible, and is used as the default link in indexes."
+msgstr "Der Titel ist öffentlich sichtbar und wird als Link in Indizes verwendet."
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:101
+#: /views/add/NewsItem/PlainArticle/form.form:82
+#: /views/edit/Filter/AgendaFilter/settingsform.form:41
+#: /views/edit/Filter/NewsFilter/settingsform.form:43
+msgid "target audiences"
+msgstr "Zielgruppe"
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:67
+msgid "start date/time"
+msgstr ""
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:68
+msgid "Format: d/m/y, time is optional."
+msgstr ""
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:82
+#: /views/add/NewsItem/PlainArticle/form.form:63
+#: /views/edit/Filter/AgendaFilter/settingsform.form:22
+#: /views/edit/Filter/NewsFilter/settingsform.form:22
+msgid "subjects"
+msgstr ""
+
+#: /views/add/NewsViewer/form.form:45
+#: /views/edit/Container/NewsPublication/form.form:26
+msgid "Title"
+msgstr "Titel"
+
+#: /views/add/add_submit.py:66
+msgid "Added ${type} ${id}."
+msgstr "Hinzugefügt ${type} ${id}."
+
+#: /views/edit/Container/NewsPublication/form.form:41
+msgid "Restrict usage"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:21
+msgid "Acquire"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:23
+msgid "If checked, inherit the allowed addables from above."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:37
+msgid "Addables"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:39
+msgid "If 'acquire' is not checked, these settings will determine the items allowed in this publication. Otherwise the addables are acquired from the publication above."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:106
+msgid "Co-promoter"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:128
+msgid "Speakers"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:150
+msgid "Startdate and time"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:170
+msgid "Enddate and time"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:186
+msgid "Location"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:209
+msgid "Location (if not in list)"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:230
+msgid "Pressheader"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:251
+msgid "Subheader"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:26
+msgid "Academic"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:272
+msgid "Lead"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:293
+msgid "Pressnote"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:311
+msgid "Common Info"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:334
+msgid "Specific Info"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:355
+msgid "Specific info (if not in list)"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:376
+msgid "More info links"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:397
+msgid "Embargo Datetime"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:411
+#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:22
+msgid "Subjects"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:429
+msgid "Target Audiences"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:46
+msgid "Chair"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:66
+msgid "Promovendus"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:86
+msgid "Promoter"
+msgstr ""
+
+#: /views/edit/Content/AgendaViewer/form.form:26
+msgid "day range"
+msgstr ""
+
+#: /views/edit/Content/AgendaViewer/form.form:27
+msgid "Number of days in the future to show."
+msgstr ""
+
+#: /views/edit/Content/AgendaViewer/form.form:42
+#: /views/edit/Content/NewsViewer/form.form:62
+msgid "filters"
+msgstr ""
+
+#: /views/edit/Content/NewsViewer/form.form:24
+msgid "show"
+msgstr ""
+
+#: /views/edit/Content/NewsViewer/form.form:26
+msgid "Show a specific number of items, or show items from a range of days in the past."
+msgstr ""
+
+#: /views/edit/Content/NewsViewer/form.form:45
+msgid "number"
+msgstr ""
+
+#: /views/edit/Content/RSSAggregator/form.form:27
+msgid "RSS feeds"
+msgstr ""
+
+#: /views/edit/Content/RSSAggregator/form.form:29
+msgid "List the URLs of RSS feeds (one per line) to use as sources of news items."
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/settingsform.form:62
+#: /views/edit/Filter/NewsFilter/settingsform.form:85
+msgid "stick to path"
+msgstr ""
+
+#: /views/edit/Filter/AgendaFilter/settingsform.form:64
+#: /views/edit/Filter/NewsFilter/settingsform.form:87
+msgid "Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:111
+msgid "search description"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:112
+msgid "Description added to the search form."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:28
+msgid "description"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:29
+msgid "Describe the type of news this filter delivers."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:48
+msgid "link"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:50
+msgid "Enter the URL where the RSS feed should point to for information."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:69
+msgid "copyright"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:71
+msgid "Enter a copyright notice (not used if left empty)."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:88
+msgid "allow RSS search"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/rssform.form:90
+msgid "If set to 'yes', extra information will be sent along with the RSS feed to enable searching this newsfilter using a remote form (the client will be sent to this Silva instance to view the results)."
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/settingsform.form:26
+msgid ""
+"\n"
+"            Select the news subjects to filter on.\n"
+"          "
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/settingsform.form:47
+msgid ""
+"\n"
+"            Select the target audiences to filter on.\n"
+"          "
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/settingsform.form:66
+msgid "show agenda items"
+msgstr ""
+
+#: /views/edit/Filter/NewsFilter/settingsform.form:68
+msgid "If set to 'yes', show agenda items as well as news items."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:50
+msgid "date and time"
+msgstr "Datum und Zeit"
+
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:51
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:72
+msgid "Format: d/m/y, time is optional"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:71
+msgid "end date and time"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:91
+msgid "location"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:40
+msgid "Target audiences"
+msgstr "Zielgruppe"
+

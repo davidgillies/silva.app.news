@@ -9,6 +9,9 @@
 ##
 from Products.Silva import mangle
 
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
 model = context.REQUEST.model
 view = context
 REQUEST = context.REQUEST
@@ -60,5 +63,7 @@ object.sec_update_last_author_info()
 if REQUEST.has_key('add_edit_submit'):
     REQUEST.RESPONSE.redirect(object.absolute_url() + '/edit/tab_edit')
 else:
-    return view.tab_edit(message_type="feedback", 
-                         message="Added %s %s." % (object.meta_type, view.quotify(id)))
+    m = _("Added ${type} ${id}.")
+    m.set_mapping({'type':object.meta_type, 'id':view.quotify(id)})
+    msg = unicode(m)
+    return view.tab_edit(message_type="feedback", message=msg)
