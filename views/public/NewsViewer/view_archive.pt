@@ -26,7 +26,7 @@ table.listing a:visited {
 }
 </style>
 
-<h2>Archive of <span tal:replace="model/get_title">View Archive</span></h2>
+<h2><span i18n:translate="">Archive of</span> <span tal:replace="model/get_title">View Archive</span></h2>
 
 <table class="listing">
    <tr class="divider">
@@ -41,7 +41,7 @@ table.listing a:visited {
           <tal:repeat repeat="month months">
             <tal:define define="id repeat/month/index">
               <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)" i18n:translate=""></a>
               </td>
             </tal:define>
           </tal:repeat>

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
 "POT-Creation-Date: Fri Dec 10 15:31:48 2004\n"
-"PO-Revision-Date: 2004-12-10 15:32+0100\n"
+"PO-Revision-Date: 2004-12-13 10:13+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -391,7 +391,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:414
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:25
 msgid "Subjects"
-msgstr ""
+msgstr "Themen"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:432
 msgid "Target Audiences"
@@ -399,7 +399,7 @@ msgstr "Zielgruppe"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:49
 msgid "Chair"
-msgstr ""
+msgstr "Vorsitz"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:69
 msgid "Promovendus"
@@ -407,7 +407,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:89
 msgid "Promoter"
-msgstr ""
+msgstr "Organisator"
 
 # Default: "silva_news"
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_submit.py:40
@@ -551,21 +551,21 @@ msgstr "Es sind keine Quellen verfügbar."
 #: /views/edit/Filter/NewsFilter/edit.pt:226
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "select all"
-msgstr ""
+msgstr "Alles auswählen"
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
 #: /views/edit/Filter/NewsFilter/edit.pt:226
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "deselect all"
-msgstr ""
+msgstr "Alles abwählen"
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:204
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:196
 #: /views/edit/Filter/NewsFilter/edit.pt:226
 #: /views/edit/Filter/NewsFilter/edit_items.pt:176
 msgid "select all items: alt-a"
-msgstr ""
+msgstr "Alle Einträge auswählen: alt-a"
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:261
 msgid "use selected sources in this filter: alt-u"
@@ -595,7 +595,7 @@ msgstr "Vorschau dieses Eintrags"
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:180
 msgid "There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published."
-msgstr ""
+msgstr "Keine Newseinträge in dieser Periode. Überprüfen Sie, ob die Newsquellen aktiviert (Bearbeiten Formular) und die Newseinträge veröffentlicht sind."
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:254
 #: /views/edit/Filter/NewsFilter/edit_items.pt:233
@@ -651,12 +651,12 @@ msgstr "Fehler in Eingabeformular: ${errors}"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Filter/NewsFilter/submit_settings.py:36
 msgid "subjects changed"
-msgstr ""
+msgstr "Themen geändert"
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Filter/NewsFilter/submit_settings.py:42
 msgid "target audiences changed"
-msgstr ""
+msgstr "Zielgruppe geändert"
 
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Filter/NewsFilter/submit_settings.py:54
@@ -666,13 +666,13 @@ msgstr ""
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Filter/NewsFilter/submit_settings.py:85
 msgid "Settings changed for: "
-msgstr ""
+msgstr "Einstellungen geändert für:"
 
 #: /views/edit/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Filter/NewsFilter/use_items.py:40
 #: /views/edit/Filter/use_sources.py:40
 msgid "The filter is updated."
-msgstr ""
+msgstr "Filter erneuert."
 
 #: /views/edit/Filter/NewsFilter/edit.pt:115
 msgid " save settings "
@@ -783,7 +783,7 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/submit_settings.py:48
 msgid "show agendaitems changed"
-msgstr ""
+msgstr "Agendaeinträge anzeigen geändert"
 
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/form.form:53
 msgid "date and time"
@@ -804,11 +804,11 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/PlainAgendaItem/submit.py:31
 msgid "AgendaItem-data changed"
-msgstr ""
+msgstr "Agendaeintrag geändert"
 
 #: /views/edit/VersionedContent/NewsItem/PlainArticle/submit.py:29
 msgid "Article data changed"
-msgstr ""
+msgstr "Artikeldaten geändert"
 
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:43
 msgid "Target audiences"
@@ -816,7 +816,7 @@ msgstr "Zielgruppe"
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
 msgid "Data changed"
-msgstr ""
+msgstr "Daten geändert"
 
 #: /views/get_months.py:15
 msgid "Jan"
@@ -868,7 +868,7 @@ msgstr "Dez"
 
 #: /views/public/AgendaViewer/search_agenda.pt:21
 msgid "Search Agenda"
-msgstr ""
+msgstr "Agenda durchsuchen"
 
 #: /views/public/AgendaViewer/search_agenda.pt:35
 #: /views/public/AgendaViewer/view_agenda.pt:61
@@ -878,14 +878,14 @@ msgstr ""
 #: /views/public/NewsViewer/view_archive.pt:144
 #: /views/public/NewsViewer/view_news.pt:56
 msgid "Do a full text search: alt-s"
-msgstr ""
+msgstr "Volltextsuche: alt-s"
 
 #: /views/public/AgendaViewer/search_agenda.pt:35
 #: /views/public/AgendaViewer/view_archive.pt:146
 #: /views/public/NewsFilter/search_news.pt:34
 #: /views/public/NewsViewer/search_news.pt:34
 msgid "Search"
-msgstr ""
+msgstr "Suche"
 
 #: /views/public/AgendaViewer/search_agenda.pt:57
 #: /views/public/AgendaViewer/view_agenda.pt:38
@@ -894,102 +894,102 @@ msgstr ""
 #: /views/public/NewsViewer/view_news.pt:35
 #: /views/public/RSSAggregator/render_helper.pt:37
 msgid "view article"
-msgstr ""
+msgstr "Artikel anzeigen"
 
 #: /views/public/AgendaViewer/search_agenda.pt:69
 #: /views/public/NewsFilter/search_news.pt:71
 #: /views/public/NewsViewer/search_news.pt:71
 msgid "There are no articles corresponding to your query."
-msgstr ""
+msgstr "Keine Artikel für diese Anfrage gefunden."
 
 #: /views/public/AgendaViewer/search_agenda.pt:81
 #: /views/public/AgendaViewer/view_archive.pt:154
 msgid "View Agenda"
-msgstr ""
+msgstr "Agenda ansehen"
 
 #: /views/public/AgendaViewer/search_agenda.pt:82
 #: /views/public/AgendaViewer/view_agenda.pt:70
 #: /views/public/NewsViewer/search_news.pt:84
 msgid "View Archive"
-msgstr ""
+msgstr "Archiv ansehen"
 
 #: /views/public/AgendaViewer/view_agenda.pt:35
 msgid "Start date/time:"
-msgstr ""
+msgstr "Startdatum/-zeit:"
 
 #: /views/public/AgendaViewer/view_agenda.pt:48
 msgid "There are no articles."
-msgstr ""
+msgstr "Keine Artikel."
 
 #: /views/public/AgendaViewer/view_agenda.pt:61
 #: /views/public/NewsViewer/view_archive.pt:144
 #: /views/public/NewsViewer/view_news.pt:56
 msgid "search"
-msgstr ""
+msgstr "Suche"
 
 #: /views/public/AgendaViewer/view_archive.pt:111
 #: /views/public/NewsViewer/view_archive.pt:110
 msgid "There are no articles for this period."
-msgstr ""
+msgstr "Keine Artikel für diese Periode gefunden."
 
 #: /views/public/AgendaViewer/view_archive.pt:29
 msgid "Archive of"
-msgstr ""
+msgstr "Archiv von"
 
 #: /views/public/AgendaViewer/view_archive.pt:59
 #: /views/public/NewsViewer/view_archive.pt:59
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: /views/public/AgendaViewer/view_archive.pt:61
 #: /views/public/NewsViewer/view_archive.pt:61
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: /views/public/AgendaViewer/view_archive.pt:79
 #: /views/public/AgendaViewer/view_archive.pt:87
 #: /views/public/NewsViewer/view_archive.pt:80
 #: /views/public/NewsViewer/view_archive.pt:88
 msgid "View this item"
-msgstr ""
+msgstr "Diesen Eintrag ansehen"
 
 #: /views/public/NewsFilter/search_news.pt:20
 #: /views/public/NewsViewer/search_news.pt:20
 msgid "Search News"
-msgstr ""
+msgstr "News durchsuchen"
 
 #: /views/public/NewsFilter/search_news.pt:56
 #: /views/public/NewsViewer/search_news.pt:55
 msgid "Startdate/time:"
-msgstr ""
+msgstr "Startdatum/-zeit"
 
 #: /views/public/NewsViewer/search_news.pt:83
 #: /views/public/NewsViewer/view_archive.pt:151
 msgid "View News"
-msgstr ""
+msgstr "News ansehen"
 
 #: /views/public/NewsViewer/view_archive.pt:60
 msgid "View"
-msgstr ""
+msgstr "Ansehen"
 
 #: /views/public/NewsViewer/view_news.pt:47
 msgid "There are no articles available."
-msgstr ""
+msgstr "Es sind keine Artikel verfügbar."
 
 #: /views/public/NewsViewer/view_news.pt:70
 msgid "View archive"
-msgstr ""
+msgstr "Archiv ansehen"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:28
 #: /views/public/PlainArticle/render_helper.pt:26
 msgid "Creation date:"
-msgstr ""
+msgstr "Erstellungsdatum:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:31
 msgid "Date and time:"
-msgstr ""
+msgstr "Datum und Zeit:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:38
 msgid "Location:"
-msgstr ""
+msgstr "Ort:"
 
