@@ -1,25 +1,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Thu Dec  2 12:10:16 2004\n"
-"PO-Revision-Date: 2004-12-02 12:42+0100\n"
+"POT-Creation-Date: Fri Dec  3 15:03:16 2004\n"
+"PO-Revision-Date: 2004-12-03 14:51+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/translation_files/extract.py\n"
+"Language-code: de\n"
+"Language-name: Deutsch\n"
+"Preferred-encodings: utf-8 latin1\n"
+"Domain: silva_news\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
-
-#: /views/add/AgendaFilter/form.form:26 /views/add/AgendaViewer/form.form:26
-#: /views/add/NewsFilter/form.form:26 /views/add/NewsFolder/form.form:26
-#: /views/add/NewsItem/PlainAgendaItem/form.form:26
-#: /views/add/NewsItem/PlainArticle/form.form:26
-#: /views/add/NewsPublication/form.form:29 /views/add/NewsViewer/form.form:26
-#: /views/add/RSSAggregator/form.form:26
-msgid "id"
-msgstr ""
+"X-Poedit-Basepath: /home/gst/zopes/I18N/Products\n"
 
 #: /views/add/AgendaFilter/form.form:28 /views/add/AgendaViewer/form.form:28
 #: /views/add/NewsFilter/form.form:28 /views/add/NewsFolder/form.form:28
@@ -62,134 +58,387 @@ msgstr "Zielgruppe"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:67
 msgid "start date/time"
-msgstr ""
+msgstr "Beginn Datum/Zeit"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:68
 msgid "Format: d/m/y, time is optional."
-msgstr ""
+msgstr "Format: Tag/Monat/Jahr, Zeit ist optional"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainArticle/form.form:63
 #: /views/edit/Filter/AgendaFilter/settingsform.form:22
 #: /views/edit/Filter/NewsFilter/settingsform.form:22
 msgid "subjects"
-msgstr ""
-
-#: /views/add/NewsViewer/form.form:45
-#: /views/edit/Container/NewsPublication/form.form:26
-msgid "Title"
-msgstr "Titel"
+msgstr "Themen"
 
 #: /views/add/add_submit.py:66
 msgid "Added ${type} ${id}."
 msgstr "Hinzugefügt ${type} ${id}."
 
-#: /views/edit/Container/NewsPublication/form.form:41
+#: /views/edit/Container/NewsPublication/form.form:44
 msgid "Restrict usage"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/settings_addables_form.form:21
-msgid "Acquire"
+#: /views/edit/Container/NewsPublication/settings_addables.pt:110
+msgid "save addable settings for this publication: alt-a"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/settings_addables_form.form:23
+#: /views/edit/Container/NewsPublication/settings_addables.pt:110
+msgid "Save addables data"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables.pt:65
+msgid "addable settings for:"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:24
+msgid "Acquire"
+msgstr "Erwerben"
+
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:26
 msgid "If checked, inherit the allowed addables from above."
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/settings_addables_form.form:37
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:40
 msgid "Addables"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/settings_addables_form.form:39
+#: /views/edit/Container/NewsPublication/settings_addables_form.form:42
 msgid ""
 "If 'acquire' is not checked, these settings will determine the items allowed "
 "in this publication. Otherwise the addables are acquired from the "
 "publication above."
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:106
+#: /views/edit/Container/NewsPublication/tab_edit.pt:120
+msgid "new..."
+msgstr "Neu..."
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:120
+msgid "add a new item: alt-n"
+msgstr "Neuen Eintrag hinzufügen: alt-n"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:129
+msgid "access key: alt-s"
+msgstr "Kurzwahl: alt-s"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:135
+msgid "select a new item: alt-s"
+msgstr "Neuen Eintrag auswählen: alt-s"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:142
+msgid "select"
+msgstr ""
+
+# Default: "Edit"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:173
+#: /views/edit/Container/NewsPublication/tab_edit.pt:404
+msgid "edit"
+msgstr "Bearbeiten"
+
+# Default: "Preview"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:176
+#: /views/edit/Container/NewsPublication/tab_edit.pt:423
+msgid "preview"
+msgstr "Vorschau"
+
+# Default: "Modified"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:179
+msgid "modified"
+msgstr "Verändert"
+
+# Default: "Author"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:182
+msgid "author"
+msgstr "Autor"
+
+# Default: "&nbsp;&nbsp;Shift"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:185
+msgid "shift"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:195
+msgid "There is no content here."
+msgstr "Es ist hier kein Inhalt vorhanden."
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:246
+#: /views/add/AgendaFilter/form.form:26 /views/add/AgendaViewer/form.form:26
+#: /views/add/NewsFilter/form.form:26 /views/add/NewsFolder/form.form:26
+#: /views/add/NewsItem/PlainAgendaItem/form.form:26
+#: /views/add/NewsItem/PlainArticle/form.form:26
+#: /views/add/NewsPublication/form.form:29 /views/add/NewsViewer/form.form:26
+#: /views/add/RSSAggregator/form.form:26
+msgid "id"
+msgstr ""
+
+# Default: "<i>n/a</i>"
+#: /views/edit/Container/NewsPublication/tab_edit.pt:282
+#: /views/edit/Container/NewsPublication/tab_edit.pt:313
+msgid "n/a"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:331
+msgid "move down"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:342
+msgid "move up"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:443
+msgid "unknown"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:491
+msgid "position"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:498
+msgid "end"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:505
+msgid "access key: alt-p"
+msgstr "Kurzwahl: alt-p"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:511
+msgid "move selected items into position: alt-m"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:521
+msgid "rename..."
+msgstr "Umbenennen..."
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:521
+msgid "rename and retitle items: alt-r"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:529
+msgid "cut"
+msgstr "Ausschneiden"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:529
+msgid "cut items: alt-x"
+msgstr "Einträge ausschneiden: alt-x"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:537
+msgid "copy items: alt-c"
+msgstr "Einträge kopieren: alt-c"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:537
+msgid "copy"
+msgstr "Kopieren"
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:552
+msgid "paste items: alt-v"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:552
+msgid "paste"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:562
+msgid "return confirm('Really delete?')"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:562
+msgid "delete"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:562
+msgid "there's no undo: alt-d"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:573
+msgid "bulk edit..."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:573
+msgid "bulk edit items: alt-b"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:76
+msgid ""
+"Make news source private so it is picked up only by filters in the same path "
+"of the source and below."
+msgstr ""
+"Newssource privat machen, so dass sie nur von Filtern erfasst wird die im "
+"selben Pfad liegen."
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:83
+msgid "change the public/private status of the news publication: alt-o"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit.pt:83
+msgid "open/close"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:105
+msgid "The objects have different values."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:123
+msgid "There are no publishable objects found."
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:64
+#: /views/edit/Container/NewsPublication/tab_edit.pt:61
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
+#: /views/edit/Content/edit.pt:58
+msgid "settings"
+msgstr "Einstellungen"
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:71
+#: /views/edit/Container/NewsPublication/settings_addables.pt:74
+#: /views/edit/Container/NewsPublication/tab_settings.pt:39
+msgid "Element"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:74
+#: /views/edit/Container/NewsPublication/tab_settings.pt:42
+msgid "&nbsp;"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:77
+#: /views/edit/Container/NewsPublication/settings_addables.pt:77
+#: /views/edit/Container/NewsPublication/tab_settings.pt:45
+msgid "Content"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:80
+#: /views/edit/Container/NewsPublication/settings_addables.pt:80
+#: /views/edit/Container/NewsPublication/tab_settings.pt:48
+msgid "Note"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
+msgid ""
+"Some items of your selection are containers (folders, publications, "
+"newssources etc.). Select which items to recurse (walk through) to add to "
+"the list of objects to updated:<br /><br />"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
+msgid "Id"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
+#: /views/add/NewsViewer/form.form:45
+#: /views/edit/Container/NewsPublication/form.form:29
+msgid "Title"
+msgstr "Titel"
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:109
 msgid "Co-promoter"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:128
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:131
 msgid "Speakers"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:150
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:153
 msgid "Startdate and time"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:170
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:173
 msgid "Enddate and time"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:186
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:189
 msgid "Location"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:209
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:212
 msgid "Location (if not in list)"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:230
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:233
 msgid "Pressheader"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:251
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:254
 msgid "Subheader"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:26
-msgid "Academic"
-msgstr ""
-
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:272
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:275
 msgid "Lead"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:293
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:29
+msgid "Academic"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:296
 msgid "Pressnote"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:311
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:314
 msgid "Common Info"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:334
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:337
 msgid "Specific Info"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:355
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:358
 msgid "Specific info (if not in list)"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:376
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:379
 msgid "More info links"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:397
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:400
 msgid "Embargo Datetime"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:411
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:414
 #: /views/edit/VersionedContent/NewsItem/form_subjects_target_audiences.form:22
 msgid "Subjects"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:429
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:432
 msgid "Target Audiences"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:46
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:49
 msgid "Chair"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:66
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:69
 msgid "Promovendus"
 msgstr ""
 
-#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:86
+#: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:89
 msgid "Promoter"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_info.pt:17
+msgid "Info for"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_info.pt:23
+msgid "Authorized users below this level"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:48
+msgid "properties of"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:49
+msgid "<span>x</span> &#xab; &#xbb;"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
+msgid "change Folder into Publication: alt-c"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_metadata.pt:62
+msgid "convert to publication"
+msgstr ""
+
+#: /views/edit/Container/NewsPublication/tab_settings.pt:29
+msgid "&nbsp;News Publication settings"
 msgstr ""
 
 #: /views/edit/Content/AgendaViewer/form.form:26
@@ -203,7 +452,7 @@ msgstr ""
 #: /views/edit/Content/AgendaViewer/form.form:42
 #: /views/edit/Content/NewsViewer/form.form:62
 msgid "filters"
-msgstr ""
+msgstr "Filter"
 
 #: /views/edit/Content/NewsViewer/form.form:24
 msgid "show"
@@ -250,7 +499,7 @@ msgstr ""
 
 #: /views/edit/Filter/NewsFilter/rssform.form:28
 msgid "description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: /views/edit/Filter/NewsFilter/rssform.form:29
 msgid "Describe the type of news this filter delivers."

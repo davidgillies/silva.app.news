@@ -7,6 +7,7 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   lang="en"
   xml:lang="en"
+  i18n:domain="silva_news"
   tal:define="
     global vein string:contents;
 ">

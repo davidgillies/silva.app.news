@@ -6,6 +6,7 @@
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   metal:use-macro="here/macro_index/macros/master"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
 >
 
 <div class="margins"
