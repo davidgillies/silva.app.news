@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.24 $
+# $Revision: 1.25 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -47,14 +47,27 @@ class XMLBuffer:
         return ret
 
     def _convert(self, data):
-        """conversion to UTF-8 for XML (does entitizing as well)"""
-        data = data.encode('UTF-8')
-        data = data.replace('&', '&amp;')
-        data = data.replace('"', '&quot;')
-        data = data.replace('<', '&lt;')
-        data = data.replace('>', '&gt;')
+        """conversion to UTF-8 for XML
+        (does entitizing as well)
+        no it doesn't anymore, because all elements were quoted, which
+        is not the desired result.
 
+        See quote_xml and it's usage.
+        """
+        data = data.encode('UTF-8')
         return data
+
+def quote_xml ( data ):
+    """Quote string for XML usage.
+    """
+    if not data:
+        return data
+    data = data.replace('&', '&amp;')
+    data = data.replace('"', '&quot;')
+    data = data.replace('<', '&lt;')
+    data = data.replace('>', '&gt;')
+    return data
+
 
 RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n' 
               '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
@@ -157,10 +170,10 @@ class NewsViewer(Content, Folder.Folder):
             results += res
 
         results = self._remove_doubles(results)
-        if not self._number_is_days:
-            return results[:self._number_to_show]
-        else:
-            return results
+##         if not self._number_is_days:
+##             return results[:self._number_to_show]
+##         else:
+        return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
@@ -263,17 +276,18 @@ class NewsViewer(Content, Folder.Folder):
         mdbinding = self.service_metadata.getMetadata(self)
         creationdate = mdbinding.get('silva-extra', 'creationtime')
         
-        # create RDF/XML
+        # create RDF/XML frame
         xml.write('<channel rdf:about="%s">\n' % self.absolute_url())
-        xml.write('<title>%s</title>\n' % self.get_title())
+        xml.write('<title>%s</title>\n' % quote_xml(self.get_title()))
         xml.write('<link>%s</link>\n' % self.absolute_url())
-        xml.write('<description>%s</description>\n' % mdbinding.get('silva-extra', 'description'))
-        
-        # create DC
-        xml.write('<dc:creator>%s</dc:creator>\n' % mdbinding.get('silva-extra', 'creator'))
-        xml.write('<dc:date>%s</dc:date>\n' % creationdate.ISO())
+        xml.write('<description>%s</description>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'content_description')))
+        xml.write('<dc:creator>%s</dc:creator>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'creator')))
+        xml.write('<dc:date>%s</dc:date>\n' %
+                  quote_xml(creationdate.ISO()))
 
-        # for each item
+        # loop over the items and create a RSS/RDF item
         for item in items:
             item = item.getObject()
             self._rss_item_helper(item, xml)
@@ -289,19 +303,19 @@ class NewsViewer(Content, Folder.Folder):
         version_container = item.object()
         xml.write('<hasitem>\n')
         xml.write('<item rdf:about="%s">\n' % version_container.absolute_url())
-    
         mdbinding = self.service_metadata.getMetadata(item)
-
         # RSS elements
-        xml.write('<title>%s</title>\n' % item.get_title())
-        xml.write('<link>%s</link>\n' % version_container.absolute_url())
-        xml.write('<description>%s</description>\n' % mdbinding.get('silva-extra', 'description'))
-
+        xml.write('<title>%s</title>\n' % quote_xml(item.get_title()))
+        xml.write('<link>%s</link>\n' % quote_xml(version_container.absolute_url()))
+        xml.write('<description>%s</description>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'content_description')))
         # DC elements
-        xml.write('<dc:subject>%s</dc:subject>\n' % mdbinding.get('silva-extra', 'subject'))
-        xml.write('<dc:creator>%s</dc:creator>\n' % mdbinding.get('silva-extra', 'creator'))
-        xml.write('<dc:date>%s</dc:date>\n' % mdbinding.get('silva-extra', 'creationtime').ISO())
-        
+        xml.write('<dc:subject>%s</dc:subject>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'subject')))
+        xml.write('<dc:creator>%s</dc:creator>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'creator')))
+        xml.write('<dc:date>%s</dc:date>\n' %
+                  quote_xml(mdbinding.get('silva-extra', 'creationtime').ISO()))
         xml.write('</item>\n')
         xml.write('</hasitem>\n')
         
