@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -39,8 +39,9 @@ class AgendaViewer(NewsViewer):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues('Silva AgendaFilter'):
-                pairs.append((item.get_title_html(), "%s/%s" % ('/'.join(parentpath), item.id)))
+            for item in parent.objectValues(['Silva AgendaFilter', 'Silva NewsFilter']):
+                joinedpath = '/'.join(parentpath)
+                pairs.append(('%s (%s)' % (item.get_title_html(), joinedpath), "%s/%s" % (joinedpath, item.id)))
             if parentpath == ('',):
                 break
             obj = parent
@@ -77,12 +78,31 @@ class AgendaViewer(NewsViewer):
         results = []
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.get_items_by_date(month, year)
+            res = obj.get_agenda_items_by_date(month, year)
             results += res
 
         results = self._remove_doubles(results)
         results.sort(self._sortresults)
         return results
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'search_items')
+    def search_items(self, keywords):
+        """Search the items in the filters
+        """
+        self.verify_filters()
+        results = []
+        for newsfilter in self._filters:
+            obj = self.aq_inner.restrictedTraverse(newsfilter)
+            res = obj.search_items(keywords)
+            results += res
+
+        results = self._remove_doubles(results)
+        results.sort(self._sortresults)
+        if not self._number_is_days:
+            return results[:self._number_to_show]
+        else:
+            return results
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_days_to_show')

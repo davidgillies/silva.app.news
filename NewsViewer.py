@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -79,7 +79,7 @@ class NewsViewer(Content, Folder.Folder):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'findfilters_pairs')
     def findfilters_pairs(self):
-        """Returns a list of tuples (title, path) for all filters
+        """Returns a list of tuples (title (path), path) for all filters
         from catalog for rendering formulator-items
         """
         # IS THIS THE MOST EFFICIENT WAY?
@@ -88,8 +88,9 @@ class NewsViewer(Content, Folder.Folder):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues('Silva NewsFilter'):
-                pairs.append((item.get_title_html(), "%s/%s" % ('/'.join(parentpath), item.id)))
+            for item in parent.objectValues(['Silva NewsFilter', 'Silva AgendaFilter']):
+                joinedpath = '/'.join(parentpath)
+                pairs.append(('%s (%s)' % (item.get_title_html(), joinedpath), "%s/%s" % (joinedpath, item.id)))
             if parent.meta_type == 'Silva Root':
                 break
             obj = parent
@@ -144,7 +145,7 @@ class NewsViewer(Content, Folder.Folder):
         results = []
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.search_items(keywords, self._number_to_show, self._number_is_days)
+            res = obj.search_items(keywords)
             results += res
 
         results = self._remove_doubles(results)
