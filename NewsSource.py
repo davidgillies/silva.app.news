@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.5 $
+# $Revision: 1.6 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -13,6 +13,7 @@ from Products.Silva import SilvaPermissions
 #misc
 from Products.Silva.helpers import add_and_edit
 from Products.SilvaNews.INewsItem import INewsItem
+from Products.SilvaNews.IAgendaItem import IAgendaItem
 
 class NewsSource(Publication, CatalogPathAware):
     """Source
@@ -131,8 +132,10 @@ class NewsSource(Publication, CatalogPathAware):
         """
         return (
             addable_dict.has_key('instance') and
-            INewsItem.isImplementedByInstancesOf(
-            addable_dict['instance']))
+            (INewsItem.isImplementedByInstancesOf(
+            addable_dict['instance']) or
+            IAgendaItem.isImplementedByInstancesOf(
+            addable_dict['instance'])))
 
 InitializeClass(NewsSource)
 
