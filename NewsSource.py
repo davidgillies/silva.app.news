@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 # Zope
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -114,9 +114,25 @@ class NewsSource(Publication, CatalogPathAware):
                             fields[key] = morefields[key]
                         elif morefields[key] is not None and fields[key] is not None:
                             fields[key] = '__DO_NOT_FILL_FIELD__'
-        print fields
-
         return (fields, versionpaths)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation, 'get_silva_addables')
+    def get_silva_addables(self):
+        result = [addable_dict
+                for addable_dict in self.filtered_meta_types()
+                if self._is_silva_addable(addable_dict)]
+        result.sort(lambda x, y: cmp(x['name'], y['name']))
+        return result
+
+    def _is_silva_addable(self, addable_dict):
+        """Given a dictionary from filtered_meta_types, check whether this
+        specifies a NewsItem. This method is overridden from Folder to control the
+        meta-types addable in the newssources
+        """
+        return (
+            addable_dict.has_key('instance') and
+            INewsItem.isImplementedByInstancesOf(
+            addable_dict['instance']))
 
 InitializeClass(NewsSource)
 
