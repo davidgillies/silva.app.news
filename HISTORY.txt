@@ -7,6 +7,10 @@ SilvaNews changes
 
     Bugs fixed
 
+      - Fixed 'select all' in edit tabs.
+
+      - Fixed some small template issues so it works correctly with Silva 1.0.
+
       - Problem in some DateTime argument formatting solved that made viewing 
         certain objects result in an IOError when Silva was running on Windows
         Zope installations.

@@ -182,26 +182,42 @@
 
       <check tal:condition="python:len(objects) != 0">
       <script type="text/javascript">
-      <!--
-      isSelected = false;
+      // <![CDATA[
 
-      function toggleSelect() {
-        if (isSelected == false) {
-          for (i = 0; i < document.silvaObjects.length; i++)
-            document.silvaObjects.elements[i].checked = true ;
-            isSelected = true;
-            document.silvaObjects.selectButton.value = "Deselect all";
-            return isSelected;
-        }
-        else {
-          for (i = 0; i < document.silvaObjects.length; i++)
-            document.silvaObjects.elements[i].checked = false ;
+        isSelected = false;
+
+        function toggleSelect(button) {
+          var form = button.form;
+          var check = true;
+          if (isSelected) {
+            check = false;
             isSelected = false;
-            document.silvaObjects.selectButton.value = "Select all";
-            return isSelected;
-        }
-      }
-      //-->
+          } else {
+            isSelected = true;
+          };
+          var inputs = form.getElementsByTagName('input');
+          for (var i=0; i < inputs.length; i++) {
+            var child = inputs[i];
+            var type = child.getAttribute('type');
+            if (type != 'radio' && type != 'checkbox') {
+              continue;
+            };
+            if (check) {
+              child.setAttribute('checked', true);
+              button.setAttribute('value', 'deselect all');
+            } else {
+              // make very sure the checkbox is unchecked, the 
+              // setAttribute works on IE but not on Moz, the 
+              // removeAttribute the other way round, this doesn't
+              // seem to clash and who knows IE 8 will require both ;)
+              child.setAttribute('checked', null);
+              child.removeAttribute('checked');
+              button.setAttribute('value', 'select all');
+            };
+          };
+        };
+        
+      // ]]>
       </script>
 
       <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
@@ -211,7 +227,7 @@
       <script type="text/javascript">
       <!--
       if (document.forms[0]) {
-        document.write('<input class="button" type="submit" name="selectButton" value="select all" accesskey="a" title="select all items on and below this level: alt-a" onClick="toggleSelect(); return false">')
+        document.write('<input class="button" type="submit" name="selectButton" value="select all" accesskey="a" title="select all items on and below this level: alt-a" onClick="toggleSelect(this); return false">')
         }
       //-->
       </script>

@@ -17,10 +17,7 @@
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
-<table width="100%" cellspacing="0" cellpadding="3" border="2"
-  tal:attributes="cellspacing container/table_cellspacing;
-                  cellpadding container/table_cellpadding;
-                  border container/table_border">
+<table width="100%" cellspacing="0" cellpadding="3" border="2" class="plain">
 
 <tr class="topcontrols" valign="bottom">
 <td align="right" colspan="2">
