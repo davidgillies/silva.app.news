@@ -37,13 +37,12 @@
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top">
 <h2 tal:content="structure obj/get_title">title</h2>
-<h3 tal:content="structure obj/subheader">subheader</h3>
 </td>
 </tr>
 
 <tr class="even">
 <td valign="top">
-<b tal:content="structure obj/lead">Lead</b><br /><br />
+<tal:block content="structure obj/get_intro">Lead</tal:block><br /><br />
 <span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/start_datetime">DateTime</span>
 <a href="#" tal:attributes="href python:obj.get_content().absolute_url()">view article</a>
 </td>

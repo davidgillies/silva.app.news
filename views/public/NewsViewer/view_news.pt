@@ -20,10 +20,9 @@
   <tr class="even">
     <td>
       <h4 tal:content="structure obj/get_title">title</h4>
-      <h5 tal:content="structure obj/subheader"
-          tal:condition="obj/subheader">subheader</h5>
-      <b tal:content="structure string:${obj/lead}<br />"
-        tal:condition="obj/lead">Lead</b>
+      <tal:block condition="obj/get_intro">
+        <tal:block content="structure obj/get_intro">Lead</tal:block><br />
+      </tal:block>
       <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()"
         tal:condition="obj/start_datetime | nothing">DateTime</span>
       <a tal:attributes="href python:obj.object().absolute_url()">view article</a>

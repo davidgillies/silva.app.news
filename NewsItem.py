@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.23 $
+# $Revision: 1.24 $
 
 # Python
 from StringIO import StringIO
@@ -23,6 +23,8 @@ from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.SilvaDocument.Document import DocumentVersion
 from Products.Silva.Metadata import export_metadata
+
+from Products.SilvaDocument import mixedcontentsupport
 
 class NewsItem(CatalogedVersionedContent):
     """Base class for all kinds of news items.
@@ -88,29 +90,30 @@ class NewsItemVersion(DocumentVersion):
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subheader')
-    def subheader(self):
-        """Returns subheader, subheader is the first header in the content
-        (or '' if no headers in content are defined)
-        """
-        content = self.content
-        for child in content.childNodes[0].childNodes:
-            if child.nodeName == u'heading':
-                return self.service_editorsupport.render_heading_as_html(child)
-        return ''
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'lead')
-    def lead(self):
-        """Returns lead, lead is the first paragraph of the content
-        (or '' if not paragraph is found)
-        """
-        content = self.content
-        for child in content.childNodes[0].childNodes:
-            if child.nodeName == u'p':
-                return self.service_editorsupport.render_text_as_html(child)
-        return ''
+    def get_intro(self, max_size=1024):
+        """Returns first bit of the news item's content
 
+            this returns all elements up to and including the first
+            paragraph, if it turns out that there are more than max_size
+            characters in the data returned it will truncate (per element)
+            to minimally 1 element
+        """
+        self.service_editor.setViewer('service_doc_viewer')
+        content = self.content
+        ret = ''
+        for child in content.childNodes[0].childNodes:
+            add = self.service_editor.renderView(child)
+            if len(ret + add) > 1024:
+                if ret:
+                    return ret
+                return add
+            ret += add
+            # break after the first <p> node
+            if child.nodeName == 'p':
+                break
+        return ret
+        
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
     def source_path(self):
