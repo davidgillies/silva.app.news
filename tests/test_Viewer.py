@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 import unittest
 import Zope
 from DateTime import DateTime
@@ -105,7 +105,7 @@ class NewsViewerTestCase(NewsViewerBaseTestCase):
         self.assert_(self.newsviewer.findfilters() == ['/root/newsfilter'])
 
     def test_findfilters_pairs(self):
-        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter', '/root/newsfilter')])
+        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter (/root)', '/root/newsfilter')])
 
     def test_verify_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])

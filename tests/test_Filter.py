@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.1 $
+# $Revision: 1.2 $
 import unittest
 import Zope
 from DateTime import DateTime
@@ -46,11 +46,14 @@ class NewsFilterBaseTestCase(unittest.TestCase):
         service_news.add_location('test')
         service_news.add_location('test2')
 
-        self.service_catalog = self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
-        columns = ['is_private', 'object_path']
+        self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
+        self.service_catalog = getattr(self.root, 'service_catalog')
+        columns = ['is_private', 'object_path', 'fulltext', 'version_status', 'path', 'subjects', 'target_audiences',
+                    'publication_datetime']
         indexes = [('meta_type', 'FieldIndex'), ('is_private', 'FieldIndex'), ('parent_path', 'FieldIndex'),
                     ('version_status', 'FieldIndex'), ('subjects', 'KeywordIndex'), ('target_audiences', 'KeywordIndex'),
-                    ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex')]
+                    ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex'), ('fulltext', 'TextIndex'),
+                    ('path', 'PathIndex')]
         setup_catalog(self.root, columns, indexes)
 
         self.source1 = add_helper_news(self.sroot, 'NewsSource', 'source1', 'Source 1')
@@ -139,6 +142,17 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.service_news.remove_subject('test')
         self.newsfilter.synchronize_with_service()
         self.assert_(self.newsfilter.subjects() == [])
+
+    def test_search_items(self):
+        self.newsfilter.add_source('/root/source1', 1)
+        self.newsfilter.add_source('/root/source2', 1)
+        self.newsfilter.add_source('/root/somefolder/source3', 1)
+        res = ['%s - %s' % (i.id, i.path) for i in self.service_catalog({})]
+        resids = [i.object_path[-1] for i in self.newsfilter.search_items('test')]
+        self.assert_('art1' in resids)
+        self.assert_('art2' not in resids)
+        self.assert_('art3' not in resids)
+        self.assert_(len(resids) == 1)
 
 def test_suite():
     suite = unittest.TestSuite()
