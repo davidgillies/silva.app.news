@@ -10,9 +10,7 @@
   " />
 
 <div class="margins">
-  <h2><img src="%s" width="16" height="16" alt="%s"
-        tal:replace="structure python:view.render_icon(model.meta_type)" />&nbsp;
-    Contents of <span class="folder-title" tal:content="structure string:&laquo;${model/get_title_html}&raquo;">title here</span>
+  <h2>Contents of <span class="folder-title" tal:content="structure string:&laquo;${model/get_title_html}&raquo;">title here</span>
   </h2>
 </div>
 
@@ -32,8 +30,7 @@
   </td>
   <td class="divider"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="22" /></td>
   <td>
-    <img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="3" height="16" /><img src="%s" width="16" height="16" alt="%s"
-      tal:replace="structure python:view.render_icon(model.meta_type)" />&nbsp;
+    <img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="3" height="16" />&nbsp;
     <span class="tablehead3"><span tal:replace="model/id">id</span>
   </td>
   <td align="right">
