@@ -28,8 +28,10 @@
           <title>Title</title>
           <description></description>
           <extra></extra>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
+          <default>python: form.REQUEST.model.get_title_editable()</default>
         </tales>
       </field>
       </fields>

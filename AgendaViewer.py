@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -13,23 +13,27 @@ from Products.Silva.IContent import IContent
 
 from NewsViewer import NewsViewer
 
+icon = 'www/agenda_viewer.png'
+
 class AgendaViewer(NewsViewer):
-    """Used to show agendaitems on a Silva site. When setting up
-    an agendaviewer you can choose which agendafilters it should use to get 
-    the items from and how long in advance you want the items shown. The items
-    will then automatically be retrieved from the agendafilter for each request.
+    """
+    Used to show agendaitems on a Silva site. When setting up an
+    agendaviewer you can choose which agendafilters it should use to
+    get the items from and how long in advance you want the items
+    shown. The items will then automatically be retrieved from the
+    agendafilter for each request.
     """
 
     security = ClassSecurityInfo()
 
     __implements__ = IContent
 
-    meta_type = "Silva News AgendaViewer"
+    meta_type = "Silva Agenda Viewer"
 
     show_in_tocs = 1
 
-    def __init__(self, id, title):
-        AgendaViewer.inheritedAttribute('__init__')(self, id, title)
+    def __init__(self, id):
+        AgendaViewer.inheritedAttribute('__init__')(self, id)
         self._days_to_show = 31
         self._filters = []
 
@@ -45,9 +49,12 @@ class AgendaViewer(NewsViewer):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues(['Silva News AgendaFilter', 'Silva News NewsFilter']):
-                joinedpath = '/'.join(parentpath)
-                pairs.append(('%s (%s)' % (item.get_title_html(), joinedpath), "%s/%s" % (joinedpath, item.id)))
+            for item in parent.objectValues(['Silva Agenda Filter',
+                                             'Silva News Filter']):
+                joinedpath = '/'.join(item.getPhysicalPath())
+                pairs.append(('%s (%s)' %
+                              (item.get_title(), joinedpath),
+                              joinedpath))
             if parentpath == ('',):
                 break
             obj = parent
@@ -119,7 +126,7 @@ class AgendaViewer(NewsViewer):
         self._p_changed = 1
 
     def _sortresults(self, item1, item2):
-        return cmp(item1.start_datetime, item2.start_datetime)
+        return cmp(item1.getObject().start_datetime(), item2.getObject().start_datetime())
 
 InitializeClass(AgendaViewer)
 
@@ -131,8 +138,9 @@ def manage_addAgendaViewer(self, id, title, REQUEST=None):
     """Add a News AgendaViewer."""
     if not self.is_id_valid(id):
         return
-    object = AgendaViewer(id, title)
+    object = AgendaViewer(id)
     self._setObject(id, object)
     object = getattr(self, id)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''

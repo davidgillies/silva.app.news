@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<form>
+  <title></title>
+  <name>tab_metadata_form</name>
+  <action></action>
+  <enctype>None</enctype>
+  <method>POST</method>
+
+  <groups>
+    <group>
+      <title>Default</title>
+      <fields>
+
+      <field><id>subjects</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Subjects</title>
+          <orientation>vertical</orientation>
+          <description></description>
+          <css_class></css_class>
+          <external_validator></external_validator>
+          <unicode type="int">1</unicode>
+        </values>
+        <tales>
+          <items>python:form.service_news.subject_form_tree()</items>
+          <default>python:form.REQUEST.model.subjects()</default>
+        </tales>
+      </field>
+      <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>Target audiences</title>
+          <orientation>vertical</orientation>
+          <description></description>
+          <css_class></css_class>
+          <external_validator></external_validator>
+          <unicode type="int">1</unicode>
+        </values>
+        <tales>
+          <items>python: form.service_news.target_audience_form_tree()</items>
+          <default>python:form.REQUEST.model.target_audiences()</default>
+        </tales>
+      </field>
+      <field><id>keep_to_path</id> <type>RadioField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <orientation>vertical</orientation>
+          <required type="int">1</required>
+          <css_class></css_class>
+          <default></default>
+          <title>Stick to path</title>
+          <first_item type="int">0</first_item>
+          <description>If set to 'yes', only show items in the same branch of the tree as the filter.</description>
+          <external_validator></external_validator>
+        </values>
+        <tales>
+          <items>python: [('Yes', 1), ('No', 0)]</items>
+          <default>python: form.REQUEST.model.keep_to_path()</default>
+        </tales>
+      </field>
+      </fields>
+    </group>
+  </groups>
+</form>

@@ -1,9 +1,11 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.6 $
+# $Revision: 1.7 $
 
 import unittest
 import Zope
+Zope.startup()
+
 from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
@@ -26,12 +28,11 @@ class ServiceNewsBaseTestCase(unittest.TestCase):
         self.connection = Zope.DB.open()
         self.root = makerequest.makerequest(self.connection.root()['Application'])
         self.REQUEST = self.root.REQUEST
+        self.REQUEST['URL1'] = ''
         self.REQUEST.set = lambda a, b: None
+        hack_create_user(self.root)
         self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
-        hack_create_user(self.sroot)
         self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
-        self.service_news.remove_subject('Dummy')
-        self.service_news.remove_target_audience('Dummy')
 
     def tearDown(self):
         get_transaction().abort()

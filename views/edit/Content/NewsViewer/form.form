@@ -12,24 +12,23 @@
       <title>Default</title>
       <fields>
 
-      <field><id>object_title</id> <type>TextAreaField</type>
+      <field><id>number_is_days</id> <type>RadioField</type>
         <values>
           <alternate_name></alternate_name>
           <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
           <css_class></css_class>
+          <orientation>vertical</orientation>
+          <required type="int">1</required>
+          <items>[('Yes', '1'), ('No', '0')]</items>
           <default></default>
-          <title>Title</title>
-          <description></description>
-          <extra></extra>
+          <title>Show</title>
+          <first_item type="int">0</first_item>
+          <description>Choose whether to show a certain number of items or items of a certain number of days in the past.</description>
+          <external_validator></external_validator>
         </values>
         <tales>
+          <items>python: [('number of days', 1), ('number of items', 0)]</items>
+          <default>python: form.REQUEST.model.number_is_days()</default>
         </tales>
       </field>
       <field><id>number_to_show</id> <type>IntegerField</type>
@@ -43,30 +42,13 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>Number to show</title>
+          <title>Number</title>
           <description></description>
           <end></end>
           <extra></extra>
         </values>
         <tales>
-        </tales>
-      </field>
-      <field><id>number_is_days</id> <type>RadioField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <css_class></css_class>
-          <orientation>vertical</orientation>
-          <required type="int">1</required>
-          <items>[('Yes', '1'), ('No', '0')]</items>
-          <default></default>
-          <title>Number is days back</title>
-          <first_item type="int">0</first_item>
-          <description>When set to 'yes', the number filled in above is the number of days back the filter should return items from. Otherwise the number is the number of items.</description>
-          <external_validator></external_validator>
-        </values>
-        <tales>
-          <items>python: [('Yes', 1), ('No', 0)]</items>
+          <default>python: form.REQUEST.model.number_to_show()</default>
         </tales>
       </field>
       <field><id>filters</id> <type>MultiCheckBoxField</type>
@@ -81,9 +63,11 @@
           <orientation>vertical</orientation>
           <items>[]</items>
           <external_validator></external_validator>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
           <items>python: form.REQUEST.model.findfilters_pairs()</items>
+          <default>python: form.REQUEST.model.filters()</default>
         </tales>
       </field>
       </fields>

@@ -1,3 +1,4 @@
+from __future__ import nested_scopes
 from httplib import HTTPConnection
 from urlparse import urlparse
 

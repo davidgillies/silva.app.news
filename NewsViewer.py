@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.19 $
+# $Revision: 1.20 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -13,46 +13,25 @@ from Products.Silva.Content import Content
 from Products.Silva.Document import Document
 from Products.Silva.helpers import add_and_edit
 
+icon = 'www/news_viewer.png'
+
 class NewsViewer(Content, Folder.Folder):
     """Used to show news items on a Silva site. When setting up
     a newsviewer you can choose which news- or agendafilters it should use to 
     retrieve the items, and how far back in time it should go. The items will 
     then be automatically fetched via the filter for each page request.
     """
+    meta_type = 'Silva News Viewer'
 
     security = ClassSecurityInfo()
 
     __implements__ = IContent
 
-    show_in_tocs = 1
-
-    def __init__(self, id, title):
-        NewsViewer.inheritedAttribute('__init__')(self, id, title)
+    def __init__(self, id):
+        NewsViewer.inheritedAttribute('__init__')(self, id, 'dummy')
         self._number_to_show = 25
         self._number_is_days = 0
         self._filters = []
-
-    def always_show_in_tocs(self):
-        """Return true, for this object should always show up in tocs (even though there is no
-            published content)
-        """
-        return 1
-
-    meta_type = 'Silva News NewsViewer'
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'object_title')
-    def object_title(self):
-        """Returns the title
-        """
-        return self.get_title_editable()
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'is_visible')
-    def is_visible(self):
-        """Returns 0, because the viewers should NOT be shown in the TOC's
-        """
-        return 0
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_to_show')
@@ -64,8 +43,9 @@ class NewsViewer(Content, Folder.Folder):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_is_days')
     def number_is_days(self):
-        """Returns the value of number_is_days (which controls whether the filter should show <n>
-        items or items of <n> days back)
+        """
+        Returns the value of number_is_days (which controls whether
+        the filter should show <n> items or items of <n> days back)
         """
         return self._number_is_days
 
@@ -100,9 +80,11 @@ class NewsViewer(Content, Folder.Folder):
         while 1:
             parent = obj.aq_parent
             parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues(['Silva News NewsFilter', 'Silva News AgendaFilter']):
-                joinedpath = '/'.join(parentpath)
-                pairs.append(('%s (%s)' % (item.get_title_html(), joinedpath), "%s/%s" % (joinedpath, item.id)))
+            for item in parent.objectValues(['Silva News Filter',
+                                             'Silva Agenda Filter']):
+                joinedpath = '/'.join(item.getPhysicalPath())
+                pairs.append(('%s (%s)' % (item.get_title(), joinedpath),
+                              joinedpath))
             if parent.meta_type == 'Silva Root':
                 break
             obj = parent
@@ -125,7 +107,8 @@ class NewsViewer(Content, Folder.Folder):
         results = []
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.get_last_items(self._number_to_show, self._number_is_days)
+            res = obj.get_last_items(self._number_to_show,
+                                     self._number_is_days)
             results += res
 
         results = self._remove_doubles(results)
@@ -206,6 +189,12 @@ class NewsViewer(Content, Folder.Folder):
                 self._filters.remove(newsfilter)
         self._p_changed = 1
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'is_published')
+    def is_published(self):
+        """Returns 1 so the object will be shown in TOCs and such"""
+        return 1
+
 InitializeClass(NewsViewer)
 
 manage_addNewsViewerForm = PageTemplateFile(
@@ -216,8 +205,9 @@ def manage_addNewsViewer(self, id, title, REQUEST=None):
     """Add a News NewsViewer."""
     if not self.is_id_valid(id):
         return
-    object = NewsViewer(id, title)
+    object = NewsViewer(id)
     self._setObject(id, object)
     object = getattr(self, id)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''

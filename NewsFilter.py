@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.22 $
+# $Revision: 1.23 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -15,28 +15,28 @@ from Products.Silva.ViewRegistry import ViewAttribute
 from Products.Silva.helpers import add_and_edit
 
 from Filter import Filter, MetaTypeException
-from INewsItem import INewsItemVersion
-from INewsFilter import INewsFilter
-from IAgendaItem import IAgendaItemVersion
+from interfaces import INewsItemVersion, INewsFilter, IAgendaItemVersion
+
+icon = 'www/news_filter.png'
 
 class NewsFilter(Filter):
     """To enable editors to channel newsitems on a site, all items
-        are passed from NewsSource to NewsViewer through filters. On a filter
-        you can choose which NewsSources you want to channel items for and
+        are passed from NewsFolder to NewsViewer through filters. On a filter
+        you can choose which NewsFolders you want to channel items for and
         filter the items on several criteria (as well as individually). Also
         NewsFilters can be set up to forward their items to other systems
         as an RSS stream (RSS version 0.91).
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News NewsFilter"
+    meta_type = "Silva News Filter"
 
     search = ViewAttribute('public', 'index_html')
 
     #__implements__ = INewsFilter
 
-    def __init__(self, id, title):
-        NewsFilter.inheritedAttribute('__init__')(self, id, title)
+    def __init__(self, id):
+        NewsFilter.inheritedAttribute('__init__')(self, id)
         self._show_agenda_items = 0
         self._rss_description = ''
         self._allow_rss_export = 0
@@ -49,9 +49,11 @@ class NewsFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
     def get_all_items(self, meta_types=None):
-        """Returns all items available to this filter. This function will probably only
-        be used in the back-end, but nevertheless has AccessContentsInformation-security
-        because it does not reveal any 'secret' information...
+        """
+        Returns all items available to this filter. This function will
+        probably only be used in the back-end, but nevertheless has
+        AccessContentsInformation-security because it does not reveal
+        any 'secret' information...
         """
         self.verify_sources()
         if not self._sources:
@@ -62,12 +64,15 @@ class NewsFilter(Filter):
         query = {}
         query['path'] = self._sources
         query['version_status'] = 'public'
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
-        query['sort_on'] = 'creation_datetime'
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'silva-extrapublicationtime'
         query['sort_order'] = 'descending'
-        results = getattr(self, self._catalog)(query)
+        results = self.service_catalog(query)
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -84,19 +89,22 @@ class NewsFilter(Filter):
         query = {}
         query['path'] = self._sources
         query['version_status'] = 'public'
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
         if number_is_days:
             # the number specified must be used to restrict the on number of days instead of the number of items
             now = DateTime()
             last_night = DateTime(now.strftime("%Y/%m/%d"))
-            query['publication_datetime'] = [last_night - number, now]
-            query['publication_datetime_usage'] = 'range:min:max'
-        query['sort_on'] = 'publication_datetime'
+            query['silva-extrapublicationtime'] = {'query': [last_night - number, now],
+                                                    'range': 'minmax'}
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'silva-extrapublicationtime'
         query['sort_order'] = 'descending'
 
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
         filtered_result = [r for r in result if not r.object_path in self._excluded_items]
         output = []
         if not number_is_days:
@@ -113,9 +121,12 @@ class NewsFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_next_items')
     def get_next_items(self, numdays, meta_types=None):
-        """Returns the next <number> AGENDAitems, called by AgendaViewer only and should return items
-        that conform to the AgendaItem-interface (IAgendaItemVersion), although it will in any way because it
-        requres start_datetime to be set. The NewsViewer uses only get_last_items.
+        """
+        Returns the next <number> AGENDAitems, called by AgendaViewer
+        only and should return items that conform to the
+        AgendaItem-interface (IAgendaItemVersion), although it will in
+        any way because it requres start_datetime to be set. The
+        NewsViewer uses only get_last_items.
         """
         self.verify_sources()
         if not self._sources:
@@ -131,12 +142,14 @@ class NewsFilter(Filter):
         query['start_datetime_usage'] = 'range:min:max'
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
         query['sort_order'] = 'descending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
 
@@ -160,16 +173,19 @@ class NewsFilter(Filter):
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
         query = {}
-        query['publication_datetime'] = (startdate, enddate)
-        query['publication_datetime_usage'] = 'range:min:max'
+        query['silva-extrapublicationtime'] = {'query': (startdate, enddate),
+                                                'range': 'minmax'}
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
-        query['sort_on'] = 'publication_datetime'
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'silva-extrapublicationtime'
         query['sort_order'] = 'descending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in
                 self._excluded_items]
@@ -177,9 +193,12 @@ class NewsFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_agenda_items_by_date')
     def get_agenda_items_by_date(self, month, year, meta_types=None):
-        """Returns non-excluded published AGENDA-items for a particular month. This method is for
-        exclusive use by AgendaViewers only, NewsViewers should use get_items_by_date instead (which filters
-        on publication_datetime instead of start_datetime and returns all objects instead of only IAgendaItem-
+        """
+        Returns non-excluded published AGENDA-items for a particular
+        month. This method is for exclusive use by AgendaViewers only,
+        NewsViewers should use get_items_by_date instead (which
+        filters on silva-extrapublicationtime instead of start_datetime and
+        returns all objects instead of only IAgendaItem-
         implementations)
         """
         self.verify_sources()
@@ -201,12 +220,14 @@ class NewsFilter(Filter):
         query['start_datetime_usage'] = 'range:min:max'
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
         query['sort_order'] = 'descending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
 
@@ -271,7 +292,9 @@ class NewsFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'rss_link')
     def rss_link(self):
-        """Returns the link to be used as the 'link' tag value for the RSS feed"""
+        """Returns the link to be used as the 'link' tag value for the
+        RSS feed"""
+
         return self._rss_link
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -323,11 +346,11 @@ class NewsFilter(Filter):
         """Returns the top 15 records as an RSS feed (RSS version 0.91)"""
         if not self.allow_rss_export():
             raise Exception, 'RSS export not allowed!'
-        feed = '<?xml version="1.0" encoding="ISO_8859-1" ?>\n'\
+        feed = '<?xml version="1.0" encoding="UTF-8" ?>\n'\
                 '<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/ formats/rss-0.91.dtd">\n'\
-                '<rss version="0.91" encoding="ISO_8859-1">\n'\
+                '<rss version="0.91" encoding="UTF-8">\n'\
                 '<channel>\n'\
-                '<title>' + self._xml_preformat(self._title.encode('utf-8')) + '</title>\n'\
+                '<title>' + self._xml_preformat(self.get_title()) + '</title>\n'\
                 '<description>' + self._xml_preformat(self.rss_description()) + '</description>\n'\
                 '<link>' + (self._xml_preformat(self.rss_link()) or self._xml_preformat(self.get_publication().absolute_url())) + '</link>\n'\
                 '<language>en-us</language>\n'
@@ -340,19 +363,20 @@ class NewsFilter(Filter):
         if self.rss_image():
             imageobj = self.restrictedTraverse(self.rss_image())
             feed += '<image>\n'\
-                    '<title>' + self._xml_preformat(imageobj.get_title_html()) + '</title>\n'\
+                    '<title>' + self._xml_preformat(imageobj.get_title()) + '</title>\n'\
                     '<url>' + self._xml_preformat(imageobj.absolute_url()) + '/image</url>\n'\
                     '<link>' + self._xml_preformat(self.rss_image()) + '</link>\n'\
                     '</image>\n\n'
 
         last = self.get_last_items(15, 0)
         for item in last:
+            item = item.getObject()
             # add the start date to the title if the item is an agendaitem
-            title = item.get_title_html
-            if IAgendaItemVersion.isImplementedBy(item.getObject()):
-                title += ' (will take place %s)' % item.start_datetime.toZone('GMT').rfc822()
+            title = item.get_title()
+            if IAgendaItemVersion.isImplementedBy(item):
+                title += ' (will take place %s)' % item.start_datetime().toZone('GMT').rfc822()
             # chop the last bit off lead if it's too large
-            lead = item.lead
+            lead = item.lead()
             if len(lead) > 256:
                 lead = lead[:256]
                 if lead.find(' ') > -1:
@@ -360,7 +384,7 @@ class NewsFilter(Filter):
                 lead += '...'
             feed += '<item>\n'\
                     '<title>' + self._xml_preformat(title) + '</title>\n'\
-                    '<link>' + self._xml_preformat(item.getURL()) + '</link>\n'\
+                    '<link>' + self._xml_preformat(item.absolute_url()) + '</link>\n'\
                     '<description>' + self._xml_preformat(lead) + '</description>\n'\
                     '</item>\n\n'
 
@@ -368,8 +392,8 @@ class NewsFilter(Filter):
             feed += '<textinput>\n'\
                     '<title>Search</title>\n'\
                     '<name>query</name>\n'\
-                    '<description>' + self.rss_search_description() + '</description>\n'\
-                    '<link>' + self.aq_inner.absolute_url() + '/search</link>\n'\
+                    '<description>' + self._xml_preformat(self.rss_search_description()) + '</description>\n'\
+                    '<link>' + self._xml_preformat(self.aq_inner.absolute_url()) + '/search</link>\n'\
                     '</textinput>\n\n'
 
         feed += '</channel>\n'\
@@ -377,7 +401,8 @@ class NewsFilter(Filter):
 
         return feed
 
-    def _xml_preformat(self, text, codepage='cp1252'):
+    def _xml_preformat(self, text):
+        text = text.encode('UTF-8')
         text = text.replace('&', '&amp;')
         text = text.replace('"', '&quot;')
         text = text.replace('<', '&lt;')
@@ -394,8 +419,9 @@ def manage_addNewsFilter(self, id, title, REQUEST=None):
     """Add an NewsFilter."""
     if not self.is_id_valid(id):
         return
-    object = NewsFilter(id, title)
+    object = NewsFilter(id)
     self._setObject(id, object)
     object = getattr(self, id)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''

@@ -9,7 +9,7 @@
                   global silva_root view/silva_root" />
 
 <div class="margins">
-<h2>Manage <span class="folder-title" tal:content="structure string:&raquo;${model/get_title_html}&laquo;">title here</span></h2>
+<h2>Manage <span class="folder-title" tal:content="structure string:&raquo;${model/get_title}&laquo;">title here</span></h2>
 </div>
 
 <table width="100%" border="0">
@@ -60,7 +60,7 @@
   tal:attributes="value ref; checked python:test(obj.in_source(view.absolute_url()), 'checked', '')" />
 <a href="edit" title="Edit this item"
   tal:attributes="href string:${item/absolute_url}/edit/tab_edit">
-<img tal:replace="structure python:view.render_icon(item.meta_type)" />
+<img tal:replace="structure python:view.render_icon(item)" />
 </a>
 </td>
 
@@ -75,22 +75,22 @@
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top">
-<tal:block condition="python:item.get_title_html() != ''">
+<tal:block condition="python:item.get_title() != ''">
 <img style="height:100%" width="12" height="18" align="left"
   tal:attributes="width python:indent * 32 + 32;
  src string:${silva_root}/globals/pixel.gif" />
 <a class="blacklink" title="Preview this item"
   tal:attributes="href string:${item/absolute_url}/edit/tab_preview"
   tal:condition="python:not item.get_container().meta_type == 'Silva Publication' or not item.id == 'index'">
-<span tal:replace="structure string:${item/get_title_html}">title</span>
+<span tal:replace="structure string:${item/get_title}">title</span>
 </a>
 <a class="blacklink" title="Preview this item"
   tal:attributes="href string:${item/absolute_url}/edit/tab_preview"
   tal:condition="python:item.get_container().meta_type == 'Silva Publication' and item.id == 'index'">
-<b tal:content="structure string:${item/get_title_html}">title</b>
+<b tal:content="structure string:${item/get_title}">title</b>
 </a>
 </tal:block>
-<tal:block condition="python:item.get_title_html() == ''">
+<tal:block condition="python:item.get_title() == ''">
 &nbsp;
 </tal:block>
 </td>

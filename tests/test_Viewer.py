@@ -1,15 +1,18 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 import unittest
 import Zope
+Zope.startup()
+
 from DateTime import DateTime
 from Products.ZCatalog.ZCatalog import ZCatalog
 from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
 from Products.Silva.tests.test_SilvaObject import hack_create_user
+from Products.SilvaNews.install import install
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -40,24 +43,26 @@ class NewsViewerBaseTestCase(unittest.TestCase):
         get_transaction().begin()
         self.connection = Zope.DB.open()
         self.root = makerequest.makerequest(self.connection.root()['Application'])
+        self.root.REQUEST['URL1'] = ''
         self.REQUEST = self.root.REQUEST
         self.REQUEST.set = lambda a, b: None
-        self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
-        hack_create_user(self.sroot)
-        self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
+        hack_create_user(self.root)
+
+        self.root.manage_addProduct['Silva'].manage_addRoot(
+            'root', 'Root')
+        self.sroot = self.root.root
+
+        install(self.sroot)
+        
+        service_news = self.service_news = self.sroot.service_news
         service_news.add_subject('test')
         service_news.add_subject('test2')
         service_news.add_target_audience('test')
         service_news.add_target_audience('test2')
 
-        self.service_catalog = self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
-        columns = ['is_private', 'object_path', 'publication_datetime']
-        indexes = [('meta_type', 'FieldIndex'), ('is_private', 'FieldIndex'), ('parent_path', 'FieldIndex'),
-                    ('version_status', 'FieldIndex'), ('subjects', 'KeywordIndex'), ('target_audiences', 'KeywordIndex'),
-                    ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex')]
-        setup_catalog(self.root, columns, indexes)
-
-        self.source1 = add_helper_news(self.sroot, 'NewsSource', 'source1', 'Source 1')
+        self.service_catalog = self.sroot.service_catalog
+        
+        self.source1 = add_helper_news(self.sroot, 'NewsPublication', 'source1', 'Folder 1')
 
         self.item1_1 = add_helper_news(self.source1, 'PlainArticle', 'art1', 'Article 1')
         self.item1_1.set_next_version_publication_datetime(DateTime())
@@ -73,11 +78,11 @@ class NewsViewerBaseTestCase(unittest.TestCase):
         self.item1_2.approve_version()
         self.item1_2._update_publication_status()
 
-        self.source2 = add_helper_news(self.sroot, 'NewsSource', 'source2', 'Source 2')
+        self.source2 = add_helper_news(self.sroot, 'NewsPublication', 'source2', 'Folder 2')
         self.source2.set_private(1)
 
         self.folder = add_helper(self.sroot, 'Folder', 'somefolder', 'Some Folder')
-        self.source3 = add_helper_news(self.folder, 'NewsSource', 'source3', 'Source 3')
+        self.source3 = add_helper_news(self.folder, 'NewsPublication', 'source3', 'Folder 3')
         self.source3.set_private(1)
 
         self.item1_3 = add_helper_news(self.source3, 'PlainArticle', 'art3', 'Article 3')
@@ -109,7 +114,7 @@ class NewsViewerTestCase(NewsViewerBaseTestCase):
         self.assert_(self.newsviewer.findfilters() == ['/root/newsfilter'])
 
     def test_findfilters_pairs(self):
-        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter (/root)', '/root/newsfilter')])
+        self.assert_(self.newsviewer.findfilters_pairs() == [('NewsFilter (/root/newsfilter)', '/root/newsfilter')])
 
     def test_verify_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])

@@ -47,6 +47,7 @@
           <title>Titel</title>
           <description></description>
           <extra></extra>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
         </tales>
@@ -63,9 +64,11 @@
           <orientation>vertical</orientation>
           <css_class></css_class>
           <external_validator></external_validator>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
           <items>python:form.service_news.subject_form_tree()</items>
+          <description>python: test(form.service_news.subjects(), 'Choose subjects', '&lt;span style="color: red"&gt;No subjects defined yet! Ask the manager to add subjects to the news service!&lt;/span&gt;')</description>
         </tales>
       </field>
       <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
@@ -80,9 +83,11 @@
           <orientation>vertical</orientation>
           <css_class></css_class>
           <external_validator></external_validator>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
           <items>python:form.service_news.target_audience_form_tree()</items>
+          <description>python: test(form.service_news.target_audiences(), 'Choose target audiences', '&lt;span style="color: red"&gt;No target audiences defined yet! Ask the manager to add target audiences to the news service!&lt;/span&gt;')</description>
         </tales>
       </field>
       </fields>

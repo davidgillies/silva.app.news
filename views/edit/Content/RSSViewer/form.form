@@ -12,26 +12,6 @@
       <title>Default</title>
       <fields>
 
-      <field><id>object_title</id> <type>TextAreaField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Title</title>
-          <description></description>
-          <extra></extra>
-        </values>
-        <tales>
-        </tales>
-      </field>
       <field><id>rss_feed</id> <type>StringField</type>
         <values>
           <alternate_name></alternate_name>
@@ -45,10 +25,11 @@
           <default></default>
           <title>RSS-feed</title>
           <truncate type="int">0</truncate>
-          <description>Enter the URL of an RSS feed to use as the source of newsitems. Currently only RSS versions 0.91 and 1.0 are supported (although other versions may work).</description>
+          <description>Enter the URL of an RSS feed to use as the source of newsitems.</description>
           <extra></extra>
         </values>
         <tales>
+          <default>python: form.REQUEST.model.rss_feed()</default>
         </tales>
       </field>
       </fields>

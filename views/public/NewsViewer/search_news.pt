@@ -16,14 +16,11 @@
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
-<table width="100%" cellspacing="0" cellpadding="3" border="2"
-  tal:attributes="cellspacing container/table_cellspacing;
-                  cellpadding container/table_cellpadding;
-                  border container/table_border">
+<table class="listing">
 
-<tr class="topcontrols" valign="bottom">
-<td align="right" colspan="2">
-<form tal:attributes="action string:." method="post">
+<tr class="controls" valign="bottom">
+<td class="align: right" colspan="2">
+<form tal:attributes="action model/absolute_url" method="post">
 <input type="text" name="query" />&nbsp;
 <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" />
 </form>
@@ -33,32 +30,35 @@
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
   tal:repeat="obj results">
+<tal:block define="object obj/getObject">
 
-<tr class="focus">
+<tr class="odd">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
-<h2 tal:content="structure obj/get_title_html">title</h2>
-<h3 tal:content="structure obj/subheader">subheader</h3>
+<h2 tal:content="structure python:object.object().get_title()">title</h2>
+<h3 tal:content="structure object/subheader">subheader</h3>
 </td>
 </tr>
 
-<tr class="focus-cycle">
+<tr class="even">
 <td align="left" valign="top">
-<b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
+<b tal:content="structure object/lead">Lead</b><br /><br />
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(object.start_datetime())" tal:condition="object/start_datetime | nothing">DateTime</span>
 <a href="#" tal:attributes="href obj/getURL">view article</a>
 </td>
 </tr>
 
+<tr class="divider">
+<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+
+</tal:block>
 </toc_entry>
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
 <check tal:condition="python:len(results) == 0">
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-<tr class="focus-light">
+<tr class="odd">
 <td colspan="2">
 There are no articles corresponding to your query.
 </td>

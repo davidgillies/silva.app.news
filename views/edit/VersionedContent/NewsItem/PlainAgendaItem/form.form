@@ -28,12 +28,14 @@
           <title>Title</title>
           <description></description>
           <extra></extra>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
         </tales>
       </field>
       <field><id>start_datetime</id> <type>DateTimeField</type>
         <values>
+          <allow_empty_time type="int">1</allow_empty_time>
           <date_only type="int">0</date_only>
           <alternate_name></alternate_name>
           <input_style>text</input_style>
@@ -45,7 +47,7 @@
           <required type="int">1</required>
           <default_now type="int">0</default_now>
           <css_class></css_class>
-          <title>Startdate/time</title>
+          <title>Date and time</title>
           <description>Format: DD/MM/YYYY</description>
         </values>
         <tales>
@@ -67,6 +69,7 @@
           <default></default>
           <title>Location</title>
           <description></description>
+          <unicode type="int">1</unicode>
           <extra></extra>
         </values>
         <tales>

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.13 $
+# $Revision: 1.14 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -8,11 +8,10 @@ from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
-from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from Products.SilvaNews.INewsItem import INewsItem, INewsItemVersion
+from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.Silva.IVersionedContent import IVersionedContent
 
 # Silva
@@ -20,6 +19,8 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+
+icon = 'www/news_item.png'
 
 class PlainArticle(NewsItem):
     """A News item that appears as an individual page. By adjusting
@@ -31,7 +32,7 @@ class PlainArticle(NewsItem):
 
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News Article"
+    meta_type = "Silva Article"
 
     __implements__ = INewsItem, IVersionedContent
 
@@ -42,7 +43,7 @@ class PlainArticleVersion(NewsItemVersion):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News PlainArticle Version"
+    meta_type = "Silva Article Version"
 
     __implements__ = INewsItemVersion
 
@@ -62,12 +63,13 @@ def manage_addPlainArticle(self, id, title, REQUEST=None):
     """Add a News PlainArticle."""
     if not self.is_id_valid(id):
         return
-    object = PlainArticle(id, title)
+    object = PlainArticle(id)
     self._setObject(id, object)
     object = getattr(self, id)
     # add first version
     object._setObject('0', PlainArticleVersion('0'))
     object.create_version('0', None, None)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''
 

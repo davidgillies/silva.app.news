@@ -30,7 +30,7 @@ del result['object_id']
 
 # try to cope with absence of title in form (happens for ghost)
 if result.has_key('object_title'):
-    title = model.input_convert(result['object_title'])
+    title = result['object_title']
     del result['object_title']
 else:
     title = ""

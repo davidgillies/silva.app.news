@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -8,12 +8,11 @@ from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
-from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
-from IAgendaItem import IAgendaItem, IAgendaItemVersion
-from INewsItem import INewsItem, INewsItemVersion
+from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
+from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 
 # Silva
 from Products.Silva import SilvaPermissions
@@ -25,7 +24,7 @@ from Products.Silva.helpers import add_and_edit
 from NewsItem import NewsItem, NewsItemVersion
 
 class AgendaItem(NewsItem):
-    """Silva AgendaItem, superclass for some agendaitems
+    """Base class for agenda items.
     """
     security = ClassSecurityInfo()
 
@@ -36,15 +35,15 @@ class AgendaItem(NewsItem):
 InitializeClass(AgendaItem)
 
 class AgendaItemVersion(NewsItemVersion):
-    """Silva Agenda version.
+    """Base class for agenda item versions.
     """
+    
     security = ClassSecurityInfo()
 
     __implements__ = IAgendaItemVersion
 
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)
-        self.id = id
         self._start_datetime = None
         self._location_manual = ''
 
@@ -84,14 +83,14 @@ class AgendaItemVersion(NewsItemVersion):
         parenttext = AgendaItemVersion.inheritedAttribute('fulltext')(self)
         return "%s %s" % (parenttext, self._location_manual)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_xml')
-    def to_xml(self, context):
+    def content_xml(self, context):
         """Returns the content as a partial XML-doc
         """
-        AgendaItemVersion.inheritedAttribute('to_xml')(self, context)
-        xml = u'<start_datetime>%s</start_datetime>\n' % self._prepare_xml(self._start_datetime.rfc822())
-        xml += u'<location>%s</location>\n' % self._prepare_xml(self._location_manual)
+        AgendaItemVersion.inheritedAttribute('content_xml')(self, context)
+        xml = u'<start_datetime>%s</start_datetime>' % self._prepare_xml(
+            self._start_datetime.rfc822())
+        xml += u'<location>%s</location>' % self._prepare_xml(
+            self._location_manual)
 
         context.f.write(xml)
 

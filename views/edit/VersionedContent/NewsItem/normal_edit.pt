@@ -1,0 +1,156 @@
+<init tal:define="global silva_root here/silva_root;
+  global model request/model; 
+  global view here;
+  global fields python:view.form.get_fields();
+  global split_render_after string:code;
+  global lastclass string:even;
+  global editable python:model.get_editable()" />
+ 
+<br />
+<table width="100%" cellspacing="0" cellpadding="1" border="0">
+<tr valign="top">
+<td width="16"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="16" height="16" border="0" alt="not editable" /></td>
+<td colspan="3" width="98%">
+<div class="front3">&nbsp;<tal:block replace="model/meta_type" />&nbsp;<tal:block replace="model/get_title_editable" /></div>
+</td>
+<td width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</table>
+
+<form method="POST" name="form" action="submit">
+<table class="listing">
+<tr>
+<th class="transparent" width="16">&nbsp;</th>
+<th align="left">
+Element
+</th>
+<th align="right">
+&nbsp;
+</th>
+<th align="left">
+Content
+</th>
+<th align="left" width="20%">
+Note
+</th>
+<th class="transparent" width="60">&nbsp;</th>
+</tr>
+
+<fieldset tal:omit-tag=""
+  tal:repeat="field fields">
+<rowset tal:omit-tag=""
+  tal:define="global oddrow repeat/field/odd">
+
+<definition tal:define="global class  python:test(lastclass=='odd', 'even', 'odd'); global lastclass class" tal:omit-tag="" />
+<tr class="odd" valign="top"
+  tal:attributes="class class">
+<td class="transparent" width="16">&nbsp;</td>
+<td align="right">
+<span tal:replace="python:field['title']">Title</span>
+</td>
+<td align="right">
+<span class="warning"
+  tal:condition="python:field.is_required()">
+*
+</span>
+<span tal:omit-tag=""
+  tal:condition="not:python:field.is_required()">
+&nbsp;
+</span>
+</td>
+<td align="left">
+<input tal:replace="structure python:view.render_field_helper(field)" />
+</td>
+<td>
+<span tal:replace="python:field.get_value('description')">
+comments here (field description)
+</span>&nbsp;
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</rowset>
+
+<content-editor tal:omit-tag=""
+  tal:condition="python:field.id == 'object_title'">
+<tr comment="AgendaItem Content" class="odd" valign="top"
+  tal:attributes="class class" tal:define="class python:test(lastclass=='odd', 'even', 'odd'); global lastclass class">
+  <td width="16" class="transparent" ><a href="content_mode"><img tal:attributes="src string:${silva_root}/globals/edit_element.gif" width="16" height="16" border="0" alt="edit element" /></a></td>
+  <td class="rowhead" align="right"><a href="content_mode">Content</a></td>
+  <td align="right">&nbsp;</td>
+  <td><p tal:replace="structure view/get_content" /><p tal:condition="not: view/get_content" tal:replace="structure string:(nothing filled in)" /></td>
+  <td>&nbsp;</td>
+  <td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</content-editor>
+</fieldset>
+
+<tr class="odd" valign="top" tal:attributes="class python:test(lastclass=='odd', 'even', 'odd')">
+<td class="transparent" width="16">&nbsp;</td>
+<td align="right">
+Subjects:
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="left">
+<tal:block repeat="subject editable/subjects">
+<span tal:replace="subject"></span><br />
+</tal:block>
+</td>
+<td>
+&nbsp;
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+
+<tr class="odd" valign="top" tal:attributes="class lastclass">
+<td class="transparent" width="16">&nbsp;</td>
+<td align="right">
+Target audiences:
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="left">
+<tal:block repeat="ta editable/target_audiences">
+<span tal:replace="ta"></span><br />
+</tal:block>
+</td>
+<td>
+&nbsp;
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+
+<tr class="odd" valign="top" tal:attributes="class python:test(lastclass=='odd', 'even', 'odd')">
+<td class="transparent" width="16">&nbsp;</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="right">
+&nbsp;
+</td>
+<td align="left">
+<a href="sta_mode">Edit subjects and target audiences</a>
+</td>
+<td>
+&nbsp;
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+
+<tr class="controls">
+<td class="transparent" width="16">&nbsp;</td>
+<td colspan="4" class="align-right">
+<input class="button" type="submit"
+       name="form_submitted" value="Save item"
+       title="Access key: alt-s" accesskey="s"
+       />
+</td>
+<td class="transparent" width="60" align="right" valign="top">&nbsp;</td>
+</tr>
+</table>
+
+</form>
+
+<p class="halfline">&nbsp;</p>

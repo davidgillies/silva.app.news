@@ -24,6 +24,7 @@
           <description></description>
           <items>[]</items>
           <external_validator></external_validator>
+          <unicode>1</unicode>
         </values>
         <tales>
           <items>python:form.service_news.subject_form_tree()</items>
@@ -41,6 +42,7 @@
           <description></description>
           <items>[]</items>
           <external_validator></external_validator>
+          <unicode>1</unicode>
         </values>
         <tales>
           <items>python:form.service_news.target_audience_form_tree()</items>

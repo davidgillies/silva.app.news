@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -14,20 +14,22 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
 from Filter import Filter, MetaTypeException
-from IAgendaItem import IAgendaItemVersion
+from interfaces import IAgendaItemVersion
+
+icon = 'www/agenda_filter.png'
 
 class AgendaFilter(Filter):
     """To enable editors to channel newsitems on a site, all items
-       are passed from NewsSource to NewsViewer through filters. On a filter
-       you can choose which NewsSources you want to channel items for and
+       are passed from NewsFolder to NewsViewer through filters. On a filter
+       you can choose which NewsFolders you want to channel items for and
        filter the items on several criteria (as well as individually). 
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News AgendaFilter"
+    meta_type = "Silva Agenda Filter"
 
-    def __init__(self, id, title):
-        AgendaFilter.inheritedAttribute('__init__')(self, id, title)
+    def __init__(self, id):
+        AgendaFilter.inheritedAttribute('__init__')(self, id)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_next_items')
@@ -43,17 +45,18 @@ class AgendaFilter(Filter):
         date = DateTime()
         lastnight = DateTime(date.year(), date.month(), date.day(), 0, 0, 0)
         enddate = lastnight + numdays
-        query = {}
-        query['start_datetime'] = (lastnight, enddate)
-        query['start_datetime_usage'] = 'range:min:max'
-        query['version_status'] = 'public'
-        query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
-        query['meta_type'] = meta_types
-        query['sort_on'] = 'start_datetime'
-        query['sort_order'] = 'ascending'
-        result = getattr(self, self._catalog)(query)
+        result = self._query(
+            start_datetime = (lastnight, enddate),
+            start_datetime_usage = 'range:min:max',
+            version_status = 'public',
+            path = self._sources,
+            subjects = {'query': self._subjects,
+                        'operator': 'or'},
+            target_audiences = {'query': self._target_audiences,
+                                'operator': 'or'},
+            meta_type = meta_types,
+            sort_on = 'start_datetime',
+            sort_order = 'ascending')
 
         return [r for r in result if not r.object_path in self._excluded_items]
 
@@ -68,24 +71,27 @@ class AgendaFilter(Filter):
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         self.verify_excluded_items()
-        query = {}
-        query['path'] = self._sources
-        query['version_status'] = 'public'
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
-        query['meta_type'] = meta_types
-        query['sort_on'] = 'publication_datetime'
-        query['sort_order'] = 'ascending'
 
-        result = getattr(self, self._catalog)(query)
-        filtered_result = [r for r in result if not r.object_path in self._excluded_items]
+        result = self._query(
+            path=self._sources,
+            version_status='public',
+            subjects={'query': self._subjects,
+                        'operator': 'or'},
+            target_audiences={'query': self._target_audiences,
+                                'operator': 'or'},
+            meta_type=meta_types,
+            sort_on='silva-extrapublicationtime',
+            sort_order='ascending',
+            )
+        
+        filtered_result = [r for r in result
+                           if not r.object_path in self._excluded_items]
         output = []
         for i in range(len(filtered_result)):
             if i < number:
                 output.append(filtered_result[i])
             else:
                 break
-
         return output
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -107,23 +113,28 @@ class AgendaFilter(Filter):
             endmonth = 1
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
+    
         query = {}
         query['start_datetime'] = [startdate, enddate]
         query['start_datetime_usage'] = 'range:min:max'
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
         query['sort_order'] = 'ascending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
         return [r for r in result if not r.object_path in self._excluded_items]
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
     def get_items_by_date(self, month, year, meta_types=None):
-        """Returns non-excluded published items for a particular publication month
+        """
+        Returns non-excluded published items for a particular
+        publication month
         """
         self.verify_sources()
         if not self._sources:
@@ -140,16 +151,18 @@ class AgendaFilter(Filter):
             year = year + 1
         enddate = DateTime(year, endmonth, 1)
         query = {}
-        query['publication_datetime'] = [startdate, enddate]
-        query['publication_datetime_usage'] = 'range:min:max'
+        query['silva-extrapublicationtime'] = {'query': [startdate, enddate],
+                                                'range': 'minmax'}
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
         query['meta_type'] = meta_types
-        query['sort_on'] = 'publication_datetime'
+        query['sort_on'] = 'silva-extrapublicationtime'
         query['sort_order'] = 'ascending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
 
         return [r for r in result if not r.object_path in self._excluded_items]
 
@@ -177,12 +190,12 @@ class AgendaFilter(Filter):
         query['start_datetime_usage'] = 'range:min:max'
         query['version_status'] = 'public'
         query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
+        query['subjects'] = self._subjects
+        query['target_audiences'] = self._target_audiences
         query['meta_type'] = meta_types
         query['sort_on'] = 'start_datetime'
         query['sort_order'] = 'ascending'
-        result = getattr(self, self._catalog)(query)
+        result = self.service_catalog(query)
 
         return result
 
@@ -198,7 +211,8 @@ class AgendaFilter(Filter):
         allowed = []
         mts = self.get_root().filtered_meta_types()
         for mt in mts:
-            if mt.has_key('instance') and IAgendaItemVersion.isImplementedByInstancesOf(mt['instance']):
+            if (mt.has_key('instance') and
+                IAgendaItemVersion.isImplementedByInstancesOf(mt['instance'])):
                 allowed.append(mt['name'])
         return allowed
 
@@ -211,8 +225,9 @@ def manage_addAgendaFilter(self, id, title, REQUEST=None):
     """Add an AgendaFilter."""
     if not self.is_id_valid(id):
         return
-    object = AgendaFilter(id, title)
+    object = AgendaFilter(id)
     self._setObject(id, object)
     object = getattr(self, id)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''

@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 # Zope
 from OFS import SimpleItem
@@ -8,59 +8,51 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
-from Products.ZCatalog.CatalogPathAwareness import CatalogPathAware
 import OFS
 
 # Silva interfaces
-from INewsItem import INewsItem
+from interfaces import INewsItem
+from Products.Silva.IAsset import IAsset
 
 # Silva
 from Products.Silva.Asset import Asset
-from Products.Silva.IAsset import IAsset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
 class MetaTypeException(Exception):
     pass
 
-class Filter(Asset, CatalogPathAware):
-    """Filter object, a small object that shows a couple
-    of different screens to different users, a filter for all NewsItem-objects
-    to the editor and a filter (containing some different info) for all
+class Filter(Asset):
+    """
+    Filter object, a small object that shows a couple of different
+    screens to different users, a filter for all NewsItem-objects to
+    the editor and a filter (containing some different info) for all
     published NewsItem-objects for the end-users.
     """
     security = ClassSecurityInfo()
+    
     __implements__ = IAsset
-    default_catalog = 'service_catalog'
 
-    _sources = []
+    _allowed_source_types = ['Silva News Publication']
 
-    _allowed_source_types = ['Silva News NewsSource']
-
-    def __init__(self, id, title):
-        Filter.inheritedAttribute('__init__')(self, id, title)
-        self._keep_to_path = 1
-        self._subjects = {}
-        self._target_audiences = {}
-        self._catalog = 'service_catalog'
+    def __init__(self, id):
+        Filter.inheritedAttribute('__init__')(self, id, 'dummy')
+        self._keep_to_path = 0
+        self._subjects = []
+        self._target_audiences = []
         self._excluded_items = []
-
-    def manage_afterAdd(self, item, container):
-        Filter.inheritedAttribute('manage_afterAdd')(self, item, container)
-        self.index_object()
-
-    def manage_beforeDelete(self, item, container):
-        Filter.inheritedAttribute('manage_beforeDelete')(self, item, container)
-        self.unindex_object()
+        self._sources = []
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'find_sources')
     def find_sources(self):
         """Returns all the sources available for querying
         """
-        query = {'meta_type': self._allowed_source_types, 'sort_on': 'id', 'is_private': 0}
-        results = self.service_catalog(query)
-        query['is_private'] = 1
+        results = self._query(
+            meta_type=self._allowed_source_types,
+            sort_on='id',
+            is_private=0)
+
         pp = []
         cpp = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
         while 1:
@@ -68,9 +60,22 @@ class Filter(Asset, CatalogPathAware):
                 break
             pp.append(cpp)
             cpp = cpp[:cpp.rfind('/')]
-        query['parent_path'] = pp
-        results += self.service_catalog(query)
-        return results
+
+        results += self._query(
+            meta_type=self._allowed_source_types,
+            sort_on='id',
+            is_private=1,
+            parent_path=pp)
+
+        # remove doubles
+        res = []
+        urls = []
+        for r in results:
+            if not r.getURL() in urls:
+                res.append(r)
+                urls.append(r.getURL())
+
+        return res
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'sources')
@@ -78,8 +83,6 @@ class Filter(Asset, CatalogPathAware):
         """Returns the list of sources
         """
         self.verify_sources()
-        if not self._sources:
-            self._sources = []
         return self._sources
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -87,8 +90,6 @@ class Filter(Asset, CatalogPathAware):
     def add_source(self, sourcepath, add_or_remove):
         """Add a source
         """
-        if not self._sources:
-            self._sources = []
         if add_or_remove:
             if not sourcepath in self._sources:
                 self._sources.append(sourcepath)
@@ -120,6 +121,7 @@ class Filter(Asset, CatalogPathAware):
         else:
             if objectpath in self._excluded_items:
                 self._excluded_items.remove(objectpath)
+        self._p_changed = 1
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'excluded_items')
@@ -131,13 +133,9 @@ class Filter(Asset, CatalogPathAware):
 
     def verify_excluded_items(self):
         for item in self._excluded_items:
-            query = {'object_path': item}
-            result = self.aq_inner.service_catalog(query)
-            if not result:
+            result = self._query(object_path=[item])
+            if not str(item) in [str(i.object_path) for i in result]:
                 self._excluded_items.remove(item)
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_title')
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'keep_to_path')
@@ -151,49 +149,37 @@ class Filter(Asset, CatalogPathAware):
     def subjects(self):
         """Returns a list of subjects
         """
-        return self._subjects.keys()
+        return self._subjects
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_subjects')
+    def set_subjects(self, subjects):
+        """Sets the subjects"""
+        self._subjects = subjects
+        self.synchronize_with_service()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'target_audiences')
     def target_audiences(self):
         """Returns a list of target audiences
         """
-        return self._target_audiences.keys()
+        return self._target_audiences
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_target_audiences')
+    def set_target_audiences(self, ta):
+        self._target_audiences = ta
+        self.synchronize_with_service()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_keep_to_path')
     def set_keep_to_path(self, value):
-        """Sets the keep_to_path property to restrict the searcharea of the browser
-        THIS METHOD IS NOT IN USE RIGHT NOW... delete?
+        """
+        Sets the keep_to_path property to restrict the searcharea of
+        the browser THIS METHOD IS NOT IN USE RIGHT NOW... delete?
         """
         # make sure the var will contain either 0 or 1
         self._keep_to_path = not not value
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_subject')
-    def set_subject(self, subject, on_or_off):
-        """Updates the list of subjects
-        """
-        if on_or_off:
-            self._subjects[subject] = 1
-        else:
-            if self._subjects.has_key(subject):
-                del self._subjects[subject]
-        self._p_changed = 1
-        self.reindex_object()
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_target_audience')
-    def set_target_audience(self, target_audience, on_or_off):
-        """Updates the list of target_audiences
-        """
-        if on_or_off:
-            self._target_audiences[target_audience] = 1
-        else:
-            if self._target_audiences.has_key(target_audience):
-                del self._target_audiences[target_audience]
-        self._p_changed = 1
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -203,21 +189,31 @@ class Filter(Asset, CatalogPathAware):
         only contain items that the service_news-lists contain (to remove
         items from the object's list that are removed in the service)
         """
+        # XXX This isn't called yet from anywhere since the methods it was
+        # called from are replaced by metadata functionality
         service_subjects = self.service_news.subjects()
         service_target_audiences = self.service_news.target_audiences()
 
         removed_subjects = []
         removed_target_audiences = []
 
-        for key in self._subjects.keys():
-            if key not in service_subjects:
-                removed_subjects.append(key)
-                del self._subjects[key]
+        subjects = self._subjects[:]
+        target_audiences = self._target_audiences[:]
 
-        for key in self._target_audiences.keys():
-            if key not in service_target_audiences:
-                removed_target_audiences.append(key)
-                del self._target_audiences[key]
+        new_subs = []
+        for i in range(len(subjects)):
+            s = subjects[i]
+            if  s in service_subjects:
+                new_subs.append(s)
+        
+        new_tas = []
+        for i in range(len(target_audiences)):
+            ta = target_audiences[i]
+            if ta in service_target_audiences:
+                new_tas.append(ta)
+
+        self._subjects = new_subs
+        self._target_audiences = new_tas
 
         self.reindex_object()
         return removed_subjects + removed_target_audiences
@@ -227,9 +223,8 @@ class Filter(Asset, CatalogPathAware):
     def search_items(self, keywords, meta_types=None):
         """Returns the items from the catalog that have keywords in fulltext.
         """
+        keywords = unicode(keywords, 'UTF-8')
         self.verify_sources()
-        if not self._sources:
-            return []
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         self.verify_excluded_items()
@@ -237,23 +232,24 @@ class Filter(Asset, CatalogPathAware):
         # replace +'es with spaces so the effect is the same...
         keywords = keywords.replace('+', ' ')
 
-        query = {}
-        query['fulltext'] = keywords.split(' ')
-        query['version_status'] = 'public'
-        query['path'] = self._sources
-        query['subjects'] = self._subjects.keys()
-        query['target_audiences'] = self._target_audiences.keys()
-        query['meta_type'] = meta_types
-        query['sort_on'] = 'publication_datetime'
-        query['sort_order'] = 'descending'
-
-        result = getattr(self, self._catalog)(query)
+        result = self._query(
+            fulltext = keywords.split(' '),
+            version_status = 'public',
+            path = self._sources,
+            subjects = self._subjects,
+            target_audiences = self._target_audiences,
+            meta_type = meta_types,
+            sort_on = 'silva-extrapublicationtime',
+            sort_order = 'descending')
 
         result =  [r for r in result if not r.object_path in
-                self._excluded_items]
+                   self._excluded_items]
 
         return result
 
+    def _query(self, **kw):
+        return self.service_catalog(kw)
+    
     def _check_meta_types(self, meta_types):
         for type in meta_types:
             if type not in self._allowed_news_meta_types():

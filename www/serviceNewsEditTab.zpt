@@ -1,9 +1,21 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.6 $
+Version of this file: $Revision: 1.7 $
 -->
-<span tal:replace="structure here/manage_page_header">Header</span>
+
+<tal:block define="dummy python: here.REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;; charset=UTF-8')" />
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+<title>ServiceNews</title>
+<link rel="stylesheet" type="text/css" href="/manage_page_style.css">
+
+</head>
+
+<body bgcolor="#ffffff" link="#000099" alink="#000099" vlink="#000099">
+
 
 <span tal:define="manage_tabs_message options/manage_tabs_message | nothing"
     tal:replace="structure here/manage_tabs">Tabs</span>
@@ -25,6 +37,7 @@ Version of this file: $Revision: 1.6 $
 <span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="subject" class="form-text"></span><br />
 </tal:define>
 </tal:repeat>
+<input type="submit" name="manage_rename_start:method" value="Rename subject(s)" class="form-element">
 <input type="submit" name="manage_remove_subject:method" value="Remove subject(s)" class="form-element">
 <br /><br />
 <div class="form-title">Add subject:</div><br />
@@ -53,6 +66,7 @@ Version of this file: $Revision: 1.6 $
 <span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="target_audience" class="form-text"></span><br />
 </tal:define>
 </tal:repeat>
+<input type="submit" name="manage_rename_start:method" value="Rename target audience(s)" class="form-element">
 <input type="submit" name="manage_remove_target_audience:method" value="Remove target audience(s)" class="form-element">
 <br /><br />
 <div class="form-title">Add target audience:</div><br />

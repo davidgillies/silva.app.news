@@ -1,8 +1,11 @@
 <!--
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
-Version of this file: $Revision: 1.2 $
+Version of this file: $Revision: 1.3 $
 -->
+
+<tal:block define="dummy python: here.REQUEST.RESPONSE.setHeader('Content-Type', 'text/html;; charset=UTF-8')" />
+
 <h1 tal:replace="structure here/manage_page_header">Header</h1>
 
 <h2 tal:define="form_title string:Add Service News"
@@ -35,9 +38,7 @@ Add Service for News
     </td>
   </tr>
   <tr>
-    <td align="left" valign="top">
-    </td>
-    <td align="left" valign="top">
+    <td align="left" valign="top" colspan="2">
     <div class="form-element">
     <input class="form-element" type="submit" name="submit_add"
      value=" Add " />

@@ -12,26 +12,6 @@
       <title>Default</title>
       <fields>
 
-      <field><id>object_title</id> <type>TextAreaField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_linelength></max_linelength>
-          <max_length></max_length>
-          <max_lines></max_lines>
-          <width type="int">40</width>
-          <external_validator></external_validator>
-          <height type="int">2</height>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>Titel</title>
-          <description></description>
-          <extra></extra>
-        </values>
-        <tales>
-        </tales>
-      </field>
       <field><id>filters</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
@@ -44,9 +24,11 @@
           <external_validator></external_validator>
           <items>[]</items>
           <orientation>vertical</orientation>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
           <items>python: form.REQUEST.model.findfilters_pairs()</items>
+          <default>python: form.REQUEST.model.filters()</default>
         </tales>
       </field>
       <field><id>days_to_show</id> <type>IntegerField</type>
@@ -66,6 +48,7 @@
           <extra></extra>
         </values>
         <tales>
+          <default>python: form.REQUEST.model.days_to_show()</default>
         </tales>
       </field>
       </fields>

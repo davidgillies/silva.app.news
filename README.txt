@@ -1,4 +1,4 @@
-$Revision: 1.11 $
+$Revision: 1.12 $
 
 Copyright (c) 2002 Infrae. All rights reserved.
 See also LICENSE.txt
@@ -8,7 +8,7 @@ Meta::
   Valid for:  Silva News 0.8.1
   Author:     Guido Wesdorp, Martijn Faassen
   Email:      guido@infrae.com, faassen@infrae.com
-  CVS:        $Revision: 1.11 $
+  CVS:        $Revision: 1.12 $
 
 Silva News
 
@@ -43,26 +43,26 @@ Using Silva News
   remove them by checking the checkbox in front of an item and clicking the
   corresponding 'remove' button.
 
-  Adding a NewsSource
+  Adding a News Publication
 
-    Newsitems can only be added to newssources. To add one, go to the SMI
-    and choose 'Silva News NewsSource' from the menu of addables (upper
+    Newsitems can only be added to newsfolders. To add one, go to the SMI
+    and choose 'Silva News Publication' from the menu of addables (upper
     right corner of the edit tab in folders, publications and the Silva
     root). Enter an id and a title and choose 'Add and edit', you will then
-    be taken to the edit tab of the newssource. This tab looks a lot like
+    be taken to the edit tab of the newsfolder. This tab looks a lot like
     the edit tab of other containers (folders, publications) in Silva,
     except it doesn't have a default document or view and can not contain
-    anything other then newsitems and newssources (adding newssources to
-    other newssources allows for a more structured setup of the
-    newssource).You can add newsitems by choosing a specific type from the
+    anything other then newsitems and newsfolders (adding newsfolders to
+    other newsfolders allows for a more structured setup of the
+    newsfolder).You can add newsitems by choosing a specific type from the
     addables menu in this tab.
 
   Metadata tab
 
-    On the metadata tab of newssources there is a checkbox called 'restrict
-    access'. When this is checked, the source can only be found by news-
-    and agendafilters in the same folder the source is on and each
-    subfolder of that folder. This can be used to make the newssource
+    On the metadata tab of newsfolders there is a checkbox called 'restrict
+    access'. When this is checked, the folder can only be found by news-
+    and agendafilters in the same folder the folder is on and each
+    subfolder of that folder. This can be used to make the newsfolder
     'private', making it available only to for example 1 department.
 
   Adding news items
@@ -103,15 +103,15 @@ Using Silva News
     channel, he will be sent to your site). The format of the RSS feed
     is compliant with RSS version 0.91.
 
-  The Sources tab
+  The Publication's tab
 
     The edit tab of a newsfilter (called 'Sources' instead of 'Edit') shows
-    a list of all available newssources (excluding the one made private by
+    a list of all available newsfolders (excluding the one made private by
     checking the 'restrict access' checkbox that are not in the same folder
     or a parentfolder of the newsfilter). To route newsitems of a
-    newssource to newsviewers (more about those later) make sure the
-    checkbox in front of the newssource is checked and click the 'update
-    sources' button. All (published) newsitems that conform to the criteria
+    newsfolder to newsviewers (more about those later) make sure the
+    checkbox in front of the newsfolder is checked and click the 'update
+    folders' button. All (published) newsitems that conform to the criteria
     of the newsfilter will then be routed to the newsviewers that use this
     filter. These criteria can be set in the 'Metadata' tab of the
     newsfilter: you see the lists of subjects and target audiences of
@@ -120,7 +120,7 @@ Using Silva News
     newsitems. These criteria can be used to distribute news- and
     agendaitems in different ways across the Silva instance to newsviewers.
 
-    For example: a number of different newssources
+    For example: a number of different newsfolders
     can now contain both news- and agendaitems of different subjects and
     targeting different audiences, and the newsfilters filter and
     distribute specific items to viewers. Please note that this means that

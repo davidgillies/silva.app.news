@@ -47,6 +47,7 @@
           <title>Title</title>
           <description>The title will be publicly visible, and is used as the default link in indexes.</description>
           <extra>style="width:100%;"</extra>
+          <unicode type="int">1</unicode>
         </values>
         <tales>
         </tales>

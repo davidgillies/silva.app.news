@@ -33,12 +33,13 @@
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
   tal:repeat="obj results">
+<tal:block tal:define="obj obj/getObject">
 
 <tr class="focus">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
-<h2 tal:content="structure obj/get_title_html">title</h2>
+<h2 tal:content="obj/get_title">title</h2>
 <h3 tal:content="structure obj/subheader">subheader</h3>
 </td>
 </tr>
@@ -46,11 +47,12 @@
 <tr class="focus-cycle">
 <td align="left" valign="top">
 <b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
-<a href="#" tal:attributes="href obj/getURL">view article</a>
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime())" tal:condition="obj/start_datetime | nothing">DateTime</span>
+<a href="#" tal:attributes="href python: obj.object().absolute_url()">view article</a>
 </td>
 </tr>
 
+</tal:block>
 </toc_entry>
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>

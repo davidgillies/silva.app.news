@@ -16,5 +16,7 @@ if edit_mode is None:
 
 if edit_mode == 'normal':
     return view.normal_edit()
+elif edit_mode == 'sta':
+    return view.sta_edit()
 elif edit_mode == 'content':
     return view.content_edit()

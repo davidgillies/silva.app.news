@@ -152,19 +152,19 @@ class RSSParser:
             
             sourceel = getChildOfName(item, u'source', namespace)
             if sourceel:
-                itemobj['source'] = sourceel.nodeValue.encode('cp1252')
-                itemobj['sourceurl'] = sourceel._attrs[u'url'].nodeValue.encode('cp1252')
+                itemobj['source'] = sourceel.nodeValue
+                itemobj['sourceurl'] = sourceel._attrs[u'url'].nodeValue
 
             retval['rssitems'].append(itemobj)
             
             enclosureel = getChildOfName(item, u'enclosure', namespace)
             if enclosureel:
                 if enclosureel._attrs.has_key(u'url'):
-                    itemobj['enclosure_url'] = enclosureel._attrs[u'url'].nodeValue.encode('cp1252')
+                    itemobj['enclosure_url'] = enclosureel._attrs[u'url'].nodeValue
                 if enclosureel._attrs.has_key(u'length'):
-                    itemobj['enclosure_length'] = enclosureel._attrs[u'length'].nodeValue.encode('cp1252')
+                    itemobj['enclosure_length'] = enclosureel._attrs[u'length'].nodeValue
                 if enclosureel._attrs.has_key(u'type'):
-                    itemobj['enclosure_type'] = enclosureel._attrs[u'type'].nodeValue.encode('cp1252')
+                    itemobj['enclosure_type'] = enclosureel._attrs[u'type'].nodeValue
 
     def parse_textinput(self, node, retval, namespace):
         """Parse a textinput element
@@ -179,7 +179,7 @@ class RSSParser:
         """
         ret = getNodeContent(getChildOfName(node, name, namespace))
         if ret:
-            ret = ret.encode('cp1252')
+            ret = ret
         return ret
 
 class RSSLoader:

@@ -1,0 +1,255 @@
+<html tal:omit-tag=""
+  tal:define="
+    view here;
+    model request/model;
+    root_url model/get_root_url;
+    user_role view/get_user_role;
+    silva_root view/silva_root;
+    title model/get_title_editable;
+    breadcrumb_vein string:Edit;
+    dummy model/security_trigger;
+    months view/get_months;
+    currentmonth request/month | options/month | view/currentmonth;
+    currentyear request/year | options/year | view/currentyear;
+    results python:model.backend_get_items_by_date(currentmonth, currentyear);
+    objects python:view.prepare_objects(results);
+">
+
+  <table class="columns columns2">
+    <tbody>
+      <tr>
+        <tal:block replace="nothing">
+          _____________________ sidebar _____________________
+        </tal:block>
+        <td class="left"
+          tal:define="template_id string:tab_edit">
+          <metal:block use-macro="view/macro_vein_navigation/macros/vein" />
+        </td>
+
+        <tal:block replace="nothing">
+          _____________________ main _____________________
+        </tal:block>
+        <td class="main">
+
+  <form action="." name="silvaObjects" method="POST">
+
+    <tal:comment condition="nothing">__________ date table __________</tal:comment>
+    <table class="listing">
+      <thead>
+        <tal:block replace="nothing">
+          ______________ vein + title row ______________
+        </tal:block>
+        <tr>
+          <td class="top"
+            colspan="14">
+            <h2>
+              <img tal:replace="structure python:view.render_icon(model)" />
+              <span style="text-transform:lowercase;"
+                tal:content="model/meta_type">Meta type</span> 
+              &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
+            </h2>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>
+            <a href="3" tal:content="python: '<< %s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
+          </th>
+          <tal:repeat repeat="month months">
+            <tal:define define="id repeat/month/index">
+              <th align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #FFFFFF;;', '');">
+                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+              </th>
+            </tal:define>
+          </tal:repeat>
+          <th>
+            <a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+
+    <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+
+    <table class="listing">
+
+
+      <span tal:replace="nothing"> ______________ table header ______________ </span>
+      <tr tal:condition="python:len(objects) != 0">
+        <th align="left" width="3%" nowrap="1">Type</th>
+        <th align="left" width="12%">Edit</th>
+        <th align="left">View</th>
+        <th align="left" width="9%">Publish&nbsp;date&nbsp;</th>
+        <th align="right" width="8%">Expiration&nbsp;date</th>
+      </tr>
+
+      <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
+      <toc_entry tal:omit-tag=""
+        tal:repeat="object objects">
+      <tal:define define="obj python:object['object'].getObject();
+                          id object/index;
+                          object_status obj/version_status;
+                          object_url python: '/'.join(obj.object_path());
+                          ">
+      <cycle tal:define="oddrow repeat/object/odd" tal:omit-tag="">
+      <tr tal:attributes="class python: test(oddrow, 'odd', 'even')">
+
+      <span tal:replace="nothing"> _______ checkbox + icon _______ </span>
+      <td nowrap="1">
+      <input type="checkbox" name="cb:list" value="value"
+       tal:attributes="value string:cb_${id}; checked object/check_checkbox" />
+      <a href="edit" title="Edit this item"
+        tal:attributes="href string:${object_url}/edit/tab_edit">
+      <img tal:replace="structure python:view.render_icon(obj.object())" />
+      </a>
+      </td>
+
+      <span tal:replace="nothing"> _______ id cell _______ </span>
+      <td>
+      <a title="Edit this item"
+        tal:attributes="href string:${object_url}/edit;
+                        class python:view.get_status_style(object_status)"
+        tal:content="object_url">id
+      </a>
+      </td>
+
+      <span tal:replace="nothing"> _______ title cell _______ </span>
+      <td>
+      <tal:block condition="python:obj.get_title != ''">
+      <a class="blacklink" title="Preview this item"
+        tal:attributes="href string:${object_url}">
+      <b tal:content="structure string:${obj/get_title}">title</b>
+      </a>
+      </tal:block>
+      <tal:block condition="python:obj.get_title == ''">
+      &nbsp;
+      </tal:block>
+      </td>
+
+      <span tal:replace="nothing"> _______ publish date cell _______ </span>
+      <td>
+      <tal:block define="publication_dt obj/publication_datetime">
+        <tal:block condition="publication_dt">
+          <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(publication_dt)" tal:omit-tag="">21 oct 2001 18:18</span>
+        </tal:block>
+        <tal:block condition="not: publication_dt">
+          None
+        </tal:block>
+      </tal:block>
+      </td>
+
+      <span tal:replace="nothing"> _______ expiration date cell _______ </span>
+      <td>
+      <span tal:condition="object_status">
+        <tal:block define="expiration_dt python: obj.expiration_datetime()">
+        <tal:block condition="expiration_dt">
+          <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(expiration_dt)" tal:omit-tag="">21 oct 2001 18:18</span>
+        </tal:block>
+        <tal:block condition="not: expiration_dt">
+          None
+        </tal:block>
+      </tal:block>
+      </span>
+      <span tal:condition="not: object_status"
+        tal:omit-tag="">&nbsp;</span>
+      &nbsp;
+      </td>
+
+      </tr>
+
+      </cycle>
+      </tal:define>
+      </toc_entry>
+
+      <span tal:replace="nothing"> ______________ if no records ______________ </span>
+      <tal:block tal:condition="python:len(objects) == 0">
+      <tr>
+        <th colspan="6">&nbsp;</th>
+      </tr>
+      <tr class="odd">
+      <td colspan="6">
+      There are no objects for this period.
+      </td>
+      </tr>
+      <tr>
+        <th colspan="6">&nbsp;</th>
+      </tr>
+      </tal:block>
+      <!-- /iteration -->
+
+
+      <check tal:condition="python:len(objects) != 0">
+      <script type="text/javascript">
+      <!--
+      isSelected = false;
+
+      function toggleSelect() {
+        if (isSelected == false) {
+          for (i = 0; i < document.silvaObjects.length; i++)
+            document.silvaObjects.elements[i].checked = true ;
+            isSelected = true;
+            document.silvaObjects.selectButton.value = "Deselect all";
+            return isSelected;
+        }
+        else {
+          for (i = 0; i < document.silvaObjects.length; i++)
+            document.silvaObjects.elements[i].checked = false ;
+            isSelected = false;
+            document.silvaObjects.selectButton.value = "Select all";
+            return isSelected;
+        }
+      }
+      //-->
+      </script>
+
+      <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
+      <tr class="controls"
+        tal:condition="python:user_role == 'Editor'">
+      <td colspan="3">
+      <script type="text/javascript">
+      <!--
+      if (document.forms[0]) {
+        document.write('<input class="button" type="submit" name="selectButton" value="Select all - alt a" accesskey="a" title="Select all items on and below this level" onClick="toggleSelect(); return false">')
+        }
+      //-->
+      </script>
+      &nbsp;
+      <input type="hidden" name="year" value="" tal:attributes="value currentyear">
+      <input type="hidden" name="month" value="" tal:attributes="value currentmonth">
+      <input class="button" type="submit" name="use_items:method" value="Update" title="Use selected items in this filter- alt-u" accesskey="u" />
+      &nbsp;
+      </td>
+      <td align="right" colspan="3" nowrap="1">
+      &nbsp;
+      </td>
+      </tr>
+
+    </check>
+
+    </table>
+
+    <tal:comment condition="nothing">__________ date table __________</tal:comment>
+    <table class="listing">
+      <tbody>
+        <tr>
+          <th>
+            <a href="3" tal:content="python: '<< %s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
+          </th>
+          <tal:repeat repeat="month months">
+            <tal:define define="id repeat/month/index">
+              <th align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #FFFFFF;;', '');">
+                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+              </th>
+            </tal:define>
+          </tal:repeat>
+          <th>
+            <a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+
+</html>

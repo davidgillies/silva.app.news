@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
+# $Revision: 1.11 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -19,6 +19,8 @@ from Products.SilvaNews.NewsViewer import NewsViewer
 
 from rss_parser import RSSLoader
 
+icon = 'www/rss_viewer.png'
+
 class RSSViewer(NewsViewer):
     """A viewer for (external) RSS streams. 
     """
@@ -27,10 +29,10 @@ class RSSViewer(NewsViewer):
 
     __implements__ = IContent
 
-    meta_type = 'Silva News RSSViewer'
+    meta_type = 'Silva RSS Viewer'
 
-    def __init__(self, id, title):
-        RSSViewer.inheritedAttribute('__init__')(self, id, title)
+    def __init__(self, id):
+        RSSViewer.inheritedAttribute('__init__')(self, id)
         self._rss_feed = ''
         self._rss_last_modified = ''
         self._caching_period = 30 # in seconds, 0 means don't cache
@@ -71,8 +73,9 @@ def manage_addRSSViewer(self, id, title, REQUEST=None):
     """Add a News RSSViewer."""
     if not self.is_id_valid(id):
         return
-    object = RSSViewer(id, title)
+    object = RSSViewer(id)
     self._setObject(id, object)
     object = getattr(self, id)
+    object.set_title(title)
     add_and_edit(self, id, REQUEST)
     return ''

@@ -7,7 +7,7 @@
 <table border="0" cellpadding="0" cellspacing="5">
 <tr>
   <td colspan="2">
-    <h2><span class="folder-title" tal:content="python: result['title'] or model.get_title_html()">View News</span></h2>
+    <h2><span class="folder-title" tal:content="python: result['title'] or model.get_title()">View News</span></h2>
     <span tal:replace="result/textinput/description" tal:condition="python: result['textinput'] and result['textinput']['description']" /><br />
     <form tal:attributes="action result/textinput/link" method="POST" tal:condition="python: result['textinput'] and result['textinput']['name'] and result['textinput']['link'] and result['textinput']['title']">
         <input type="text" tal:attributes="name result/textinput/name" /><input type="submit" tal:attributes="value result/textinput/title" /><br /><br />

@@ -8,7 +8,7 @@
 <tr>
 <td>
   <div class="margins">
-    <h2><span class="folder-title">View News</span></h2>
+    <h2><span tal:replace="model/get_title">View News</span></h2>
   </div>
 </td>
 </tr>
@@ -16,14 +16,11 @@
 
 <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
 
-<table width="100%" 
-  tal:attributes="cellspacing container/table_cellspacing;
-                  cellpadding container/table_cellpadding;
-                  border container/table_border">
+<table class="listing">
 
-<tr class="topcontrols" valign="bottom">
-<td align="right" colspan="2">
-<form tal:attributes="action string:." method="post">
+<tr class="controls" valign="bottom">
+<td class="align-right" colspan="2">
+<form tal:attributes="action model/absolute_url" method="post">
 <input type="text" name="query" />&nbsp;
 <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" />
 </form>
@@ -31,31 +28,39 @@
 </tr>
 
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
-<toc_entry tal:omit-tag=""
-  tal:repeat="obj results">
+<tal:block tal:omit-tag=""
+  tal:repeat="brain results">
 
-<tr class="focus">
+<tal:block define="obj python:brain.getObject()">
+
+<tr class="odd">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
-<h2 tal:content="structure obj/get_title_html">title</h2>
+<h2 tal:content="structure obj/get_title">title</h2>
 <h3 tal:content="structure obj/subheader">subheader</h3>
 </td>
 </tr>
 
-<tr class="focus-cycle">
+<tr class="even">
 <td align="left" valign="top">
 <b tal:content="structure obj/lead">Lead</b><br /><br />
-<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime)" tal:condition="obj/start_datetime">DateTime</span>
-<a href="#" tal:attributes="href obj/getURL">view article</a>
+<span tal:replace="structure python: 'Startdate/time:<br />%s<br /><br />' % view.service_utils.backend_datetime_to_str(obj.start_datetime())" tal:condition="obj/start_datetime | nothing">DateTime</span>
+<a href="#" tal:attributes="href python:obj.object().absolute_url()">view article</a>
 </td>
 </tr>
 
-</toc_entry>
+<tr class="divider">
+<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+</tr>
+
+</tal:block>
+
+</tal:block>
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
 <check tal:condition="python:len(results) == 0">
-<tr class="focus-light">
+<tr class="odd">
 <td colspan="2">
 There are no articles.
 </td>
@@ -66,6 +71,6 @@ There are no articles.
 </check>
 <!-- /iteration -->
 
-</table><br />
+</table>
 
 <a href="#" tal:attributes="href string:?view=view_archive">View Archive</a>

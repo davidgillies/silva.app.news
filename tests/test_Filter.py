@@ -1,15 +1,20 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.8 $
+# $Revision: 1.9 $
 
 import unittest
 import Zope
+Zope.startup()
+
 from DateTime import DateTime
 from Products.ZCatalog.ZCatalog import ZCatalog
 from Testing import makerequest
 
 from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
 from Products.Silva.tests.test_SilvaObject import hack_create_user
+
+from Products.SilvaNews.install import install
+from Products.Silva.install import install as silva_install
 
 def set(key, value):
     pass
@@ -22,49 +27,42 @@ def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
-def setup_catalog(context, columns, indexes):
-    catalog = context.service_catalog
-
-    existing_columns = catalog.schema()
-    existing_indexes = catalog.indexes()
-
-    for column_name in columns:
-        if column_name in existing_columns:
-            continue
-        catalog.addColumn(column_name)
-
-    for field_name, field_type in indexes:
-        if field_name in existing_indexes:
-            continue
-        catalog.addIndex(field_name, field_type)
-
 class NewsFilterBaseTestCase(unittest.TestCase):
     def setUp(self):
         get_transaction().begin()
         self.connection = Zope.DB.open()
-        self.root = makerequest.makerequest(self.connection.root()['Application'])
+        self.root = makerequest.makerequest(
+            self.connection.root()['Application'])
+        self.root.REQUEST['URL1'] = ''
         self.REQUEST = self.root.REQUEST
         self.REQUEST.set = set
+        hack_create_user(self.root)
 
-        self.sroot = sroot = add_helper(self.root, 'Root', 'root', 'Root')
-        hack_create_user(self.sroot)
-        self.service_news = service_news = add_helper_news(self.root, 'ServiceNews', 'service_news', 'ServiceNews')
+        self.root.manage_addProduct['Silva'].manage_addRoot(
+            'root', 'Root')
+        self.sroot = self.root.root
+
+        install(self.sroot)
+
+        self.service_news = service_news = self.sroot.service_news
         service_news.add_subject('test')
         service_news.add_subject('test2')
         service_news.add_target_audience('test')
         service_news.add_target_audience('test2')
 
-        self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
-        self.service_catalog = getattr(self.root, 'service_catalog')
-        columns = ['is_private', 'object_path', 'fulltext', 'version_status', 'path', 'subjects', 'target_audiences',
-                    'publication_datetime']
-        indexes = [('meta_type', 'FieldIndex'), ('is_private', 'FieldIndex'), ('parent_path', 'FieldIndex'),
-                    ('version_status', 'FieldIndex'), ('subjects', 'KeywordIndex'), ('target_audiences', 'KeywordIndex'),
-                    ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex'), ('fulltext', 'TextIndex'),
-                    ('path', 'PathIndex')]
-        setup_catalog(self.root, columns, indexes)
+        #self.root.manage_addProduct['ZCatalog'].manage_addZCatalog('service_catalog', 'ZCat')
+        #self.service_catalog = getattr(self.root, 'service_catalog')
+        #columns = ['is_private', 'object_path', 'fulltext', 'version_status', 'path', 'subjects', 'target_audiences',
+        #            'publication_datetime']
+        #indexes = [('meta_type', 'FieldIndex'), ('is_private', 'FieldIndex'), ('parent_path', 'FieldIndex'),
+        #            ('version_status', 'FieldIndex'), ('subjects', 'KeywordIndex'), ('target_audiences', 'KeywordIndex'),
+        #            ('creation_datetime', 'FieldIndex'), ('publication_datetime', 'FieldIndex'), ('fulltext', 'TextIndex'),
+        #            ('path', 'PathIndex')]
+        #setup_catalog(self.root, columns, indexes)
 
-        self.source1 = add_helper_news(self.sroot, 'NewsSource', 'source1', 'Source 1')
+        self.service_catalog = self.sroot.service_catalog
+
+        self.source1 = add_helper_news(self.sroot, 'NewsPublication', 'source1', 'Folder 1')
 
         self.item1_1 = add_helper_news(self.source1, 'PlainArticle', 'art1', 'Article 1')
         self.item1_1.set_next_version_publication_datetime(DateTime())
@@ -80,11 +78,11 @@ class NewsFilterBaseTestCase(unittest.TestCase):
         self.item1_2.approve_version()
         self.item1_2._update_publication_status()
 
-        self.source2 = add_helper_news(self.sroot, 'NewsSource', 'source2', 'Source 2')
+        self.source2 = add_helper_news(self.sroot, 'NewsPublication', 'source2', 'Folder 2')
         self.source2.set_private(1)
 
         self.folder = add_helper(self.sroot, 'Folder', 'somefolder', 'Some Folder')
-        self.source3 = add_helper_news(self.folder, 'NewsSource', 'source3', 'Source 3')
+        self.source3 = add_helper_news(self.folder, 'NewsPublication', 'source3', 'Folder 3')
         self.source3.set_private(1)
 
         self.item1_3 = add_helper_news(self.source3, 'PlainArticle', 'art3', 'Article 3')
@@ -129,8 +127,8 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.assert_(self.newsfilter.sources() == ['/root/source1'])
 
     def test_items(self):
-        self.newsfilter.set_subject('test', 1)
-        self.newsfilter.set_target_audience('test', 1)
+        self.newsfilter.set_subjects(['test'])
+        self.newsfilter.set_target_audiences(['test'])
         self.newsfilter.add_source('/root/source1', 1)
         self.newsfilter.add_source('/root/somefolder/source3', 1)
         res = self.newsfilter.get_all_items()
@@ -144,7 +142,7 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.assert_([i.object_path for i in self.newsfilter.get_last_items(10)] == [])
 
     def test_synchronize_with_service(self):
-        self.newsfilter.set_subject('test', 1)
+        self.newsfilter.set_subjects(['test'])
         self.newsfilter.synchronize_with_service()
         self.assert_(self.newsfilter.subjects() == ['test'])
         self.service_news.remove_subject('test')
@@ -155,7 +153,7 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.newsfilter.add_source('/root/source1', 1)
         self.newsfilter.add_source('/root/source2', 1)
         self.newsfilter.add_source('/root/somefolder/source3', 1)
-        res = ['%s - %s' % (i.id, i.path) for i in self.service_catalog({})]
+        res = ['%s - %s' % (i.id, i.object_path) for i in self.service_catalog({})]
         resids = [i.object_path[-1] for i in self.newsfilter.search_items('test')]
         self.assert_('art1' in resids)
         self.assert_('art2' not in resids)
