@@ -7,9 +7,22 @@
 ##parameters=
 ##title=
 ##
-months = []
-for i in range(12):
-    dt = DateTime("1970/%s/01 01:00am" % str(i + 1))
-    months.append(dt.aMonth())
 
-return months
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
+
+months = [ _('Jan'),
+           _('Feb'),
+           _('Mar'),
+           _('Apr'),
+           _('May'),
+           _('Jun'),
+           _('Jul'),
+           _('Aug'),
+           _('Sep'),
+           _('Oct'),
+           _('Nov'),
+           _('Dec') ]
+
+return [ unicode(m) for m in months ]

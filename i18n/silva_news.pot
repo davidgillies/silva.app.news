@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: Fri Dec 10 15:23:14 2004\n"
+"POT-Creation-Date: Fri Dec 10 15:31:48 2004\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -221,11 +221,11 @@ msgid "cut items: alt-x"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:537
-msgid "copy items: alt-c"
+msgid "copy"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:537
-msgid "copy"
+msgid "copy items: alt-c"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:552
@@ -813,6 +813,54 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/sta_submit.py:28
 msgid "Data changed"
+msgstr ""
+
+#: /views/get_months.py:15
+msgid "Jan"
+msgstr ""
+
+#: /views/get_months.py:16
+msgid "Feb"
+msgstr ""
+
+#: /views/get_months.py:17
+msgid "Mar"
+msgstr ""
+
+#: /views/get_months.py:18
+msgid "Apr"
+msgstr ""
+
+#: /views/get_months.py:19
+msgid "May"
+msgstr ""
+
+#: /views/get_months.py:20
+msgid "Jun"
+msgstr ""
+
+#: /views/get_months.py:21
+msgid "Jul"
+msgstr ""
+
+#: /views/get_months.py:22
+msgid "Aug"
+msgstr ""
+
+#: /views/get_months.py:23
+msgid "Sep"
+msgstr ""
+
+#: /views/get_months.py:24
+msgid "Oct"
+msgstr ""
+
+#: /views/get_months.py:25
+msgid "Nov"
+msgstr ""
+
+#: /views/get_months.py:26
+msgid "Dec"
 msgstr ""
 
 #: /views/public/AgendaViewer/search_agenda.pt:21
