@@ -28,9 +28,7 @@
 <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
 <toc_entry tal:omit-tag=""
   tal:repeat="obj results">
-<cycle tal:define="oddrow repeat/obj/odd" tal:omit-tag="">
-<tr class="focus-cycle"
-  tal:attributes="class python:test(oddrow, 'focus', 'focus-cycle')">
+<tr class="focus">
 
 <span tal:replace="nothing"> _______ title cell _______ </span>
 <td valign="top" align="left">
@@ -39,12 +37,13 @@
 </tr>
 
 <tr class="focus-cycle">
-<td align="left" valign="top"><b tal:content="obj/lead">Lead</b><br /><br />
+<td align="left" valign="top">
+<tal:condition condition="obj/lead"><b tal:content="obj/lead">Lead</b><br /><br /></tal:condition>
+Date/time: <span tal:replace="structure python: view.service_utils.frontend_datetime_to_str(obj.start_datetime)">Start datetime<br /><br /></span>
 <a href="#" tal:attributes="href obj/getURL">view article</a>
 </td>
 </tr>
 
-</cycle>
 </toc_entry>
 
 <span tal:replace="nothing"> ______________ if no records ______________ </span>
