@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.24 $
+# $Revision: 1.25 $
 
 # Python
 from StringIO import StringIO
@@ -90,7 +90,7 @@ class NewsItemVersion(DocumentVersion):
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'lead')
+                              'get_intro')
     def get_intro(self, max_size=1024):
         """Returns first bit of the news item's content
 
