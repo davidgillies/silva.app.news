@@ -78,7 +78,7 @@
           <hidden type="int">0</hidden>
           <items>[]</items>
           <default>[]</default>
-          <title>Onderwerpen</title>
+          <title>Subjects</title>
           <orientation>vertical</orientation>
           <css_class></css_class>
           <external_validator></external_validator>
@@ -95,7 +95,7 @@
           <hidden type="int">0</hidden>
           <items>[]</items>
           <default>[]</default>
-          <title>Doelgroepen</title>
+          <title>Target audiences</title>
           <orientation>vertical</orientation>
           <css_class></css_class>
           <external_validator></external_validator>
