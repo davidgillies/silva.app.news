@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 """Install and Uninstall for Silva News
 """
@@ -23,12 +23,14 @@ def install(root):
     setup_catalog(root)
 
     # and add a service_news to the Silva root
-    root.manage_addProduct['SilvaNews'].manage_addServiceNews('service_news', 'Service for News')
+    if not hasattr(root, 'service_news'):
+        root.manage_addProduct['SilvaNews'].manage_addServiceNews('service_news', 'Service for News')
 
 def uninstall(root):
     unregisterViews(root.service_view_registry)
     root.service_views.manage_delObjects(['SilvaNews'])
-    root.manage_delObjects(['service_news'])
+    # The following line is commented out, so the service will remain installed as an uninstall is performed. This will cause a Refresh action to leave the service alone
+    #root.manage_delObjects(['service_news'])
 
 def is_installed(root):
     return hasattr(root.service_views, 'SilvaNews')
