@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.3 $
+# $Revision: 1.4 $
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -23,6 +23,7 @@ class NewsViewer(Content, Folder.Folder):
     def __init__(self, id, title):
         NewsViewer.inheritedAttribute('__init__')(self, id, title)
         self._number_to_show = 25
+        self._number_is_days = 0
         self._filters = []
 
     meta_type = 'Silva NewsViewer'
@@ -47,6 +48,16 @@ class NewsViewer(Content, Folder.Folder):
         """Returns number of items to show
         """
         return self._number_to_show
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'number_is_days')
+    def number_is_days(self):
+        """Returns the value of number_is_days (which controls whether the filter should show <n>
+        items or items of <n> days back)
+        """
+        print "Number is days:", self._number_is_days
+        print "Type:", type(self._number_is_days)
+        return self._number_is_days
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'filters')
@@ -104,7 +115,7 @@ class NewsViewer(Content, Folder.Folder):
         results = []
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.get_last_items(self._number_to_show)
+            res = obj.get_last_items(self._number_to_show, self._number_is_days)
             results += res
 
         results = self._remove_doubles(results)
@@ -136,12 +147,15 @@ class NewsViewer(Content, Folder.Folder):
         results = []
         for newsfilter in self._filters:
             obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.search_items(keywords)
+            res = obj.search_items(keywords, self._number_to_show, self._number_is_days)
             results += res
 
         results = self._remove_doubles(results)
         results.sort(self._sortresults)
-        return results[:self._number_to_show]
+        if not self._number_is_days:
+            return results[:self._number_to_show]
+        else:
+            return results
 
     def _sortresults(self, item1, item2):
         return cmp(item1.publication_datetime, item2.publication_datetime)
@@ -164,6 +178,14 @@ class NewsViewer(Content, Folder.Folder):
         """Sets the number of items to show
         """
         self._number_to_show = number
+        self._p_changed = 1
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_number_is_days')
+    def set_number_is_days(self, onoff):
+        """Sets the number of items to show
+        """
+        self._number_is_days = onoff
         self._p_changed = 1
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
