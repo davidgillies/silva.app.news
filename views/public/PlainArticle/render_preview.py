@@ -12,6 +12,6 @@ request = context.REQUEST
 
 version = model.get_previewable()
 if version is None:
-   return "There is no public version of this resolution."
+   return "There is no public version of this item."
 
 return context.render_helper(version=version)

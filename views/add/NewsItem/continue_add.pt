@@ -1,5 +1,6 @@
 <init tal:omit-tag=""
-  tal:define="global active_tab string:tab_edit" />
+  tal:define="global active_tab string:tab_edit;
+              global location string:Edit;" />
 
 <!-- ___________________________ start index_html ___________________________ -->
 <html metal:use-macro="here/macro_index/macros/master">
