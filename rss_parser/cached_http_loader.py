@@ -59,7 +59,7 @@ class CachedHTTPLoader:
         # make the request
         t = TimeoutWrapper(h.request, ('GET', path), {'headers': headers})
         # for now set the timeout to 30 seconds
-        if not t.run_with_timeout(1):
+        if not t.run_with_timeout(30):
             raise TimeoutException, 'The request to %s timed out' % host
 
         # now fetch result
