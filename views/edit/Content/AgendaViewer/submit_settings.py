@@ -8,6 +8,11 @@
 ##title=
 ##
 from Products.Formulator.Errors import ValidationError, FormValidationError
+
+# I18N stuff
+from Products.Silva.i18n import translate as _
+
+
 model = context.REQUEST.model
 view = context
 try:
@@ -26,4 +31,7 @@ for id, path in model.findfilters_pairs():
     else:
         model.set_filter(path, 0)
 
-return view.tab_edit(message_type="feedback", message="Viewer data changed")
+m = _('Viewer data changed', 'silva_news')
+msg = unicode(m)
+
+return view.tab_edit(message_type="feedback", message=msg)

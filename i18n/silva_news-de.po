@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
-"POT-Creation-Date: Mon Dec  6 15:30:59 2004\n"
-"PO-Revision-Date: 2004-12-06 15:11+0100\n"
+"POT-Creation-Date: Wed Dec  8 13:45:48 2004\n"
+"PO-Revision-Date: 2004-12-08 13:40+0100\n"
 "Last-Translator: Guido Goldstein <gst@infrae.com>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,7 @@ msgid "add a new item: alt-n"
 msgstr "Neuen Eintrag hinzufügen: alt-n"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:129
-#: /views/edit/Filter/NewsFilter/edit.pt:115
+#: /views/edit/Content/edit.pt:103 /views/edit/Filter/NewsFilter/edit.pt:115
 msgid "access key: alt-s"
 msgstr "Kurzwahl: alt-s"
 
@@ -459,40 +459,72 @@ msgstr "In Publikation umwandeln"
 msgid "&nbsp;News Publication settings"
 msgstr "&nbsp;Einstellungen News-Publikation"
 
-#: /views/edit/Content/AgendaViewer/form.form:26
+#: /views/edit/Content/AgendaViewer/form.form:29
 msgid "day range"
 msgstr ""
 
-#: /views/edit/Content/AgendaViewer/form.form:27
+#: /views/edit/Content/AgendaViewer/form.form:30
 msgid "Number of days in the future to show."
 msgstr ""
 
-#: /views/edit/Content/AgendaViewer/form.form:42
-#: /views/edit/Content/NewsViewer/form.form:62
+#: /views/edit/Content/AgendaViewer/form.form:45
+#: /views/edit/Content/NewsViewer/form.form:65
 msgid "filters"
 msgstr "Filter"
 
-#: /views/edit/Content/NewsViewer/form.form:24
+# Default: "silva_news"
+#: /views/edit/Content/AgendaViewer/submit_settings.py:34
+#: /views/edit/Content/NewsViewer/submit_settings.py:36
+#: /views/edit/Content/RSSAggregator/submit_settings.py:27
+msgid "Viewer data changed"
+msgstr ""
+
+#: /views/edit/Content/NewsViewer/form.form:27
 msgid "show"
 msgstr ""
 
-#: /views/edit/Content/NewsViewer/form.form:26
+#: /views/edit/Content/NewsViewer/form.form:29
 msgid ""
 "Show a specific number of items, or show items from a range of days in the "
 "past."
 msgstr ""
 
-#: /views/edit/Content/NewsViewer/form.form:45
+#: /views/edit/Content/NewsViewer/form.form:48
 msgid "number"
 msgstr ""
 
-#: /views/edit/Content/RSSAggregator/form.form:27
+#: /views/edit/Content/RSSAggregator/form.form:30
 msgid "RSS feeds"
 msgstr ""
 
-#: /views/edit/Content/RSSAggregator/form.form:29
+#: /views/edit/Content/RSSAggregator/form.form:32
 msgid ""
 "List the URLs of RSS feeds (one per line) to use as sources of news items."
+msgstr ""
+
+#: /views/edit/Content/edit.pt:103
+msgid "save settings"
+msgstr ""
+
+#: /views/edit/Content/edit.pt:124
+msgid "RDF Feed"
+msgstr ""
+
+#: /views/edit/Content/edit.pt:128
+msgid ""
+"This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
+msgstr ""
+
+#: /views/edit/Content/edit.pt:74
+msgid "element"
+msgstr ""
+
+#: /views/edit/Content/edit.pt:76
+msgid "content"
+msgstr ""
+
+#: /views/edit/Content/edit.pt:77
+msgid "note"
 msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/settingsform.form:62

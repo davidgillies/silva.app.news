@@ -72,9 +72,9 @@
       <tbody>
         <tr>
           <th class="align-right" 
-            width="3%">element</th>
-          <th width="50%">content</th>
-          <th>note</th>
+            width="3%" i18n:translate="">element</th>
+          <th width="50%" i18n:translate="">content</th>
+          <th i18n:translate="">note</th>
         </tr>
 
         <span tal:replace="nothing"> -------------- form content ------------- </span>
@@ -106,6 +106,7 @@
               value="save settings"
               title="access key: alt-s"
               accesskey="s"
+              i18n:attributes="value title"
             />
           </td>
         </tr>
@@ -120,12 +121,14 @@
       <td class="right">
         <div class="info"
           tal:condition="python: model.meta_type in ['Silva News Viewer',  'Silva Agenda Viewer']">
-          <h3>
+          <h3 i18n:translate="">
             RDF Feed
           </h3>
           <p>
+            <span i18n:translate="">
             This News Viewer will supply an RSS feed using RDF.
             The URL of the feed is: 
+            </span>
             <a tal:attributes="href string:${model/absolute_url}/rss">
               <span tal:replace="string:${model/absolute_url}/rss">feed</span>
             </a>
