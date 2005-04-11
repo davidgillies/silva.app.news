@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
@@ -15,7 +15,8 @@ def add_helper(object, typename, id, title):
 
 def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
-    return getattr(object, id)
+    item = getattr(object, id)
+    return item
 
 class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
 
@@ -23,10 +24,10 @@ class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
         self.sroot = self.root
         
         self.service_news = service_news = self.sroot.service_news
-        service_news.add_subject('test')
-        service_news.add_subject('test2')
-        service_news.add_target_audience('test')
-        service_news.add_target_audience('test2')
+        service_news.add_subject('test', 'Test')
+        service_news.add_subject('test2', 'Test 2')
+        service_news.add_target_audience('test', 'Test')
+        service_news.add_target_audience('test2', 'Test 2')
 
         self.service_catalog = self.sroot.service_catalog
 
@@ -38,6 +39,7 @@ class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
         getattr(self.item1_1, '0').set_target_audiences(['test'])
         self.item1_1.approve_version()
         self.item1_1._update_publication_status()
+        getattr(self.item1_1, '0').set_display_datetime(DateTime())
 
         self.item1_2 = add_helper_news(self.source1, 'PlainArticle', 'art2', 'Article 2')
         self.item1_2.set_next_version_publication_datetime(DateTime())
@@ -45,6 +47,7 @@ class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
         getattr(self.item1_2, '0').set_target_audiences(['test2'])
         self.item1_2.approve_version()
         self.item1_2._update_publication_status()
+        getattr(self.item1_2, '0').set_display_datetime(DateTime())
 
         self.source2 = add_helper_news(self.sroot, 'NewsPublication', 'source2', 'Folder 2')
         self.source2.set_private(1)
@@ -59,6 +62,7 @@ class NewsFilterBaseTestCase(SilvaTestCase.SilvaTestCase):
         getattr(self.item1_3, '0').set_target_audiences(['test'])
         self.item1_3.approve_version()
         self.item1_3._update_publication_status()
+        getattr(self.item1_3, '0').set_display_datetime(DateTime())
 
         self.newsfilter = add_helper_news(self.sroot, 'NewsFilter', 'newsfilter', 'NewsFilter')
 
@@ -126,6 +130,20 @@ class NewsFilterTestCase(NewsFilterBaseTestCase):
         self.assert_('art3' not in resids)
         self.assert_(len(resids) == 1)
 
+    def test_display_datetime(self):
+        self.newsfilter.set_subjects(['test', 'test2'])
+        self.newsfilter.set_target_audiences(['test', 'test2'])
+        self.newsfilter.add_source('/root/source1', 1)
+        self.newsfilter.add_source('/root/somefolder/source3', 1)
+        items = self.newsfilter.get_last_items(2)
+        itemids = [item.object_path[-1] for item in items]
+        self.assertEquals(itemids, ['art1', 'art2'])
+        # normal code would never set the display datetime on the viewable,
+        # I guess
+        self.item1_2.get_viewable().set_display_datetime(DateTime() + 1)
+        items = self.newsfilter.get_last_items(2)
+        itemids = [item.object_path[-1] for item in items]
+        self.assertEquals(itemids, ['art2', 'art1'])
 
 if __name__ == '__main__':
     framework()

@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.28 $
+# $Revision: 1.29 $
 
 # Python
 from StringIO import StringIO
@@ -78,20 +78,47 @@ class NewsItemVersion(DocumentVersion):
         NewsItemVersion.inheritedAttribute('__init__')(self, id, 'dummy')
         self._subjects = []
         self._target_audiences = []
+        self._display_datetime = None
+
+    # XXX I would rather have this get called automatically on setting 
+    # the publication datetime, but that would have meant some nasty monkey-
+    # patching would be required...
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                                'set_display_datetime')
+    def set_display_datetime(self, ddt):
+        """set the display datetime
+
+            this datetime is used to determine whether an item should be shown
+            in the news viewer, and to determine the order in which the items 
+            are shown
+        """
+        self._display_datetime = ddt
+        self.reindex_object()
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'display_datetime')
+    def display_datetime(self):
+        """returns the display datetime
+
+            see 'set_display_datetime'
+        """
+        return self._display_datetime
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'idx_display_datetime')
+    idx_display_datetime = display_datetime
         
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
     def set_subjects(self, subjects):
         self._subjects = subjects
-        # XXX we don't need to reindex here, do we?
-        #self.reindex_object()
+        self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_target_audiences')
     def set_target_audiences(self, target_audiences):
         self._target_audiences = target_audiences
-        # XXX we don't need to reindex here, do we?
-        #self.reindex_object()
+        self.reindex_object()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -104,33 +131,49 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        self.service_editor.setViewer('service_doc_viewer')
         content = self.content
-        ret = ''
-        for child in content.childNodes[0].childNodes:
-            add = self.service_editor.renderView(child)
-            if len(ret + add) > 1024:
-                if ret:
-                    return ret
-                return add
-            ret += add
-            # break after the first <p> node
-            if child.nodeName == 'p':
-                break
-        return ret
-        
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_intro')
-    def get_intro(self, maxchars=None):
-        """returns the subheader and the lead"""
-        # XXX currently maxchars is ignored here, since it's rather hard
-        # to cut chunks off of HTML and keep it well-formed
         ret = []
-        if self.subheader():
-            ret.append('<h4>%s</h4>' % self.subheader())
-        ret.append('<p class="lead">%s</p>' % self.lead())
-        return ''.join(ret)
+        length = 0
+        for child in content.childNodes[0].childNodes:
+            if child.nodeName == 'image':
+                continue
+            # XXX the viewer is set every iteration because the renderView
+            # calls of certain elements will set it to something else
+            self.service_editor.setViewer('service_news_sub_viewer')
+            add = self.service_editor.renderView(child)
+            if type(add) != unicode:
+                add = unicode(add, 'UTF-8')
+            if len(add) + length > max_size:
+                if ret:
+                    return '\n'.join(ret)
+                return add
+            length += len(add)
+            ret.append(add)
+            # break after the first <p> node
+            #if child.nodeName == 'p':
+            #    break
+        return '\n'.join(ret)
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'get_thumbnail')
+    def get_thumbnail(self, divclass=None):
+        """returns an image tag for the tumbnail of the first image in the item
+
+            returns '' if no image is available
+        """
+        images = self.content.documentElement.getElementsByTagName('image')
+        if not images:
+            return ''
+        imgpath = images[0].getAttribute('path').split('/')
+        img = self.restrictedTraverse(imgpath)
+        if not img:
+            return '[broken image]'
+        tag = ('<a class="newsitem_thumbnail_link" href="%s">%s</a>' % 
+                    (self.object().absolute_url(), img.tag(thumbnail=1)))
+        if divclass:
+            tag = '<div class="%s">%s</div>' % (divclass, tag)
+        return tag
+        
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
     def get_description(self):

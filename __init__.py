@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Revision: 1.19 $
 
 import AgendaFilter, NewsFilter, ServiceNews, InlineViewer
 import NewsPublication, NewsViewer, AgendaViewer, RSSAggregator
@@ -49,9 +49,19 @@ def initialize(context):
         ]:
         registerTypeForMetadata(getattr(obj, 'meta_type'))
     
-# upgrade methods
-#def upgrade_newsitem(obj):
-#    pass
+import dates
+def __allow_access_to_unprotected_subobjects__(name, value=None):
+    return name in ('dates',)
 
-#upgrade_registry.register('Silva News Article', upgrade_newsitem)
-#upgrade_registry.register('Silva News AgendaItem', upgrade_newsitem)
+# declare a global upgrade registry to use for upgrading SilvaNews
+from Products.Silva.upgrade import UpgradeRegistry
+upgrade_registry = UpgradeRegistry()
+
+# import the actual upgraders
+import upgrade_13
+
+# set the software version, NOTE THAT THIS MUST BE UP-TO-DATE for
+# the upgrade to work correctly!!
+# use only major and minor version parts, upgrade shouldn't happen
+# on patch-level updates
+software_version = '1.3'

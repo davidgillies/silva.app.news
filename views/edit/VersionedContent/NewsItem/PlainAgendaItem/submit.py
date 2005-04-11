@@ -24,6 +24,7 @@ model.sec_update_last_author_info()
 editable = model.get_editable()
 
 editable.set_title(result['object_title'])
+editable.set_display_time(result['display_time'])
 editable.set_start_datetime(result['start_datetime'])
 editable.set_end_datetime(result['end_datetime'])
 editable.set_location(result['location'])

@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -38,6 +38,7 @@ class AgendaViewer(NewsViewer):
     def __init__(self, id):
         AgendaViewer.inheritedAttribute('__init__')(self, id)
         self._days_to_show = 31
+        self._number_to_show_archive = 10
         self._filters = []
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

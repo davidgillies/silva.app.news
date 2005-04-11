@@ -21,6 +21,7 @@
     results python:model.backend_get_items_by_date(currentmonth, currentyear);
     objects python:view.prepare_objects(results);
     mangle modules/Products/Silva/mangle;
+    ct python:mangle.String.centeredTruncate;
 ">
 
   <table class="columns columns2">
@@ -98,7 +99,9 @@
       <tal:define define="obj python:object['object'].getObject();
                           id object/index;
                           object_status obj/version_status;
-                          object_url python: '/'.join(obj.object_path());
+                          object_path python: '/'.join(obj.object_path());
+                          object_url python: obj.object().absolute_url();
+                          meta_type python: obj.object().meta_type;
                           ">
       <cycle tal:define="oddrow repeat/object/odd" tal:omit-tag="">
       <tr tal:attributes="class python: test(oddrow, 'odd', 'even')">
@@ -107,18 +110,20 @@
       <td nowrap="1">
       <input type="checkbox" name="cb:list" value="value"
        tal:attributes="value string:cb_${id}; checked object/check_checkbox" />
-      <a href="edit" title="Edit this item" i18n:attributes="title"
-        tal:attributes="href string:${object_url}/edit/tab_edit">
+      <a href="edit" title="Edit this item"
+        tal:attributes="href string:${object_url}/edit/tab_edit;
+                        title meta_type">
       <img tal:replace="structure python:view.render_icon(obj.object())" />
       </a>
       </td>
 
       <span tal:replace="nothing"> _______ id cell _______ </span>
       <td>
-      <a title="Edit this item" i18n:attributes="title"
+      <a title="Edit this item"
         tal:attributes="href string:${object_url}/edit;
-                        class python:view.get_status_style(object_status)"
-        tal:content="object_url">id
+                        class python:view.get_status_style(object_status);
+                        title meta_type"
+        tal:content="python: ct(object_path, 30)">id
       </a>
       </td>
 

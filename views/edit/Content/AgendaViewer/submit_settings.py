@@ -22,6 +22,9 @@ except FormValidationError, e:
 
 model.sec_update_last_author_info()
 
+if model.number_to_show_archive() != result['number_to_show_archive']:
+    model.set_number_to_show_archive(result['number_to_show_archive'])
+
 if model.days_to_show() != result['days_to_show']:
     model.set_days_to_show(result['days_to_show'])
 

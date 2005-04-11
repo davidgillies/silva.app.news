@@ -9,5 +9,8 @@
 ##
 model.manage_addProduct['SilvaNews'].manage_addPlainArticle(id, title)
 article = getattr(model, id)
+version = article.get_editable()
+version.set_subjects(result['subjects'])
+version.set_target_audiences(result['target_audiences'])
 
 return article

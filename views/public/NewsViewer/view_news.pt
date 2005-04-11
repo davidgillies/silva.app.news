@@ -9,64 +9,62 @@
               model view/REQUEST/model;
               results python:model.get_items();
               silva_root view/silva_root;
-              mangle modules/Products/Silva/mangle;"
+              formatdate nocall:view/service_news/format_date;
+              "
 >
 
-<h2><span tal:replace="model/get_title">View News</span></h2>
+  <div class="margins">
+    <h2 class="heading" tal:content="model/get_title">View News</h2>
+  </div>
 
-<table class="listing">
-  <tr class="divider">
-    <td></td>
-  </tr>
+  <tal:comment condition="nothing">Begin items</tal:comment>
 
-  <span tal:replace="nothing"> ______________ listing iteration ______________ </span>
-  <tal:block tal:omit-tag=""
-    tal:repeat="brain results">
-  <tal:block define="obj python:brain.getObject()">
+  <div class="searchbox">
+    <form tal:attributes="action model/absolute_url" method="POST">
+      <input type="text" name="query" />
+      <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
+              accesskey="s" i18n:attributes="title value" />
+    </form>
+  </div>
 
-  <tr class="even">
-    <td>
-      <h4 tal:content="structure obj/get_title">title</h4>
-      <tal:block condition="obj/get_intro">
-        <tal:block content="structure obj/get_intro">Lead</tal:block><br />
-      </tal:block>
-      <span tal:replace="structure python: 'Start date/time: %s<br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()"
-        tal:condition="obj/start_datetime | nothing">DateTime</span>
-      <a tal:attributes="href python:obj.object().absolute_url()" i18n:translate="">view article</a>
-      <br /><br />
-    </td>
-  </tr>
+  <div class="item" tal:repeat="object results">
+    <tal:block define="obj object/getObject">
+      <h2 class="heading" tal:content="structure obj/get_title" />
+      <div class="intro" tal:define="classname python: test(repeat['object'].odd(), 'odd_newsitem_thumbnail', 'even_newsitem_thumbnail')">
+        <img tal:replace="structure python: obj.get_thumbnail(classname)" />
+        <span tal:replace="structure obj/get_intro" />
+      </div>
+      <p class="datetime">
+        <tal:block condition="obj/start_datetime | nothing">
+          <span i18n:translate="">Startdate/time:</span>
+          <span tal:replace="
+                  structure python: formatdate(obj.start_datetime(), obj.display_time())">
+            DateTime
+          </span><br />
+        </tal:block>
+        <tal:block condition="obj/end_datetime | nothing">
+          <span i18n:translate="">Enddate/time:</span>
+          <span tal:replace="
+                  structure python: formatdate(obj.end_datetime(), obj.display_time())">
+            DateTime
+          </span>
+        </tal:block>
+      </p>
+      <p class="articlelink">
+        <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
+          view article</a>
+      </p>
+    </tal:block>
+  </div>
 
-</tal:block>
-</tal:block>
+  <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">
+    There are no articles available
+  </div>
 
-  <span tal:replace="nothing"> ______________ if no records ______________ </span>
-  <check tal:condition="python:len(results) == 0">
-  <tr class="even">
-    <td>
-      <i i18n:translate="">There are no articles available.</i>
-    </td>
-  </tr>
-  </check>
-  
-  <tr class="controls">
-    <td class="align-right">
-      <form tal:attributes="action model/absolute_url" method="post">
-        <input type="text" name="query" />&nbsp;
-        <input class="button"
-          type="submit"
-          value="search"
-          title="Do a full text search: alt-s"
-          accesskey="s"
-          i18n:attributes="title value" />
-      </form>
-    </td>
-  </tr>
-
-<span tal:replace="nothing"> _______ /iteration _______ </span>
-
-</table>
-
-<a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">View archive</a>
+  <div class="viewlinks">
+    <div class="viewlink">
+      <a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">view archive</a>
+    </div>
+  </div>
 
 </span>

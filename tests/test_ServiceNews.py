@@ -1,13 +1,12 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.9 $
+# $Revision: 1.10 $
 import os, sys
 if __name__ == '__main__':
     execfile(os.path.join(sys.path[0], 'framework.py'))
  
 import SilvaTestCase
-
-from Products.SilvaNews.ServiceNews import DuplicateError, NotEmptyError
+from Products.SilvaNews.Tree import DuplicateIdError
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -28,30 +27,30 @@ class ServiceNewsTestCase(SilvaTestCase.SilvaTestCase):
     # since the methods are very simple data-manipulating things, not really suited to test in units, also
     # the chance of anything going wrong here is minimal. Still it's nice to know that they work :)
     def test_subjects(self):
-        self.service_news.add_subject('test1')
-        self.service_news.add_subject('test2', 'test1')
-        self.assert_('test1' in self.service_news.subjects())
-        self.assert_('test2' in self.service_news.subjects())
+        self.service_news.add_subject('test1', 'Test 1')
+        self.service_news.add_subject('test2', 'Test 2', 'test1')
+        self.assert_(('test1', 'Test 1') in self.service_news.subjects())
+        self.assert_(('test2', 'Test 2') in self.service_news.subjects())
         self.assert_(len(self.service_news.subjects()) == 2)
-        self.assert_(self.service_news.subject_tree() == [('test1', 0), ('test2', 1)])
-        self.assert_(self.service_news.subject_form_tree() == [('test1', 'test1'), ('&nbsp;&nbsp;test2', 'test2')])
-        self.assertRaises(DuplicateError, self.service_news.add_subject, 'test1')
-        self.assertRaises(NotEmptyError, self.service_news.remove_subject, 'test1')
+        self.assert_(self.service_news.subject_tree() == [('test1', 'Test 1', 0), ('test2', 'Test 2', 1)])
+        self.assert_(self.service_news.subject_form_tree() == [('Test 1', 'test1'), ('&nbsp;&nbsp;Test 2', 'test2')])
+        self.assertRaises(DuplicateIdError, self.service_news.add_subject, 'test1', 'Test 1')
+        self.assertRaises(ValueError, self.service_news.remove_subject, 'test1')
         self.service_news.remove_subject('test2')
-        self.assert_(self.service_news.subject_tree() == [('test1', 0)])
+        self.assert_(self.service_news.subject_tree() == [('test1', 'Test 1', 0)])
 
     def test_target_audiences(self):
-        self.service_news.add_target_audience('test1')
-        self.service_news.add_target_audience('test2', 'test1')
-        self.assert_('test1' in self.service_news.target_audiences())
-        self.assert_('test2' in self.service_news.target_audiences())
+        self.service_news.add_target_audience('test1', 'Test 1')
+        self.service_news.add_target_audience('test2', 'Test 2', 'test1')
+        self.assert_(('test1', 'Test 1')  in self.service_news.target_audiences())
+        self.assert_(('test2', 'Test 2') in self.service_news.target_audiences())
         self.assert_(len(self.service_news.target_audiences()) == 2)
-        self.assert_(self.service_news.target_audience_tree() == [('test1', 0), ('test2', 1)])
-        self.assert_(self.service_news.target_audience_form_tree() == [('test1', 'test1'), ('&nbsp;&nbsp;test2', 'test2')])
-        self.assertRaises(DuplicateError, self.service_news.add_target_audience, 'test1')
-        self.assertRaises(NotEmptyError, self.service_news.remove_target_audience, 'test1')
+        self.assert_(self.service_news.target_audience_tree() == [('test1', 'Test 1', 0), ('test2', 'Test 2', 1)])
+        self.assert_(self.service_news.target_audience_form_tree() == [('Test 1', 'test1'), ('&nbsp;&nbsp;Test 2', 'test2')])
+        self.assertRaises(DuplicateIdError, self.service_news.add_target_audience, 'test1', 'Test 1')
+        self.assertRaises(ValueError, self.service_news.remove_target_audience, 'test1')
         self.service_news.remove_target_audience('test2')
-        self.assert_(self.service_news.target_audience_tree() == [('test1', 0)])
+        self.assert_(self.service_news.target_audience_tree() == [('test1', 'Test 1', 0)])
 
 
 if __name__ == '__main__':

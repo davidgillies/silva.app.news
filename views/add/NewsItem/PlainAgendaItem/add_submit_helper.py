@@ -9,5 +9,9 @@
 ##
 model.manage_addProduct['SilvaNews'].manage_addPlainAgendaItem(id, title)
 pai = getattr(model, id)
+version = pai.get_editable()
+version.set_subjects(result['subjects'])
+version.set_target_audiences(result['target_audiences'])
+version.set_start_datetime(result['start_datetime'])
 
 return pai

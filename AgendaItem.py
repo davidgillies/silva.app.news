@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.19 $
+# $Revision: 1.20 $
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -45,8 +45,14 @@ class AgendaItemVersion(NewsItemVersion):
         self._start_datetime = None
         self._end_datetime = None
         self._location = ''
+        self._display_time = True
 
     # MANIPULATORS
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_display_time')
+    def set_display_time(self, display_time):
+        self._display_time = display_time
+        
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_start_datetime')
     def set_start_datetime(self, value):
@@ -67,17 +73,22 @@ class AgendaItemVersion(NewsItemVersion):
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'display_time')
+    def display_time(self):
+        """returns True if the time parts of the datetimes should be displayed
+        """
+        return self._display_time
+    
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'start_datetime')
     def start_datetime(self):
         """Returns the start date/time
         """
         return self._start_datetime
 
-
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_start_datetime')
     idx_start_datetime = start_datetime
-
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'end_datetime')
@@ -89,7 +100,6 @@ class AgendaItemVersion(NewsItemVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_end_datetime')
     idx_end_datetime = end_datetime
-
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'location')

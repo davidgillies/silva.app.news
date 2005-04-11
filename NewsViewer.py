@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.31 $
+# $Revision: 1.32 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -88,6 +88,7 @@ class NewsViewer(Content, Folder.Folder):
     def __init__(self, id):
         NewsViewer.inheritedAttribute('__init__')(self, id, 'dummy')
         self._number_to_show = 25
+        self._number_to_show_archive = 10
         self._number_is_days = 0
         self._filters = []
 
@@ -99,6 +100,12 @@ class NewsViewer(Content, Folder.Folder):
         """Returns number of items to show
         """
         return self._number_to_show
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'number_to_show_archive')
+    def number_to_show_archive(self):
+        """returns the number of items to show per page in the archive"""
+        return self._number_to_show_archive
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_published')
@@ -208,7 +215,7 @@ class NewsViewer(Content, Folder.Folder):
             results += res
 
         results = self._remove_doubles(results)
-        return results[:self._number_to_show]
+        return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')
@@ -328,6 +335,12 @@ class NewsViewer(Content, Folder.Folder):
         """Sets the number of items to show
         """
         self._number_to_show = number
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                                'set_number_to_show_archive')
+    def set_number_to_show_archive(self, number):
+        """set self._number_to_show_archive"""
+        self._number_to_show_archive = number
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_number_is_days')

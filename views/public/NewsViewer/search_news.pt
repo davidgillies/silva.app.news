@@ -13,74 +13,50 @@
               mangle modules/Products/Silva/mangle;"
 >
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr>
-<td>
   <div class="margins">
-    <h2><span class="folder-title" i18n:translate="">Search News</span></h2>
+    <h2 class="heading" i18n:translate="">Search News</h2>
   </div>
-</td>
-</tr>
-</table>
 
-<tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+  <tal:comment condition="nothing">Begin items</tal:comment>
 
-<table class="listing">
+  <div class="searchbox">
+    <form tal:attributes="action model/absolute_url" method="POST">
+      <input type="text" name="query" />
+      <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
+              accesskey="s" i18n:attributes="title value" />
+    </form>
+  </div>
 
-<tr class="controls" valign="bottom">
-<td class="align: right" colspan="2">
-<form tal:attributes="action model/absolute_url" method="post">
-  <input type="text" name="query" />&nbsp;
-  <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s" i18n:attributes="title value" />
-</form>
-</td>
-</tr>
+  <div class="item" tal:repeat="object results">
+    <tal:block define="obj object/getObject">
+      <h2 class="heading" tal:content="structure obj/get_title" />
+      <div class="intro" tal:content="structure obj/get_intro">
+      </div>
+      <p class="datetime">
+        <span 
+          tal:replace="structure python: 
+                        'Startdate/time:<br />%s' % 
+                         mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" 
+                         tal:condition="obj/start_datetime | nothing">DateTime</span>
+      </p>
+      <p class="articlelink">
+        <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
+          view article</a>
+      </p>
+    </tal:block>
+  </div>
 
-<span tal:replace="nothing"> ______________ listing iteration ______________ </span>
-<toc_entry tal:omit-tag=""
-  tal:repeat="obj results">
-<tal:block define="object obj/getObject">
+  <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">
+    There are no articles corresponding to your query
+  </div>
 
-<tr class="odd">
-
-<span tal:replace="nothing"> _______ title cell _______ </span>
-<td valign="top" align="left">
-<h2 tal:content="structure python:object.object().get_title()">title</h2>
-</td>
-</tr>
-
-<tr class="even">
-<td align="left" valign="top">
-<tal:block content="structure object/get_intro">Lead</tal:block><br /><br />
-<span i18n:translate="">Startdate/time:</span>
-<span tal:replace="structure python: '<br />%s<br /><br />' % mangle.DateTime(object.start_datetime()).toStrOptionalTime()" tal:condition="object/start_datetime | nothing">DateTime</span>
-<a href="#" tal:attributes="href obj/getURL" i18n:translate="">view article</a>
-</td>
-</tr>
-
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-
-</tal:block>
-</toc_entry>
-
-<span tal:replace="nothing"> ______________ if no records ______________ </span>
-<check tal:condition="python:len(results) == 0">
-<tr class="odd">
-<td i18n:translate="" colspan="2">
-There are no articles corresponding to your query.
-</td>
-</tr>
-<tr class="divider">
-<td><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-</check>
-<!-- /iteration -->
-
-</table><br />
-
-<a href="#" tal:attributes="href string:?view=view_news" i18n:translate="">View News</a><br />
-<a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">View Archive</a>
+  <div class="viewlinks">
+    <div class="viewlink">
+      <a href="#" tal:attributes="href string:?view=view_news" i18n:translate="">view news</a>
+    </div>
+    <div class="viewlink">
+      <a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">view archive</a>
+    </div>
+  </div>
 
 </span>

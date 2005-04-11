@@ -1,7 +1,6 @@
 <span
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news"
@@ -12,145 +11,115 @@
               currentyear request/year | options/year | view/currentyear;
               months view/get_months;
               results python:model.get_items_by_date(currentmonth, currentyear);
+              offset python:int(request.get('offset', 0));
+              batch_size model/number_to_show_archive;
+              batch python:modules['ZTUtils'].Batch(results, size=batch_size, start=offset);
+              previous batch/previous;
+              next batch/next;
               user_role view/get_user_role;
               silva_root view/silva_root;
-              mangle modules/Products/Silva/mangle;"
+              formatdate nocall:view/service_news/format_date;
+              "
 >
 
-<style type="text/css">
-table.listing a:link {
-  text-decoration: none;
-}
-table.listing a:visited {
-  text-decoration: none;
-}
-</style>
+  <h2 class="heading" i18n:translate="">
+    Archive of <tal:block i18n:name="title" tal:content="model/get_title" />
+  </h2>
 
-<h2><span i18n:translate="">Archive of</span> <span tal:replace="model/get_title">View Archive</span></h2>
+  <table class="timetable">
+    <tbody>
+      <tr class="even">
+        <td>
+          <a href="3" tal:content="structure python: '<<&nbsp;%s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
+        </td>
+        <tal:repeat repeat="month months">
+          <tal:define define="id repeat/month/index">
+            <td align="center" tal:attributes="class python:test(id == int(currentmonth) - 1, 'selected_month', '');">
+              <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+            </td>
+          </tal:define>
+        </tal:repeat>
+        <td>
+          <a href="3" tal:content="structure python: '%s&nbsp;>>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-<table class="listing">
-  <tr class="divider">
-    <td colspan="14"></td>
-  </tr>
+  <div class="offsetnav">
+    <tal:block tal:condition="previous">
+      <a tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset - batch_size))">previous</a>&nbsp;
+    </tal:block>
+    <a tal:condition="next" tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset + batch_size))">next</a>
+  </div>
 
-      <tbody>
-        <tr class="even">
-          <td>
-            <a href="3" tal:content="structure python: '<<&nbsp;%s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
-          </td>
-          <tal:repeat repeat="month months">
-            <tal:define define="id repeat/month/index">
-              <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
-              </td>
-            </tal:define>
-          </tal:repeat>
-          <td>
-            <a href="3" tal:content="structure python: '%s&nbsp;>>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
-          </td>
-        </tr>
-      </tbody>
+  <tal:comment condition="nothing">Begin items</tal:comment>
 
-<tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+  <div class="item" tal:repeat="object batch">
+    <tal:block define="obj object/getObject">
+      <h2 class="heading" tal:content="structure obj/get_title" />
+      <div class="intro" tal:content="structure obj/get_intro">
+      </div>
+      <div class="datetime">
+        <div>
+          <span i18n:translate="">Startdate/time:</span>
+          <span tal:replace="
+                  structure python: formatdate(obj.start_datetime(), obj.display_time())">
+            DateTime
+          </span>
+        </div>
+        <div tal:condition="obj/end_datetime | nothing">
+          <span i18n:translate="">Enddate/time:</span>
+          <span tal:replace="
+                  structure python: formatdate(obj.end_datetime(), obj.display_time())">
+            DateTime
+          </span>
+        </div>
+      </div>
+      <p class="articlelink">
+        <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
+          view article</a>
+      </p>
+    </tal:block>
+  </div>
 
+  <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">
+    There are no articles available
+  </div>
 
-<span tal:replace="nothing"> ______________ table header ______________ </span>
-<tr tal:condition="python:len(results) != 0">
-<th i18n:translate="" align="left" width="20%" colspan="3" nowrap="1">Date</th>
-<th i18n:translate="" align="left" colspan="8">view</th>
-<th i18n:translate="" align="left" width="20%" colspan="3">Author</th>
-</tr>
+  <tal:comment condition="nothing">End items</tal:comment>
 
-<span tal:replace="nothing"> ______________ listing iteration ______________ </span>
-<toc_entry tal:omit-tag=""
-  tal:repeat="obj results">
-<cycle tal:define="oddrow repeat/obj/odd" tal:omit-tag="">
-<tr tal:attributes="class python:test(oddrow, 'odd', 'even')"
-  tal:define="object obj/getObject">
+  <div class="offsetnav">
+    <tal:block tal:condition="previous">
+      <a tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset - batch_size))">previous</a>&nbsp;
+    </tal:block>
+    <a tal:condition="next" tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset + batch_size))">next</a>
+  </div>
 
-<span tal:replace="nothing"> _______ date _______ </span>
-<td nowrap="1" valign="top" align="left" colspan="3">
-<span tal:replace="structure python:mangle.DateTime(object.publication_datetime()).toStrOptionalTime()" />
-</td>
+  <table class="timetable">
+    <tbody>
+      <tr>
+        <td>
+          <a href="3" tal:content="structure python: '<<&nbsp;%s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
+        </td>
+        <tal:repeat repeat="month months">
+          <tal:define define="id repeat/month/index">
+            <td align="center" tal:attributes="class python:test(id == int(currentmonth) - 1, 'selected_month', '');">
+              <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
+            </td>
+          </tal:define>
+        </tal:repeat>
+        <td>
+          <a href="3" tal:content="structure python: '%s&nbsp;>>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-<span tal:replace="nothing"> _______ title cell _______ </span>
-<td valign="top" align="left" colspan="8">
-<tal:block condition="python:object.get_title() != ''">
-<a title="View this item"
-  tal:attributes="href python: object.object().absolute_url()" i18n:attributes="title">
-<b tal:content="object/get_title">title</b>
-</a>
-</tal:block>
-<tal:block condition="python:object.get_title() == ''">
-<img style="height:100%" width="32" height="18" align="left"
-  tal:attributes="src string:${silva_root}/globals/pixel.gif" />
-<a title="View this item"
-  tal:attributes="href python: object.object().absolute_url()" i18n:attributes="title">
-<span tal:replace="obj/id">title</span>
-</a>
-</tal:block>
-</td>
-
-<span tal:replace="nothing"> _______ author _______ </span>
-<td nowrap="1" valign="top" align="left" colspan="3">
-<span tal:replace="python:object.last_author_fullname()" />
-</td>
-
-</tr>
-
-
-</cycle>
-</toc_entry>
-
-<span tal:replace="nothing"> ______________ if no records ______________ </span>
-<check tal:condition="python:len(results) == 0">
-<tr class="divider">
-<td colspan="14"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-<tr class="odd">
-<td i18n:translate="" colspan="14">
-There are no articles for this period.
-</td>
-</tr>
-<tr class="divider">
-<td colspan="14"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
-</tr>
-</check>
-<!-- /iteration -->
-
-      <tbody>
-        <tr class="controls">
-          <td colspan="14"></td>
-        </tr>
-
-        <tr>
-          <td>
-            <a href="3" tal:content="structure python: '<<&nbsp;%s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
-          </td>
-          <tal:repeat repeat="month months">
-            <tal:define define="id repeat/month/index">
-              <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-                <a href="#" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
-              </td>
-            </tal:define>
-          </tal:repeat>
-          <td>
-            <a href="3" tal:content="structure python: '%s&nbsp;>>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
-          </td>
-        </tr>
-  
-        <tr class="controls">
-    <td class="align-right" colspan="14">
-      <form tal:attributes="action model/absolute_url" method="post">
-        <input type="text" name="query" />
-        <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s"
-              i18n:attributes="title value"/>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-<a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">View Agenda</a>
+  <div class="viewlinks">
+    <div class="viewlink">
+      <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
+    </div>
+  </div>
 
 </span>

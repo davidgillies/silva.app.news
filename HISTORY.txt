@@ -3,6 +3,53 @@ See also LICENSE.txt
 
 SilvaNews changes
 
+  Current branch
+
+    Features
+
+      - Removed all tables from the public views to more easily allow styling
+        and layouting with CSS (note that this changes the layout of the public
+        views!)
+
+      - Added a new checkbox in Agenda Items, 'display time', to control 
+        whether the time part of start and end date/time is displayed in
+        the public views, allowing times of 00:00 to be displayed.
+
+      - Added a couple of new fields to service_news to allow displaying
+        dates and months in a certain locale and format (this is a global
+        setting rather than a per-user one, because Silva content currently
+        can not be presented in more than one language it doesn't make sense
+        to display dates and months in different languages).
+
+      - Added a new field 'display_datetime' to news items, rather than using
+        the publication date/time to determine if and where an item is
+        displayed in a news viewer, this display date is used, e.g. allowing
+        re-publishing of an item without moving it in the public view of news
+        viewers.
+
+      - Agenda items are now displayed according to the end datetime, if 
+        available, so that an item disappears from the list of 'current events'
+        when it ends rather than when it starts.
+
+      - Subjects and target audiences now have a title, which allows changing
+        the way they are displayed without having to update stored references
+        to them (so you can now 'change a subject' and still have newsviewers
+        display the correct list of items).
+
+      - Rather than displaying the first subheader encountered in the news item
+        and the first paragraph encountered (which enforced a certain structure
+        on news item content to make the viewers display the items correctly)
+        news viewers now display the first *bit* of the news item, regardless
+        of the type of elements that contains. Note that this requires some
+        changes in the public templates (the subheader() and lead() methods 
+        have been replaced by one called 'get_intro').
+
+    Bugs fixed
+
+      - The 'number of items to display' field on news viewers used to limit
+        the number of items displayed in the archive, which made certain items
+        not get displayed anymore, this is not fixed.
+
   1.2
 
     Features

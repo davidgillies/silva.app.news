@@ -1,6 +1,6 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Revision: 1.16 $
 
 # Zope
 from OFS import SimpleItem
@@ -204,8 +204,8 @@ class Filter(Asset):
         """
         # XXX This isn't called yet from anywhere since the methods it was
         # called from are replaced by metadata functionality
-        service_subjects = self.service_news.subjects()
-        service_target_audiences = self.service_news.target_audiences()
+        service_subjects = [s[0] for s in self.service_news.subjects()]
+        service_target_audiences = [t[0] for t in self.service_news.target_audiences()]
 
         removed_subjects = []
         removed_target_audiences = []
@@ -252,7 +252,7 @@ class Filter(Asset):
             subjects = self._subjects,
             target_audiences = self._target_audiences,
             meta_type = meta_types,
-            sort_on = 'silva-extrapublicationtime',
+            sort_on = 'idx_display_datetime',
             sort_order = 'descending')
 
         result =  [r for r in result if not r.object_path in

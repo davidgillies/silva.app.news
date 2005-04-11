@@ -36,6 +36,23 @@
         <tales>
         </tales>
       </field>
+      <field><id>display_time</id> <type>CheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default type="int">0</default>
+          <title>Display time</title>
+          <description>
+            The time part of start and end date/time will only be displayed
+            if this is checked.
+          </description>
+          <external_validator></external_validator>
+          <extra></extra>
+        </values>
+        <tales>
+        </tales>
+      </field>
       <field><id>start_datetime</id> <type>DateTimeField</type>
         <values>
           <allow_empty_time type="int">1</allow_empty_time>
@@ -51,7 +68,9 @@
           <default_now type="int">0</default_now>
           <css_class></css_class>
           <title>date and time</title>
-          <description>Format: d/m/y, time is optional</description>
+          <description>
+            Format: d/m/y, time is optional (will default to 00:00)
+          </description>
         </values>
         <tales>
           <time_separator>python:form.get_time_punctuation()</time_separator>
@@ -72,7 +91,9 @@
           <default_now type="int">0</default_now>
           <css_class></css_class>
           <title>end date and time</title>
-          <description>Format: d/m/y, time is optional</description>
+          <description>
+            Format: d/m/y, time is optional (will default to 00:00)
+          </description>
         </values>
         <tales>
           <time_separator>python:form.get_time_punctuation()</time_separator>
