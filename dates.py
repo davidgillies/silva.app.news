@@ -20,7 +20,7 @@ except ImportError:
             pass
 
 try:
-    from Products import Z3Locales
+    from Products import z3locales
     import localdatetime
 except ImportError:
     # put the Z3Locale/src dir in your PYTHONPATH to test this stand-alone
