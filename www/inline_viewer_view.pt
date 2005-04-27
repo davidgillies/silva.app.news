@@ -7,9 +7,9 @@
   tal:omit-tag=""
   tal:define="model request/model;
               viewer options/viewer;
-              viewerobj python:model.get_viewer_obj(viewer);
+              viewerobj python:here.get_viewer_obj(viewer);
               limit python:int(options['number_of_articles']);
-              items python:model.get_items(limit, viewer);
+              items python:here.get_items(limit, viewer);
               mangle modules/Products/Silva/mangle;
               ">
   <div tal:condition="python:options['inv_div']"
