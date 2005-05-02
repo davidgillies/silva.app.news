@@ -12,6 +12,8 @@ from Products.SilvaExternalSources.CodeSource import CodeSource
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
+from OFS.Image import Image
+
 from Products.Formulator.Form import ZMIForm
 from Products.Formulator.XMLToForm import XMLToForm
 
@@ -35,7 +37,7 @@ class InlineViewer(CodeSource):
 
     def manage_afterAdd(self, item, container):
         self._set_form()
-        self._set_view()
+        self._set_views()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
@@ -43,8 +45,10 @@ class InlineViewer(CodeSource):
         """reload the form and pt"""
         if 'view' in self.objectIds():
             self.manage_delObjects(['view'])
+        if 'feed_footer' in self.objectIds():
+            self.manage_delObjects(['feed_footer'])
         self._set_form()
-        self._set_view()
+        self._set_views()
         return 'refreshed for and pagetemplate'
 
     def _set_form(self):
@@ -56,12 +60,27 @@ class InlineViewer(CodeSource):
         XMLToForm(f.read(), self.parameters)
         f.close()
 
-    def _set_view(self):
+    def _set_views(self):
         f = open(os.path.join(
                 package_home(globals()),
                 'www',
                 'inline_viewer_view.pt'))
         self._setObject('view', ZopePageTemplate('view', f.read()))
+        f.close()
+
+        f = open(os.path.join(
+                package_home(globals()),
+                'www',
+                'inline_viewer_footer.pt'))
+        self._setObject('feed_footer', 
+                        ZopePageTemplate('feed_footer', f.read()))
+        f.close()
+
+        f = open(os.path.join(
+                package_home(globals()),
+                'www',
+                'rss10.gif'), 'rb')
+        self._setObject('rss.gif', Image('rss.gif', 'RSS (1.0)', f))
         f.close()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -70,7 +89,7 @@ class InlineViewer(CodeSource):
         """render the news list"""
         self.REQUEST['model'] = self
         try:
-            return getattr(self, 'view')(**kwargs)
+            return unicode(getattr(self, 'view')(**kwargs), 'UTF-8')
         except:
             import sys, traceback
             exc, e, tb = sys.exc_info()
