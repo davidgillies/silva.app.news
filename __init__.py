@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.19 $
+# $Revision: 1.20 $
 
 import AgendaFilter, NewsFilter, ServiceNews, InlineViewer
 import NewsPublication, NewsViewer, AgendaViewer, RSSAggregator
@@ -11,6 +11,9 @@ from Products.Silva.ExtensionRegistry import extensionRegistry
 #from Products.Silva.upgrade import upgrade_registry
 from Products.SilvaMetadata.Compatibility import registerTypeForMetadata
 import install
+
+from Products.SilvaExternalSources import ExternalSource
+import os
 
 def initialize(context):
 
@@ -26,7 +29,11 @@ def initialize(context):
         InlineViewer.InlineViewer,
         constructors = (InlineViewer.manage_addInlineViewerForm,
                         InlineViewer.manage_addInlineViewer),
-        icon="www/newsservice.gif"
+        icon = os.path.join(
+                os.path.abspath(
+                    os.path.dirname(ExternalSource.__file__)
+                ),
+                'www/codesource.png')
         )
 
     context.registerClass(
