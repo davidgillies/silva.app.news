@@ -19,6 +19,13 @@ from Products.Formulator.XMLToForm import XMLToForm
 
 #from Products.Silva.i18n import translate as _
 
+def ustr(x):
+    if type(x) == unicode:
+        return x
+    elif type(x) == str:
+        return unicode(x, 'UTF-8')
+    return str(x)
+
 class InlineViewer(CodeSource):
     """A news viewer object to display news items within a Silva document
     
@@ -89,7 +96,7 @@ class InlineViewer(CodeSource):
         """render the news list"""
         self.REQUEST['model'] = self
         try:
-            return unicode(getattr(self, 'view')(**kwargs), 'UTF-8')
+            return ustr(getattr(self, 'view')(**kwargs))
         except:
             import sys, traceback
             exc, e, tb = sys.exc_info()
