@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2004 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Id: newsprovider.py,v 1.2 2005/04/11 13:50:39 guido Exp $
+# $Id: newsprovider.py,v 1.3 2005/05/02 14:22:52 guido Exp $
 #
 
 import Globals
@@ -32,7 +32,9 @@ class NewsItemReference:
         desc = self._item.get_description()
         if desc is None:
             return ''
-        return desc[:maxchars]
+        if maxchars > 0:
+          desc = desc[:maxchars]
+        return desc
 
     def link(self):
         return self._item.aq_parent.absolute_url()
@@ -46,13 +48,16 @@ class NewsItemReference:
         return creation_datetime
 
     def start_datetime(self):
-        return getattr(self._item, 'start_datetime', None)
+        if hasattr(self._item, 'start_datetime'):
+            return self._item.start_datetime()
 
     def end_datetime(self):
-        return getattr(self._item, 'end_datetime', None)
+        if hasattr(self._item, 'end_datetime'):
+            return self._item.end_datetime()
 
     def location(self):
-        return getattr(self._item, 'location', None)
+        if hasattr(self._item, 'location'):
+            return self._item.location()
 
 Globals.InitializeClass(NewsItemReference)
 
@@ -84,22 +89,39 @@ class AgendaViewerNewsProvider(adapter.Adapter):
         context = self.context
         results = []
         for newsfilter in context._filters:
+            # XXX this is the Nth time I'm copying this code, need to 
+            # investigate some refactoring when I have some more time to
+            # spare...
             filterob = context.aq_inner.restrictedTraverse(newsfilter)
-            query = newfilter._prepare_query(['Silva Plain AgendaItem'])
-            query['sort_on'] = 'idx_start_datetime'
-            query['sort_order'] = 'ascending'
-            now = DateTime()
-            # request everything until 100 years after now
-            end = DateTime() + (100 * 365.25)
-            query['idx_start_datetime'] = (now, end)
-            query['idx_start_datetime_usage'] = 'range:min:max'
-            res = filterob._query(query)
+            now = DateTime().earliestTime()
+            # request everything until 1 year from now
+            end = DateTime() + 366
+            
+            query1 = filterob._prepare_query(['Silva Agenda Item Version'])
+            query1['sort_on'] = 'idx_end_datetime'
+            query1['sort_order'] = 'ascending'
+            query1['idx_end_datetime'] = (now, end)
+            query1['idx_end_datetime_usage'] = 'range:min:max'
+            res = filterob._query(**query1)
+            
+            query2 = filterob._prepare_query(['Silva Agenda Item Version'])
+            query2['sort_on'] = 'idx_start_datetime'
+            query2['sort_order'] = 'ascending'
+            query2['idx_start_datetime'] = (now, end)
+            query2['idx_start_datetime_usage'] = 'range:min:max'
+            res += filterob._query(**query2)
+            
             results += res
+        # wrap and remove doubles
         ret = []
+        paths = []
         for item in results[:number]:
             obj = item.getObject()
-            ref = NewsItemReference(obj, self.context)
-            ret.append(ref)
+            path = obj.getPhysicalPath()
+            if path not in paths:
+                ref = NewsItemReference(obj, self.context)
+                ret.append(ref)
+                paths.append(path)
         return ret
 
 class RSSItemReference:
@@ -170,7 +192,7 @@ class RSSAggregatorNewsProvider(adapter.Adapter):
         ret = []
         for item in items:
             ret.append(RSSItemReference(item, self.context))
-        return ret
+        return ret[:number]
 
 def getNewsProviderAdapter(context):
     if context.meta_type == 'Silva News Viewer':
