@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.24 $
+# $Revision: 1.25 $
 
 from OFS import SimpleItem
 from AccessControl import ClassSecurityInfo
@@ -57,8 +57,7 @@ class AgendaFilter(Filter):
 
         result = []
         
-        date = DateTime()
-        lastnight = DateTime(date.year(), date.month(), date.day(), 0, 0, 0)
+        lastnight = DateTime().earliestTime()
         enddate = lastnight + numdays
         result_enddt = self._query(
             idx_end_datetime = (lastnight, enddate),
@@ -93,8 +92,10 @@ class AgendaFilter(Filter):
         # remove all objects from result_startdt for which an end datetime is 
         # set (since they're retrieved above)
         for item in result_startdt:
+            obj = item.getObject()
             if (not item.object_path in self._excluded_items and 
-                    not item.getObject().end_datetime()):
+                    (not hasattr(obj, 'end_datetime') or 
+                        not obj.end_datetime())):
                 result.append(item)
 
         result = [r for r in result]
@@ -195,8 +196,10 @@ class AgendaFilter(Filter):
 
         # remove the items with an end_dt from the result_startdt
         for item in result_startdt:
+            obj = item.getObject()
             if (item.object_path not in self._excluded_items and
-                    not item.getObject().end_datetime()):
+                    (not hasattr(obj, 'end_datetime') or 
+                        not obj.end_datetime())):
                 result.append(item)
 
         result = [r for r in result]
@@ -262,8 +265,10 @@ class AgendaFilter(Filter):
         result_startdt = self.service_catalog(query)
 
         for item in result_startdt:
+            obj = item.getObject()
             if (item.object_path not in self._excluded_items and
-                    not item.getObject().end_datetime()):
+                    (not hasattr(obj, 'end_datetime') or
+                        not obj.end_datetime())):
                 result.append(item)
 
         result = [r for r in result]
@@ -319,7 +324,8 @@ class AgendaFilter(Filter):
         result = [r for r in result]
 
         for item in result_startdt:
-            if not item.getObject().end_datetime():
+            obj = item.getObject()
+            if not hasattr(obj, 'end_datetime') or not obj.end_datetime():
                 result.append(item)
 
         result.sort(brainsorter)
