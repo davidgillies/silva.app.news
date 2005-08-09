@@ -63,21 +63,38 @@ for id, title in all_target_audiences:
 subjects = '||'.join(subjects)
 target_audiences = '||'.join(target_audiences)
 
+scheme = 'http://infrae.com/namespaces/metadata/silva-news'
+meta_template = (
+    '<meta scheme="http://infrae.com/namespaces/metadata/silva-news" '
+    'name="%s" content="%s" />')
+metas = [
+    meta_template % ('subjects', subjects),
+    meta_template % ('target_audiences', target_audiences),
+]
+
+if hasattr(version, 'start_datetime'):
+    metas.append(meta_template % 
+            ('start_datetime', version.start_datetime() or ''))
+
+if hasattr(version, 'end_datetime'):
+    metas.append(meta_template % 
+            ('end_datetime', version.end_datetime() or ''))
+
+if hasattr(version, 'location'):
+    metas.append(meta_template % ('location', version.location()))
+
 return ('<html>\n'
         '<head>\n'
         '<title>%s</title>\n'
         '<link href="%s" type="text/css" rel="stylesheet" />\n'
-        '<meta scheme="http://infrae.com/namespaces/metadata/silva-news" '
-        'name="subjects" content="%s" />\n'
-        '<meta scheme="http://infrae.com/namespaces/metadata/silva-news" '
-        'name="target_audiences" content="%s" />\n'
-        '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\n'
+        '%s\n'
+        '<meta http-equiv="Content-Type" '
+        'content="text/html; charset=UTF-8" />\n'
         '</head>\n'
         '<h2>%s</h2>\n'
         '%s\n'
         '</html>' % (doctitle, 
                         getattr(context.globals, 'kupu.css').absolute_url(),
-                        subjects,
-                        target_audiences,
+                        '\n'.join(metas),
                         doctitle,
                         xhtml))
