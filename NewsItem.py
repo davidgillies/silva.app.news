@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.31 $
+# $Revision: 1.32 $
 
 # Python
 from StringIO import StringIO
@@ -28,12 +28,46 @@ from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.Metadata import export_metadata
 
-from Products.SilvaDocument import mixedcontentsupport
-
 from silvaxmlattribute import SilvaXMLAttribute
-
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
+
+class MetaDataSaveHandler(ContentHandler):
+    def startDocument(self):
+        self.title = ''
+        self.inside_title = False
+        self.metadata = {}
+
+    def startElement(self, name, attributes):
+        if name == 'h2' and not self.title:
+            self.inside_title = True
+        elif name == 'meta':
+            if (attributes.get('scheme') == 
+                    'http://infrae.com/namespaces/metadata/silva-news'
+                    ):
+                name = attributes.get('name', '')
+                content = attributes.get('content', '')
+                self.metadata[name] = self.parse_content(content)
+                
+    def endElement(self, name):
+        if name == 'h2':
+            self.inside_title = False
+
+    def characters(self, data):
+        if self.inside_title:
+            self.title += data
+
+    def parse_content(self, content):
+        return [self.deentitize_and_deescape_pipes(x) for 
+                    x in content.split('|')]
+
+    def deentitize_and_deescape_pipes(self, data):
+        data = data.replace('&pipe;', '|')
+        data = data.replace('&lt;', '<')
+        data = data.replace('&gt;', '>')
+        data = data.replace('&quot;', '"')
+        data = data.replace('&amp;', '&')
+        return data
 
 class NewsItem(CatalogedVersionedContent):
     """Base class for all kinds of news items.
@@ -102,51 +136,26 @@ class NewsItem(CatalogedVersionedContent):
         self.save_title_and_metadata(content)
         self.get_editable().content.saveEditorHTML(content)
 
-        
     def save_title_and_metadata(self, html):
-        class MetaDataSaveHandler(ContentHandler):
-            def startDocument(self):
-                self.title = ''
-                self.inside_title = False
-                self.metadata = {}
-
-            def startElement(self, name, attributes):
-                if name == 'h2' and not self.title:
-                    self.inside_title = True
-                elif name == 'meta':
-                    if (attributes.get('scheme') == 
-                            'http://infrae.com/namespaces/metadata/silva-news'
-                            ):
-                        name = attributes.get('name')
-                        content = attributes.get('content')
-                        self.metadata[name] = self.parse_content(content)
-                        
-            def endElement(self, name):
-                if name == 'h2':
-                    self.inside_title = False
-
-            def characters(self, data):
-                if self.inside_title:
-                    self.title += data
-
-            def parse_content(self, content):
-                return [self.deentitize_and_deescape_pipes(x) for 
-                            x in content.split('|')]
-
-            def deentitize_and_deescape_pipes(self, data):
-                data = data.replace('&pipe;', '|')
-                data = data.replace('&lt;', '<')
-                data = data.replace('&gt;', '>')
-                data = data.replace('&quot;', '"')
-                data = data.replace('&amp;', '&')
-                return data
-
         handler = MetaDataSaveHandler()
         parseString(html, handler)
 
         version = self.get_editable()
         version.set_subjects(handler.metadata['subjects'])
         version.set_target_audiences(handler.metadata['target_audiences'])
+        # a bit nasty, should perhaps happen in AgendaItem only?
+        if hasattr(version, 'start_datetime'):
+            version.set_start_datetime(
+                DateTime(handler.metadata['start_datetime'][0]))
+        if hasattr(version, 'end_datetime'):
+            end_datetime = handler.metadata['end_datetime'][0]
+            if not end_datetime:
+                end_datetime = None
+            else:
+                end_datetime = DateTime(end_datetime)
+            version.set_end_datetime(end_datetime)
+        if hasattr(version, 'location'):
+            version.set_location(handler.metadata['location'][0])
         version.set_title(handler.title)
 
 InitializeClass(NewsItem)
