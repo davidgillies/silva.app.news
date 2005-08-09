@@ -1,9 +1,13 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.30 $
+# $Revision: 1.31 $
 
 # Python
 from StringIO import StringIO
+import sys
+import traceback
+from xml.sax import parseString
+from xml.sax.handler import ContentHandler
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -19,12 +23,17 @@ from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 # Silva
 from Products.Silva import SilvaPermissions
 from Products.Silva.VersionedContent import CatalogedVersionedContent
+from Products.Silva.Version import CatalogedVersion
 from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
-from Products.SilvaDocument.Document import DocumentVersion
 from Products.Silva.Metadata import export_metadata
 
 from Products.SilvaDocument import mixedcontentsupport
+
+from silvaxmlattribute import SilvaXMLAttribute
+
+from Products.SilvaDocument.transform.Transformer import EditorTransformer
+from Products.SilvaDocument.transform.base import Context
 
 class NewsItem(CatalogedVersionedContent):
     """Base class for all kinds of news items.
@@ -58,14 +67,91 @@ class NewsItem(CatalogedVersionedContent):
         version.to_xml(context)
         context.f.write('</silva_newsitem>')
 
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                                'editor_xml')
+    def editor_xml(self):
+        browser = 'Mozilla'
+        if self.REQUEST['HTTP_USER_AGENT'].find('MSIE') > -1:
+            browser = 'IE'
+
+        context = Context(f=StringIO(),
+                            last_version=1,
+                            url=self.absolute_url(),
+                            browser=browser,
+                            model=self)
+        self.to_xml(context)
+        xml = context.f.getvalue()
+        return xml
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'implements_newsitem')
     def implements_newsitem(self):
         return True
 
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                                'PUT')
+    def PUT(self, REQUEST=None, RESPONSE=None):
+        """PUT support"""
+        # XXX we may want to make this more modular/pluggable at some point
+        # to allow more content-types (+ transformations)
+        if REQUEST is None:
+            REQUEST = self.REQUEST
+        if RESPONSE is None:
+            RESPONSE = REQUEST.RESPONSE
+        content = REQUEST['BODYFILE'].read()
+        self.save_title_and_metadata(content)
+        self.get_editable().content.saveEditorHTML(content)
+
+        
+    def save_title_and_metadata(self, html):
+        class MetaDataSaveHandler(ContentHandler):
+            def startDocument(self):
+                self.title = ''
+                self.inside_title = False
+                self.metadata = {}
+
+            def startElement(self, name, attributes):
+                if name == 'h2' and not self.title:
+                    self.inside_title = True
+                elif name == 'meta':
+                    if (attributes.get('scheme') == 
+                            'http://infrae.com/namespaces/metadata/silva-news'
+                            ):
+                        name = attributes.get('name')
+                        content = attributes.get('content')
+                        self.metadata[name] = self.parse_content(content)
+                        
+            def endElement(self, name):
+                if name == 'h2':
+                    self.inside_title = False
+
+            def characters(self, data):
+                if self.inside_title:
+                    self.title += data
+
+            def parse_content(self, content):
+                return [self.deentitize_and_deescape_pipes(x) for 
+                            x in content.split('|')]
+
+            def deentitize_and_deescape_pipes(self, data):
+                data = data.replace('&pipe;', '|')
+                data = data.replace('&lt;', '<')
+                data = data.replace('&gt;', '>')
+                data = data.replace('&quot;', '"')
+                data = data.replace('&amp;', '&')
+                return data
+
+        handler = MetaDataSaveHandler()
+        parseString(html, handler)
+
+        version = self.get_editable()
+        version.set_subjects(handler.metadata['subjects'])
+        version.set_target_audiences(handler.metadata['target_audiences'])
+        version.set_title(handler.title)
+
 InitializeClass(NewsItem)
 
-class NewsItemVersion(DocumentVersion):
+class NewsItemVersion(CatalogedVersion):
     """Base class for news item versions.
     XXX making this subclass DocumentVersion does restrict matters,
     but is clearer than doing the same thing in here again which was
@@ -79,6 +165,7 @@ class NewsItemVersion(DocumentVersion):
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
+        self.content = SilvaXMLAttribute('content')
 
     # XXX I would rather have this get called automatically on setting 
     # the publication datetime, but that would have meant some nasty monkey-
@@ -254,7 +341,7 @@ class NewsItemVersion(DocumentVersion):
         """Returns all data as a flat string for full text-search
         """
         s = StringIO()
-        self.content.documentElement.writeStream(s)
+        self.content.toXML(s)
         content = self._flattenxml(s.getvalue())
         return "%s %s %s %s" % (self.get_title(),
                                       " ".join(self._subjects),
@@ -271,10 +358,11 @@ class NewsItemVersion(DocumentVersion):
         f = context.f
         f.write(u'<title>%s</title>' % self.get_title())
         f.write(u'<meta_type>%s</meta_type>' % self.meta_type)
-        f.write(u'<content>')
+        # XXX really don't know how to deal with this...
+        f.write(u'<sta>')
         self.content_xml(context)
-        f.write(u'</content>')
-        self.content.documentElement.writeStream(f)
+        f.write(u'</sta>')
+        self.content.toXML(f)
 
     def content_xml(self, context):
         """Writes all content elements to the XML stream"""
@@ -290,5 +378,12 @@ class NewsItemVersion(DocumentVersion):
         inputstring = inputstring.replace(u'>', u'&gt;')
 
         return inputstring
+
+    # XXX had to copy this from SilvaDocument.Document...
+    def _flattenxml(self, xmlinput):
+        """Cuts out all the XML-tags, helper for fulltext (for content-objects)
+        """
+        # XXX this need to be fixed by using ZCTextIndex or the like
+        return xmlinput
 
 InitializeClass(NewsItemVersion)

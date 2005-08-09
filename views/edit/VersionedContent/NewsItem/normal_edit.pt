@@ -80,7 +80,7 @@
   <tr comment="AgendaItem content" class="odd" valign="top"
     tal:attributes="class class" tal:define="class python:test(lastclass=='odd', 'even', 'odd'); global lastclass class">
     <td width="16" class="invisible" >&nbsp;</td>
-    <td class="field-title" style="border-left:1px solid #617681;"><div class="controls"><a href="content_mode"><a class="transport" href="content_mode" i18n:translate="">content editor...</a></div></td>
+    <td class="field-title" style="border-left:1px solid #617681;"><div class="controls"><a class="transport" href="tab_edit_kupu?show_editor=1" i18n:translate="">content editor...</a></div></td>
     <td><p tal:replace="structure view/get_content" /><p tal:condition="not: view/get_content" tal:replace="structure string:(nothing filled in)" /></td>
     <td>&nbsp;</td>
     <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>
