@@ -191,11 +191,12 @@ div.kupu-toolbox h1, div.kupu-toolbox-active h1 {
   width: 100%;
   max-width: 22em;
   margin-top: 0;
-  margin-bottom: 0em;
+  margin-bottom: 2px;
   padding-left: 0.6em;
   border: solid 1px #6c797f;
   border-style: solid none none none;
   text-align: left;
+  cursor: default;
 }
 
 div.kupu-tooltray {
