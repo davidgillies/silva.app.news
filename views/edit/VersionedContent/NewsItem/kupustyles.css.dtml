@@ -187,16 +187,24 @@ div.kupu-toolbox h1, div.kupu-toolbox-active h1 {
   font-size: 1.1em;
   font-weight: normal;
   color: #ecfff3;
+  background-image: url('<dtml-var root>/kupu_silva/closed_arrow.gif');
+  background-repeat: no-repeat;
+  background-position: center left;
   background-color: #829199;
   width: 100%;
   max-width: 22em;
   margin-top: 0;
-  margin-bottom: 2px;
-  padding-left: 0.6em;
+  margin-bottom: 0px;
+  padding-left: 12px;
   border: solid 1px #6c797f;
   border-style: solid none none none;
   text-align: left;
   cursor: default;
+}
+
+div.kupu-toolbox h1.kupu-toolbox-heading-opened, 
+div.kupu-toolbox-active h1.kupu-toolbox-heading-opened {
+  background-image: url('<dtml-var root>/kupu_silva/opened_arrow.gif');
 }
 
 div.kupu-tooltray {
@@ -260,6 +268,23 @@ div#kupu-fgcolorchooser div:hover {
   font-size: x-small;
   font-family: Verdana, "Lucida Grande", Helvetica, Arial, sans-serif;
 
+}
+
+.kupu-properties-checkbox-outerdiv {
+  cursor: default;
+}
+
+.kupu-properties-checkbox-line {
+}
+
+.kupu-properties-checkbox-input {
+  clear: left;
+  float: left;
+}
+
+.kupu-properties-checkbox-item-title {
+  float: left;
+  width: 14em;
 }
 
 #kupu-toolbox-debug {
