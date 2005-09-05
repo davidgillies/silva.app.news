@@ -4,7 +4,8 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=version
+##parameters=model
 ##title=
 ##
-return context.REQUEST.model.content.render()
+context.service_editor.setViewer('service_webshop_sub_viewer')
+return context.service_editor.getViewer().getWidget(model.content.documentElement).render()
