@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.32 $
+# $Revision: 1.33 $
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -266,22 +266,22 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('<title>%s</title>\n' % quote_xml(self.get_title()))
         xml.write('<link>%s</link>\n' % self.absolute_url())
         xml.write('<description>%s</description>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'content_description')))
+            quote_xml(mdbinding.get('silva-extra', 'content_description')))
         xml.write('<dc:creator>%s</dc:creator>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'creator')))
-	date = creationdate.HTML4()
+            quote_xml(mdbinding.get('silva-extra', 'creator')))
+        date = creationdate.HTML4()
         xml.write('<dc:date>%s</dc:date>\n' % quote_xml(date))
 
-	# output <items> list
-	# and store items in a list for later use
-	itemlist = []
-	xml.write('<items>\n<rdf:Seq>\n')
+        # output <items> list
+        # and store items in a list for later use
+        itemlist = []
+        xml.write('<items>\n<rdf:Seq>\n')
         for item in items:
             item = item.getObject()
 	    itemlist.append(item)
 	    url = item.object().absolute_url()
 	    xml.write('<rdf:li rdf:resource="%s" />\n' % url)
-	xml.write('</rdf:Seq>\n</items>\n')
+        xml.write('</rdf:Seq>\n</items>\n')
         xml.write('</channel>\n\n')
         # loop over the itemslist and create the RSS/RDF item elements
         for item in itemlist:
