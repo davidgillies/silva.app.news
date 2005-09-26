@@ -29,18 +29,18 @@ class RSSAggregator(NewsViewer):
     meta_type = 'Silva RSS Aggregator'
 
     def __init__(self, id):
-	RSSAggregator.inheritedAttribute('__init__')(self, id)
-	self._rss_feeds = []
-	self._last_updated = 0
-	self._caching_period = 360 # in seconds
+        RSSAggregator.inheritedAttribute('__init__')(self, id)
+        self._rss_feeds = []
+        self._last_updated = 0
+        self._caching_period = 360 # in seconds
         self._v_cache = None
 
     # MANIPULATORS
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-			      'set_feeds')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_feeds')
     def set_feeds(self, channels):
-	"""splits the channels string argument and stores it"""
+        """splits the channels string argument and stores it"""
         rss_feeds = []
         for channel in channels.split('\n'):
             c = channel.strip()
@@ -56,13 +56,13 @@ class RSSAggregator(NewsViewer):
 
     # ACCESSORS
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-			      'get_feeds')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_feeds')
     def get_feeds(self):
         return self._rss_feeds
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-			      'get_feed_contents')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_feed_contents')
     def get_feed_contents(self):
         """Return the contents of all given feeds in a dict.
 
@@ -88,14 +88,14 @@ class RSSAggregator(NewsViewer):
             ret[feed] = res
         return ret
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-			      'get_merged_feed_contents')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 
+        'get_merged_feed_contents')
     def get_merged_feed_contents(self):
         feed_data = self.get_feed_contents()
         ret = []
         for uri, channel in feed_data.items():
             ret.extend(channel['items'])
-##         ret.sort(lambda x,y: x['title'] > y['title'])
         return ret
 
     def rss(self, REQUEST=None):
@@ -115,21 +115,23 @@ class RSSAggregator(NewsViewer):
         xml.write('<channel rdf:about="%s">\n' % self.absolute_url())
         xml.write('<title>%s</title>\n' % quote_xml(self.get_title()))
         xml.write('<link>%s</link>\n' % self.absolute_url())
-        xml.write('<description>%s</description>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'content_description')))
-        xml.write('<dc:creator>%s</dc:creator>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'creator')))
-	date = creationdate.HTML4()
+        xml.write(
+            '<description>%s</description>\n' %
+            quote_xml(mdbinding.get('silva-extra', 'content_description')))
+        xml.write(
+            '<dc:creator>%s</dc:creator>\n' %
+            quote_xml(mdbinding.get('silva-extra', 'creator')))
+        date = creationdate.HTML4()
         xml.write('<dc:date>%s</dc:date>\n' % quote_xml(date))
 
-	# output <items> list
-	# and store items in a list
-	itemlist = self.get_merged_feed_contents()
-	xml.write('<items>\n<rdf:Seq>\n')
+        # output <items> list
+        # and store items in a list
+        itemlist = self.get_merged_feed_contents()
+        xml.write('<items>\n<rdf:Seq>\n')
         for item in itemlist:
-	    url = quote_xml(item['link'])
-	    xml.write('<rdf:li rdf:resource="%s" />\n' % url)
-	xml.write('</rdf:Seq>\n</items>\n')
+            url = quote_xml(item['link'])
+            xml.write('<rdf:li rdf:resource="%s" />\n' % url)
+        xml.write('</rdf:Seq>\n</items>\n')
         xml.write('</channel>\n\n')
         # loop over the itemslist and create a RSS/RDF item elements
         for item in itemlist:
@@ -164,7 +166,7 @@ manage_addRSSAggregatorForm = PageTemplateFile(
 def manage_addRSSAggregator(self, id, title, REQUEST=None):
     """Add an RSS Aggregator"""
     if not mangle.Id(self, id).isValid():
-	return
+        return
     object = RSSAggregator(id)
     self._setObject(id, object)
     obj = getattr(self, id)
