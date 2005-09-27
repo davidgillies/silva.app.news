@@ -10,7 +10,14 @@ window.widgeteer_datetime = new function() {
 
     this.DateTimeWidget.prototype.initialize = function(input) {
         this.input = input;
-        var parsed = this.parseDateTime(input.value);
+        var datetime = input.value;
+        var parsed = undefined;
+        if (datetime) {
+            parsed = this.parseDateTime(input.value);
+        };
+        if (parsed === undefined) {
+            parsed = ['', '', '', '', '', ''];
+        };
         
         var containerdiv = document.createElement('div');
         containerdiv.style.whiteSpace = 'nowrap';
@@ -57,7 +64,9 @@ window.widgeteer_datetime = new function() {
         this.hourinput = hourinput;
         hourinput.setAttribute('maxlen', '2');
         hourinput.setAttribute('size', '2');
-        hourinput.value = parsed[3];
+        if (parsed[3]) {
+            hourinput.value = parsed[3];
+        };
         hourel.appendChild(hourinput);
 
         hourel.appendChild(document.createTextNode(this.time_seperator));
@@ -66,19 +75,24 @@ window.widgeteer_datetime = new function() {
         this.mininput = mininput;
         mininput.setAttribute('maxlen', '2');
         mininput.setAttribute('size', '2');
-        mininput.value = parsed[4];
+        if (parsed[4]) {
+            mininput.value = parsed[4];
+        };
         hourel.appendChild(mininput);
 
         input.parentNode.insertBefore(containerdiv, input);
         input.style.display = 'none';
     };
 
-    // mapping from reg to field locations ([y, m, d, h, m, s], s is optional)
+    // mapping from reg to field locations ([y, m, d, h, m, s], h, m, s 
+    // are optional)
     regs = {
         '^(\\d{4})\\\/(\\d{1,2})\\\/(\\d{1,2}) (\\d{1,2}):(\\d{2}):(\\d{2})': 
             [1, 2, 3, 4, 5, 6],
-        '^(\\d{4})\\\/(\d{1,2})\\\/(\\d{1,2}) (\\d{1,2})\\:(\\d{2})':
-            [1, 2, 3, 4, 5]
+        '^(\\d{4})\\\/(\\d{1,2})\\\/(\\d{1,2}) (\\d{1,2})\\:(\\d{2})':
+            [1, 2, 3, 4, 5],
+        '^(\\d{4})\\\/(\\d{1,2})\\\/(\\d{1,2})':
+            [1, 2, 3]
         }
     this.DateTimeWidget.prototype.parseDateTime = function(datetime) {
         /* parse a datetime into seperate fields
@@ -95,11 +109,13 @@ window.widgeteer_datetime = new function() {
                     match[locations[0]],
                     match[locations[1]],
                     match[locations[2]],
-                    match[locations[3]],
-                    match[locations[4]]
                 ];
+                if (locations.length > 3) {
+                    ret.push(match[locations[3]]);
+                    ret.push(match[locations[4]]);
+                };
                 if (locations.length > 5) {
-                    ret.push(match[locations[6]]);
+                    ret.push(match[locations[5]]);
                 };
                 return ret;
             };
