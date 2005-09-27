@@ -36,8 +36,11 @@ xhtml = version.content.editorHTML()
 
 # gather metadata
 service = context.service_news
-all_subjects = service.subjects()
-all_target_audiences = service.target_audiences()
+all_subjects = [(id, '%s%s' % (depth * u'\xa0\xa0', title)) for
+                    (id, title, depth) in service.subject_tree()]
+all_target_audiences = [(id, '%s%s' % (depth * u'\xa0\xa0', title)) for
+                            (id, title, depth) in 
+                                service.target_audience_tree()]
 
 item_subjects = version.subjects()
 item_target_audiences = version.target_audiences()
