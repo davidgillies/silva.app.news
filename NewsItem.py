@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.32 $
+# $Revision: 1.33 $
 
 # Python
 from StringIO import StringIO
@@ -227,7 +227,7 @@ class NewsItemVersion(CatalogedVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        content = self.content
+        content = self._content.content
         ret = []
         length = 0
         for child in content.childNodes[0].childNodes:
@@ -257,7 +257,7 @@ class NewsItemVersion(CatalogedVersion):
 
             returns '' if no image is available
         """
-        images = self.content.documentElement.getElementsByTagName('image')
+        images = self._content.content.documentElement.getElementsByTagName('image')
         if not images:
             return ''
         imgpath = images[0].getAttribute('path').split('/')
