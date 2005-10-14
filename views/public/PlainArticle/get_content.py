@@ -7,5 +7,4 @@
 ##parameters=model
 ##title=
 ##
-context.service_editor.setViewer('service_webshop_sub_viewer')
-return context.service_editor.getViewer().getWidget(model.content.documentElement).render()
+return context.REQUEST.model.content.render()
