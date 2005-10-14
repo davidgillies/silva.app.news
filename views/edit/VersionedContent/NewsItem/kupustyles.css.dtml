@@ -284,7 +284,6 @@ div#kupu-fgcolorchooser div:hover {
 
 .kupu-properties-checkbox-item-title {
   float: left;
-  width: 14em;
 }
 
 #kupu-toolbox-debug {
@@ -303,7 +302,7 @@ div#kupu-fgcolorchooser div:hover {
   width: 14em;
 };
 
-#kuput-toolbox-extsource #extsourceform textarea {
+#kupu-toolbox-extsource #extsourceform textarea {
   width: 14em;
 };
 
