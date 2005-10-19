@@ -37,9 +37,7 @@ class SilvaXMLAttribute(SimpleItem):
         """return the rendered contents"""
         docel = self._content.documentElement
         service_editor = self.service_editor
-        # XXX which viewer should we use here? doc_viewer will probably display
-        # the title too?
-        service_editor.setViewer('service_sub_viewer')
+        service_editor.setViewer('service_news_sub_viewer')
         return service_editor.renderView(docel)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
