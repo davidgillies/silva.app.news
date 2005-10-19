@@ -4,7 +4,7 @@
 ##bind namespace=
 ##bind script=script
 ##bind subpath=traverse_subpath
-##parameters=model
+##parameters=version
 ##title=
 ##
-return context.REQUEST.model.content.render()
+return version.content.render()

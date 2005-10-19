@@ -7,4 +7,4 @@
 ##parameters=version
 ##title=
 ##
-return context.REQUEST.model.content.render()
+return version.content.render()
