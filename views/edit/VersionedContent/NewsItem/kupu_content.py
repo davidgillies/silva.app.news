@@ -94,8 +94,10 @@ return ('<html>\n'
         '<meta http-equiv="Content-Type" '
         'content="text/html; charset=UTF-8" />\n'
         '</head>\n'
+        '<body>\n'
         '<h2>%s</h2>\n'
         '%s\n'
+        '</body>\n'
         '</html>' % (doctitle, 
                         getattr(context.globals, 'kupu.css').absolute_url(),
                         '\n'.join(metas),
