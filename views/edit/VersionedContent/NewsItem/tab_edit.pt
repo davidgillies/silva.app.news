@@ -7,18 +7,11 @@
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="silva_document"
   tal:define="
     global vein string:editor;
-    member python:here.service_members.get_member(here.REQUEST.AUTHENTICATED_USER.getUserName());
-    view here;
-    model request/model;
-    editable model/get_editable;
-    lastclass string:even;
     "
-  >
+  i18n:domain="silva">
 <metal:block use-macro="here/macro_tab_edit/macros/editor">
-
 <metal:block fill-slot="editor_css">
 
   <link href="kupustyles.css"
@@ -29,7 +22,6 @@
 </metal:block>
 
 <metal:block fill-slot="script">
-
   <!-- note that the Kupu scripts need to be loaded *before* widgeteer! -->
   <tal:block condition="python: hasattr(view, 'kupu')">
     <tal:block define="dummy python:request.SESSION.set('edit_field', 'content')" />
@@ -43,6 +35,9 @@
   <script type="text/javascript"
           tal:attributes="src here/widgeteer-silva.js/absolute_url"></script>
 
+  <script type="text/javascript" 
+            tal:attributes="src here/reference.js/absolute_url">
+  </script>
 </metal:block>
 
 <metal:block fill-slot="editor_content">
