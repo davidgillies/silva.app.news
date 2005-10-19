@@ -123,9 +123,22 @@ window.widgeteer_datetime = new function() {
     };
 
     this.DateTimeWidget.prototype.value = function() {
+        if (!this.yearinput.value || !this.monthinput.value || 
+                !this.monthinput.value) {
+            // it may be a bit rigorous to just remove the date here, but
+            // it *is* safe ;)
+            return '';
+        };
         var ret = this.yearinput.value + '/' + this.monthinput.value + '/' +
-                    this.dayinput.value + ' ' + this.hourinput.value + ':' +
-                    this.mininput.value;
+                    this.dayinput.value;
+        if (this.hourinput.value) {
+            ret += ' ' + this.hourinput.value;
+            if (!this.mininput.value) {
+                ret += ':00';
+            } else {
+                ret += ':' + this.mininput.value;
+            };
+        };
         return ret;
     };
 
