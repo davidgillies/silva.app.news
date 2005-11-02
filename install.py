@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.27 $
+# $Revision: 1.28 $
 
 """Install and Uninstall for Silva News
 """
@@ -84,6 +84,10 @@ def registerViews(reg):
     reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
     reg.register('public', 'Silva Article Version', ['public', 'PlainArticle'])
     reg.register('public', 'Silva Agenda Item Version', ['public', 'PlainAgendaItem'])
+    # register also the VersionedContent objects of the articles to allow
+    # accessing the objects with an explicit /public/ URL part
+    reg.register('public', 'Silva Article', ['public', 'PlainArticle'])
+    reg.register('public', 'Silva Agenda Item', ['public', 'PlainAgendaItem'])
 
     # preview - required for e.g. the compare versions feature
     reg.register('preview', 'Silva Article Version', ['public', 'PlainArticle'])
