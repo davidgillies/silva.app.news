@@ -1,1 +1,1 @@
-SilvaNews 1.4 (CVS/Unreleased)
+SilvaNews 1.4
