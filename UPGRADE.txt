@@ -8,10 +8,10 @@ Meta
 Copyright (c) 2003-2005 Infrae. All rights reserved.  See also
 LICENSE.txt
 
-Valid for:  SilvaNews 1.4
+Valid for:  Silva News Network 2.0
 Author:     Guido Wesdorp
 Email:      guido@infrae.com
-CVS:        $Revision: 1.4 $
+CVS:        $Revision: 1.5 $
 
 Introduction
 ------------
