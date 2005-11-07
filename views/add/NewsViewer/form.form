@@ -28,7 +28,7 @@
           <default></default>
           <title>id</title>
           <truncate type="int">0</truncate>
-          <description>No spaces or special characters besides &amp;#8216;_&amp;#8217; or &amp;#8216;-&amp;#8217; or &amp;#8216;.&amp;#8217’;</description>
+          <description>No spaces or special characters besides &amp;#8216;_&amp;#8217; or &amp;#8216;-&amp;#8217; or &amp;#8216;.&amp;#8217;</description>
           <extra></extra>
           <unicode type="int">1</unicode>
         </values>
