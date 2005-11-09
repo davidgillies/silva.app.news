@@ -7,5 +7,4 @@
 ##parameters=
 ##title=
 ##
-version = context.REQUEST.model.get_previewable()
-return context.render_helper(version=version)
+return context.render_helper(version=context.REQUEST.model)
