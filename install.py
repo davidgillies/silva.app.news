@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.28 $
+# $Revision: 1.29 $
 
 """Install and Uninstall for Silva News
 """
@@ -91,7 +91,8 @@ def registerViews(reg):
 
     # preview - required for e.g. the compare versions feature
     reg.register('preview', 'Silva Article Version', ['public', 'PlainArticle'])
-    reg.register('preview', 'Silva Agenda Item Version', ['public', 'PlainAgendaItem'])
+    reg.register('preview', 'Silva Agenda Item Version', ['public', 
+                                                          'PlainAgendaItem'])
     
     # add
     reg.register('add', 'Silva Agenda Filter', ['add', 'AgendaFilter'])
