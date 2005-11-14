@@ -5,8 +5,20 @@
 __version__ = '0.3.0'
 
 from Testing import ZopeTestCase
+try: 				# post initial Silva 1.4 release
+    from Products.Silva.transactions import transaction
+except ImportError:
+    try: 			# Zope 2.8 style transactions
+        import transaction
+    except ImportError: 	# Old-style transactions
+        class BBBTransactionMan:
+            def begin(self):              get_transaction().begin()
+            def commit(self, sub=False):  get_transaction().commit(sub)
+            def abort(self, sub=False):   get_transaction().abort(sub)
+            def get(self):                return get_transaction()
+        transaction = BBBTransactionMan()
 
-_user_name = ZopeTestCase._user_name
+user_name = ZopeTestCase.user_name
 ZopeTestCase.installProduct('ZCatalog')
 ZopeTestCase.installProduct('TemporaryFolder')
 ZopeTestCase.installProduct('ZCTextIndex')
@@ -19,6 +31,7 @@ ZopeTestCase.installProduct('XMLWidgets')
 ZopeTestCase.installProduct('ProxyIndex')
 ZopeTestCase.installProduct('SilvaMetadata')
 ZopeTestCase.installProduct('SilvaViews')
+ZopeTestCase.installProduct('SilvaExternalSources')
 ZopeTestCase.installProduct('SilvaDocument')
 ZopeTestCase.installProduct('Silva')
 ZopeTestCase.installProduct('SilvaFunctionalTests')
@@ -31,6 +44,8 @@ from Acquisition import aq_base
 import time
 
 class SilvaTestCase(ZopeTestCase.ZopeTestCase):
+
+    _configure_root = 1
 
     def getRoot(self):
         """Returns the silva root object, i.e. the "fixture root". 
@@ -52,7 +67,7 @@ class SilvaTestCase(ZopeTestCase.ZopeTestCase):
             self._setupRootUser()
             self.login()
             self.app.REQUEST.AUTHENTICATED_USER=self.app.acl_users.getUser(
-                ZopeTestCase._user_name)
+                ZopeTestCase.user_name)
                 
             self.afterSetUp()
         except:
@@ -62,36 +77,40 @@ class SilvaTestCase(ZopeTestCase.ZopeTestCase):
     def _setupRootUser(self):
         '''Creates the root user.'''
         uf = self.root.acl_users
-        uf._doAddUser(_user_name, 'secret', ['ChiefEditor'], [])
+        uf._doAddUser(user_name, 'secret', ['ChiefEditor'], [])
         
     def addObject(self, container, type_name, id, product='Silva',
             **kw):
         getattr(container.manage_addProduct[product],
             'manage_add%s' % type_name)(id, **kw)
         # gives the new object a _p_jar ...
-        get_transaction().commit(1)
+        transaction.get().commit(1)
         return getattr(container, id)
 
     # Security interfaces
 
-    def setRoles(self, roles, name=_user_name):
+    def setRoles(self, roles, name=user_name):
         '''Changes the roles assigned to a user.'''
         uf = self.root.acl_users
         uf._doChangeUser(name, None, roles, []) 
         if name == getSecurityManager().getUser().getId():
             self.login(name)
 
-    def setPermissions(self, permissions, role='Member'):
+    def setPermissions(self, permissions, role='Member', context=None):
         '''Changes the permissions assigned to a role.
+           If context is None it defaults to the root
+           object.
         '''
-        self.root.manage_role(role, permissions)
+        if context is None:
+            context = self.root
+        context.manage_role(role, permissions)
 
     def installExtension(self, extension):
         """Installs a Silva extension""" 
         ZopeTestCase.installProduct(extension)
         self.getRoot().service_extensions.install(extension)
 
-    def login(self, name=_user_name):
+    def login(self, name=user_name):
         '''Logs in as the specified user.'''
         uf = self.root.acl_users
         user = uf.getUserById(name).__of__(uf)
@@ -114,6 +133,9 @@ class SilvaTestCase(ZopeTestCase.ZopeTestCase):
     def add_ghost(self, object, id, content_url):
         return self.addObject(object, 'Ghost', id, content_url=content_url)
 
+    def add_link(self, object, id, title, url):
+        return self.addObject(object, 'Link', id, title=title, url=url)
+    
     def add_image(self, object, id, title, **kw):
         return self.addObject(object, 'Image', id, title=title, **kw)
 
@@ -124,9 +146,11 @@ def setupSilvaRoot(app, id='root', quiet=0):
         if not quiet:
             ZopeTestCase._print('Adding Silva Root... ')
         uf = app.acl_users
-        uf._doAddUser('SilvaTestCase', '', ['Manager'], [])            
+        uf._doAddUser('SilvaTestCase', '', ['Manager'], [])
         user = uf.getUserById('SilvaTestCase').__of__(uf)
-        newSecurityManager(None, user)        
+        newSecurityManager(None, user)
+#        factory = app.manage_addProduct['TemporaryFolder']
+#        factory.constructTemporaryFolder('temp_folder', '')
         factory = app.manage_addProduct['Silva']
         factory.manage_addRoot(id, '')
         root = app.root
@@ -141,7 +165,7 @@ def setupSilvaRoot(app, id='root', quiet=0):
         install(root)
         
         noSecurityManager()
-        get_transaction().commit()
+        transaction.commit()
         if not quiet:
             ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
 
@@ -150,5 +174,5 @@ app = ZopeTestCase.app()
 ZopeTestCase.utils.setupSiteErrorLog(app)
 ZopeTestCase.utils.setupCoreSessions(app)
 setupSilvaRoot(app, id='root')
+transaction.commit()
 ZopeTestCase.close(app)
-
