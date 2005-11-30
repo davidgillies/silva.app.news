@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.20 $
+# $Revision: 1.21 $
 
 import AgendaFilter, NewsFilter, ServiceNews, InlineViewer
 import NewsPublication, NewsViewer, AgendaViewer, RSSAggregator
@@ -65,10 +65,10 @@ from Products.Silva.upgrade import UpgradeRegistry
 upgrade_registry = UpgradeRegistry()
 
 # import the actual upgraders
-import upgrade_13
+import upgrade_13, upgrade_20
 
 # set the software version, NOTE THAT THIS MUST BE UP-TO-DATE for
 # the upgrade to work correctly!!
 # use only major and minor version parts, upgrade shouldn't happen
 # on patch-level updates
-software_version = '1.3'
+software_version = '2.0'
