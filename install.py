@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.29 $
+# $Revision: 1.30 $
 
 """Install and Uninstall for Silva News
 """
@@ -154,25 +154,27 @@ def registerNewsSubEditor(root):
     wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_normal'))
 
     for nodeName in ['p', 'heading', 'list', 'pre',
-                     'image', 'table', 'nlist', 'dlist']:
+                     'image', 'table', 'nlist', 'dlist', 'cite']:
         wr.addWidget(
             nodeName,
             ('service_widgets', 'element', 'doc_elements', nodeName,
              'mode_normal'))
 
-    wr.setDisplayName('p', 'Paragraph')
-    wr.setDisplayName('heading', 'Heading')
-    wr.setDisplayName('list', 'List')
-    wr.setDisplayName('pre', 'Preformatted')
-    wr.setDisplayName('toc', 'Table of contents')
-    wr.setDisplayName('image', 'Image')
-    wr.setDisplayName('table', 'Table')
-    wr.setDisplayName('nlist', 'Complex list')
-    wr.setDisplayName('dlist', 'Definition list')
+    wr.setDisplayName('p', unicode(_('paragraph')))
+    wr.setDisplayName('heading', unicode(_('heading')))
+    wr.setDisplayName('list', unicode(_('list')))
+    wr.setDisplayName('pre', unicode(_('preformatted')))
+    wr.setDisplayName('toc', unicode(_('table of contents')))
+    wr.setDisplayName('image', unicode(_('image')))
+    wr.setDisplayName('table', unicode(_('table')))
+    wr.setDisplayName('nlist', unicode(_('complex list')))
+    wr.setDisplayName('dlist', unicode(_('definition list')))
+    wr.setDisplayName('cite', unicode(_('citation')))
 
     wr.setAllowed(
         'doc',
-        ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'dlist'])
+        ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'dlist',
+            'cite'])
 
 def registerNewsSubViewer(root):
     wr = root.service_news_sub_viewer
@@ -181,7 +183,7 @@ def registerNewsSubViewer(root):
     wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_view'))
 
     for name in ['p', 'list', 'heading', 'pre', 'image',
-                 'nlist', 'table', 'dlist']:
+                 'nlist', 'table', 'dlist', 'cite']:
         wr.addWidget(
             name,
             ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
