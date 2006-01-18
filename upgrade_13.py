@@ -11,6 +11,15 @@ from Products.SilvaNews.Tree import Root, Node
 
 # upgraders for SilvaNews-1.2 (or before) to SilvaNews-1.3
 
+class DummyUpgrader:
+    __implements__ = IUpgrader
+
+    def upgrade(self, obj):
+        return obj
+
+upgrade_registry.registerUpgrader(
+    DummyUpgrader(), '1.2', 'Silva Root')
+
 class ArticleDisplayTimeSetter:
     """set an attribute '_display_time' on all AgendaItems"""
 
