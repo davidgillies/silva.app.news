@@ -1,12 +1,15 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.30 $
+# $Revision: 1.31 $
 
 """Install and Uninstall for Silva News
 """
 
 from Products.FileSystemSite.DirectoryView import manage_addDirectoryView
-from Products.Silva.install import add_fss_directory_view, add_helper, py_add_helper
+from Products.Silva.install import add_fss_directory_view, add_helper, \
+                                        py_add_helper
+
+from Products.Silva.i18n import translate as _
 
 
 def install(root):
