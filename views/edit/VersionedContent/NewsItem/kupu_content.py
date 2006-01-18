@@ -90,16 +90,20 @@ return ('<html>\n'
         '<head>\n'
         '<title>%s</title>\n'
         '<link href="%s" type="text/css" rel="stylesheet" />\n'
+        '<link href="%s" type="text/css" rel="stylesheet" />\n'
         '%s\n'
         '<meta http-equiv="Content-Type" '
         'content="text/html; charset=UTF-8" />\n'
+        '<meta name="docref" content="%s" />\n'
         '</head>\n'
         '<body>\n'
         '<h2>%s</h2>\n'
         '%s\n'
         '</body>\n'
         '</html>' % (doctitle, 
+                        getattr(context.globals, 'frontend.css').absolute_url(),
                         getattr(context.globals, 'kupu.css').absolute_url(),
                         '\n'.join(metas),
+                        docref,
                         doctitle,
                         xhtml))
