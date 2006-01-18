@@ -3,6 +3,17 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.0.2
+
+    Bugs fixed
+
+      - Fixed Kupu ExternalSources support in news items. Thanks to Andrew
+        Altepeter.
+
+      - Added dummy upgrader for 1.2, which makes that the upgrades are
+        actually ran when the data version is 1.2 (works around a bug in
+        Silva's upgrade registry).
+
   2.0.1
 
     Bugs fixed
