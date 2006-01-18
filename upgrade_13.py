@@ -137,6 +137,6 @@ class NumberToShowArchiveSetter:
         return obj
 
 upgrade_registry.registerUpgrader(
-    NumberToShowArchiveSetter(), '1.3', 'Silva Article Version')
+    NumberToShowArchiveSetter(), '1.3', 'Silva News Viewer')
 upgrade_registry.registerUpgrader(
-    NumberToShowArchiveSetter(), '1.3', 'Silva Agenda Item Version')
+    NumberToShowArchiveSetter(), '1.3', 'Silva Agenda Viewer')
