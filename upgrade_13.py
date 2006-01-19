@@ -114,7 +114,6 @@ class DisplayDateTimeSetter:
         if not hasattr(obj, '_display_datetime'):
             pdt = obj.publication_datetime()
             obj._display_datetime = pdt
-            obj.reindex_object()
         return obj
 
 upgrade_registry.registerUpgrader(
@@ -142,21 +141,3 @@ upgrade_registry.registerUpgrader(
 upgrade_registry.registerUpgrader(
     NumberToShowArchiveSetter(), '1.3', 'Silva Agenda Viewer')
 
-class ReindexDisplayDateTime:
-    """Reindex all news items after adding the new display_date metadata field
-    
-        This reindexing is an expensive operation!
-    """
-    
-    __implements__ = IUpgrader
-    
-    def upgrade(self, silvaroot):
-        zLOG.LOG(
-            'Silva', zLOG.INFO, 
-            "Reindex display date/time - may take a while")
-        catalog = silvaroot.service_catalog
-        catalog.reindexIndex('idx_display_datetime', None)
-        return silvaroot
-
-upgrade_registry.registerUpgrader(
-    ReindexDisplayDateTime(), '1.3', 'Silva Root')
