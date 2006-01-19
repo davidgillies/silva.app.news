@@ -9,7 +9,8 @@
   tal:define="view here;
               model view/REQUEST/model;
               silva_root view/silva_root;
-              mangle modules/Products/Silva/mangle;"
+              global formatdate nocall:view/service_news/format_date;
+              "
 >
 
   <div class="margins">
@@ -42,7 +43,7 @@
         <span 
           tal:replace="structure python: 
                         'Startdate/time:<br />%s' % 
-                         mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" 
+                         formatdate(obj.start_datetime())" 
                          tal:condition="obj/start_datetime | nothing">DateTime</span>
       </p>
       <p class="articlelink">
