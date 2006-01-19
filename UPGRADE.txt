@@ -11,7 +11,7 @@ LICENSE.txt
 Valid for:  Silva News Network 2.0
 Author:     Guido Wesdorp
 Email:      guido@infrae.com
-CVS:        $Revision: 1.5 $
+CVS:        $Revision: 1.6 $
 
 Introduction
 ------------
@@ -22,6 +22,18 @@ upgrade instructions, as described on the bottom of this document, apply.
 
 Upgrades
 ========
+
+Upgrading SilvaNews 1.2.x or 1.3.x to SilvaNewsNetwork 2.x
+----------------------------------------------------------
+
+When installing SilvaNewsNetwork 2.x over an existing SilvaNews installation,
+you will be presented with a special upgrade screen, instead of the normal
+views, on the News service (silva_root/service_news, see the 'services' tab
+on the Silva root in the ZMI). In that screen there's a button, if you press
+that your existing SilvaNews data will get upgraded.
+
+Note that this is an *additional* step to pressing 'refresh all' on 
+service_extensions!
 
 Upgrading SilvaNews 1.0 to 1.1
 ------------------------------
