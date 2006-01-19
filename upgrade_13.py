@@ -158,4 +158,5 @@ class ReindexDisplayDateTime:
         catalog.reindexIndex('idx_display_datetime', None)
         return silvaroot
 
-upgrade.registry.registerUpgrader(ReindexDisplayDate(), '1.3', 'Silva Root')
+upgrade_registry.registerUpgrader(
+    ReindexDisplayDateTime(), '1.3', 'Silva Root')
