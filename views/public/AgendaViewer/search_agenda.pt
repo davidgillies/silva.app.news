@@ -8,7 +8,6 @@
 
   tal:define="view here;
         model view/REQUEST/model;
-                   global results python:model.search_items(view.REQUEST['query']);
                    global silva_root view/silva_root;
                    global mangle modules/Products/Silva/mangle;
                    "
@@ -19,6 +18,13 @@
   </div>
 
   <tal:comment condition="nothing">Begin items</tal:comment>
+
+  <span class="error" 
+          tal:define="global results python:model.search_items(
+                                            view.REQUEST['query']);" 
+          tal:on-error="string:Error searching: ${error/value}" />
+
+  <tal:block define="global results results | python:[]" />
 
   <div class="searchbox">
     <form tal:attributes="action model/absolute_url" method="POST">
