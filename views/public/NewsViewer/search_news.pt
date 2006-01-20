@@ -19,10 +19,9 @@
 
   <tal:comment condition="nothing">Begin items</tal:comment>
 
-  <span class="error" 
-          tal:define="global results python:model.search_items(
+  <tal:block define="global results python:model.search_items(
                                             view.REQUEST['query']);" 
-          tal:on-error="string:Error searching: ${error/value}" />
+          on-error="structure string:<span class='error'>Error searching: ${error/value}'</span>" />
 
   <tal:block define="global results results | python:[]" />
 
