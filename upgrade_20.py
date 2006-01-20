@@ -47,7 +47,7 @@ upgrade_registry.registerUpgrader(
 upgrade_registry.registerUpgrader(
     ContentConvertor(), '2.0', 'Silva Agenda Item Version')
 
-class ReindexDisplayDateTime:
+class Reindex:
     """Reindex all news items after adding the new display_date metadata field
     
         This reindexing is an expensive operation!
@@ -58,10 +58,11 @@ class ReindexDisplayDateTime:
     def upgrade(self, silvaroot):
         zLOG.LOG(
             'Silva', zLOG.INFO, 
-            "Reindex display date/time - may take a while")
+            "Reindexing news items - may take a while")
         catalog = silvaroot.service_catalog
         catalog.reindexIndex('idx_display_datetime', None)
+        catalog.reindexIndex('idx_parent_path', None)
         return silvaroot
 
 upgrade_registry.registerUpgrader(
-    ReindexDisplayDateTime(), '1.3', 'Silva Root')
+    Reindex(), '1.3', 'Silva Root')
