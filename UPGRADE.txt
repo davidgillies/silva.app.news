@@ -11,7 +11,7 @@ LICENSE.txt
 Valid for:  Silva News Network 2.0
 Author:     Guido Wesdorp
 Email:      guido@infrae.com
-CVS:        $Revision: 1.6 $
+CVS:        $Revision: 1.7 $
 
 Introduction
 ------------
@@ -33,7 +33,8 @@ on the Silva root in the ZMI). In that screen there's a button, if you press
 that your existing SilvaNews data will get upgraded.
 
 Note that this is an *additional* step to pressing 'refresh all' on 
-service_extensions!
+service_extensions! You'll have to upgrade Silva first, if required, then
+press 'refresh all', and lastly upgrade SilvaNews.
 
 Upgrading SilvaNews 1.0 to 1.1
 ------------------------------
