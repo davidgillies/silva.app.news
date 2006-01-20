@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.12 $
+# $Revision: 1.13 $
 
 import Globals
 from AccessControl import ClassSecurityInfo
@@ -396,6 +396,8 @@ class ServiceNews(SimpleItem):
         upgrade_registry.upgrade(root, content_version, software_version)
         
         root.service_news._content_version = software_version
+
+        return self.edit_tab(manage_tabs_message='Upgrade succeeded')
 
     security.declareProtected('Setup ServiceNews',
                                 'upgrade_required')
