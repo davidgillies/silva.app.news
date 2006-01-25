@@ -1,3 +1,5 @@
+from zope.interface import implements
+
 from Products.SilvaNews import upgrade_registry
 
 # zope imports
@@ -12,7 +14,7 @@ from Products.SilvaNews.Tree import Root, Node
 # upgraders for SilvaNews-1.2 (or before) to SilvaNews-1.3
 
 class DummyUpgrader:
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         return obj
@@ -23,7 +25,7 @@ upgrade_registry.registerUpgrader(
 class ArticleDisplayTimeSetter:
     """set an attribute '_display_time' on all AgendaItems"""
 
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -42,7 +44,7 @@ upgrade_registry.registerUpgrader(
 
 class ServiceLocaleSetter:
     """set attributes '_locale' and '_date_format' on service_news"""
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -60,7 +62,7 @@ upgrade_registry.registerUpgrader(
 
 class SubjectTargetAudienceUpdater:
     """convert subjects and target audiences to trees"""
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -102,7 +104,7 @@ upgrade_registry.registerUpgrader(
 
 class DisplayDateTimeSetter:
     """set attribute 'display_datetime' of news items"""
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -123,7 +125,7 @@ upgrade_registry.registerUpgrader(
 
 class NumberToShowArchiveSetter:
     """set attribute '_number_to_show_archive' on news items"""
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(

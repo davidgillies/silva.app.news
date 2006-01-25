@@ -1,4 +1,4 @@
-from Interface import Base
+from zope.interface import Interface
 from Products.Silva.interfaces import ISilvaObject, IVersion
 
 class INewsItem(ISilvaObject):
@@ -74,8 +74,7 @@ class IAgendaItemVersion(INewsItemVersion):
     def set_location(self, value):
         """Sets the manual location"""
 
-
-class INewsFilter(Base):
+class INewsFilter(Interface):
     """Filter for news items.
 
     A filter picks up news from news sources. Editors can
@@ -128,7 +127,7 @@ class INewsFilter(Base):
         """Returns the last self._number_to_show published items
         """
 
-class IServiceNews(Base):
+class IServiceNews(Interface):
     """A service that provides trees of subjects and target_audiences.
 
     It allows these trees to be edited on a site-wide basis. It also

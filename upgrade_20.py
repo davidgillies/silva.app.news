@@ -1,3 +1,5 @@
+from zope.interface import implements
+
 from Products.SilvaNews import upgrade_registry
 
 # zope imports
@@ -14,7 +16,7 @@ from silvaxmlattribute import SilvaXMLAttribute
 
 class ContentConvertor:
     """Convert ParsedXML content to SilvaXMLAttributes"""
-    __implements__ = IUpgrader
+    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -53,7 +55,7 @@ class Reindex:
         This reindexing is an expensive operation!
     """
     
-    __implements__ = IUpgrader
+    implements(IUpgrader)
     
     def upgrade(self, silvaroot):
         zLOG.LOG(

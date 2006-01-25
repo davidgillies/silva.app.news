@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.16 $
+# $Revision: 1.17 $
+
+from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -29,7 +31,7 @@ class AgendaViewer(NewsViewer):
 
     security = ClassSecurityInfo()
 
-    __implements__ = IContent
+    implements(IContent)
 
     meta_type = "Silva Agenda Viewer"
 

@@ -1,3 +1,5 @@
+from zope.interface import implements
+
 import os
 
 from Globals import InitializeClass, package_home
@@ -33,7 +35,7 @@ class InlineViewer(CodeSource):
         copied from that product too, thanks Marc!)
     """
 
-    __implements__ = IExternalSource
+    implements(IExternalSource)
     meta_type = 'Silva News Inline Viewer'
     security = ClassSecurityInfo()
 

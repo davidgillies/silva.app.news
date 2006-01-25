@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
+# $Revision: 1.18 $
+
+from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -36,7 +38,7 @@ class PlainArticle(NewsItem):
 
     meta_type = "Silva Article"
 
-    __implements__ = INewsItem, IVersionedContent
+    implements((INewsItem, IVersionedContent))
 
 InitializeClass(PlainArticle)
 
@@ -47,7 +49,7 @@ class PlainArticleVersion(NewsItemVersion):
 
     meta_type = "Silva Article Version"
 
-    __implements__ = INewsItemVersion
+    implements(INewsItemVersion)
 
     def __init__(self, id):
         PlainArticleVersion.inheritedAttribute('__init__')(self, id)

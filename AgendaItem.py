@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.20 $
+# $Revision: 1.21 $
+
+from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -28,7 +30,7 @@ class AgendaItem(NewsItem):
     """
     security = ClassSecurityInfo()
 
-    __implements__ = IAgendaItem, IVersionedContent
+    implements((IAgendaItem, IVersionedContent))
 
 InitializeClass(AgendaItem)
 
@@ -38,7 +40,7 @@ class AgendaItemVersion(NewsItemVersion):
     
     security = ClassSecurityInfo()
 
-    __implements__ = IAgendaItemVersion
+    implements(IAgendaItemVersion)
 
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)

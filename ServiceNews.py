@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.13 $
+# $Revision: 1.14 $
+
+from zope.interface import implements
 
 import Globals
 from AccessControl import ClassSecurityInfo
@@ -18,7 +20,7 @@ import Tree
 class ServiceNews(SimpleItem):
     """This object provides lists of subjects and target_audiences for Filters
     """
-    __implements__ = IServiceNews
+    implements(IServiceNews)
     security = ClassSecurityInfo()
     meta_type = 'Silva News Service'
 

@@ -3,6 +3,8 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  CVS/Unreleased
+
   2.0.2
 
     Bugs fixed

@@ -1,12 +1,12 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.21 $
+# $Revision: 1.22 $
 
 import AgendaFilter, NewsFilter, ServiceNews, InlineViewer
 import NewsPublication, NewsViewer, AgendaViewer, RSSAggregator
 import PlainArticle, PlainAgendaItem
 
-from Products.FileSystemSite.DirectoryView import registerDirectory
+from Products.Silva.fssite import registerDirectory
 from Products.Silva.ExtensionRegistry import extensionRegistry
 #from Products.Silva.upgrade import upgrade_registry
 from Products.SilvaMetadata.Compatibility import registerTypeForMetadata

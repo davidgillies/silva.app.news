@@ -1,6 +1,8 @@
 # Copyright (c) 2002 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.16 $
+# $Revision: 1.17 $
+
+from zope.interface import implements
 
 # Zope
 from OFS import SimpleItem
@@ -31,7 +33,7 @@ class Filter(Asset):
     """
     security = ClassSecurityInfo()
     
-    __implements__ = IAsset
+    implements(IAsset)
 
     _allowed_source_types = ['Silva News Publication']
 

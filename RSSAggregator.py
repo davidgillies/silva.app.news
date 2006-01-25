@@ -1,3 +1,5 @@
+from zope.interface import implements
+
 import time
 
 from AccessControl import ClassSecurityInfo
@@ -25,7 +27,7 @@ class RSSAggregator(NewsViewer):
        together with a link to the original article."""
 
     security = ClassSecurityInfo()
-    __implements__ = IContent
+    implements(IContent)
     meta_type = 'Silva RSS Aggregator'
 
     def __init__(self, id):

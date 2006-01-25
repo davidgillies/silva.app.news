@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.33 $
+# $Revision: 1.34 $
+
+from zope.interface import implements
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -83,7 +85,7 @@ class NewsViewer(Content, Folder.Folder):
 
     security = ClassSecurityInfo()
 
-    __implements__ = IContent
+    implements(IContent)
 
     def __init__(self, id):
         NewsViewer.inheritedAttribute('__init__')(self, id, 'dummy')

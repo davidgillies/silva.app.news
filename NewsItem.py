@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2005 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.34 $
+# $Revision: 1.35 $
+
+from zope.interface import implements
 
 # Python
 from StringIO import StringIO
@@ -74,7 +76,7 @@ class NewsItem(CatalogedVersionedContent):
     """
     security = ClassSecurityInfo()
 
-    __implements__ = IVersionedContent
+    implements(IVersionedContent)
 
     # MANIPULATORS
 
