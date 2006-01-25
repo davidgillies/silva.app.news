@@ -60,8 +60,15 @@ class Reindex:
             'Silva', zLOG.INFO, 
             "Reindexing news items - may take a while")
         catalog = silvaroot.service_catalog
-        catalog.reindexIndex('idx_display_datetime', None)
+        # we reindex more than we theoretically have to, because some problems
+        # were reported with missing indexes after an upgrade
+        catalog.reindexIndex('object_path', None)
         catalog.reindexIndex('idx_parent_path', None)
+        catalog.reindexIndex('idx_start_datetime', None)
+        catalog.reindexIndex('idx_end_datetime', None)
+        catalog.reindexIndex('idx_display_datetime', None)
+        catalog.reindexIndex('idx_subjects', None)
+        catalog.reindexIndex('idx_target_audiences', None)
         return silvaroot
 
 upgrade_registry.registerUpgrader(
