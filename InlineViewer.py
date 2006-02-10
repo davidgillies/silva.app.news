@@ -135,7 +135,7 @@ class InlineViewer(CodeSource):
         return adapter.getitems(number)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_viewer_title')
+                                'get_viewer_obj')
     def get_viewer_obj(self, viewer):
         """returns the title of a viewer"""
         obj = getattr(self.aq_parent, viewer, None)
