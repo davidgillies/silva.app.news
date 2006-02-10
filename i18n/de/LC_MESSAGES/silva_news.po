@@ -718,6 +718,7 @@ msgid ""
 msgstr ""
 "\n"
 "         Themen für Filter auswählen.\n"
+"          "
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:50
 msgid ""
@@ -727,6 +728,7 @@ msgid ""
 msgstr ""
 "\n"
 "         Zielgruppe für Filter auswählen.\n"
+"          "
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:69
 msgid "show agenda items"
