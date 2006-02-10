@@ -5,6 +5,18 @@ SilvaNewsNetwork changes
 
   CVS/Unreleased
 
+  2.1
+
+    Bugs fixed
+
+      - Added upgrader for a specific Zope 2.8.x issue, where some ZCatalog
+        indexes had a new attribute defined, but the upgrader for that 
+        attribute wasn't executed when required.
+
+    Features
+
+      - SilvaNewsNetwork now works on (and depends on!) Silva 1.5.
+
   2.0.2
 
     Bugs fixed

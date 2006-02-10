@@ -1,14 +1,14 @@
-$Revision: 1.21 $
+$Revision: 1.22 $
 
 Copyright (c) 2002-2005 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:   Silva News Network 2.0
+  Valid for:   Silva News Network 2.1
   Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
   Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
-  CVS:         $Revision: 1.21 $
+  CVS:         $Revision: 1.22 $
 
 Silva News
 
