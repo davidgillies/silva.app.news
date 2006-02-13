@@ -3,6 +3,12 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.1.1
+  
+    Bugs fixed
+
+      - Fixed some documentation issues: some version numbers were wrong.
+
   2.1
 
     Bugs fixed
