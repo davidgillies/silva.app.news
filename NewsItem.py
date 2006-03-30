@@ -6,21 +6,13 @@ from zope.interface import implements
 
 # Python
 from StringIO import StringIO
-import sys
-import traceback
 from xml.sax import parseString
 from xml.sax.handler import ContentHandler
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
-from Products.ParsedXML.ParsedXML import ParsedXML
-
-# Silva interfaces
-from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 
 # Silva
 from Products.Silva import SilvaPermissions
