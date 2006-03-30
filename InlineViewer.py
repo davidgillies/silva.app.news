@@ -100,6 +100,9 @@ class InlineViewer(CodeSource):
                                 'to_html')
     def to_html(self, *args, **kwargs):
         """render the news list"""
+        # XXX this is screwed up, both because the name clashes with the
+        # 'normal' request.model, and because this leaks memory (have to
+        # store stuff in request.other instead)
         self.REQUEST['model'] = self
         try:
             return ustr(getattr(self, 'view')(**kwargs))
