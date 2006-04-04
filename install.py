@@ -156,7 +156,7 @@ def registerNewsSubEditor(root):
 
     wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_normal'))
 
-    for nodeName in ['p', 'heading', 'list', 'pre',
+    for nodeName in ['p', 'heading', 'list', 'pre', 'source'
                      'image', 'table', 'nlist', 'dlist', 'cite']:
         wr.addWidget(
             nodeName,
@@ -167,6 +167,7 @@ def registerNewsSubEditor(root):
     wr.setDisplayName('heading', unicode(_('heading')))
     wr.setDisplayName('list', unicode(_('list')))
     wr.setDisplayName('pre', unicode(_('preformatted')))
+    wr.setDisplayName('source', unicode(_('external source')))
     wr.setDisplayName('toc', unicode(_('table of contents')))
     wr.setDisplayName('image', unicode(_('image')))
     wr.setDisplayName('table', unicode(_('table')))
@@ -176,8 +177,8 @@ def registerNewsSubEditor(root):
 
     wr.setAllowed(
         'doc',
-        ['p', 'heading', 'list', 'pre', 'nlist', 'table', 'image', 'dlist',
-            'cite'])
+        ['p', 'heading', 'list', 'pre', 'source', 'nlist', 'table', 'image', 
+            'dlist', 'cite'])
 
 def registerNewsSubViewer(root):
     wr = root.service_news_sub_viewer
@@ -185,7 +186,7 @@ def registerNewsSubViewer(root):
 
     wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_view'))
 
-    for name in ['p', 'list', 'heading', 'pre', 'image',
+    for name in ['p', 'list', 'heading', 'pre', 'source', 'image',
                  'nlist', 'table', 'dlist', 'cite']:
         wr.addWidget(
             name,
