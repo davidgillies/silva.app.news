@@ -176,8 +176,6 @@ class RSSItemReference:
         # datetime?
         return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
 
-Globals.InitializeClass(NewsItemReference)
-
 class RSSAggregatorNewsProvider(adapter.Adapter):
     
     __implements__ = interfaces.INewsProvider
