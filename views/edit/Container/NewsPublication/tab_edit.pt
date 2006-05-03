@@ -8,7 +8,7 @@
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   tal:define="global vein string:contents;"
-  i18n:domain="silva">
+  i18n:domain="silva_news">
 
 <metal:block use-macro="here/macro_index/macros/master">
 <metal:block fill-slot="main">

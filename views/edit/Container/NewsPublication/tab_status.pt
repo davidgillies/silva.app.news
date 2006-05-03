@@ -9,7 +9,7 @@
   tal:define="
   vein string:publish;
   "
-  i18n:domain="silva">
+  i18n:domain="silva_news">
 <metal:block use-macro="here/macro_index/macros/master">
 <metal:block fill-slot="main">
 
