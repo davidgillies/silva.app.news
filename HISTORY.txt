@@ -8,7 +8,8 @@ SilvaNewsNetwork changes
     Features
 
     Bugs fixed
-        - Fixed broken rss image
+
+      - Fixed broken rss image
 
   2.1.2
 
