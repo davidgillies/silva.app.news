@@ -46,8 +46,8 @@
           <title>update display date/time</title>
           <extra></extra>
           <description>
-            if not checked, the display date/time will not get updated, so the item
-            is displayed on the same location in news viewers (if at all)
+            Change the display date/time that the public sees. 
+            This means the news item will appear as the latest item.
           </description>
           <external_validator></external_validator>
         </values>
