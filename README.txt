@@ -6,8 +6,8 @@ See also LICENSE.txt
 Meta::
 
   Valid for:   Silva News Network 2.1
-  Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
-  Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
+  Authors:     Guido Wesdorp, Martijn Faassen, Wim Boucquaert
+  Emails:      guido@infrae.com, faassen@infrae.com, wim@infrae.com
   CVS:         $Revision: 1.22 $
 
 Silva News Network
