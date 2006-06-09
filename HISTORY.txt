@@ -11,6 +11,8 @@ SilvaNewsNetwork changes
 
       - Fixed broken rss image
 
+      - Fixed i18n support
+
   2.1.2
 
     Bugs fixed
