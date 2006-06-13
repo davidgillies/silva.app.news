@@ -9,6 +9,8 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
+      - Fixed space above kupu
+
       - Fixed broken rss image
 
       - Fixed memory leakage in the Inline News Viewer
