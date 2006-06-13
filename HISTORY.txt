@@ -11,6 +11,10 @@ SilvaNewsNetwork changes
 
       - Fixed broken rss image
 
+      - Fixed memory leakage in the Inline News Viewer
+
+      - Fixed some query variable names in the AgendaFilter
+
       - Fixed i18n support
 
   2.1.2

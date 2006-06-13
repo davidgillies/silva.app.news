@@ -103,7 +103,7 @@ class InlineViewer(CodeSource):
         # XXX this is screwed up, both because the name clashes with the
         # 'normal' request.model, and because this leaks memory (have to
         # store stuff in request.other instead)
-        self.REQUEST['model'] = self
+        self.REQUEST.form['model'] = self
         try:
             return ustr(getattr(self, 'view')(**kwargs))
         except:
