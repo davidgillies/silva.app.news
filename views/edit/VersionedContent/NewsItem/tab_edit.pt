@@ -40,6 +40,8 @@
   </script>
 </metal:block>
 
+<metal:fill fill-slot="notice"></metal:fill>
+
 <metal:block fill-slot="editor_content">
 
 <tal:block condition="python: hasattr(view, 'kupu')">
