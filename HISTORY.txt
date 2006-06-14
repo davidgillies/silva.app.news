@@ -27,6 +27,9 @@ SilvaNewsNetwork changes
 
       - Fixed i18n support
 
+      - AgendaItems spanning over a period of more than one month are now 
+        displayed the whole period rather than only the last month
+
   2.1.2
 
     Bugs fixed
