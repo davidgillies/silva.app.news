@@ -46,8 +46,8 @@
           <title>update display date/time</title>
           <extra></extra>
           <description>
-            Change the display date/time that the public sees. 
-            This means the news item will appear as the latest item.
+            Change the display date/time that the public sees. This will also change 
+            where the news item appears in a chronological list.
           </description>
           <external_validator></external_validator>
         </values>
