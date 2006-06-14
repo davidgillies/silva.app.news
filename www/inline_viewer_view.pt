@@ -19,10 +19,10 @@
 <tal:block tal:condition="viewerobj">
 <div tal:attributes="class options/inv_div | nothing">
 
-  <h2 tal:condition="python:options['show_title']=='1'"
+  <h3 tal:condition="python:options['show_title']=='1'"
     tal:content="python: viewerobj.get_title()">
     title
-  </h2>
+  </h3>
 
   <tal:block tal:condition="python:len(items) > 0">
     <tal:block tal:omit-tag="" tal:repeat="item items">
