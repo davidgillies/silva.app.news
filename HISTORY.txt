@@ -7,9 +7,14 @@ SilvaNewsNetwork changes
 
     Features
 
+      - Update publish controls with new layout. Still to be fixed is the switch 
+        from a publish now checkbox to a publish now button
+
     Bugs fixed
 
       - Fixed space above kupu
+      
+      - In the news filter the select all button aligns left
 
       - Fixed broken rss image
 
