@@ -23,7 +23,7 @@
           <title>update display date/time</title>
           <description></description>
           <external_validator></external_validator>
-          <extra>id="update_display_datetime"</extra>
+          <extra>id="update_display_datetime" style="margin-left:0"</extra>
         </values>
         <tales>
         </tales>
