@@ -93,7 +93,7 @@ class AgendaFilter(Filter):
         # set (since they're retrieved above)
         for item in result_startdt:
             obj = item.getObject()
-            edt = getattr(obj, 'end_datetime', None)
+            edt = getattr(obj, 'end_datetime', lambda: None)()
             if (item.object_path not in self._excluded_items and
                     (not edt or edt.month() != month or edt.year() != year)):
                 result.append(item)
@@ -197,7 +197,7 @@ class AgendaFilter(Filter):
         # remove the items with an end_dt from the result_startdt
         for item in result_startdt:
             obj = item.getObject()
-            edt = getattr(obj, 'end_datetime', None)
+            edt = getattr(obj, 'end_datetime', lambda: None)()
             if (item.object_path not in self._excluded_items and
                     (not edt or edt.month() != month or edt.year() != year)):
                 result.append(item)
@@ -266,7 +266,7 @@ class AgendaFilter(Filter):
 
         for item in result_startdt:
             obj = item.getObject()
-            edt = getattr(obj, 'end_datetime', None)
+            edt = getattr(obj, 'end_datetime', lambda: None)()
             if (item.object_path not in self._excluded_items and
                     (not edt or edt.month() != month or edt.year() != year)):
                 result.append(item)
@@ -325,7 +325,7 @@ class AgendaFilter(Filter):
 
         for item in result_startdt:
             obj = item.getObject()
-            edt = getattr(obj, 'end_datetime', None)
+            edt = getattr(obj, 'end_datetime', lambda: None)()
             if not edt or edt.month() != month or edt.year() != year:
                 result.append(item)
 
