@@ -204,7 +204,7 @@
           <span tal:replace="nothing"> ______________ controls for chief ______________ </span>
           <tr class="controls"
             tal:condition="python:user_role == 'Editor'">
-            <td colspan="3" class="align-right">
+            <td colspan="2">
               <input style="display: none"
                       id="select_all_button"
                       class="button" 
@@ -261,6 +261,8 @@
               // ]]>
               </script>
               &nbsp;
+            </td>
+            <td class="align-right">
               <input type="hidden" name="start" tal:attributes="value startat">
               <input class="button" type="submit" name="use_sources:method" value="update sources" title="Use selected sources in this filter: alt-u" accesskey="u"  i18n:attributes="title value"/>
             </td>
