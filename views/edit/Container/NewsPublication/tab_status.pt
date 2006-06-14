@@ -323,7 +323,7 @@
       <td class="align-right"
           colspan="6">
         <tal:block 
-          condition="python: may_approve_content and expireables">
+          condition="expireables">
           <label for="clear_expiration"
             title="access key: alt-p"
             accesskey="p"
@@ -332,45 +332,41 @@
             clear&nbsp;ex<u>p</u>iration
           </label>
           <field tal:replace="structure view/tab_status_form/clear_expiration/render" />
+          &nbsp;&nbsp;
         </tal:block>
-        &nbsp;&nbsp;
         <tal:block replace="nothing">
           ______________ news-specific control ______________
         </tal:block>
-        <tal:block condition="may_approve_content">
-          <label for="update_display_datetime" 
-            i18n:attributes="title"
-            i18n:translate="">
-            update display date/time
-          </label>
-          <tal:block 
-            condition="redisplay_timing_form"
-            replace="structure python:view.tab_status_form_news.update_display_datetime.render_from_request(request)" 
-          />
-          <tal:block 
-            condition="not: redisplay_timing_form"
-            replace="structure python:view.tab_status_form_news.update_display_datetime.render()" 
-          />
-        </tal:block>
+        <label for="update_display_datetime" 
+          i18n:attributes="title"
+          i18n:translate="">
+          update display date/time
+        </label>
+        <tal:block 
+          condition="redisplay_timing_form"
+          replace="structure python:view.tab_status_form_news.update_display_datetime.render_from_request(request)" 
+        />
+        <tal:block 
+          condition="not: redisplay_timing_form"
+          replace="structure python:view.tab_status_form_news.update_display_datetime.render()" 
+        />
         &nbsp;&nbsp;
-        <tal:block condition="may_approve_content">
-          <label 
-            for="publish_now_flag" 
-            title="access key: alt-u" 
-            accesskey="u"
-            i18n:attributes="title;accesskey publish_now_accesskey"
-            i18n:translate="">
-            p<u>u</u>blish&nbsp;now?
-          </label>
-          <tal:block 
-            condition="redisplay_timing_form"
-            replace="structure python:view.tab_status_form.publish_now_flag.render_from_request(request)" 
-          />
-          <tal:block 
-            condition="not: redisplay_timing_form"
-            replace="structure python:view.tab_status_form.publish_now_flag.render()" 
-          />
-        </tal:block>
+        <label 
+          for="publish_now_flag" 
+          title="access key: alt-u" 
+          accesskey="u"
+          i18n:attributes="title;accesskey publish_now_accesskey"
+          i18n:translate="">
+          p<u>u</u>blish&nbsp;now?
+        </label>
+        <tal:block 
+          condition="redisplay_timing_form"
+          replace="structure python:view.tab_status_form.publish_now_flag.render_from_request(request)" 
+        />
+        <tal:block 
+          condition="not: redisplay_timing_form"
+          replace="structure python:view.tab_status_form.publish_now_flag.render()" 
+        />
       </td>
     </tr>
     <tal:block replace="nothing">
