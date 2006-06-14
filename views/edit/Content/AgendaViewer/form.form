@@ -47,7 +47,7 @@
           <css_class></css_class>
           <default></default>
           <title>number</title>
-          <description>number of archive items to show per page</description>
+          <description>Number of archive items to show per page.</description>
           <end></end>
           <extra></extra>
         </values>
