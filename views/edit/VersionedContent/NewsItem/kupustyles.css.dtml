@@ -150,17 +150,21 @@ div.kupu-editorframe {
 
 #kupu-editor {
   height: 580px;
-  width: 99%;
   margin: 0em;
   border: solid 1px #6c797f;
 }
 
 #kupu-editor-textarea {
   height: 580px;
-  width: 99%;
+  width: inherit;
+  min-width: 100%;
   margin: 0em;
   border: solid 1px #6c797f;
   display: none;
+}
+/* hack for IE */
+* html #kupu-editor-textarea {
+  width:100%;
 }
 
 .kupu-toolboxes {
@@ -191,11 +195,11 @@ div.kupu-toolbox h1, div.kupu-toolbox-active h1 {
   background-repeat: no-repeat;
   background-position: center left;
   background-color: #829199;
-  width: 100%;
+  width: inherit;
   max-width: 22em;
   margin-top: 0;
   margin-bottom: 0px;
-  padding-left: 12px;
+  padding-left: 14px;
   border: solid 1px #6c797f;
   border-style: solid none none none;
   text-align: left;
@@ -300,10 +304,10 @@ div#kupu-fgcolorchooser div:hover {
 
 #kupu-toolbox-extsource #extsourceform select {
   width: 14em;
-};
+}
 
 #kupu-toolbox-extsource #extsourceform textarea {
   width: 14em;
-};
+}
 
 </dtml-let>
