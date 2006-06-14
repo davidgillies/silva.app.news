@@ -1,1 +1,1 @@
-SilvaNewsNetwork 2.1.3 (SVN/Unreleased)
+SilvaNewsNetwork 2.1.3
