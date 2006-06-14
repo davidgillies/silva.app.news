@@ -7,6 +7,9 @@ SilvaNewsNetwork changes
 
     Features
 
+      - RSS Aggregator public view: removed hard coded table and replaced with 
+        standard Silva html rendering
+
       - Update publish controls with new layout. Still to be fixed is the switch 
         from a publish now checkbox to a publish now button
 
