@@ -7,6 +7,9 @@ SilvaNewsNetwork changes
 
     Features
 
+      - Made layout of the INV (Inline News Viewer) more generic using standard 
+        Silva html classes
+
       - RSS Aggregator public view: removed hard coded table and replaced with 
         standard Silva html rendering
 
