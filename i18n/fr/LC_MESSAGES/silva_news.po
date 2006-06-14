@@ -854,7 +854,7 @@ msgstr "nombre de jours"
 
 #: /views/edit/Content/AgendaViewer/form.form:30
 msgid "Number of days in the future to show."
-msgstr "Nombre de jours à présenter dans le futur"
+msgstr "Nombre de jours à présenter dans le futur."
 
 #: /views/edit/Content/AgendaViewer/form.form:49
 #: /views/edit/Content/NewsViewer/form.form:48
@@ -863,8 +863,8 @@ msgid "number"
 msgstr "nombre"
 
 #: /views/edit/Content/AgendaViewer/form.form:50
-msgid "number of archive items to show per page"
-msgstr ""
+msgid "Number of archive items to show per page."
+msgstr "Nombre d'articles d'archives à montrer sur une page."
 
 #: /views/edit/Content/AgendaViewer/form.form:65
 #: /views/edit/Content/NewsViewer/form.form:85
