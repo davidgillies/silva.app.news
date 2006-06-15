@@ -13,7 +13,7 @@
     user_role view/get_user_role;
     silva_root view/silva_root;
     title model/get_title_editable;
-    vein string:edit;
+    vein string:items;
     dummy model/security_trigger;
     months view/get_months;
     currentmonth request/month | options/month | view/currentmonth;
@@ -141,7 +141,6 @@
       <a title="Edit this item"
         tal:attributes="
           href string:${object_url}/edit;
-          class python:view.get_status_style(object_status);
           title meta_type"
         tal:content="python: ct(object_path, 30)">
         id
@@ -151,7 +150,7 @@
     <span tal:replace="nothing"> _______ title cell _______ </span>
     <td>
       <tal:block condition="python:obj.get_title != ''">
-        <a class="blacklink" title="Preview this item" i18n:attributes="title"
+        <a title="Preview this item" i18n:attributes="title"
           tal:attributes="href string:${object_url}">
         <span tal:replace="structure string:${obj/get_title}">title</span>
         </a>
