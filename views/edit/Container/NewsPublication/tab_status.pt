@@ -329,13 +329,13 @@
             accesskey="p"
             i18n:attributes="title;accesskey clear_expiration_accesskey"
             i18n:translate="">
-            clear&nbsp;ex<u>p</u>iration
+            clear expiration
           </label>
           <field tal:replace="structure view/tab_status_form/clear_expiration/render" />
           &nbsp;&nbsp;
         </tal:block>
         <tal:block replace="nothing">
-          ______________ news-specific control ______________
+          _______ news-specific control _______
         </tal:block>
         <label for="update_display_datetime" 
           i18n:attributes="title"
@@ -357,7 +357,7 @@
           accesskey="u"
           i18n:attributes="title;accesskey publish_now_accesskey"
           i18n:translate="">
-          p<u>u</u>blish&nbsp;now?
+          publish now?
         </label>
         <tal:block 
           condition="redisplay_timing_form"
