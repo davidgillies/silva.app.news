@@ -399,7 +399,7 @@ msgid ""
 "of the source and below."
 msgstr ""
 "Prépare source de news privée accésible par filtre dans le même niveau de la "
-"source et dessous"
+"source et dessous."
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:84
 msgid "change the public/private status of the news publication: alt-o"
@@ -539,11 +539,11 @@ msgstr "Utilisateurs autorisés en dessous de ce niveau"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:100
 msgid "expiration due"
-msgstr ""
+msgstr "expiration due"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:103
 msgid "published"
-msgstr ""
+msgstr "publié"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:158
 msgid "index of"
@@ -554,7 +554,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_edit.pt:308
 #: /views/edit/Container/NewsPublication/tab_edit.pt:317
 msgid "publish"
-msgstr ""
+msgstr "publier"
 
 # Default: "<i>n/a</i>"
 #: /views/edit/Container/NewsPublication/tab_status.pt:191
@@ -565,23 +565,23 @@ msgstr "n/a"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:223
 msgid "public version"
-msgstr ""
+msgstr "version publique"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:239
 msgid "closed"
-msgstr ""
+msgstr "fermé"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:253
 msgid "There are no publishable items here."
-msgstr ""
+msgstr "Il ne sont pas les documents publiable."
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:271
 msgid "day / month / year"
-msgstr ""
+msgstr "jour / mois / an"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:286
 msgid "publish time"
-msgstr ""
+msgstr "temp de publication"
 
 # Default: "m"
 #: /views/edit/Container/NewsPublication/tab_status.pt:286
@@ -595,8 +595,8 @@ msgid "access key: alt-m"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:306
-msgid "p<u>u</u>blish&nbsp;now?"
-msgstr ""
+msgid "publish now?"
+msgstr "publier maintenant?"
 
 # Default: "u"
 #: /views/edit/Container/NewsPublication/tab_status.pt:306
@@ -612,7 +612,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:334
 msgid "expiration time"
-msgstr ""
+msgstr "temp d'expiration"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:334
 msgid "access key: alt-x"
@@ -632,8 +632,8 @@ msgid "clear_expiration_accesskey"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:353
-msgid "clear&nbsp;ex<u>p</u>iration"
-msgstr ""
+msgid "clear expiration"
+msgstr "enlever l'expiration"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:353
 #: /views/edit/Container/NewsPublication/tab_edit.pt:539
@@ -645,7 +645,7 @@ msgstr "raccourci: alt-p"
 #: /views/edit/Container/NewsPublication/tab_status_form_news.form:23
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:46
 msgid "update display date/time"
-msgstr ""
+msgstr "changer le date/temp publique"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
 msgid "reject pending request for approval: alt-j"
@@ -682,7 +682,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:419
 msgid "close"
-msgstr ""
+msgstr "fermer"
 
 # Default: "c"
 #: /views/edit/Container/NewsPublication/tab_status.pt:419
@@ -888,7 +888,7 @@ msgid ""
 "past."
 msgstr ""
 "Montrer un nombre spécifique d'items, ou montrer items pour un nombre de "
-"jours dans le passé"
+"jours dans le passé."
 
 #: /views/edit/Content/NewsViewer/form.form:49
 msgid "number of news items to show per page"
@@ -905,7 +905,7 @@ msgstr ""
 #: /views/edit/Content/RSSAggregator/form.form:32
 msgid ""
 "List the URLs of RSS feeds (one per line) to use as sources of news items."
-msgstr "Liste URL de RSS à utiliser en tant que source de nouveaux items"
+msgstr "Liste URL de RSS à utiliser en tant que source de nouveaux items."
 
 #: /views/edit/Content/edit.pt:124
 msgid "RDF Feed"
@@ -1193,7 +1193,7 @@ msgid ""
 "tree that are below the location of the filter."
 msgstr ""
 "Placé à 'Oui' garde le filtre local, en montrant seulement les items dans "
-"l'arborescence en dessous de l'mplacement du filtre"
+"l'arborescence en dessous de l'mplacement du filtre."
 
 # Default: "silva_news"
 #: /views/edit/Filter/NewsFilter/submit_settings.py:39
@@ -1623,36 +1623,36 @@ msgstr "voir article"
 #: /views/public/AgendaViewer/search_agenda.pt:64
 #: /views/public/NewsViewer/search_news.pt:55
 msgid "There are no articles corresponding to your query"
-msgstr ""
+msgstr "Il n'y a aucun article correspondant à votre recherche."
 
 #: /views/public/AgendaViewer/search_agenda.pt:70
 #: /views/public/AgendaViewer/view_archive.pt:121
 msgid "view agenda"
-msgstr ""
+msgstr "voir l'ordre du jour"
 
 #: /views/public/AgendaViewer/search_agenda.pt:73
 #: /views/public/AgendaViewer/view_agenda.pt:65
 #: /views/public/NewsViewer/search_news.pt:64
 #: /views/public/NewsViewer/view_news.pt:66
 msgid "view archive"
-msgstr ""
+msgstr "voir les archives"
 
 #: /views/public/AgendaViewer/view_agenda.pt:59
 #: /views/public/AgendaViewer/view_archive.pt:86
 #: /views/public/NewsViewer/view_news.pt:60
 #: /views/public/NewsViewer/view_archive.pt:76
 msgid "There are no articles available"
-msgstr ""
+msgstr "Il n'y a aucun article disponible."
 
 #: /views/public/AgendaViewer/view_archive.pt:26
 #: /views/public/NewsViewer/view_archive.pt:27
 msgid "Archive of ${title}"
-msgstr ""
+msgstr "Archive de"
 
 #: /views/public/NewsFilter/search_news.pt:20
 #: /views/public/NewsViewer/search_news.pt:17
 msgid "Search News"
-msgstr "Rechercher News"
+msgstr "Rechercher les nouvelles"
 
 #: /views/public/NewsFilter/search_news.pt:71
 msgid "There are no articles corresponding to your query."
@@ -1661,11 +1661,11 @@ msgstr "Aucun article correspondant à votre recherche"
 #: /views/public/NewsViewer/search_news.pt:61
 #: /views/public/NewsViewer/view_archive.pt:111
 msgid "view news"
-msgstr ""
+msgstr "regarder les nouvelles"
 
 #: /views/public/NewsViewer/view_archive.pt:65
 msgid "published:"
-msgstr ""
+msgstr "publié"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:24
 #: /views/public/PlainArticle/render_helper.pt:23
@@ -1678,11 +1678,11 @@ msgstr "Date et heure:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:34
 msgid "Start:"
-msgstr ""
+msgstr "Commencer:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:36
 msgid "End:"
-msgstr ""
+msgstr "Fin:"
 
 #: /www/inline_viewer_form.form:104
 msgid ""
