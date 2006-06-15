@@ -14,7 +14,7 @@
     user_role view/get_user_role;
     silva_root view/silva_root;
     title model/get_title_editable;
-    vein string:edit;
+    vein string:editor;
     dummy model/security_trigger;
     results python:model.get_all_items();
     startat python:path('request/start | nothing') or path('options/startat | nothing') or 0;

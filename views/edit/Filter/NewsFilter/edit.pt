@@ -20,7 +20,7 @@
     previous python:batch.previous;
     next python:batch.next;
     title model/get_title_editable;
-    vein string:edit;
+    vein string:editor;
     fields view/settingsform/get_fields;
 ">
 
