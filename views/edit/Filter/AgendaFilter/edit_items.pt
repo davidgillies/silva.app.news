@@ -42,12 +42,12 @@
 
 <form action="." name="silvaObjects" method="POST">
 
-  <tal:comment condition="nothing">__________ date table __________</tal:comment>
+  <tal:comment condition="nothing">______________ date table ______________</tal:comment>
   <table class="listing"
     style="margin-bottom:0;">
     <thead>
       <tal:block replace="nothing">
-        ______________ vein + title row ______________
+        _______ vein + title row _______
       </tal:block>
       <tr>
         <td class="top"
@@ -62,10 +62,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="even">
+      <tal:block replace="nothing">
+        _______ calendar navigation _______
+      </tal:block>
+      <tr class="even"
+        metal:define-macro="calendar">
         <td>
           <a href="3"
-            tal:content="python: '<< %s' % str(int(currentyear) - 1)"
+            tal:content="python: '< %s' % str(int(currentyear) - 1)"
             tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">
             2001
           </a>
@@ -73,16 +77,17 @@
         <tal:repeat repeat="month months">
           <tal:define define="id repeat/month/index">
             <td class="align-center"
-              tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-              <a tal:content="month" 
-              tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"
-              i18n:translate="">
+              tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color:#f3f3d9', '');">
+              <a tal:content="month"
+                tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"
+                i18n:translate="">
+                month
               </a>
             </td>
           </tal:define>
         </tal:repeat>
         <td class="align-right">
-          <a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">
+          <a href="3" tal:content="python: '%s >' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">
             2003
           </a>
         </td>
@@ -90,9 +95,10 @@
     </tbody>
   </table>
 
-  <tal:comment condition="nothing">Begin PublicationTable</tal:comment>
+  <tal:comment condition="nothing"><!-- begin items table --></tal:comment>
 
-  <table class="listing interlisting">
+  <table class="listing"
+    style="margin-top:0; margin-bottom:0;">
 
     <span tal:replace="nothing"> ______________ table header ______________ </span>
     <tr tal:condition="python:len(objects) != 0">
@@ -286,25 +292,14 @@
 
   <tal:comment condition="nothing"> __________ date table __________ </tal:comment>
   <table class="listing"
-    style="border-bottom-width:2px;">
+    style="margin-top:0; border-bottom-width:2px;">
     <tbody>
-      <tr class="even">
-        <td>
-          <a href="3" tal:content="python: '<< %s' % str(int(currentyear) - 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) - 1)">2001</a>
-        </td>
-        <tal:repeat repeat="month months">
-          <tal:define define="id repeat/month/index">
-            <td align="center" tal:attributes="style python:test(id == int(currentmonth) - 1, 'background-color: #829199;;', '');">
-              <a href="#"  i18n:translate="" tal:content="month" tal:attributes="href python: '?month=%s&year=%s&view=view_archive' % (id + 1, currentyear)"></a>
-            </td>
-          </tal:define>
-        </tal:repeat>
-        <td class="align-right">
-          <a href="3" tal:content="python: '%s >>' % str(int(currentyear) + 1)" tal:attributes="href python:'?month=%s&year=%s&view=view_archive' % (currentmonth, int(currentyear) + 1)">2003</a>
-        </td>
+      <tr class="even"
+        metal:use-macro="here/edit_items/macros/calendar">
       </tr>
     </tbody>
   </table>
+
 </form>
 
 </html>
