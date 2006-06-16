@@ -269,7 +269,7 @@
         colspan="4">
         <span tal:condition="
           python: approveables or ((closeables or revokeables or rejectables) and may_approve_content)">
-          <tal:block i18n:translate="">day / month / year</tal:block> &nbsp;23:59
+          <tal:block i18n:translate="">day / month / year &nbsp;23:59</tal:block>
         </span>
       </th>
     </tr>
@@ -380,45 +380,47 @@
     </tal:block>
     <tr class="controls"
       tal:condition="may_approve_content">
-      <td colspan="2"
-        style="border-style:none;">
-        <input class="reject"
-          type="submit"
-          name="tab_status_reject:method"
-          value="reject" 
-          title="reject pending request for approval: alt-j"
-          accesskey="j"
-          tal:condition="rejectables"
-          i18n:attributes="value;title;accesskey reject_accesskey"
-        />
-        <input class="revoke"
-          type="submit"
-          name="tab_status_revoke:method"
-          value="revoke"
-          title="withdraw approval of approved versions: alt-v"
-          accesskey="v"
-          tal:condition="revokeables"
-          i18n:attributes="value;title;accesskey revoke_accesskey"
-        />
-        <input class="close"
-          type="submit"
-          name="tab_status_close:method"
-          value="close"
-          title="close published items: alt-c"
-          accesskey="c"
-          tal:condition="closeables"
-          i18n:attributes="value;title;accesskey close_accesskey"
-        />
-        <input class="button" 
-          type="submit" 
-          name="tab_status_new_version:method" 
-          value="new version" 
-          title="create new versions of published docs: alt-n" 
-          accesskey="n"
-          tal:condition="new_versionables"
-          i18n:attributes="value;title;accesskey new_version_accesskey"
-        />
-      </td>
+      <metal:def define-macro="versioning_controls">
+        <td colspan="2"
+          style="border-style:none;">
+          <input class="reject"
+            type="submit"
+            name="tab_status_reject:method"
+            value="reject" 
+            title="reject pending request for approval: alt-j"
+            accesskey="j"
+            tal:condition="rejectables"
+            i18n:attributes="value;title;accesskey reject_accesskey"
+          />
+          <input class="revoke"
+            type="submit"
+            name="tab_status_revoke:method"
+            value="revoke"
+            title="withdraw approval of approved versions: alt-v"
+            accesskey="v"
+            tal:condition="revokeables"
+            i18n:attributes="value;title;accesskey revoke_accesskey"
+          />
+          <input class="close"
+            type="submit"
+            name="tab_status_close:method"
+            value="close"
+            title="close published items: alt-c"
+            accesskey="c"
+            tal:condition="python:closeables and may_approve_content"
+            i18n:attributes="value;title;accesskey close_accesskey"
+          />
+          <input class="button" 
+            type="submit" 
+            name="tab_status_new_version:method" 
+            value="new version" 
+            title="create new versions of published docs: alt-n" 
+            accesskey="n"
+            tal:condition="new_versionables"
+            i18n:attributes="value;title;accesskey new_version_accesskey"
+          />
+        </td>
+      </metal:def>
       <td class="align-right"
         colspan="4">
         <input class="button"
@@ -441,43 +443,16 @@
         />
       </td>
     </tr>
-    <tr class="controls"                  
+    <tr class="controls"
       tal:condition="not:may_approve_content">
       <tal:block replace="nothing">
         ______________ author controls ______________
       </tal:block>
-      <td colspan="3"
-        style="border-style:none;">
-        <input class="reject"
-          type="submit"
-          name="tab_status_withdraw:method"
-          value="withdraw"
-          title="withdraw pending request for approval: alt-w"
-          accesskey="w"
-          tal:condition="rejectables"
-          i18n:attributes="value;title;accesskey withdraw_accesskey"
-        />
-        <input class="revoke"
-          accesskey="v"
-          name="tab_status_revoke:method"
-          title="revoke approval of approved versions: alt-v"
-          type="submit"
-          value="revoke"
-          tal:condition="revokeables"
-          i18n:attributes="value;title;accesskey revoke_accesskey"
-        />
-        <input class="button" 
-          type="submit" 
-          name="tab_status_new_version:method" 
-          value="new version" 
-          title="create new versions of published docs: alt-n" 
-          accesskey="n"
-          tal:condition="new_versionables"
-          i18n:attributes="value;title;accesskey new_version_accesskey"
-        />
-      </td>
+      <metal:use use-macro="here/tab_status/macros/versioning_controls">
+        insert versioning controls
+      </metal:use>
       <td class="align-right"
-        colspan="2">
+        colspan="4">
         <input class="button"
           name="tab_status_change_settings:method"
           type="submit"
@@ -485,10 +460,8 @@
           title="change publish and expiration times: alt-s"
           accesskey="s"
           tal:condition="python: approveables"
-          i18n:attributes="value;title;accesskey set_timing_accesskey"
+          i18n:attributes="value;title"
         />
-      </td>
-      <td class="align-right">
         <input class="button"
           type="submit"
           name="tab_status_request_approval:method"
@@ -496,7 +469,16 @@
           title="request approval for new versions: alt-r"
           accesskey="r"
           tal:condition="approveables"
-          i18n:attributes="value;title;accesskey request_approval_accesskey"
+          i18n:attributes="value;title"
+        />
+        <input class="executor"
+          type="submit"
+          name="tab_status_request_approval_now:method"
+          value="request approval now"
+          title="request immediate approval for new versions: alt-p"
+          accesskey="p"
+          tal:condition="approveables"
+          i18n:attributes="value;title"
         />
       </td>
     </tr>
