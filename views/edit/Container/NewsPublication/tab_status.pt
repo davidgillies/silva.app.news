@@ -27,6 +27,7 @@
     global revokeables nothing;
     global closeables nothing;
     global new_versionables nothing;
+    global republishables nothing;
     global expireables nothing;
   ">
   <table class="columns columns2">
@@ -115,10 +116,15 @@
           indent_depth python: '%spx' % str(obj['indent'] * 10);
           obj_url obj/absolute_url;
           state obj/status_style | nothing;
+          public_status obj/public_status | nothing;
           global rejectables python: test(state == 'pending', 1, rejectables);
           global revokeables python: test(state == 'approved', 1, revokeables);
           global approveables python: test(state == 'draft', 1, approveables);
-          global new_versionables python: test(state == 'closed', 1, new_versionables);"
+          global new_versionables python:test(
+            ((public_status == 'published' or public_status == 'closed') 
+            and state != 'draft' and state != 'pending' and state != 'approved'
+            ), 1, new_versionables);
+          global republishables python: test(state == 'closed', 1, republishables)"
         tal:attributes="
           class python: iterate and 'odd' or 'even';">
         <td class="listing-left">
@@ -228,7 +234,6 @@
             <tal:block
               define="
                 global closeables python: 1;
-                global new_versionables python: state != 'pending' and state != 'approved';
                 global expireables python:end_time and 1 or expireables;"
               condition="start_time"
               replace="
@@ -237,9 +242,7 @@
           </a>
           <tal:block 
             condition="python: public_status == 'closed'"> 
-            <span i18n:translate=""
-              define="
-                global new_versionables python: closed and (state != 'pending' and state != 'approved') or new_versionables;">
+            <span i18n:translate="">
               closed
             </span>
           </tal:block>
