@@ -325,8 +325,8 @@
         <tal:block 
           condition="expireables">
           <label for="clear_expiration"
-            title="access key: alt-p"
-            accesskey="p"
+            title="access key: alt-o"
+            accesskey="o"
             i18n:attributes="title;accesskey clear_expiration_accesskey"
             i18n:translate="">
             clear expiration
@@ -338,6 +338,8 @@
           _______ news-specific control _______
         </tal:block>
         <label for="update_display_datetime" 
+          title="change the public display dat: alt-i"
+          accesskey="i"
           i18n:attributes="title"
           i18n:translate="">
           update display date/time
@@ -353,8 +355,8 @@
         &nbsp;&nbsp;
         <label 
           for="publish_now_flag" 
-          title="access key: alt-u" 
-          accesskey="u"
+          title="access key: alt-p"
+          accesskey="p"
           i18n:attributes="title;accesskey publish_now_accesskey"
           i18n:translate="">
           publish now?
@@ -418,9 +420,9 @@
         <input class="button"
           name="tab_status_change_settings:method"
           type="submit"
-          value="set timing"
-          title="change publish and expiration times: alt-s"
-          accesskey="s"
+          value="update timing"
+          title="change publish and expiration times: alt-u"
+          accesskey="u"
           tal:condition="python: approveables or closeables or revokeables or rejectables"
           i18n:attributes="value;title;accesskey set_timing_accesskey"
         />
@@ -428,8 +430,8 @@
           name="tab_status_approve:method"
           type="submit"
           value="open to public"
-          title="approve or publish new versions: alt-o"
-          accesskey="o"
+          title="approve or publish new versions: alt-p"
+          accesskey="p"
           tal:condition="python: approveables or rejectables or new_versionables"
           i18n:attributes="value;title;accesskey open_to_public_accesskey"
         />
