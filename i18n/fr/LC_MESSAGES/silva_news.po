@@ -645,7 +645,7 @@ msgstr "raccourci: alt-p"
 #: /views/edit/Container/NewsPublication/tab_status_form_news.form:23
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:46
 msgid "update display date/time"
-msgstr "changer le date/temp publique"
+msgstr "changer la date/temps publique"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
 msgid "reject pending request for approval: alt-j"
