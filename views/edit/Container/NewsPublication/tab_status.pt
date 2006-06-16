@@ -78,7 +78,7 @@
           tal:define="type python:test(model.meta_type == 'Silva Folder', 'Folder', 'Publication')"
           tal:attributes="
             title string:export this ${type}: alt-e;"
-          i18n:attributes="value;accesskey export_accesskey"
+          i18n:attributes="value"
 	       />
       </td>
     </tr>
@@ -331,7 +331,7 @@
           <label for="clear_expiration"
             title="access key: alt-o"
             accesskey="o"
-            i18n:attributes="title;accesskey clear_expiration_accesskey"
+            i18n:attributes="title"
             i18n:translate="">
             clear expiration
           </label>
@@ -361,7 +361,7 @@
           for="publish_now_flag" 
           title="access key: alt-p"
           accesskey="p"
-          i18n:attributes="title;accesskey publish_now_accesskey"
+          i18n:attributes="title"
           i18n:translate="">
           publish now?
         </label>
@@ -390,7 +390,7 @@
             title="reject pending request for approval: alt-j"
             accesskey="j"
             tal:condition="rejectables"
-            i18n:attributes="value;title;accesskey reject_accesskey"
+            i18n:attributes="value;title"
           />
           <input class="revoke"
             type="submit"
@@ -399,7 +399,7 @@
             title="withdraw approval of approved versions: alt-v"
             accesskey="v"
             tal:condition="revokeables"
-            i18n:attributes="value;title;accesskey revoke_accesskey"
+            i18n:attributes="value;title"
           />
           <input class="close"
             type="submit"
@@ -408,7 +408,7 @@
             title="close published items: alt-c"
             accesskey="c"
             tal:condition="python:closeables and may_approve_content"
-            i18n:attributes="value;title;accesskey close_accesskey"
+            i18n:attributes="value;title"
           />
           <input class="button" 
             type="submit" 
@@ -417,7 +417,7 @@
             title="create new versions of published docs: alt-n" 
             accesskey="n"
             tal:condition="new_versionables"
-            i18n:attributes="value;title;accesskey new_version_accesskey"
+            i18n:attributes="value;title"
           />
         </td>
       </metal:def>
@@ -430,7 +430,7 @@
           title="change publish and expiration times: alt-u"
           accesskey="u"
           tal:condition="python: approveables or closeables or revokeables or rejectables"
-          i18n:attributes="value;title;accesskey set_timing_accesskey"
+          i18n:attributes="value;title"
         />
         <input class="button"
           name="tab_status_approve:method"
@@ -439,7 +439,7 @@
           title="approve or publish new versions: alt-p"
           accesskey="p"
           tal:condition="python: approveables or rejectables or new_versionables"
-          i18n:attributes="value;title;accesskey open_to_public_accesskey"
+          i18n:attributes="value;title"
         />
       </td>
     </tr>
