@@ -28,7 +28,8 @@
           <default_now type="int">1</default_now>
           <css_class></css_class>
           <title>display date/time</title>
-          <description></description>
+          <description>The date/time that is displayed for the  public.</description>
+          <extra></extra>
           <allow_empty_time type="int">1</allow_empty_time>
         </values>
         <tales>
@@ -44,11 +45,10 @@
           <css_class></css_class>
           <default type="int">0</default>
           <title>update display date/time</title>
-          <extra>id="update_display_datetime"</extra>
           <description>
-            Change the display date/time that the public sees. This will also change 
-            where the news item appears in a chronological list.
+            Changing this will also change where the news item appears in a chronological list.
           </description>
+          <extra></extra>
           <external_validator></external_validator>
         </values>
         <tales>
