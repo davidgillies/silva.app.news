@@ -337,14 +337,14 @@ notes
 <td class="align-right" style="white-space: nowrap;">
 <label title="access key: alt-m"
   accesskey="m"
-  i18n:attributes="title;accesskey content_publish_time_accesskey"
-  i18n:translate=""
+  tal:content="field/title"
   tal:attributes="for field/id"
-  >content publish ti<u>m</u>e</label>&nbsp;
-<tal:block 
-  attributes="id field/id"
-  replace="structure python: field.render(REQUEST=request)"
-/>
+  i18n:attributes="title;accesskey content_publish_time_accesskey"
+  i18n:translate="">
+  content publish time
+</label>
+<input tal:replace="structure python: field.render(REQUEST=request)"
+ tal:attributes="id field/id" />
 </td>
 <td i18n:translate="">
 day / month / year &nbsp;23:59
@@ -354,38 +354,60 @@ day / month / year &nbsp;23:59
 <tr class="odd"
   tal:define="field view/tab_status_form_editor/expiration_datetime">
 <td class="align-right" style="white-space: nowrap;">
-  <label 
-    title="access key: alt-i"
-    accesskey="i"
-    
-    i18n:attributes="title;accesskey expiration_time_accesskey"
-    i18n:translate=""
-    tal:attributes="for field/id">expiratio<u>n</u> time</label>&nbsp;
-<tal:block 
-  attributes="id field/id"
-  replace="structure python: field.render(REQUEST=request)"
-/>
+<label title="access key: alt-o"
+  accesskey="o"
+  tal:content="field/title"
+  tal:attributes="for field/id"
+  i18n:attributes="title;accesskey expiration_time_accesskey"
+  i18n:translate="">
+  expiration time
+</label>
+<input tal:replace="structure python: field.render(REQUEST=request)"
+ tal:attributes="id field/id" />
 </td>
-<td style="vertical-align:middle;" i18n:translate="">
-Empty indicates no expiration.
+<td tal:content="structure field/description">
+  description
 </td>
 </tr>
 
 <tal:block condition="nothing">__ SilvaNews additional fields __</tal:block>
 
-<tal:block define="form view/tab_status_form_news">
-  <tr tal:repeat="field form/get_fields">
-    <td class="align-right">
-      <label 
-        tal:attributes="for field/id"
-        tal:content="field/title"
-        >content publish time</label>&nbsp;
-      <input tal:replace="structure python: field.render(REQUEST=request)" />
-    </td>
-    <td tal:content="structure field/description">
-    </td>
-  </tr>
-</tal:block>
+<tr tal:define="field view/tab_status_form_news/display_datetime">
+<td class="align-right">
+<label 
+  title="access key: alt-h"
+  accesskey="h"
+  tal:attributes="for field/id"
+  tal:content="field/title"
+  i18n:attributes="title"
+  i18n:translate="">
+  field title
+</label>
+<input tal:replace="structure python: field.render(REQUEST=request)"
+ tal:attributes="id field/id" />
+<td tal:content="structure field/description">
+  description
+</td>
+</tr>
+
+<tr tal:define="field view/tab_status_form_news/update_display_datetime">
+<td class="align-right">
+  <label 
+    title="access key: alt-i"
+    accesskey="i"
+    tal:attributes="for field/id"
+    tal:content="field/title"
+    i18n:attributes="title"
+    i18n:translate="">
+    field title
+  </label>
+<input tal:replace="structure python: field.render(REQUEST=request)"
+ tal:attributes="id field/id" />
+</td>
+<td tal:content="structure field/description">
+  description
+</td>
+</tr>
 
 <tal:block condition="nothing">__ end SilvaNews additional fields __</tal:block>
 
@@ -394,12 +416,12 @@ Empty indicates no expiration.
   tal:define="field view/tab_status_form_editor/publish_now_flag">
   <span class="widebody">
     <label 
-      title="access key: alt-u" 
-      accesskey="u"
+      title="access key: alt-g" 
+      accesskey="g"
       i18n:attributes="title;accesskey publish_right_now_accesskey"
       i18n:translate=""
       tal:attributes="for field/id">
-      p<u>u</u>blish right now?
+      publish right now?
   </label>
 </span>
 <tal:block 
@@ -415,8 +437,8 @@ Empty indicates no expiration.
 <input class="button"
   type="submit"
   value="open to public"
-  title="access key: alt-o"
-  accesskey="o"
+  title="access key: alt-p"
+  accesskey="p"
   i18n:attributes="value;title;accesskey open_to_public_accesskey"
 />
 </td> 
