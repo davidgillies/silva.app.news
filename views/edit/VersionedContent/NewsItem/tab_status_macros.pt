@@ -78,7 +78,7 @@ message text
 
 <span tal:replace="nothing"> _______ Author requests approval _______ </span>
 <div metal:define-macro="request_approval" tal:omit-tag="">
-<form action="tab_status_request" method="POST">
+<form action="." method="POST">
 <tr tal:condition="python:model.get_approval_request_message()">
 <td class="feedback"
  colspan="2" i18n:translate="">
@@ -115,7 +115,8 @@ message text
 <th i18n:translate="">
 message to editor
 </th>
-<th style="width:40%" i18n:translate="">
+<th style="width:50%"
+  i18n:translate="">
 notes
 </th>
 </tr>
@@ -124,8 +125,8 @@ notes
   tal:define="field view/tab_status_form_author/message">
 <td class="align-right">
   <tal:block 
-    attributes="id field/id" 
     replace="structure python: field.render(REQUEST=request)"
+    attributes="id field/id" 
   />
 </td>
 <td i18n:translate="">
@@ -133,57 +134,23 @@ This message will remain visible in the status screen for other authors and edit
 </td>
 </tr>
 
-<tr class="inter-controls"
-  tal:define="field view/tab_status_form_author/publish_datetime">
-<td class="align-right"
- style="vertical-align:bottom; white-space: nowrap;'">
- <label 
-   title="access key: alt-m"
-   accesskey="m"
-   tal:attributes="for field/id"
-   i18n:translate=""
-   i18n:attributes="title;accesskey content_publish_time_accesskey"
-   >
-   content publish ti<u>m</u>e</label>
-<tal:block 
-  attributes="id field/id" 
-  replace="structure python: field.render(value=model.get_unapproved_version_publication_datetime(), REQUEST=request)"
-/>
-</td>
-<td style="vertical-align:middle;" i18n:translate="">
-day / month / year &nbsp;23:59
-</td>
+<tr metal:use-macro="here/tab_status_macros/macros/date_controls">
+  pub/exp/display controls inserted
 </tr>
 
-<tr class="inter-controls"
-  tal:define="field view/tab_status_form_change_settings/expiration_datetime">
-<td class="align-right" style="white-space: nowrap;">
-<label 
-  title="access key: alt-i (some platforms)" 
-  accesskey="i"
-  tal:attributes="for field/id"
-  i18n:attributes="title;accesskey expiration_time_accesskey"
-  i18n:translate=""
-  >expiratio<u>n</u> time</label>&nbsp;
-<tal:block 
-  attributes="id field/id" 
-  replace="structure python: field.render(model.get_next_version_expiration_datetime())"
-/>
-</td>
-<td style="vertical-align:middle;" i18n:translate="">
-If this content should expire, set the time.
-</td>
-</tr>
+
 
 <tr class="controls">
 <td colspan="2" class="align-right">
 <input 
-  type="submit" 
-  value="request approval" 
-  class="button" 
-  title="access key: alt-r" 
-  accesskey="r" 
-  i18n:attributes="value;title;accesskey request_approval_accesskey" />
+  type="submit"
+  value="request approval"
+  class="button"
+  name="tab_status_request:method"
+  title="access key: alt-r"
+  accesskey="r"
+  i18n:attributes="value;title"
+/>
 </td>
 </tr>
 </form>
@@ -211,64 +178,35 @@ notes
 </th>
 </tr>
 
-<tr class="odd"
-  tal:define="field view/tab_status_form_change_settings/publish_datetime">
-<td class="align-right" style="white-space: nowrap;">
-<label 
-  title="access key: alt-m (some platforms)" 
-  accesskey="m"
-  tal:attributes="for field/id"
-  i18n:attributes="title; accesskey access_key_publish_datetime;"
-  i18n:translate=""
-  >publish ti<u>m</u>e:</label>&nbsp;
-<tal:block 
-  attributes="id field/id"
-  replace="structure python: field.render(model.get_next_version_publication_datetime())"
-/>
-</td>
-<td>
-&nbsp;
-</td>
+<tr metal:use-macro="here/tab_status_macros/macros/date_controls">
+  pub/exp/display controls inserted
 </tr>
 
-<tr class="even"
-  tal:define="field view/tab_status_form_change_settings/expiration_datetime">
-<td class="align-right" style="white-space: nowrap;">
-<label 
-  title="access key: alt-i (some platforms)" 
-  accesskey="i"
-  tal:attributes="for field/id"
-  i18n:attributes="title;accesskey expiration_time_accesskey"
-  i18n:translate=""
-  >expiratio<u>n</u> time</label>&nbsp;
-<tal:block attributes="id field/id"
-  replace="structure python: field.render(model.get_next_version_expiration_datetime())"
-/>
-</td>
-<td style="vertical-align:middle;" i18n:translate="">
-If this content should expire, set the time.
-</td>
-</tr>
-
+<tal:note><!-- this flag is legacy and can be deleted --></tal:note>
 <tr>
 <th class="align-right" colspan="2"
-  tal:define="field view/tab_status_form_change_settings/publish_now_flag">
-  <span class="widebody">
+  tal:define="field view/tab_status_form_change_settings/publish_now_flag | nothing">
     <label 
       title="access key: alt-u" 
       accesskey="u"
-      i18n:attributes="title;accesskey publish_right_now_accesskey"
-      i18n:translate=""
-      tal:attributes="for field/id">
-      p<u>u</u>blish right now?
+      tal:condition="field"
+      tal:attributes="for field/id"
+      i18n:attributes="title"
+      i18n:translate="">
+      publish right now?
   </label>
-</span>
 <tal:block 
-  attributes="id field/id"
+  tal:condition="field"
   replace="structure python: field.render()"
+  attributes="id field/id"
 />
 </th>
 </tr>
+
+<tal:note>
+<!-- this is legacy, can be deleted, and the field will need to be deleted
+     from the form as well -->
+</tal:note>
 <tr>
   <th class="align-right" colspan="2"
     tal:define="field view/tab_status_form_change_settings/clear_expiration">
@@ -277,7 +215,7 @@ If this content should expire, set the time.
         title="access key: alt-u" 
         accesskey="u"
         tal:attributes="for field/id"
-        i18n:attributes="title;accesskey clear_expiration_time_accesskey"
+        i18n:attributes="title"
         i18n:translate=""
         >clear ex<u>p</u>iration?
     </label>
@@ -292,7 +230,13 @@ If this content should expire, set the time.
 <tr class="inter-controls">
 <td class="align-right"
   colspan="2">
-<input type="submit" value="change timings" class="button"  title="access key: alt-c" accesskey="c" i18n:attributes="value;title"/>
+<input type="submit" 
+  value="update timings"
+  class="button"
+  title="access key: alt-u"
+  accesskey="u"
+  i18n:attributes="value;title"
+/>
 </td>
 </tr>
 </form>
@@ -327,11 +271,12 @@ If this content should expire, set the time.
   <th class="align-right" i18n:translate="">
 settings
 </th>
-<th style="width:40%" i18n:translate="">
+<th style="width:50%" i18n:translate="">
 notes
 </th>
 </tr>
 
+<metal:def define-macro="date_controls"> 
 <tr class="even"
   tal:define="field view/tab_status_form_editor/publish_datetime">
 <td class="align-right" style="white-space: nowrap;">
@@ -339,7 +284,7 @@ notes
   accesskey="m"
   tal:content="field/title"
   tal:attributes="for field/id"
-  i18n:attributes="title;accesskey content_publish_time_accesskey"
+  i18n:attributes="title"
   i18n:translate="">
   content publish time
 </label>
@@ -358,7 +303,7 @@ day / month / year &nbsp;23:59
   accesskey="o"
   tal:content="field/title"
   tal:attributes="for field/id"
-  i18n:attributes="title;accesskey expiration_time_accesskey"
+  i18n:attributes="title"
   i18n:translate="">
   expiration time
 </label>
@@ -371,8 +316,8 @@ day / month / year &nbsp;23:59
 </tr>
 
 <tal:block condition="nothing">__ SilvaNews additional fields __</tal:block>
-
-<tr tal:define="field view/tab_status_form_news/display_datetime">
+<tr class="even"
+ tal:define="field view/tab_status_form_news/display_datetime">
 <td class="align-right">
 <label 
   title="access key: alt-h"
@@ -408,8 +353,8 @@ day / month / year &nbsp;23:59
   description
 </td>
 </tr>
-
 <tal:block condition="nothing">__ end SilvaNews additional fields __</tal:block>
+</metal:def>
 
 <tr>
 <th class="align-right" colspan="2"
@@ -418,7 +363,7 @@ day / month / year &nbsp;23:59
     <label 
       title="access key: alt-g" 
       accesskey="g"
-      i18n:attributes="title;accesskey publish_right_now_accesskey"
+      i18n:attributes="title"
       i18n:translate=""
       tal:attributes="for field/id">
       publish right now?
@@ -439,7 +384,7 @@ day / month / year &nbsp;23:59
   value="open to public"
   title="access key: alt-p"
   accesskey="p"
-  i18n:attributes="value;title;accesskey open_to_public_accesskey"
+  i18n:attributes="value;title"
 />
 </td> 
 </tr>
@@ -510,7 +455,7 @@ The message may be viewed by local users.
   accesskey="r"
   tal:condition="may_approve_content" 
   value=" Reject approval request " 
-  i18n:attributes="title;value;accesskey reject_approval_request_accesskey" 
+  i18n:attributes="title;value" 
 />
 <input 
   type="submit" 
@@ -518,8 +463,8 @@ The message may be viewed by local users.
   title="access key: alt-r" 
   accesskey="r"
   tal:condition="not: may_approve_content" 
-  value=" Withdraw approval request " 
-  i18n:attributes="title;value;accesskey withdraw_approval_request_accesskey" 
+  value="withdraw approval request"
+  i18n:attributes="title;value" 
 />
 </td>
 </tr>
@@ -561,7 +506,7 @@ If further editing is required, first revoke the approval.
   class="button" 
   title="access key: alt-r" 
   accesskey="r" 
-  i18n:attributes="value;title;accesskey revoke_approval_accesskey" />
+  i18n:attributes="value;title" />
 </td>
 </tr>
 </tfoot>
@@ -598,7 +543,7 @@ made to the current version.
   title="access key: alt-p"
   accesskey="p"
   onclick="return confirm('Really revert ?')"
-  i18n:attributes="value;title;onclick;accesskey revert_to_previous_accesskey"
+  i18n:attributes="value;title;onclick"
 />
 </td>
 </tr>
@@ -637,7 +582,7 @@ If necessary, the published version of this content can be manually closed (take
     value="close published version"
     title="access key: alt-c"
     accesskey="c" 
-    i18n:attributes="value;title;accesskey close_published_version_accesskey"
+    i18n:attributes="value;title"
     />
 </td>
 </tr>
