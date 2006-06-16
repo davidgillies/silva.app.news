@@ -44,7 +44,7 @@
           <css_class></css_class>
           <default type="int">0</default>
           <title>update display date/time</title>
-          <extra></extra>
+          <extra>id="update_display_datetime"</extra>
           <description>
             Change the display date/time that the public sees. This will also change 
             where the news item appears in a chronological list.
