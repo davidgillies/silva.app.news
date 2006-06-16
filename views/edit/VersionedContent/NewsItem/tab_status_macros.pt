@@ -14,27 +14,29 @@
 <metal:block define-macro="datetime_info"
   tal:define="
     start_time python: mangle.DateTime(model.get_public_version_publication_datetime()).toStr();
-    end_time python: mangle.DateTime(model.get_public_version_expiration_datetime()).toStr();
-    "
+    end_time python: mangle.DateTime(model.get_public_version_expiration_datetime()).toStr()"
   tal:condition="start_time"
   >
   <br />
   <p style="margin-top:0.3em; margin-bottom:0.2em;">
-
-  <span class="subhead" tal:condition="not:end_time" i18n:translate="">
-  Publication time of public version
-  </span>
-  <span class="subhead" tal:condition="end_time" i18n:translate="">
-  Publication and expiration time of public version
-  </span>
-
-  <br />
-  <tal:block
-    replace="
-      structure python: '%s%s' % (start_time, test(end_time, ' - %s' % end_time, ''))" />
+    <span class="subhead" tal:condition="not:end_time" i18n:translate="">
+      Publication time of public version
+    </span>
+    <span class="subhead" tal:condition="end_time" i18n:translate="">
+      Publication and expiration time of public version
+    </span><br />
+    <tal:plug replace="structure python: '%s%s' % (start_time, test(end_time, ' - %s' % end_time, ''))" />
+  </p>
+  <p style="margin-top:0.3em; margin-bottom:0.2em;"
+    tal:condition="exists: python: model.get_viewable().display_datetime()">
+    <span class="subhead">
+      Display time of public version<br />
+    </span>
+    <plug tal:define="display_time python:mangle.DateTime(model.get_viewable().display_datetime()).toStr();"
+      tal:replace="display_time" />
   </p>
 </metal:block>
-  
+
 <span tal:replace="nothing"> _______ messages _______ </span>
 <div tal:omit-tag=""
   tal:condition="python:model.get_approval_request_message()"
@@ -52,7 +54,8 @@ messages
   colspan="2" i18n:translate="">
 <span tal:replace="python:model.get_approval_requester()" i18n:name="author_id">author id</span>
 sent a message on 
-<span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()" i18n:name="some_date">some date</span>
+<span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()"
+  i18n:name="some_date">some date</span>
 <tal:if condition="python:model.get_approval_request_message()" i18n:name="with_comments">
   <tal:block i18n:translate="">with the following comments:</tal:block>
 </tal:if>
