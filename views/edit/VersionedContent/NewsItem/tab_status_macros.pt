@@ -7,8 +7,7 @@
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="silva_news"
-  >
+  i18n:domain="silva_news">
 
 <span tal:replace="nothing"> _______ notice of previous version times _______ </span>
 <metal:block define-macro="datetime_info"
@@ -414,7 +413,7 @@ day / month / year &nbsp;23:59
 <input type="hidden" name="tab_name" value="publish" />
 <th>
 <tal:block i18n:translate="">
-add message on 
+add message on
 </tal:block>
 <tal:block condition="may_approve_content" i18n:translate="">
 rejection
@@ -423,7 +422,7 @@ rejection
 withdrawal
 </tal:block>
 </th>
-<th style="width:40%" i18n:translate="">
+<th style="width:50%" i18n:translate="">
 notes
 </th>
 </tr>
