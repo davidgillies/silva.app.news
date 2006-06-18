@@ -577,7 +577,7 @@ msgstr "Il ne sont pas les documents publiable."
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:271
 msgid "day / month / year"
-msgstr "jour / mois / an"
+msgstr "jour / mois / année"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:286
 msgid "publish time"
@@ -649,7 +649,7 @@ msgstr "changer la date/temps publique"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
 msgid "reject pending request for approval: alt-j"
-msgstr ""
+msgstr "refuser une demande de l'approbation: alt-j"
 
 # Default: "j"
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
@@ -659,26 +659,26 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:435
 msgid "reject"
-msgstr ""
+msgstr "refuser"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:410
 msgid "withdraw approval of approved versions: alt-v"
-msgstr ""
+msgstr "annuler l'approbation des versions approuvées "
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:410
 #: /views/edit/Container/NewsPublication/tab_status.pt:478
 msgid "revoke"
-msgstr ""
+msgstr "annuler"
 
 # Default: "v"
 #: /views/edit/Container/NewsPublication/tab_status.pt:410
 #: /views/edit/Container/NewsPublication/tab_status.pt:478
 msgid "revoke_accesskey"
-msgstr ""
+msgstr "v"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:419
 msgid "close published items: alt-c"
-msgstr ""
+msgstr "fermer les documents publié: alt-c"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:419
 msgid "close"
@@ -687,7 +687,7 @@ msgstr "fermer"
 # Default: "c"
 #: /views/edit/Container/NewsPublication/tab_status.pt:419
 msgid "close_accesskey"
-msgstr ""
+msgstr "f"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:428
 #: /views/edit/Container/NewsPublication/tab_status.pt:487
@@ -756,7 +756,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:510
 msgid "request approval for new versions: alt-r"
-msgstr ""
+msgstr "demander de l'approbation pour les nouvelles versions"
 
 # Default: "r"
 #: /views/edit/Container/NewsPublication/tab_status.pt:510
@@ -767,7 +767,7 @@ msgstr ""
 #: /views/edit/Container/NewsPublication/tab_status.pt:510
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:177
 msgid "request approval"
-msgstr ""
+msgstr "demander de l'approbation"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:70
 msgid "publishing actions"
@@ -838,7 +838,7 @@ msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:109
 msgid "Request approval for: ${ids}"
-msgstr ""
+msgstr "Demander de l'approbation pour: ${ids}"
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:114
 msgid "<span class=\"error\">No request for approval on: ${ids}</span>"
@@ -1317,33 +1317,34 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
 msgid "request approval ${for_new_version}"
-msgstr ""
+msgstr "demander de l'approbation ${for_new_version}"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
 msgid "for new version"
-msgstr ""
+msgstr "de nouvelle version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:112
 msgid "message to editor"
-msgstr ""
+msgstr "message au rédacteur"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:115
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:206
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:327
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:456
 msgid "notes"
-msgstr ""
+msgstr "notes"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:128
 msgid ""
 "This message will remain visible in the status screen for other authors and "
 "editors."
-msgstr ""
+msgstr "Ce message demeurera évident dans l'écran de statut pour d'autres "
+"auteurs et rédacteurs."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:137
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:335
-msgid "content publish ti<u>m</u>e"
-msgstr ""
+msgid "content publish time"
+msgstr "date de publication"
 
 # Default: "m"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:137
@@ -1354,18 +1355,18 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:150
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:346
 msgid "day / month / year &nbsp;23:59"
-msgstr ""
+msgstr "jour / mois / année &nbsp;23:59"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:158
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:234
-msgid "access key: alt-i (some platforms)"
+msgid "access key: alt-i"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:158
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:234
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:354
-msgid "expiratio<u>n</u> time"
-msgstr ""
+msgid "expiration time"
+msgstr "date d'expiration"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:170
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:245
@@ -1380,7 +1381,7 @@ msgid "access key: alt-r"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:196
-msgid "change settings"
+msgid "update settings"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
@@ -1388,7 +1389,7 @@ msgid "current timings"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:214
-msgid "access key: alt-m (some platforms)"
+msgid "access key: alt-m"
 msgstr ""
 
 # Default: "m"
@@ -1429,17 +1430,17 @@ msgid "clear_expiration_time_accesskey"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:292
-msgid "change timings"
-msgstr ""
+msgid "set timings"
+msgstr "fixer les temps"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:292
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:610
-msgid "access key: alt-c"
+msgid "access key: alt-s"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:312
 msgid "publish new version"
-msgstr ""
+msgstr "publier nouvelle version "
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:316
 msgid "publish closed version"
@@ -1467,23 +1468,23 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:446
 msgid "add message on"
-msgstr ""
+msgstr "ajouter un message avec le "
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
 msgid "rejection"
-msgstr ""
+msgstr "le refus"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:452
 msgid "withdrawal"
-msgstr ""
+msgstr "l'annulation"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:470
 msgid "The message may be viewed by local users."
-msgstr ""
+msgstr "Le message peut etre regardé par les utilisateurs locaux."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:481
-msgid " Reject approval request "
-msgstr ""
+msgid "reject approval request"
+msgstr "refuser la demande de l'approbation"
 
 # Default: "r"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:481
@@ -1496,17 +1497,17 @@ msgid "withdraw_approval_request_accesskey"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:490
-msgid " Withdraw approval request "
-msgstr ""
+msgid "withdraw approval request"
+msgstr "retirer la demande de l'approbation "
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:515
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:533
 msgid "revoke approval"
-msgstr ""
+msgstr "annuler l'approbation"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:524
 msgid "If further editing is required, first revoke the approval."
-msgstr ""
+msgstr "Si davantage d'édition est exigée, annuler l'approbation."
 
 # Default: "r"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:533
