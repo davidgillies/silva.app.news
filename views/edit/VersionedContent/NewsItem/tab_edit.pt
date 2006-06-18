@@ -12,13 +12,12 @@
     "
   i18n:domain="silva_news">
 <metal:block use-macro="here/macro_tab_edit/macros/editor">
-<metal:block fill-slot="editor_css">
 
+<metal:block fill-slot="editor_css">
   <link href="kupustyles.css"
     type="text/css"
     rel="stylesheet"
   />
-
 </metal:block>
 
 <metal:block fill-slot="script">
@@ -40,19 +39,22 @@
   </script>
 </metal:block>
 
-<metal:fill fill-slot="notice"></metal:fill>
-
 <metal:block fill-slot="editor_content">
-
-<tal:block condition="python: hasattr(view, 'kupu')">
+<tal:set define="global usekupu python: hasattr(view, 'kupu')" />
+<tal:if condition="usekupu">
   <tal:block define="dummy python:request.SESSION.set('edit_field', 'content')" />
-  <metal:macro use-macro="view/kupu_silva/kupumacros/macros/body" />
-</tal:block>
+  <metal:plug use-macro="view/kupu_silva/kupumacros/macros/body" />
+</tal:if>
 <tal:block condition="python: not hasattr(view, 'kupu')">
   Please install Kupu to edit this object!
 </tal:block>
-
 </metal:block>
+
+<tal:note replace="nothing"> if kupu is live percolate signal upwards</tal:note>
+<metal:fill fill-slot="kupucheck">
+  <tal:set define="global usekupu python:hasattr(view, 'kupu')" />
+  <tal:plug define="global kupuloaded python:test(usekupu, 'kupulive', nothing)" />
+</metal:fill>
 
 </metal:block>
 </html>
