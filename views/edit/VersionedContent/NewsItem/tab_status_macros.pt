@@ -84,10 +84,10 @@ message text
 A previous request for approval has been rejected / withdrawn by 
 <span tal:replace="python:model.get_approval_requester()" i18n:name="requester" /> on 
 <span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()" i18n:name="some_date">some date</span>.
-<comment tal:condition="nothing" i18n:name="comment"><tal:block i18n:translate=""> actually the last message may not have been written
-   by the person withdrawing the request; if this person for example made an empty reject,
-   this is the message of the requester ...</tal:block>
-</comment>
+<tal:comment condition="nothing"> actually the last message may not have been written
+  by the person withdrawing the request; if this person for example made an empty reject,
+  this is the message of the requester ...
+</tal:comment>
 The last message regarding this issue is:
 </td>
 </tr>
@@ -140,7 +140,8 @@ This message will remain visible in the status screen for other authors and edit
 
 
 <tr class="controls">
-<td colspan="2" class="align-right">
+<td class="align-right"
+  colspan="2">
 <input 
   type="submit"
   value="request approval"
@@ -183,7 +184,8 @@ notes
 
 <tal:note><!-- this flag is legacy and can be deleted --></tal:note>
 <tr>
-<th class="align-right" colspan="2"
+<th class="align-right"
+  colspan="2"
   tal:define="field view/tab_status_form_change_settings/publish_now_flag | nothing">
     <label 
       title="access key: alt-u" 
@@ -207,7 +209,8 @@ notes
      from the form as well -->
 </tal:note>
 <tr>
-  <th class="align-right" colspan="2"
+  <th class="align-right"
+    colspan="2"
     tal:define="field view/tab_status_form_change_settings/clear_expiration">
     <span class="widebody">
       <label 
@@ -254,20 +257,20 @@ notes
 <table class="listing sublisting">
 <tr class="top-controls">
 <td colspan="2">
-  <h3>
-    <span tal:condition="python:not closed or (unapproved and (closed or published))"
-      i18n:translate="">
-      publish new version
-    </span>
-    <span tal:condition="python: closed and not unapproved" i18n:translate="">
-      publish closed version
-    </span>
-  </h3>
+<h3>
+<span tal:condition="python:not closed or (unapproved and (closed or published))"
+  i18n:translate="">
+  publish new version
+</span>
+<span tal:condition="python: closed and not unapproved" i18n:translate="">
+  publish closed version
+</span>
+</h3>
 </td>
 </tr>
 
 <tr>
-  <th class="align-right" i18n:translate="">
+<th class="align-right" i18n:translate="">
 settings
 </th>
 <th style="width:50%" i18n:translate="">
@@ -307,7 +310,8 @@ day / month / year &nbsp;23:59
   expiration time
 </label>
 <input tal:replace="structure python: field.render(REQUEST=request)"
- tal:attributes="id field/id" />
+  tal:attributes="id field/id"
+/>
 </td>
 <td tal:content="structure field/description">
   description
@@ -356,7 +360,8 @@ day / month / year &nbsp;23:59
 </metal:def>
 
 <tr>
-<th class="align-right" colspan="2"
+<th class="align-right"
+  colspan="2"
   tal:define="field view/tab_status_form_editor/publish_now_flag">
   <span class="widebody">
     <label 
@@ -422,7 +427,8 @@ rejection
 withdrawal
 </tal:block>
 </th>
-<th style="width:50%" i18n:translate="">
+<th style="width:50%"
+  i18n:translate="">
 notes
 </th>
 </tr>
@@ -450,8 +456,8 @@ The message may be viewed by local users.
 <input 
   type="submit" 
   class="button"  
-  title="access key: alt-r" 
-  accesskey="r"
+  title="access key: alt-j" 
+  accesskey="j"
   tal:condition="may_approve_content" 
   value="reject approval request" 
   i18n:attributes="title;value" 
@@ -503,8 +509,8 @@ If further editing is required, first revoke the approval.
   type="submit" 
   value="revoke approval" 
   class="button" 
-  title="access key: alt-r" 
-  accesskey="r" 
+  title="access key: alt-v"
+  accesskey="v" 
   i18n:attributes="value;title" />
 </td>
 </tr>
@@ -576,13 +582,13 @@ If necessary, the published version of this content can be manually closed (take
 <tfoot>
 <tr class="controls">
 <td class="align-right">
-  <input class="button"
-    type="submit"
-    value="close published version"
-    title="access key: alt-c"
-    accesskey="c" 
-    i18n:attributes="value;title"
-    />
+<input class="button"
+  type="submit"
+  value="close published version"
+  title="access key: alt-c"
+  accesskey="c" 
+  i18n:attributes="value;title"
+/>
 </td>
 </tr>
 </tfoot>
