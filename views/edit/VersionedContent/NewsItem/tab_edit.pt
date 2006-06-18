@@ -51,9 +51,9 @@
 </metal:block>
 
 <tal:note replace="nothing"> if kupu is live percolate signal upwards</tal:note>
-<metal:fill fill-slot="kupucheck">
+<metal:fill fill-slot="editorcheck">
   <tal:set define="global usekupu python:hasattr(view, 'kupu')" />
-  <tal:plug define="global kupuloaded python:test(usekupu, 'kupulive', nothing)" />
+  <tal:plug define="global nofeedback python:test(usekupu, 'kupulive', nothing)" />
 </metal:fill>
 
 </metal:block>
