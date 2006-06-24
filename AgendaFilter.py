@@ -42,6 +42,30 @@ class AgendaFilter(Filter):
     def __init__(self, id):
         AgendaFilter.inheritedAttribute('__init__')(self, id)
 
+
+    def _prepare_query ( self, meta_types ):
+        """private method preparing the common fields for a catalog query.
+
+        Return: dict holding the query parameters
+        """
+        self.verify_sources()
+        self.verify_excluded_items()
+        query = {}
+        query['path'] = self._sources
+        query['version_status'] = 'public'
+        query['idx_subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['idx_target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+        query['meta_type'] = meta_types
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'idx_display_datetime'
+        query['sort_order'] = 'descending'
+        return query
+    
+    
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_next_items')
     def get_next_items(self, numdays, meta_types=None):
