@@ -645,7 +645,7 @@ msgstr "raccourci: alt-p"
 #: /views/edit/Container/NewsPublication/tab_status_form_news.form:23
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:46
 msgid "update display date/time"
-msgstr "changer la date/temps publique"
+msgstr "changer la date affichage"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:401
 msgid "reject pending request for approval: alt-j"
@@ -1304,15 +1304,15 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:30
 msgid "display date/time"
-msgstr ""
+msgstr "date d'affichage"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:51
 msgid ""
 "\n"
-"            if not checked, the display date/time will not get updated, so "
-"the item\n"
-"            is displayed on the same location in news viewers (if at all)\n"
-"          "
+"            Changing this will also change where the news item appears in a "
+"chronological list.\n          "
+"Changer ceci changera également ou la nouvelle apparait dans une liste \n"
+"chronologique."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
@@ -1600,15 +1600,15 @@ msgstr "Recherche full-texte: alt-s"
 #: /views/public/AgendaViewer/view_archive.pt:65
 #: /views/public/NewsFilter/search_news.pt:56
 #: /views/public/NewsViewer/view_news.pt:39
-msgid "Startdate/time:"
+msgid "Start date/time:"
 msgstr "Date/heure de démarrage"
 
 #: /views/public/AgendaViewer/search_agenda.pt:50
 #: /views/public/AgendaViewer/view_agenda.pt:45
 #: /views/public/AgendaViewer/view_archive.pt:72
 #: /views/public/NewsViewer/view_news.pt:46
-msgid "Enddate/time:"
-msgstr ""
+msgid "End date/time:"
+msgstr "Date/heure de finition "
 
 #: /views/public/AgendaViewer/search_agenda.pt:58
 #: /views/public/AgendaViewer/view_agenda.pt:53
@@ -1648,7 +1648,7 @@ msgstr "Il n'y a aucun article disponible."
 #: /views/public/AgendaViewer/view_archive.pt:26
 #: /views/public/NewsViewer/view_archive.pt:27
 msgid "Archive of ${title}"
-msgstr "Archive de"
+msgstr "Archive de  ${title}"
 
 #: /views/public/NewsFilter/search_news.pt:20
 #: /views/public/NewsViewer/search_news.pt:17
