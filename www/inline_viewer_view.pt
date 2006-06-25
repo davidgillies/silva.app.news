@@ -13,6 +13,7 @@
     items python:here.get_items(limit, viewer);
     separate python:options['show_link_article'] == 'separate';
     mangle modules/Products/Silva/mangle;
+    formatdate nocall:here/service_news/format_date;
 ">
 <p class="p newsmessage"
   tal:condition="not: viewerobj">
@@ -40,6 +41,47 @@
   </a>
 </h4>
 
+<p class="p newsiteminfo">
+  <tal:if condition="python:(int(options['show_creationdate']) and item.creation_datetime())"
+    i18n:translate="">
+    Creation date/time: 
+    <tal:insert replace="structure python: formatdate(item.creation_datetime())"
+      i18n:name="datetime">
+      end date
+    </tal:insert>
+    <br />
+  </tal:if>
+  <tal:if condition="python: item.start_datetime() and options['show_datetime']=='1'">
+    <tal:trans i18n:translate="">
+      Start date/time:
+      <tal:insert replace="structure python: formatdate(item.start_datetime())"
+        i18n:name="datetime">
+        start date
+      </tal:insert>
+    </tal:trans>
+    <br />
+  </tal:if>
+  <tal:if condition="item/end_datetime">
+    <tal:trans i18n:translate="">
+      End date/time:
+      <tal:insert replace="structure python: formatdate(item.end_datetime())"
+         i18n:name="datetime">
+        end date
+      </tal:insert>
+    </tal:trans>
+    <br />
+  </tal:if>
+  <tal:if condition="python: (int(options['show_location']) and item.location())">
+    <tal:trans i18n:translate="">
+      Location:
+      <tal:insert replace="item/location"
+        i18n:name="">
+        location
+      </tal:insert>
+    </tal:trans>
+  </tal:if>
+</p>
+
 <tal:set define="maxchars python: int(options['number_of_characters'])">
 <p class="p newslead" tal:define="intro python:item.intro(maxchars)"
     tal:content="structure intro"
@@ -53,40 +95,7 @@
 </p>
 </tal:set>
 
-<p class="p newsiteminfo">
-  <span i18n:translate="" 
-    tal:condition="python:(int(options['show_creationdate']) and 
-      item.creation_datetime())">
-    Creation date/time: 
-    <span i18n:name="datetime" 
-      tal:replace="python:mangle.DateTime(item.creation_datetime()).toStr()"
-      tal:condition="python:int(options['show_creationdate'])">
-      date
-    </span><br />
-  </span>
-  <span tal:condition="python: item.start_datetime() and options['show_datetime']=='1'"
-    i18n:translate="">
-    Start date/time:
-    <span i18n:name="datetime"
-      tal:replace="python:mangle.DateTime(item.start_datetime()).toStr()">
-      date
-    </span><br />
-  </span>
-  <span i18n:translate="" tal:condition="item/end_datetime">
-    End date/time:
-    <span i18n:name="datetime"
-      tal:replace="python:mangle.DateTime(item.end_datetime()).toStr()">
-      date
-    </span><br />
-  </span>
-  <span i18n:translate="" 
-    tal:condition="python: (int(options['show_location']) and item.location())">
-    Location:
-    <span i18n:name=""
-      tal:replace="item/location">
-      location
-    </span><br />
-  </span>
+<p class="p articlelink">
   <tal:if condition="separate">
     <a tal:attributes="href item/link"
       tal:content="structure options/link_text_article">
