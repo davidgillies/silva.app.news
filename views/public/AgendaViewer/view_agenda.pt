@@ -13,68 +13,68 @@
     formatdate nocall:view/service_news/format_date;
   ">
 
-  <h2 class="heading" tal:content="model/get_title">View Agenda</h2>
+<h2 class="heading" tal:content="model/get_title">View Agenda</h2>
 
-  <div class="searchbox">
-    <form tal:attributes="action model/absolute_url" method="POST">
-      <input type="text" name="query" />
-      <input class="button"
-        type="submit"
-        value="Search"
-        title="Do a full text search: alt-s"
-        accesskey="s"
-        i18n:attributes="title;value"
-      />
-    </form>
-  </div>
+<div class="searchbox">
+  <form tal:attributes="action model/absolute_url" method="POST">
+    <input type="text" name="query" />
+    <input class="button"
+      type="submit"
+      value="Search"
+      title="Do a full text search: alt-s"
+      accesskey="s"
+      i18n:attributes="title;value"
+    />
+  </form>
+</div>
 
-  <div class="newsitem"
-    tal:repeat="object results">
-    <tal:def define="obj object/getObject">
-      <h2 class="heading" tal:content="structure obj/get_title" />
+<div class="newsitem"
+  tal:repeat="object results">
+  <tal:def define="obj object/getObject">
+    <h2 class="heading" tal:content="structure obj/get_title" />
 
-      <div class="newsiteminfo">
-        <p class="p newsiteminfo">
-          <span tal:omit-tag="" i18n:translate="">Start date/time:</span>
-          <tal:insert replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
-            start date
+    <div class="newsiteminfo">
+      <p class="p newsiteminfo">
+        <span tal:omit-tag="" i18n:translate="">Start date/time:</span>
+        <tal:insert replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
+          start date
+        </tal:insert>
+        <tal:if condition="obj/end_datetime | nothing"><br />
+          <span tal:omit-tag="" i18n:translate="">End date/time:</span>
+          <tal:insert replace="structure python: formatdate(obj.end_datetime(), obj.display_time())">
+            end date
           </tal:insert>
-          <tal:if condition="obj/end_datetime | nothing"><br />
-            <span tal:omit-tag="" i18n:translate="">End date/time:</span>
-            <tal:insert replace="structure python: formatdate(obj.end_datetime(), obj.display_time())">
-              end date
-            </tal:insert>
-          </tal:if>
-        </p>
-
-        <div class="newsintro">
-          <tal:insert replace="structure obj/get_intro">
-            intro text
-          </tal:insert>
-        </div>
-
-      <p class="p articlelink">
-        <a tal:attributes="href python:obj.get_content().absolute_url()"
-          i18n:translate="">
-          view article
-        </a>
+        </tal:if>
       </p>
-    </tal:def>
-  </div>
 
-  <p class="p newsmessage"
-    tal:condition="python: len(results) < 1"
-    i18n:translate="">
-    There are no articles available.
-  </p>
+      <div class="newsintro">
+        <tal:insert replace="structure obj/get_intro">
+          intro text
+        </tal:insert>
+      </div>
 
-  <div class="archivelink">
-    <p class="p archivelink">
-      <a tal:attributes="href string:?view=view_archive"
-       i18n:translate="">
-       view archive
-     </a>
+    <p class="p articlelink">
+      <a tal:attributes="href python:obj.get_content().absolute_url()"
+        i18n:translate="">
+        view article
+      </a>
     </p>
-  </div>
+  </tal:def>
+</div>
+
+<p class="p newsmessage"
+  tal:condition="python: len(results) < 1"
+  i18n:translate="">
+  There are no articles available.
+</p>
+
+<div class="archivelink">
+  <p class="p archivelink">
+    <a tal:attributes="href string:?view=view_archive"
+     i18n:translate="">
+     view archive
+   </a>
+  </p>
+</div>
 
 </html>
