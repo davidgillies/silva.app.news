@@ -9,15 +9,18 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
-      - Fixed space above kupu more robustly, so other extensions can control
-        the feedback space too.
-
   2.1.3
 
     Features
 
+      - Reworked public templates: removed divs and replaced by p's with Silva 
+        style plus news selectors, indenting, language
+
       - Made layout of the INV (Inline News Viewer) more generic using standard 
         Silva html classes
+
+      - Fixed space above kupu more robustly, so other extensions can control
+        the feedback space too.
 
       - RSS Aggregator public view: removed hard coded table and replaced with 
         standard Silva html rendering
