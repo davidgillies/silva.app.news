@@ -14,7 +14,7 @@
 <metal:block fill-slot="main">
 
 <form action="."
-  method="POST"
+  method="post"
   name="silvaObjects"
   tal:define="
     default_document model/get_default;
