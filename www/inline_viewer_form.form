@@ -75,7 +75,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show title of selected object (ANR)</description>
+            <description>Display title of viewer (ANR)</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
@@ -84,7 +84,7 @@
             <items type="list">[('yes', '1'), ('no', '0')]</items>
             <orientation>horizontal</orientation>
             <required type="int">0</required>
-            <title>show title</title>
+            <title>display title</title>
             <unicode type="int">0</unicode>
             <whitespace_preserve type="int">0</whitespace_preserve>
           </values>
@@ -128,7 +128,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show intro, description or nothing</description>
+            <description>Display intro (first elements of the article), the metadata description, or nothing</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
@@ -137,7 +137,7 @@
             <items type="list">[('intro', 'intro'), ('description', 'description'), ('nothing', 'no')]</items>
             <orientation>vertical</orientation>
             <required type="int">0</required>
-            <title>details</title>
+            <title>snippet</title>
             <unicode type="int">0</unicode>
             <whitespace_preserve type="int">0</whitespace_preserve>
           </values>
@@ -154,7 +154,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default>1024</default>
-            <description>Number of characters shown in details; 0 = all (ANR)</description>
+            <description>Number of characters shown in snippet; 0 = all (ANR)</description>
             <display_maxwidth></display_maxwidth>
             <display_width type="int">3</display_width>
             <enabled type="int">1</enabled>
@@ -181,7 +181,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show cration date (AN)</description>
+            <description>Display cration date (AN)</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
@@ -207,7 +207,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show start/end datetime if available (N)</description>
+            <description>Display start/end datetime if available (N)</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
@@ -233,7 +233,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show location if available (N)</description>
+            <description>Display location if available (N)</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
@@ -312,7 +312,7 @@
             <alternate_name></alternate_name>
             <css_class></css_class>
             <default></default>
-            <description>Show link to news source (ANR)</description>
+            <description>Display link to news source (ANR)</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <extra_item></extra_item>
