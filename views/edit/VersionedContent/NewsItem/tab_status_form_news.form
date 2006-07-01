@@ -6,7 +6,7 @@
   <action></action>
   <enctype></enctype>
   <method></method>
-  <i18n_domain>silvanews</i18n_domain>
+  <i18n_domain>silva_news</i18n_domain>
   <i18n>tab_status_form_news</i18n>
 
   <groups multiple="true">
@@ -28,7 +28,7 @@
           <default_now type="int">1</default_now>
           <css_class></css_class>
           <title>display date/time</title>
-          <description>The date/time that is displayed for the  public.</description>
+          <description>The date/time that is displayed for the public.</description>
           <extra></extra>
           <allow_empty_time type="int">1</allow_empty_time>
         </values>
@@ -45,9 +45,7 @@
           <css_class></css_class>
           <default type="int">0</default>
           <title>update display date/time</title>
-          <description>
-            Changing this will also change where the news item appears in a chronological list.
-          </description>
+          <description>Changing this will also change where the news item appears in a chronological list.</description>
           <extra></extra>
           <external_validator></external_validator>
         </values>
