@@ -1306,14 +1306,16 @@ msgstr ""
 msgid "display date/time"
 msgstr "date d'affichage"
 
+#: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:31
+msgid "The date/time that is displayed for the public."
+msgstr "Le date/heure qui est montré pour le public."
+
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:51
-msgid ""
-"\n"
-"            Changing this will also change where the news item appears in a "
-"chronological list.\n          "
-"Changer ceci changera également ou la nouvelle apparait dans une liste \n"
-"chronologique."
-msgstr ""
+msgid 
+"Changing this will also change where the news item appears in a "
+"chronological list."
+msgstr "Changer ceci changera également ou la nouvelle apparait dans une "
+"liste chronologique."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
 msgid "request approval ${for_new_version}"
