@@ -9,7 +9,8 @@
   <encoding>UTF-8</encoding>
   <stored_encoding>ISO-8859-1</stored_encoding>
   <unicode_mode>false</unicode_mode>
-  <i18n_domain></i18n_domain>
+  <i18n_domain>silva_news</i18n_domain>
+  <i18n>inline_viewer_form</i18n>
   <groups>
     <group>
       <title>Default</title>
@@ -20,7 +21,7 @@
           <alternate_name></alternate_name>
           <css_class>store</css_class>
           <default></default>
-          <description>Choose a News Viewer or RSS Aggregator</description>
+          <description>Choose a News Viewer, Agenda Viewer, or RSS Aggregator</description>
           <enabled type="int">1</enabled>
           <external_validator></external_validator>
           <extra></extra>
@@ -365,7 +366,7 @@
           <alternate_name></alternate_name>
           <css_class></css_class>
           <default></default>
-          <description>Show a footer for the fed (customizable).</description>
+          <description>Show a footer for the feed (customizable)</description>
           <enabled type="int">1</enabled>
           <external_validator></external_validator>
           <extra_item></extra_item>
