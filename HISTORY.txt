@@ -9,6 +9,14 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
+  2.1.4
+
+    Features
+
+    Bugs fixed
+   
+      - fixed bug cfr revision 8871 removed can_approve()
+
   2.1.3
 
     Features
