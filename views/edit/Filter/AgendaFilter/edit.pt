@@ -260,7 +260,7 @@
               </script>
               &nbsp;
               <input type="hidden" name="start" tal:attributes="value startat">
-              <input class="button" type="submit" name="use_sources:method" value="update sources" title="use selected sources in this filter: alt-u" accesskey="u" i18n:attributes="value title"/>
+              <input class="button" type="submit" name="use_sources:method" value="update sources" title="use selected sources in this filter: alt-u" accesskey="u" i18n:attributes="value;title"/>
             </td>
           </tr>
 
