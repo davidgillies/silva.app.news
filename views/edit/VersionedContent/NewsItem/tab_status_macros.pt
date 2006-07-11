@@ -9,6 +9,20 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news">
 
+<tal:toc replace="nothing">
+_______ Macros in this file _______
+datetime_info........notice of previous version times
+messages.............author/editor messages
+request_approval.....Author requests approval
+approved_editor......Editor can change settings
+        Subtables
+editor_approves......Editor approves
+withdraw_request_approval Author/Editor withdraws/rejects request for approval
+revoke_approval......Revoke approval
+revert_to_previous...Revert to previous
+manual_close.........Manual close
+</tal:toc>  
+  
 <span tal:replace="nothing"> _______ notice of previous version times _______ </span>
 <metal:block define-macro="datetime_info"
   tal:define="
