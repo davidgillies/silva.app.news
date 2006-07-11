@@ -12,6 +12,8 @@ SilvaNewsNetwork changes
   2.1.4
 
     Features
+      
+      - changed layout more silva-core-like and improved usability
 
     Bugs fixed
    
