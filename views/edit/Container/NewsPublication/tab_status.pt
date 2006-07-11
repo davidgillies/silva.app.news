@@ -336,11 +336,11 @@
             accesskey="o"
             i18n:attributes="title"
             i18n:translate="">
-            clear expiration
+            clear expiration?
           </label>
           <field tal:replace="structure view/tab_status_form/clear_expiration/render" />
-          &nbsp;&nbsp;
         </tal:block>
+        <!--
         <tal:block replace="nothing">
           _______ news-specific control _______
         </tal:block>
@@ -376,6 +376,7 @@
           condition="not: redisplay_timing_form"
           replace="structure python:view.tab_status_form.publish_now_flag.render()" 
         />
+        -->
       </td>
     </tr>
     <tal:block replace="nothing">
@@ -438,10 +439,17 @@
         <input class="button"
           name="tab_status_approve:method"
           type="submit"
-          value="open to public"
-          title="approve or publish new versions: alt-p"
+          value="approve for future"
+          title="approve new versions for publication at a later date: alt-f"
+          accesskey="f"
+          i18n:attributes="value;title"
+        />
+        <input class="executor"
+          name="tab_status_open_now:method"
+          type="submit"
+          value="publish now"
+          title="access key: alt-p"
           accesskey="p"
-          tal:condition="python: approveables or rejectables or new_versionables"
           i18n:attributes="value;title"
         />
       </td>
