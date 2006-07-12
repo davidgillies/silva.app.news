@@ -642,7 +642,7 @@ msgstr "sluiten"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:416
 msgid "create new versions of published docs: alt-n"
-msgstr "nieuwe versie van maken van gepubliceerde documenten"
+msgstr "nieuwe versie van maken van gepubliceerde documenten: alt-n"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:416
 msgid "new version"
