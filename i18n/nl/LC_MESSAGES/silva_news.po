@@ -186,7 +186,7 @@ msgstr ""
 #: /views/edit/Filter/NewsFilter/edit.pt:96
 #: /views/edit/Filter/AgendaFilter/edit.pt:94 /views/edit/Content/edit.pt:103
 msgid "access key: alt-s"
-msgstr ""sneltoets: alt-s"
+msgstr "sneltoets: alt-s"
 
 #: /views/edit/Container/NewsPublication/tab_edit.pt:135
 msgid "select a new item: alt-s"
@@ -682,8 +682,8 @@ msgid "request approval"
 msgstr "goedkeuring aanvragen"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:477
-msgid "request immediate approval for new versions: alt-q"
-msgstr "direct goedkeuring vragen voor nieuwe versies: alt-q"
+msgid "request immediate approval for new versions: alt-p"
+msgstr "direct goedkeuring vragen voor nieuwe versies: alt-p"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:477
 msgid "request approval now"
@@ -695,7 +695,7 @@ msgstr "publicatie-acties"
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:74
 msgid "export..."
-msgstr exporteren...""
+msgstr "exporteren..."
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:92
 msgid "modify / preview"
@@ -1248,7 +1248,7 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:145
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:476
 msgid "access key: alt-r"
-msgstr sneltoets: alt-r""
+msgstr "sneltoets: alt-r"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:166
 msgid "change settings"
