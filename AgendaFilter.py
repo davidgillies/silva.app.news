@@ -113,13 +113,13 @@ class AgendaFilter(Filter):
             sort_on = 'idx_start_datetime',
             sort_order = 'ascending')
 
-        # remove all objects from result_startdt for which an end datetime is 
-        # set (since they're retrieved above)
+        # copy only those objects from result_startdt for which an end 
+        # datetime is not set (since the ones with an end date/time are 
+        # already retrieved above)
         for item in result_startdt:
             obj = item.getObject()
             edt = getattr(obj, 'end_datetime', lambda: None)()
-            if (item.object_path not in self._excluded_items and
-                    (not edt or edt.month() != month or edt.year() != year)):
+            if (item.object_path not in self._excluded_items and not edt):
                 result.append(item)
 
         result = [r for r in result]
