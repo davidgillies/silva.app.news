@@ -13,34 +13,31 @@
               tal:omit-tag=""
 >
 
-  <div class="margins newsheading">
-    <h2 class="heading" tal:content="structure python:version.get_title()" />
-  </div>
+  <h2 class="heading newsitemheading" tal:content="structure python:version.get_title()" />
 
-  <div class="newsitem-info">
-    <div tal:define="creationdate python: formatdate(
+  <div class="newsiteminfo">
+    <tal:block tal:define="creationdate python: formatdate(
                   version.get_metadata_element('silva-extra', 'creationtime'))"
           tal:condition="python: creationdate != ''">
-      <div class="newsitem-info-title-creationdate-title" i18n:translate="">Creation date:</div>
-      <span class="datetime creationdate" tal:replace="structure creationdate" />
-    </div>
-    <div class="newsitem-info-title datetime-title" i18n:translate="">Date and time:</div>
-    <div tal:define="startdate python: formatdate(
-                        version.start_datetime(), version.display_time());
-                      enddate python: formatdate(
-                        version.end_datetime(), version.display_time())"
-          tal:condition="startdate"
-          class="datetime">
-      <span class="newsitem-info-title-startdatetime-title" i18n:translate="">Start:</span>
-      <div tal:replace="startdate" />
-      <span class="newsitem-info-title enddatetime-title" i18n:translate=""
-            tal:condition="enddate">End:</span>
-      <div tal:replace="enddate" />
-    </div>
-
+          <p class="p newsiteminfocreationdate">
+            <tal:translate i18n:translate="">Creation date:</tal:translate><br />
+            <span class="newsitemcreationdate" tal:content="structure creationdate" />
+          </p>
+    </tal:block>
+    <p class="p newsiteminfodatetime">
+      <tal:translate i18n:translate="">Date and time:</tal:translate><br />
+    <tal:block 
+        tal:define="startdate python: formatdate(version.start_datetime(), version.display_time());
+                    enddate python: formatdate(version.end_datetime(), version.display_time())"
+        tal:condition="startdate">
+          <tal:translate i18n:translate="">Start:</tal:translate>
+          <span class="newsitemstartdate" tal:content="startdate" /><br />
+          <tal:translate i18n:translate="" tal:condition="enddate">End:</tal:translate>
+          <span class="newsitemenddate" tal:content="enddate" />          
+    </tal:block>
+    </p>
   </div>
 
-  <div class="newsitem-content" 
-        tal:content="structure python:view.get_content(version)" />
+       <div class="newsitemcontent" tal:content="structure python:view.get_content(version)" />
 
 </span>
