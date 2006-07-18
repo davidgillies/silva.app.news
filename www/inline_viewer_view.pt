@@ -60,7 +60,7 @@
     <br />
   </tal:block>
   <tal:block condition="item/end_datetime">
-    <tal:translate i18n:translate="">End :
+    <tal:translate i18n:translate="">End:
       <span class="newsitemenddate" tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime">
         end date
       </span>	
