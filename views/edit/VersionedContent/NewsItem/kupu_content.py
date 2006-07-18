@@ -45,7 +45,6 @@ for key, value in headers:
     else:
         response.addHeader(key, value)
 
-
 response.setHeader('Content-Type', 'text/html;charset=utf-8')
 
 docref = model.create_ref(model)
