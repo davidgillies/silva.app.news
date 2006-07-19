@@ -78,13 +78,7 @@ for ref in refs:
                                     _('no unapproved version available')))
 
     # publish
-    if publish_now_flag:
-        obj.set_unapproved_version_publication_datetime(now)
-        if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
-            unapproved = getattr(obj, obj.get_unapproved_version())
-            if update_display_datetime or unapproved.display_datetime() is None:
-                unapproved.set_display_datetime(now)
-    elif publish_datetime:
+    if publish_datetime:
         obj.set_unapproved_version_publication_datetime(publish_datetime)
         if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
             unapproved = getattr(obj, obj.get_unapproved_version())
