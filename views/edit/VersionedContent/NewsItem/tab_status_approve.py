@@ -34,8 +34,6 @@ if (hasattr(unapproved, 'implements_newsitem') and
         unapproved.implements_newsitem()):
     # set display datetime if required
     pdt = result['publish_datetime']
-    if result['publish_now_flag']:
-        pdt = DateTime.DateTime()
     if (result_news_form.has_key('update_display_datetime') and 
             result_news_form['update_display_datetime']):
         ddt = result_news_form['display_datetime']
@@ -48,11 +46,7 @@ if (hasattr(unapproved, 'implements_newsitem') and
 else:
     raise 'not a news item'
     
-if result['publish_now_flag']:
-    model.set_unapproved_version_publication_datetime(DateTime.DateTime())
-else:
-    model.set_unapproved_version_publication_datetime(
-                                        result['publish_datetime'])
+model.set_unapproved_version_publication_datetime(DateTime.DateTime())
 
 expiration = result['expiration_datetime']
 if expiration:
