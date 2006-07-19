@@ -31,15 +31,9 @@ except FormValidationError, e:
         refs=refs)
 
 publish_datetime = result['publish_datetime']
-publish_now_flag = result['publish_now_flag']
 expiration_datetime = result['expiration_datetime']
 clear_expiration_flag = result['clear_expiration']
 update_display_datetime = result_news['update_display_datetime']
-
-#if not publish_now_flag and not publish_datetime:
-#    return view.tab_status(
-#        message_type="error", 
-#        message="First set a publish time")
  
 now = DateTime()
 
@@ -69,13 +63,7 @@ for ref in refs:
         continue
 
     # publish
-    if publish_now_flag:
-        obj.set_unapproved_version_publication_datetime(now)
-        if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
-            unapproved = getattr(obj, obj.get_unapproved_version())
-            if update_display_datetime or unapproved.display_datetime() is None:
-                unapproved.set_display_datetime(publish_datetime)
-    elif publish_datetime:
+    if publish_datetime:
         obj.set_unapproved_version_publication_datetime(publish_datetime)
         if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
             unapproved = getattr(obj, obj.get_unapproved_version())

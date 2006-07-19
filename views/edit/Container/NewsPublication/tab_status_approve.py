@@ -31,16 +31,10 @@ except FormValidationError, e:
         refs=refs)
 
 publish_datetime = result['publish_datetime']
-publish_now_flag = result['publish_now_flag']
 expiration_datetime = result['expiration_datetime']
 clear_expiration_flag = result['clear_expiration']
 update_display_datetime = result_news['update_display_datetime']
 
-#if not publish_now_flag and not publish_datetime:
-#    return view.tab_status(
-#        message_type='error', 
-#        message='No publication datetime set.')
- 
 now = DateTime()
 
 approved_ids = []
@@ -71,7 +65,7 @@ for ref in refs:
         if obj.is_version_published():
             not_approved.append((get_name(obj), _('version already public')))
             continue
-        if publish_now_flag or publish_datetime:
+        if publish_datetime:
             obj.create_copy()
         else:
             not_approved.append((get_name(obj), 

@@ -196,53 +196,6 @@ notes
   pub/exp/display controls inserted
 </tr>
 
-<tal:note><!-- this flag is legacy and can be deleted --></tal:note>
-<tr>
-<th class="align-right"
-  colspan="2"
-  tal:define="field view/tab_status_form_change_settings/publish_now_flag | nothing">
-    <label 
-      title="access key: alt-u" 
-      accesskey="u"
-      tal:condition="field"
-      tal:attributes="for field/id"
-      i18n:attributes="title"
-      i18n:translate="">
-      publish right now?
-  </label>
-<tal:block 
-  tal:condition="field"
-  replace="structure python: field.render()"
-  attributes="id field/id"
-/>
-</th>
-</tr>
-
-<tal:note>
-<!-- this is legacy, can be deleted, and the field will need to be deleted
-     from the form as well -->
-</tal:note>
-<tr>
-  <th class="align-right"
-    colspan="2"
-    tal:define="field view/tab_status_form_change_settings/clear_expiration">
-    <span class="widebody">
-      <label 
-        title="access key: alt-u" 
-        accesskey="u"
-        tal:attributes="for field/id"
-        i18n:attributes="title"
-        i18n:translate=""
-        >clear ex<u>p</u>iration?
-    </label>
-  </span>
-    <tal:block 
-      attributes="id field/id"
-      replace="structure python: field.render()"
-    />
-  </th>
-</tr>
-
 <tr class="inter-controls">
 <td class="align-right"
   colspan="2">
