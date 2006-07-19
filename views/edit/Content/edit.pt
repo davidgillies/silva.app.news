@@ -106,7 +106,7 @@
               value="save settings"
               title="access key: alt-s"
               accesskey="s"
-              i18n:attributes="value title"
+              i18n:attributes="value;title"
             />
           </td>
         </tr>
