@@ -32,7 +32,7 @@
 <form tal:attributes="action string:." method="post">
   <input type="text" name="query" />&nbsp;
   <input class="button" type="submit" value="Search" title="Do a full text search: alt-s" accesskey="s"
-   i18n:attributes="value title" />
+   i18n:attributes="value;title" />
 </form>
 </td>
 </tr>
