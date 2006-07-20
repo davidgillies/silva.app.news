@@ -35,6 +35,9 @@ expiration_datetime = result['expiration_datetime']
 clear_expiration_flag = result['clear_expiration']
 update_display_datetime = result_news['update_display_datetime']
 
+if not publish_datetime:
+    return view.tab_status(message_type='error', message='No publication datetime set.')
+    
 now = DateTime()
 
 approved_ids = []
