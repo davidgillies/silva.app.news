@@ -1,4 +1,4 @@
-<span
+<div
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -55,35 +55,34 @@
 
   <tal:comment condition="nothing">Begin items</tal:comment>
 
-  <div class="item" tal:repeat="object batch">
+  <div class="newsitem" tal:repeat="object batch">
     <tal:block define="obj object/getObject">
-      <h2 class="heading" tal:content="structure obj/get_title" />
-      <div class="intro" tal:content="structure obj/get_intro">
-      </div>
-      <div class="datetime">
-        <div>
-          <span i18n:translate="">Startdate/time:</span>
+      <h3 class="heading" tal:content="structure obj/get_title" />
+      <div class="newsintro" tal:content="structure obj/get_intro" />
+      <p class="p newsiteminfo"
+        tal:define="start_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'start_datetime'));
+                    end_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'end_datetime'))"
+        tal:condition="python: start_datetime != '' or end_datetime != ''">
+          <span i18n:translate="">Start:</span>
           <span tal:replace="
                   structure python: formatdate(obj.start_datetime(), obj.display_time())">
-            DateTime
+            start date
           </span>
-        </div>
-        <div tal:condition="obj/end_datetime | nothing">
-          <span i18n:translate="">Enddate/time:</span>
-          <span tal:replace="
-                  structure python: formatdate(obj.end_datetime(), obj.display_time())">
-            DateTime
+        <tal:if condition="obj/end_datetime | nothing"><br />
+          <span i18n:translate="">End:</span>
+          <span tal:replace="structure python: formatdate(obj.end_datetime(), obj.display_time())">
+            end date
           </span>
-        </div>
+        </tal:if>
       </div>
-      <p class="articlelink">
+      <p class="p articlelink">
         <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
           view article</a>
       </p>
     </tal:block>
   </div>
 
-  <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">
+  <p class="p newsmessage" tal:condition="python: len(results) < 1" i18n:translate="">
     There are no articles available
   </div>
 
@@ -117,9 +116,9 @@
   </table>
 
   <div class="viewlinks">
-    <div class="viewlink">
+    <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
     </div>
   </div>
 
-</span>
+</div>
