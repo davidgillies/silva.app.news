@@ -57,7 +57,7 @@
 
   <div class="newsitem" tal:repeat="object batch">
     <tal:block define="obj object/getObject">
-      <h3 class="heading" tal:content="structure obj/get_title" />
+      <h3 class="heading newsitemheading" tal:content="structure obj/get_title" />
       <div class="newsintro" tal:content="structure obj/get_intro" />
       <p class="p newsiteminfo"
         tal:define="start_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'start_datetime'));
@@ -115,7 +115,7 @@
     </tbody>
   </table>
 
-  <div class="viewlinks">
+  <div class="viewlink">
     <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
     </div>

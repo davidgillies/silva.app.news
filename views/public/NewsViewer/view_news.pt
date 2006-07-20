@@ -30,7 +30,7 @@
 
 <div class="newsitem" tal:repeat="object results">
   <tal:def define="obj object/getObject">
-    <h3 class="heading" tal:content="structure obj/get_title">article title</h3>
+    <h3 class="heading newsitemheading" tal:content="structure obj/get_title">article title</h3>
 
     <div class="newsiteminfo">
       <p class="p creationdate"
