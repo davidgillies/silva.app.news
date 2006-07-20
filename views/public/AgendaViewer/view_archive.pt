@@ -74,7 +74,7 @@
             end date
           </span>
         </tal:if>
-      </div>
+      </p>
       <p class="p articlelink">
         <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
           view article</a>
@@ -118,7 +118,7 @@
   <div class="viewlink">
     <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
-    </div>
+    </p>
   </div>
 
 </div>
