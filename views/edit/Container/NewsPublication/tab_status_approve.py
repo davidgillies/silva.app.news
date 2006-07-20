@@ -36,7 +36,9 @@ clear_expiration_flag = result['clear_expiration']
 update_display_datetime = result_news['update_display_datetime']
 
 if not publish_datetime:
-    return view.tab_status(message_type='error', message='No publication datetime set.')
+    return view.tab_status(
+        message_type='error', 
+        message=_('No publication datetime set.'))
     
 now = DateTime()
 
