@@ -20,12 +20,12 @@
         tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));
                     displaydate python: formatdate(version.display_datetime(), version.display_time());"
                     >
-          <p class="p newsiteminfocreationdate">
+          <p class="p newsiteminfopublicationdate">
             <tal:translate i18n:translate="">Publication date:</tal:translate>
-            <span class="newsitemcreationdate"
+            <span class="newsitempublicationdate"
                 tal:condition="python: not displaydate"
                 tal:content="structure publicationdate" />
-            <span class="newsitemcreationdate"
+            <span class="newsitempublicationdate"
                 tal:condition="python: displaydate"
                 tal:content="structure displaydate" />
            </p>
