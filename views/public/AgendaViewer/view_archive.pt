@@ -60,9 +60,9 @@
       <h3 class="heading newsitemheading" tal:content="structure obj/get_title" />
       <div class="newsintro" tal:content="structure obj/get_intro" />
       <p class="p newsiteminfo"
-        tal:define="start_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'start_datetime'));
-                    end_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'end_datetime'))"
-        tal:condition="python: start_datetime != '' or end_datetime != ''">
+          tal:define="startdate obj/start_datetime | nothing;
+                      enddate obj/end_datetime | nothing"
+          tal:condition="python: startdate or enddate">
           <span i18n:translate="">Start:</span>
           <span tal:replace="
                   structure python: formatdate(obj.start_datetime(), obj.display_time())">

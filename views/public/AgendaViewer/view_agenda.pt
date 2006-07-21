@@ -35,9 +35,9 @@
 
     <div class="newsiteminfo">
       <p class="p newsiteminfo"
-        tal:define="start_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'start_datetime'));
-                    end_datetime python: formatdate(obj.get_metadata_element('silva-extra', 'end_datetime'))"
-        tal:condition="python: start_datetime != '' or end_datetime != ''">
+          tal:define="startdate obj/start_datetime | nothing;
+                      enddate obj/end_datetime | nothing"
+          tal:condition="python: startdate or enddate">
         <span tal:omit-tag="" i18n:translate="">Start:</span>
         <tal:insert replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
           start date
