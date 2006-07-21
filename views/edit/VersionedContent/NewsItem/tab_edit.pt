@@ -9,44 +9,45 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   tal:define="
     global vein string:editor;
+    model request/model;
+    is_editable model/get_unapproved_version;
     "
   i18n:domain="silva_news">
 <metal:block use-macro="here/macro_tab_edit/macros/editor">
 
 <metal:block fill-slot="editor_css">
-  <link href="kupustyles.css"
+<tal:condition condition="is_editable">
+<link href="globals/widgetEditor.css"
+  rel="stylesheet"
+  tal:condition="python: editor != 'kupu'"
+  tal:attributes="href string:${root_url}/globals/widgetEditor.css"
+/>
+<link href="kupustyles.css"
     type="text/css"
     rel="stylesheet"
-  />
+    tal:condition="python:editor == 'kupu'"
+    />
+
+</tal:condition>
 </metal:block>
 
 <metal:block fill-slot="script">
-  <!-- note that the Kupu scripts need to be loaded *before* widgeteer! -->
-  <tal:block condition="python: hasattr(view, 'service_kupu')">
-    <tal:block define="dummy python:request.SESSION.set('edit_field', 'content')" />
-    <metal:macro use-macro="view/service_kupu_silva/kupumacros/macros/jsincludes" />
-  </tal:block>
-
-  <script type="text/javascript"
-          tal:attributes="src here/widgeteer.js/absolute_url"></script>
-  <script type="text/javascript"
-          tal:attributes="src here/widgeteer-datetime.js/absolute_url"></script>
-  <script type="text/javascript"
-          tal:attributes="src here/widgeteer-silva.js/absolute_url"></script>
-
   <script type="text/javascript" 
             tal:attributes="src here/reference.js/absolute_url">
   </script>
+  <tal:block condition="python:editor == 'kupu' and hasattr(view, 'kupu')" >
+    <metal:macro use-macro="view/kupu_silva/kupumacros/macros/jsincludes" />
+  </tal:block>
 </metal:block>
 
 <metal:block fill-slot="editor_content">
-<tal:set define="global usekupu python: hasattr(view, 'service_kupu')" />
-<tal:if condition="usekupu">
-  <tal:block define="dummy python:request.SESSION.set('edit_field', 'content')" />
-  <metal:plug use-macro="view/service_kupu_silva/kupumacros/macros/body" />
-</tal:if>
-<tal:block condition="python: not hasattr(view, 'service_kupu')">
-  Please install Kupu to edit this object!
+<span tal:replace="nothing"> ______ forms editor ______ </span>
+<tal:block condition="python:editor != 'kupu' or not hasattr(view, 'kupu')">
+  <tal:block tal:replace="structure view/edit">Content</tal:block>
+</tal:block>
+<span tal:replace="nothing"> ______ kupu ______ </span>
+<tal:block condition="python:editor == 'kupu' and hasattr(view, 'kupu')" >
+  <metal:macro use-macro="view/kupu_silva/kupumacros/macros/body" />
 </tal:block>
 </metal:block>
 
