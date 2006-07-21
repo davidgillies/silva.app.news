@@ -16,13 +16,19 @@
   <h2 class="heading newsitemheading" tal:content="structure python:version.get_title()" />
 
   <div class="newsiteminfo">
-    <tal:block tal:define="creationdate python: formatdate(
-                  version.get_metadata_element('silva-extra', 'creationtime'))"
-          tal:condition="python: creationdate != ''">
+    <tal:block 
+        tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));
+                    displaydate python: formatdate(version.display_datetime(), version.display_time());"
+                    >
           <p class="p newsiteminfocreationdate">
-            <tal:translate i18n:translate="">Creation date:</tal:translate><br />
-            <span class="newsitemcreationdate" tal:content="structure creationdate" />
-          </p>
+            <tal:translate i18n:translate="">Publication date:</tal:translate>
+            <span class="newsitemcreationdate"
+                tal:condition="python: not displaydate"
+                tal:content="structure publicationdate" />
+            <span class="newsitemcreationdate"
+                tal:condition="python: displaydate"
+                tal:content="structure displaydate" />
+           </p>
     </tal:block>
     <p class="p newsiteminfodatetime">
       <tal:translate i18n:translate="">Date and time:</tal:translate><br />
