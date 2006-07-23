@@ -595,8 +595,8 @@ msgid "access key: alt-m"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:306
-msgid "publish now?"
-msgstr "publier maintenant?"
+msgid "publish now"
+msgstr "publier maintenant"
 
 # Default: "u"
 #: /views/edit/Container/NewsPublication/tab_status.pt:306
@@ -1409,8 +1409,8 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:393
-msgid "p<u>u</u>blish right now?"
-msgstr ""
+msgid "approve for future"
+msgstr "approuver pour futur"
 
 # Default: "u"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
@@ -1432,7 +1432,7 @@ msgid "clear_expiration_time_accesskey"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:292
-msgid "set timings"
+msgid "update timings"
 msgstr "fixer les temps"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:292
@@ -1442,11 +1442,11 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:312
 msgid "publish new version"
-msgstr "publier nouvelle version "
+msgstr "publier nouvelle version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:316
 msgid "publish closed version"
-msgstr ""
+msgstr "publier version fermé"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:354
 msgid "access key: alt-i"
@@ -1462,7 +1462,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:437
 msgid "request"
-msgstr ""
+msgstr "demand"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:44
 msgid "messages"
@@ -1546,7 +1546,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:594
 msgid "manual close"
-msgstr ""
+msgstr "fermer version publique"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:601
 msgid ""
@@ -1556,7 +1556,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:610
 msgid "close published version"
-msgstr ""
+msgstr "fermer version publique"
 
 # Default: "c"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:610
