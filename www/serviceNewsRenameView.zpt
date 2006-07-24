@@ -46,7 +46,7 @@ Version of this file: $Revision: 1.4 $
           <td>
             <input type="text" 
                     class="form-element" 
-                    tal:attributes="name string:title_${item}; value title" />
+                    tal:attributes="name string:title_${item}; value;title" />
           </td>
         </tr>
       </tal:block>
