@@ -38,10 +38,12 @@
           tal:define="startdate obj/start_datetime | nothing;
                       enddate obj/end_datetime | nothing"
           tal:condition="python: startdate or enddate">
-        <span tal:omit-tag="" i18n:translate="">Start:</span>
-        <tal:insert replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
-          start date
-        </tal:insert>
+        <tal:if condition="obj/start_datetime | nothing">
+          <span tal:omit-tag="" i18n:translate="">Start:</span>
+          <tal:insert replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
+            start date
+          </tal:insert>
+        </tal:if>
         <tal:if condition="obj/end_datetime | nothing"><br />
           <span tal:omit-tag="" i18n:translate="">End:</span>
           <tal:insert replace="structure python: formatdate(obj.end_datetime(), obj.display_time())">

@@ -46,7 +46,9 @@
     </tbody>
   </table>
 
-  <div class="offsetnav">
+  <div class="offsetnav"
+      tal:condition="python: previous or next"
+      >
     <tal:block tal:condition="previous">
       <a tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset - batch_size))">previous</a>&nbsp;
     </tal:block>
@@ -58,16 +60,16 @@
   <div class="newsitem" tal:repeat="object batch">
     <tal:block define="obj object/getObject">
       <h3 class="heading newsitemheading" tal:content="structure obj/get_title" />
-      <div class="newsintro" tal:content="structure obj/get_intro" />
       <p class="p newsiteminfo"
           tal:define="startdate obj/start_datetime | nothing;
                       enddate obj/end_datetime | nothing"
           tal:condition="python: startdate or enddate">
+        <tal:if condition="obj/start_datetime | nothing">
           <span i18n:translate="">Start:</span>
-          <span tal:replace="
-                  structure python: formatdate(obj.start_datetime(), obj.display_time())">
+          <span tal:replace="structure python: formatdate(obj.start_datetime(), obj.display_time())">
             start date
           </span>
+        </tal:if>
         <tal:if condition="obj/end_datetime | nothing"><br />
           <span i18n:translate="">End:</span>
           <span tal:replace="structure python: formatdate(obj.end_datetime(), obj.display_time())">
@@ -75,6 +77,7 @@
           </span>
         </tal:if>
       </p>
+      <div class="newsintro" tal:content="structure obj/get_intro" />
       <p class="p articlelink">
         <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
           view article</a>
@@ -88,7 +91,9 @@
 
   <tal:comment condition="nothing">End items</tal:comment>
 
-  <div class="offsetnav">
+  <div class="offsetnav"
+      tal:condition="python: previous or next"
+      >
     <tal:block tal:condition="previous">
       <a tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset - batch_size))">previous</a>&nbsp;
     </tal:block>
@@ -115,10 +120,8 @@
     </tbody>
   </table>
 
-  <div class="viewlink">
     <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
     </p>
-  </div>
 
 </div>

@@ -60,7 +60,8 @@
     </div>
 
     <div class="newsintro">
-      <img tal:define="classname python: test(repeat['object'].odd(), 'newsitem-thumbnail-odd', 'newsitem-thumbnail-even')"
+      <img 
+        tal:define="classname python: test(repeat['object'].odd(), 'newsitem-thumbnail-odd', 'newsitem-thumbnail-even')"
         tal:replace="structure python: obj.get_thumbnail(classname)"
         tal:attributes="alt string:news article thunbnail image"
       />
@@ -83,13 +84,11 @@
   There are no articles available.
 </p>
 
-<div class="archivelink">
   <p class="p archivelink">
     <a tal:attributes="href string:?view=view_archive"
      i18n:translate="">
      view archive
    </a>
   </p>
-</div>
 
 </html>

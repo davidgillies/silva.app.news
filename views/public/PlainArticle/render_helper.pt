@@ -17,7 +17,8 @@
 <div class="newsiteminfo">
     <tal:block 
         tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));"
-                    >
+        tal:condition="publicationdate"
+        >
           <p class="p newsiteminfopublicationdate">
             <tal:translate i18n:translate="">Publication date:</tal:translate>
             <span class="newsitempublicationdate"
@@ -28,6 +29,6 @@
   </div>
 
   <div class="newsitemcontent" 
-        tal:content="structure python:view.get_content(version)" />
+       tal:content="structure python:view.get_content(version)" />
 
 </span>

@@ -20,30 +20,34 @@
         tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));
                     displaydate python: formatdate(version.display_datetime(), version.display_time());"
                     >
-          <p class="p newsiteminfopublicationdate">
-            <tal:translate i18n:translate="">Publication date:</tal:translate>
-            <span class="newsitempublicationdate"
-                tal:condition="python: not displaydate"
-                tal:content="structure publicationdate" />
-            <span class="newsitempublicationdate"
-                tal:condition="python: displaydate"
-                tal:content="structure displaydate" />
+          <p class="p newsiteminfopublicationdate"
+             tal:condition="python: publicationdate or displaydate">
+              <tal:translate i18n:translate="">Publication date:</tal:translate>
+              <span class="newsitempublicationdate"
+                  tal:condition="python: not displaydate"
+                  tal:content="structure publicationdate" />
+              <span class="newsitempublicationdate"
+                  tal:condition="python: displaydate"
+                  tal:content="structure displaydate" />
            </p>
     </tal:block>
-    <p class="p newsiteminfodatetime">
-      <tal:translate i18n:translate="">Date and time:</tal:translate><br />
-    <tal:block 
+    <p class="p newsiteminfodatetime"
         tal:define="startdate python: formatdate(version.start_datetime(), version.display_time());
                     enddate python: formatdate(version.end_datetime(), version.display_time())"
-        tal:condition="startdate">
+        tal:condition="python: startdate or enddate">
+      <tal:translate i18n:translate="">Date and time:</tal:translate><br />
+      <tal:if condition="startdate | nothing">
           <tal:translate i18n:translate="">Start:</tal:translate>
           <span class="newsitemstartdate" tal:content="startdate" /><br />
-          <tal:translate i18n:translate="" tal:condition="enddate">End:</tal:translate>
+      </tal:if>
+      <tal:if condition="enddate | nothing">
+          <tal:translate i18n:translate="">End:</tal:translate>
           <span class="newsitemenddate" tal:content="enddate" />          
-    </tal:block>
+      </tal:if>
     </p>
   </div>
 
-       <div class="newsitemcontent" tal:content="structure python:view.get_content(version)" />
+       <div class="newsitemcontent" 
+            tal:content="structure python:view.get_content(version)" />
 
 </span>
