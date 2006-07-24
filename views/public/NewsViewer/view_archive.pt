@@ -64,7 +64,7 @@
         <span i18n:translate="">published:</span>
         <span tal:replace="structure python:formatdate(obj.publication_datetime())" />
       </p>
-      <p class="articlelink">
+      <p class="p articlelink">
         <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
           view article</a>
       </p>
@@ -73,7 +73,7 @@
 
   <p class="p newsmessage" tal:condition="python: len(results) < 1" i18n:translate="">
     There are no articles available
-  </div>
+  </p>
 
   <tal:comment condition="nothing">End items</tal:comment>
 
@@ -105,9 +105,9 @@
   </table>
 
   <div class="viewlink">
-    <div class="viewlink">
+    <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_news" i18n:translate="">view news</a>
-    </div>
+    </p>
   </div>
 
 </div>
