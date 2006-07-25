@@ -25,6 +25,7 @@ from Products.Silva.Metadata import export_metadata
 from silvaxmlattribute import SilvaXMLAttribute
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
+from Products.Silva.Image import havePIL
 
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
@@ -258,6 +259,9 @@ class NewsItemVersion(CatalogedVersion):
         img = self.restrictedTraverse(imgpath)
         if not img:
             return '[broken image]'
+        #check to see if Pil is installed
+        if not havePIL:
+            return ''
         tag = ('<a class="newsitem_thumbnail_link" href="%s">%s</a>' % 
                     (self.object().absolute_url(), img.tag(thumbnail=1)))
         if divclass:
