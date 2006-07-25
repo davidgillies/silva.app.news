@@ -25,8 +25,13 @@ from Products.Silva.Metadata import export_metadata
 from silvaxmlattribute import SilvaXMLAttribute
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
-from Products.Silva.Image import havePIL
 
+try:
+    import PIL.Image
+    havePIL = 1
+except ImportError:
+    havePIL = 0
+    
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
         self.title = ''
