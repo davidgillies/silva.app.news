@@ -63,7 +63,7 @@
       <img 
         tal:define="classname python: test(repeat['object'].odd(), 'newsitem-thumbnail-odd', 'newsitem-thumbnail-even')"
         tal:replace="structure python: obj.get_thumbnail(classname)"
-        tal:attributes="alt string:news article thunbnail image"
+        tal:attributes="alt string:news article thumbnail image"
       />
       <tal:insert replace="structure obj/get_intro">
         intro text
