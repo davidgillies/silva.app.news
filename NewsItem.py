@@ -252,6 +252,9 @@ class NewsItemVersion(CatalogedVersion):
 
             returns '' if no image is available
         """
+        #check to see if Pil is installed
+        if not havePIL:
+            return ''
         images = self.content._content.documentElement.getElementsByTagName('image')
         if not images:
             return ''
@@ -259,9 +262,6 @@ class NewsItemVersion(CatalogedVersion):
         img = self.restrictedTraverse(imgpath)
         if not img:
             return '[broken image]'
-        #check to see if Pil is installed
-        if not havePIL:
-            return ''
         tag = ('<a class="newsitem_thumbnail_link" href="%s">%s</a>' % 
                     (self.object().absolute_url(), img.tag(thumbnail=1)))
         if divclass:
