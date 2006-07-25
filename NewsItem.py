@@ -25,13 +25,8 @@ from Products.Silva.Metadata import export_metadata
 from silvaxmlattribute import SilvaXMLAttribute
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
+from Products.Silva.Image import havePIL
 
-try:
-    import PIL.Image
-    havePIL = 1
-except ImportError:
-    havePIL = 0
-    
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
         self.title = ''
@@ -257,11 +252,11 @@ class NewsItemVersion(CatalogedVersion):
 
             returns '' if no image is available
         """
-        #check to see if Pil is installed
-        if not havePIL:
-            return ''
         images = self.content._content.documentElement.getElementsByTagName('image')
         if not images:
+            return ''
+        #check to see if Pil is installed
+        if not havePIL:
             return ''
         imgpath = images[0].getAttribute('path').split('/')
         img = self.restrictedTraverse(imgpath)
