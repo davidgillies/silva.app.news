@@ -262,7 +262,7 @@ class NewsItemVersion(CatalogedVersion):
         img = self.restrictedTraverse(imgpath)
         if not img:
             return '[broken image]'
-        tag = ('<a class="newsitem_thumbnail_link" href="%s">%s</a>' % 
+        tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' % 
                     (self.object().absolute_url(), img.tag(thumbnail=1)))
         if divclass:
             tag = '<div class="%s">%s</div>' % (divclass, tag)
