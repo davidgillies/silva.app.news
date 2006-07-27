@@ -43,14 +43,22 @@ class InlineViewer(CodeSource):
     meta_type = 'Silva News Inline Viewer'
     security = ClassSecurityInfo()
 
+    # we know existing objects were already initialized, but
+    # they didn't have this attribute yet and we don't want
+    # to write an upgrade script because we're lazy :)
+    _is_initialized = True
+    
     def __init__(self, id, title):
         CodeSource.inheritedAttribute('__init__')(self, id, title)
         self._script_id = 'view'
         self._data_encoding = 'UTF-8'
-
+        self._is_initialized = False
+        
     def manage_afterAdd(self, item, container):
-        self._set_form()
-        self._set_views()
+        if not self._is_initialized:
+            self._set_form()
+            self._set_views()
+            self._is_initialized = True
 
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
@@ -60,6 +68,9 @@ class InlineViewer(CodeSource):
             self.manage_delObjects(['view'])
         if 'feed_footer' in self.objectIds():
             self.manage_delObjects(['feed_footer'])
+        # XXX this code doesn't look like it can work,
+        # as rrs10.gif is not removed and set_views tries to
+        # add it again
         self._set_form()
         self._set_views()
         return 'refreshed for and pagetemplate'
