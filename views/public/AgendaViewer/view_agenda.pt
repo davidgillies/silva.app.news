@@ -77,7 +77,7 @@
   <p class="p archivelink">
     <a tal:attributes="href string:?view=view_archive"
      i18n:translate="">
-     view archive
+     view past and future articles
    </a>
   </p>
 </div>
