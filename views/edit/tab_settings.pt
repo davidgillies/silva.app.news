@@ -52,54 +52,60 @@
                   ct python: mangle.String.centeredTruncate;"
                 tal:condition="python: editable"
               >
-              <thead>
-                <tr>
-                  <td class="top" colspan="3">
-                    <h2 tal:attributes="title string:id: ${model/id}">
-                      <img tal:replace="structure icon" />
-                      <span i18n:translate="">settings for &#xab;<tal:block 
-                        content="title"
-                        i18n:name="title" />&#xbb;</span>
-                    </h2>
+                <thead>
+                  <tr>
+                    <td class="top" colspan="3">
+                      <h2 tal:attributes="title string:id: ${model/id}">
+                        <img tal:replace="structure icon" />
+                        <span i18n:translate="">settings for &#xab;<tal:block 
+                          content="title"
+                          i18n:name="title" />&#xbb;</span>
+                      </h2>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="top-controls">
+                    <td colspan="3">
+                      <h3>
+                        <tal:translate i18n:translate="">local news source setting</tal:translate>
+                      </h3>
+                    </td>
+                  </tr>
+                <tr class="odd">
+                  <td i18n:translate="" colspan="2">
+                    Make news source local so it is picked up only by filters in the same path of the source and below.
                   </td>
-                </tr>
-              </thead>
-              <tbody>
-                    <tr class="top-controls">
-                      <td colspan="3">
-                        <h3>
-                          <span i18n:translate="">local news source setting</span>
-                        </h3>
-                      </td>
-                    </tr>
-                  <tr class="odd">
-                    <td width="3%">
-                      <label id="make local">
+                  <td class="align-right">
+                    <label id="make_local">
+                     <tal:translate i18n:translate="">make local?</tal:translate>
                       <input type="checkbox"
                         name="is_private"
-                        id="make local"
+                        id="make_local"
                         tal:attributes="checked model/is_private"
                       />
-                      make local?
-                      </label>
-                    </td>
-                    <td i18n:translate="" colspan="2">
-                      Make news source private so it is picked up only by filters in the same path of the source and below.
-                    </td>
-                  </tr>
-    
-                  <tr class="controls">
-                    <td colspan="3">
-                      <input class="button"
-                        type="submit" 
-                        name="settings_submit:method" 
-                        value="change settings"
-                        title="change the public/private status of the news publication: alt-o"
-                        accesskey="o"
-                        i18n:attributes="title;value"
-                      />
-                    </td>
-                  </tr>
+                    </label>
+                  </td>
+                </tr>
+  
+                <tr class="controls">
+                  <td class="align-right"
+                    colspan="3">
+                    <input class="button"
+                      type="submit" 
+                      name="settings_submit:method" 
+                      value="change setting"
+                      title="change the global/local status of the news publication: alt-h"
+                      accesskey="h"
+                      i18n:attributes="title;value"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td class="separator"
+                    colspan="4">
+                  </td>
+                </tr> 
                 <tr class="top-controls">
                   <td colspan="3">
                     <h3>

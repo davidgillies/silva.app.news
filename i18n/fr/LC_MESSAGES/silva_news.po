@@ -393,21 +393,33 @@ msgstr "effacer"
 msgid "settings"
 msgstr "paramètres"
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:77
+#: /views/edit/Container/NewsPublication/tab_settings.pt:60
+msgid "settings for &#xab;${title}&#xbb;"
+msgstr "paramètres pour &#xab;${title}&#xbb;"
+
+#: /views/edit/Container/NewsPublication/tab_settings.pt:71
+msgid "local news source setting"
+msgstr "local nouvelles publications paramètre"
+
+#: /views/edit/Container/NewsPublication/tab_settings.pt:77
 msgid ""
-"Make news source private so it is picked up only by filters in the same path "
+"Make news source local so it is picked up only by filters in the same path "
 "of the source and below."
 msgstr ""
-"Prépare source de news privée accésible par filtre dans le même niveau de la "
+"Prépare source de news local accésible par filtre dans le même niveau de la "
 "source et dessous."
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:84
-msgid "change the public/private status of the news publication: alt-o"
-msgstr "changer l'état privé/public des nouvelles publications: alt-o"
+#: /views/edit/Container/NewsPublication/tab_settings.pt:84
+msgid "change the global/local status of the news publication: alt-h"
+msgstr "changer l'état global/local des nouvelles publications: alt-h"
 
-#: /views/edit/Container/NewsPublication/tab_edit.pt:84
-msgid "open/close"
-msgstr "ouvrir/fermer"
+#: /views/edit/Container/NewsPublication/tab_settings.pt:81
+msgid "make local?"
+msgstr "changer à local?"
+
+#: /views/edit/Container/NewsPublication/tab_settings.pt:97
+msgid "change setting"
+msgstr "changer paramètre"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:105
 msgid "The objects have different values."
