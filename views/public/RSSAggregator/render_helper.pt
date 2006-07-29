@@ -10,23 +10,22 @@
    model view/REQUEST/model;
    result python:model.get_merged_feed_contents();
    silva_root view/silva_root;
-  ">
+">
 
 <h2 tal:content="model/get_title">View News</h2>
 
 <tal:feed_item
   tal:repeat="item result">
 <h4 style="heading"
-  tal:condition="item/title | nothing"
+  tal:condition="item/title"
   tal:content="structure item/title">
   title
 </h4>
-<p class="p">
-<tal:check tal:condition="item/description | nothing">
-<b tal:content="structure item/description">Lead</b>
+<p class="p feed"
+  tal:condition="item/description">
+<tal:plug content="structure item/description"/>
 <br />
-</tal:check>
-<a tal:condition="item/link | nothing" 
+<a tal:condition="item/link" 
   tal:attributes="href item/link"
   i18n:translate="">
   view article
