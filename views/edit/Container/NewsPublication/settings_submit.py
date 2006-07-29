@@ -21,9 +21,9 @@ current_private = model.is_private()
 is_private = request.has_key('is_private')
 
 if is_private:
-    new_status = 'localy'
+    new_status = 'locally'
 else:
-    new_status = 'globaly'
+    new_status = 'globally'
 
 if is_private != current_private:
     model.set_private(is_private)
