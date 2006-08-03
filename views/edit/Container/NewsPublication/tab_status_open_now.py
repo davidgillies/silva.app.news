@@ -19,5 +19,16 @@ except FormValidationError, e:
 clear_expiration = result['clear_expiration']
 
 objects = [model.resolve_ref(ref) for ref in refs]
+
+
+# set the display_date_time
+now = DateTime()
+for obj in objects:
+    if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
+        unapproved = getattr(obj, obj.get_unapproved_version())
+        if unapproved.display_datetime() is None:
+            unapproved.set_display_datetime(now)
+
 message = context.open_now(objects, clear_expiration)
+
 return view.tab_status(message_type='feedback', message=message)
