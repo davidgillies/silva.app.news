@@ -120,10 +120,13 @@ message text
 
 <tr class="top-controls">
 <td colspan="2">
-  <h3 i18n:translate="">request approval <span tal:condition="python:may_change_content and unapproved and published" i18n:name="for_new_version"><tal:block i18n:translate="">for new version</tal:block></span></h3>
+  <h3 i18n:translate="">request approval 
+      <span tal:condition="python:may_change_content and unapproved and published" i18n:name="for_new_version">
+          <tal:block i18n:translate="">for new version</tal:block>
+      </span>
+  </h3>
 </td>
 </tr>
-
 <tr>
 <th i18n:translate="">
 message to editor
