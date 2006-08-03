@@ -35,7 +35,7 @@
         <tales>
           <time_separator>python:form.get_time_punctuation()</time_separator>
           <date_separator>python:form.get_date_punctuation()</date_separator>
-          <default>python:field.REQUEST.model.get_editable() and field.REQUEST.model.get_editable().display_datetime() or None</default> 
+          <default>python:form.get_status_display_datetime(form.REQUEST.model)</default> 
         </tales>
       </field>
       <field><id>update_display_datetime</id> <type>CheckBoxField</type>
