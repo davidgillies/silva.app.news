@@ -46,7 +46,7 @@ if (hasattr(unapproved, 'implements_newsitem') and
 else:
     raise 'not a news item'
     
-model.set_unapproved_version_publication_datetime(DateTime.DateTime())
+model.set_unapproved_version_publication_datetime(result['publish_datetime'])
 
 expiration = result['expiration_datetime']
 if expiration:
