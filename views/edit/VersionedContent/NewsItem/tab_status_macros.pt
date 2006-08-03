@@ -45,7 +45,7 @@ manual_close.........Manual close
     <span class="subhead">
       Display time of public version<br />
     </span>
-    <plug tal:define="display_time python:mangle.DateTime(model.get_viewable().display_datetime()).toStr();"
+    <tal:plug tal:define="display_time python:mangle.DateTime(model.get_viewable().display_datetime()).toStr();"
       tal:replace="display_time" />
   </p>
 </metal:block>
