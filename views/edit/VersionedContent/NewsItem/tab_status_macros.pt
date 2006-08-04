@@ -177,7 +177,7 @@ This message will remain visible in the status screen for other authors and edit
 
 <span tal:replace="nothing"> _______ Editor can change settings _______ </span>
 <div metal:define-macro="approved_editor" tal:omit-tag="">
-<form action="tab_status_change_settings" method="post">
+<form action="." method="post">
 <tr class="top-controls">
 <td colspan="2">
 <h3 i18n:translate="">
@@ -206,6 +206,7 @@ notes
   value="update timings"
   class="button"
   title="access key: alt-u"
+  name="tab_status_change_settings:method"
   accesskey="u"
   i18n:attributes="value;title"
 />
