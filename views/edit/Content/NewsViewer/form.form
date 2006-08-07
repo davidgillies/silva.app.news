@@ -5,7 +5,7 @@
   <name>form</name>
   <action></action>
   <enctype>None</enctype>
-  <method>POST</method>
+  <method>post</method>
 
   <i18n_domain>silva_news</i18n_domain>
   <i18n>form</i18n>
@@ -45,8 +45,8 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>number</title>
-          <description>number of news items to show per page</description>
+          <title>day range</title>
+          <description>Number of news items to show per page.</description>
           <end></end>
           <extra></extra>
         </values>
@@ -66,7 +66,7 @@
           <css_class></css_class>
           <default></default>
           <title>number</title>
-          <description>number of archive items to display per page</description>
+          <description>Number of archive items to show per page.</description>
           <end></end>
           <extra></extra>
         </values>
