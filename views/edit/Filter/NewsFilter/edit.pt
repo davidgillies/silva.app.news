@@ -108,7 +108,7 @@
     </table>
   </form>
 
-  <form action="." name="silvaObjects" method="POST">
+  <form action="." name="silvaObjects" method="post">
     <table class="listing">
       <thead>
         <tal:block replace="nothing">
@@ -264,7 +264,7 @@
             </td>
             <td class="align-right">
               <input type="hidden" name="start" tal:attributes="value startat">
-              <input class="button" type="submit" name="use_sources:method" value="update sources" title="Use selected sources in this filter: alt-u" accesskey="u"  i18n:attributes="title value"/>
+              <input class="button" type="submit" name="use_sources:method" value="update sources" title="Use selected sources in this filter: alt-u" accesskey="u"  i18n:attributes="title;value"/>
             </td>
           </tr>
 
