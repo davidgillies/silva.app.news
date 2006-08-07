@@ -623,10 +623,6 @@ msgid "access key: alt-u"
 msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status.pt:334
-msgid "expiration time"
-msgstr "temp d'expiration"
-
-#: /views/edit/Container/NewsPublication/tab_status.pt:334
 msgid "access key: alt-x"
 msgstr ""
 
@@ -903,8 +899,8 @@ msgstr ""
 "jours dans le passé."
 
 #: /views/edit/Content/NewsViewer/form.form:49
-msgid "number of news items to show per page"
-msgstr ""
+msgid "Number of news items to show per page."
+msgstr "Nombre d'articles news à montrer sur une page."
 
 #: /views/edit/Content/NewsViewer/form.form:69
 msgid "number of archive items to display per page"
@@ -1402,10 +1398,6 @@ msgstr ""
 msgid "current timings"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:214
-msgid "access key: alt-m"
-msgstr ""
-
 # Default: "m"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:214
 msgid "access_key_publish_datetime"
@@ -1447,11 +1439,6 @@ msgstr ""
 msgid "update timings"
 msgstr "fixer les temps"
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:292
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:610
-msgid "access key: alt-s"
-msgstr ""
-
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:312
 msgid "publish new version"
 msgstr "publier nouvelle version"
@@ -1459,10 +1446,6 @@ msgstr "publier nouvelle version"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:316
 msgid "publish closed version"
 msgstr "publier version fermé"
-
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:354
-msgid "access key: alt-i"
-msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:366
 msgid "Empty indicates no expiration."
@@ -1900,9 +1883,6 @@ msgstr ""
 
 #~ msgid "View Archive"
 #~ msgstr "Voir Archive"
-
-#~ msgid "Start date/time:"
-#~ msgstr "Démarrer date/heure"
 
 #~ msgid "There are no articles."
 #~ msgstr "Il n'y a pas d'articles"
