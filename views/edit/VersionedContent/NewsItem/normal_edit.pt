@@ -130,7 +130,7 @@
   <input class="button" type="submit"
          name="form_submitted" value="save item"
          title="save item: alt-s" accesskey="s"
-         i18n:attributes="title value"
+         i18n:attributes="title;value"
          />
   </td>
   <td class="invisible" width="60" align="right" valign="top">&nbsp;</td>

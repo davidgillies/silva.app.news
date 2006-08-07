@@ -97,7 +97,7 @@
               value="save settings"
               title="access key: alt-s"
               accesskey="s"
-              i18n:attributes="title value"
+              i18n:attributes="title;value"
             />
           </td>
         </tr>

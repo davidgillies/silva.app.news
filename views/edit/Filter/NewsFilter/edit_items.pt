@@ -235,7 +235,7 @@
             </script>
             &nbsp;
             <input type="hidden" name="start" tal:attributes="value startat">
-            <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" i18n:attributes="title value"/>
+            <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" i18n:attributes="title;value"/>
             &nbsp;
           </td>
         </tr>

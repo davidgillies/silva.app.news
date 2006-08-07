@@ -277,7 +277,7 @@
       &nbsp;
       <input type="hidden" name="year" value="" tal:attributes="value currentyear">
       <input type="hidden" name="month" value="" tal:attributes="value currentmonth">
-      <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" i18n:attributes="title value"/>
+      <input class="button" type="submit" name="use_items:method" value="update" title="use selected items in this filter: alt-u" accesskey="u" i18n:attributes="title;value"/>
       &nbsp;
     </td>
     <td align="right" colspan="3" nowrap="1">

@@ -29,7 +29,7 @@
     <form tal:attributes="action model/absolute_url" method="POST">
       <input type="text" name="query" />
       <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
-              accesskey="s" i18n:attributes="title value" />
+              accesskey="s" i18n:attributes="title;value" />
     </form>
   </div>
 

@@ -113,7 +113,7 @@
                       value="Save addables data"
                       title="save addable settings for this publication: alt-a"
                       accesskey="a" 
-                      i18n:attributes="title value"
+                      i18n:attributes="title;value"
                     />
                   </td>
                 </tr>
