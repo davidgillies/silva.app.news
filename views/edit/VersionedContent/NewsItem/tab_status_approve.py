@@ -34,15 +34,13 @@ if (hasattr(unapproved, 'implements_newsitem') and
         unapproved.implements_newsitem()):
     # set display datetime if required
     pdt = result['publish_datetime']
-    if (result_news_form.has_key('update_display_datetime') and 
-            result_news_form['update_display_datetime']):
-        ddt = result_news_form['display_datetime']
-        if ddt is None:
-            ddt = pdt
-        unapproved.set_display_datetime(ddt)
-    elif unapproved.display_datetime() is None:
-        # there's no initial display datetime yet, let's set it
-        unapproved.set_display_datetime(pdt)
+    ddt = result_news_form['display_datetime']
+    if ddt is None:
+        ddt = pdt
+    unapproved.set_display_datetime(ddt)
+elif unapproved.display_datetime() is None:
+    # there's no initial display datetime yet, let's set it
+    unapproved.set_display_datetime(pdt)
 else:
     raise 'not a news item'
     
