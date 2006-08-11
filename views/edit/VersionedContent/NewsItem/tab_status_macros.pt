@@ -309,24 +309,6 @@ day / month / year &nbsp;23:59
 </td>
 </tr>
 
-<tr tal:define="field view/tab_status_form_news/update_display_datetime">
-<td class="align-right">
-  <label 
-    title="access key: alt-i"
-    accesskey="i"
-    tal:attributes="for field/id"
-    tal:content="field/title"
-    i18n:attributes="title"
-    i18n:translate="">
-    field title
-  </label>
-<input tal:replace="structure python: field.render(REQUEST=request)"
- tal:attributes="id field/id" />
-</td>
-<td tal:content="structure field/description">
-  description
-</td>
-</tr>
 <tal:block condition="nothing">__ end SilvaNews additional fields __</tal:block>
 </metal:def>
 
