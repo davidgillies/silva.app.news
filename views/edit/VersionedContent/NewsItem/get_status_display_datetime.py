@@ -1,8 +1,10 @@
 ##parameters=model
 
 editable = model.get_editable()
+
 if editable is None:
     viewable = model.get_viewable()
+    approved = model.get_approved_version()
     if viewable is not None:
         return None
     last_closed = model.get_last_closed()
