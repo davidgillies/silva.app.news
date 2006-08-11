@@ -38,20 +38,6 @@
           <default>python:form.get_status_display_datetime(form.REQUEST.model)</default> 
         </tales>
       </field>
-      <field><id>update_display_datetime</id> <type>CheckBoxField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <css_class></css_class>
-          <default type="int">0</default>
-          <title>update display date/time</title>
-          <description>Changing this will also change where the news item appears in a chronological list.</description>
-          <extra></extra>
-          <external_validator></external_validator>
-        </values>
-        <tales>
-        </tales>
-      </field>
       </fields>
     </group>
   </groups>
