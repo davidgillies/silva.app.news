@@ -73,6 +73,38 @@ class NewsItem(CatalogedVersionedContent):
 
     # MANIPULATORS
 
+    #modifaction to make it possible to set the display datetime
+    security.declareProtected(SilvaPermissions.ApproveSilvaContent,
+                              'set_next_version_display_datetime')
+
+    def set_next_version_display_datetime(self, dt):
+        """Set display datetime of next version.
+        """
+        if self._approved_version[0]:
+            id = self._approved_version[0]
+        elif self._unapproved_version[0]:
+            id = self._unapproved_version[0]
+        else:
+            raise VersioningError,\
+                  _('No next version.')
+        version = getattr(self, id, None)
+        version.set_display_datetime(dt)
+
+    #modifaction to make it possible to set the display datetime unapproved versioned content
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_unapproved_version_display_datetime')
+
+    def set_unapproved_version_display_datetime(self, dt):
+        """Set display datetime for unapproved
+        """
+        if self._unapproved_version == empty_version:
+            raise VersioningError,\
+                  _('No unapproved version.')
+        
+        id = self._unapproved_version[0]
+        version = getattr(self, id, None)
+        version.set_display_datetime(dt)
+
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_xml')
@@ -152,7 +184,7 @@ class NewsItem(CatalogedVersionedContent):
         if hasattr(version, 'location'):
             version.set_location(handler.metadata['location'][0])
         version.set_title(handler.title)
-
+                 
 InitializeClass(NewsItem)
 
 class NewsItemVersion(CatalogedVersion):
@@ -198,9 +230,11 @@ class NewsItemVersion(CatalogedVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'idx_display_datetime')
     idx_display_datetime = display_datetime
-        
+
+
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
+
     def set_subjects(self, subjects):
         self._subjects = subjects
         self.reindex_object()
