@@ -32,7 +32,7 @@ import DateTime
 unapproved = getattr(model, model.get_unapproved_version())
 if (hasattr(unapproved, 'implements_newsitem') and 
         unapproved.implements_newsitem()):
-    # set display datetime if required
+    # set display datetime
     pdt = result['publish_datetime']
     ddt = result_news_form['display_datetime']
     if ddt is None:
