@@ -15,7 +15,7 @@ except FormValidationError, e:
 
 # set the display_date_time
 now = DateTime()
-if hasattr(obj, 'implements_newsitem') and model.implements_newsitem():
+if hasattr(model, 'implements_newsitem') and model.implements_newsitem():
     unapproved = model.get_unapproved_version()
     if unapproved is None:
         continue
