@@ -9,15 +9,33 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
-  2.1.4
+  2.1.4 (unreleased)
 
     Features
       
-      - changed layout more silva-core-like and improved usability
+      - changed layout more silva-core-like and improved usability cfr issue 1581
+      
+      - uniformed css classes for view and viewer newsitems
+      
+      - more xhtml compliant
 
     Bugs fixed
    
       - fixed bug cfr revision 8871 removed can_approve()
+      
+      - fixed rss icon cfr issue 1506, 1580
+      
+      - fixed display date rendering and setting cfr issue 1601, 1603
+      
+      - fixed publish now cfr issue 1605
+      
+      - fixed imort/export of InlineNewsViewer cfr issue 1600
+      
+      - fixed render error when a News viewer has a image and PIL is not installed cfr issue 1604
+      
+      - news articles show now publication date or display date if set cfr issue 1602
+      
+      - fixed broken external source cfr issue 1434
 
   2.1.3
 
