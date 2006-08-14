@@ -33,7 +33,6 @@ except FormValidationError, e:
 publish_datetime = result['publish_datetime']
 expiration_datetime = result['expiration_datetime']
 clear_expiration_flag = result['clear_expiration']
-update_display_datetime = result_news['update_display_datetime']
  
 now = DateTime()
 
@@ -67,7 +66,7 @@ for ref in refs:
         obj.set_unapproved_version_publication_datetime(publish_datetime)
         if hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
             unapproved = getattr(obj, obj.get_unapproved_version())
-            if update_display_datetime or unapproved.display_datetime() is None:
+            if unapproved.display_datetime() is None:
                 unapproved.set_display_datetime(publish_datetime)
     elif not obj.get_unapproved_version_publication_datetime():
         # no date set, neither on unapproved version nor in tab_status form
@@ -76,7 +75,7 @@ for ref in refs:
         continue
     elif hasattr(obj, 'implements_newsitem') and obj.implements_newsitem():
         unapproved = getattr(obj, obj.get_unapproved_version())
-        if update_display_datetime or unapproved.display_datetime() is None:
+        if unapproved.display_datetime() is None:
             unapproved.set_display_datetime(
                 obj.get_unapproved_version_publication_datetime())
         
