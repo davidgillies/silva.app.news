@@ -11,6 +11,7 @@
     results python:model.get_items();
     silva_root view/silva_root;
     formatdate nocall:view/service_news/format_date;
+    mangle modules/Products/Silva/mangle;
 ">
 
 <h2 class="heading" tal:content="model/get_title">View News</h2>
@@ -29,18 +30,24 @@
 </div>
 
 <div class="newsitem" tal:repeat="object results">
-  <tal:def define="obj object/getObject">
+<tal:def define="obj object/getObject">
     <h3 class="heading newsitemheading" tal:content="structure obj/get_title">article title</h3>
+  <div class="newsiteminfo">
+    <tal:infopublic 
+        tal:define="publicationdate python: formatdate(obj.get_metadata_element('silva-extra', 'publicationtime'));
+                    displaydate python: formatdate(obj.display_datetime());"
+        tal:condition="publicationdate"
+        > 
+        <p class="p newsiteminfopublicationdate">
+        <tal:translate i18n:translate="">Publication date: </tal:translate>
+        <span class="newsitempublicationdate"
+            tal:define="date_public_view displaydate | publicationdate | nothing"
+            tal:condition="date_public_view"
+            tal:content="structure date_public_view" />
+       </p>
+    </tal:infopublic>
 
-    <div class="newsiteminfo">
-      <p class="p creationdate"
-        tal:define="creationdate python: formatdate(obj.get_metadata_element('silva-extra', 'creationtime'))"
-        tal:condition="python: creationdate != ''"
-        tal:content="structure creationdate">
-        creation date
-      </p>
-
-      <p class="p eventdates"
+        <p class="p eventdates"
           tal:define="startdate obj/start_datetime | nothing;
                       enddate obj/end_datetime | nothing"
           tal:condition="python: startdate or enddate">
@@ -56,7 +63,7 @@
             end date
           </tal:insert>
         </tal:if>
-      </p>
+        </p>
     </div>
 
     <div class="newsintro">
