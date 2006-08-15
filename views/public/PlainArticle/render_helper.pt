@@ -13,18 +13,17 @@
               tal:omit-tag="" >
 
 <h2 class="heading newsitemheading" tal:content="structure python:version.get_title()" />
-
 <div class="newsiteminfo"        
-    tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));
-                displaydate python: formatdate(version.display_datetime())"
+    tal:define="publicationdate python: version.get_metadata_element('silva-extra', 'publicationtime');
+                displaydate python: version.display_datetime()"
     tal:condition="publicationdate">
         <p class="p newsiteminfopublicationdate"
             tal:condition="python: publicationdate or displaydate">
             <tal:translate i18n:translate="">Publication date:</tal:translate>
             <span class="newsitempublicationdate"
-                tal:define="date_public_view displaydate | publicationdate | nothing"
+                tal:define="date_public_view python: displaydate or publicationdate"
                 tal:condition="date_public_view"
-                tal:content="structure date_public_view" />                                                                                   
+                tal:content=" python:formatdate(date_public_view)" />                                                                                   
         </p>
 </div>
 
