@@ -25,9 +25,9 @@
                 tal:condition="python: publicationdate or displaydate">
             <tal:translate i18n:translate="">Publication date:</tal:translate>
             <span class="newsitempublicationdate"
-                tal:define="date_public_view displaydate | publicationdate | nothing"
+                tal:define="date_public_view python: displaydate or publicationdate"
                 tal:condition="date_public_view"
-                tal:content="structure date_public_view" />
+                tal:content="date_public_view" />
            </p>
     </tal:publicationinfo>
     <p class="p newsiteminfodatetime"
@@ -37,11 +37,11 @@
       <tal:translate i18n:translate="">Date and time:</tal:translate><br />
       <tal:if condition="startdate">
           <tal:translate i18n:translate="">Start:</tal:translate>
-          <span class="newsitemstartdate" tal:content="startdate" /><br />
+          <span class="newsitemstartdate" tal:content="python: startdate" /><br />
       </tal:if>
       <tal:if condition="enddate">
           <tal:translate i18n:translate="">End:</tal:translate>
-          <span class="newsitemenddate" tal:content="enddate" />          
+          <span class="newsitemenddate" tal:content="python: enddate" />          
       </tal:if>
     </p>
   </div>
