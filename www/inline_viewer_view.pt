@@ -41,40 +41,42 @@
   </a>
 </h4>
 
-<p class="p newsiteminfo">
-  <tal:block tal:condition="python:(int(options['show_creationdate']) and item.creation_datetime())">
-    <tal:translate i18n:translate="">Creation date: <br />
-	<span class="newsitemcreationdate" tal:content="structure python: formatdate(item.creation_datetime())" i18n:name="datetime">
-      creation date
-    </span>
-	</tal:translate><br />
-
-    <br />
-  </tal:block>
-  <tal:block tal:condition="python: item.start_datetime() and options['show_datetime']=='1'">
-    <tal:translate i18n:translate="">Start:
-	  <span class="newsitemstartdate" tal:content="structure python: formatdate(item.start_datetime())" i18n:name="datetime">
-        start date
-      </span>
-	</tal:translate>
-    <br />
-  </tal:block>
-  <tal:block condition="item/end_datetime">
-    <tal:translate i18n:translate="">End:
-      <span class="newsitemenddate" tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime">
-        end date
-      </span>	
-	</tal:translate>
-    <br />
-  </tal:block>
-  <tal:block condition="python: (int(options['show_location']) and item.location())">
-    <tal:translate i18n:translate="">Location:
-	<span class="newsitemlocation" tal:content="item/location" i18n:name="">
-        location
-    </span>	
-	</tal:translate>
-  </tal:block>
-</p>
+<div class="newsiteminfo">
+    <p class="p eventdates">
+      <tal:block tal:condition="python:(int(options['show_creationdate']) and item.creation_datetime())">
+        <tal:translate i18n:translate="">Creation date: <br />
+        <span class="newsitemcreationdate" tal:content="structure python: formatdate(item.creation_datetime())" i18n:name="datetime">
+          creation date
+        </span>
+        </tal:translate><br />
+    
+        <br />
+      </tal:block>
+      <tal:block tal:condition="python: item.start_datetime() and options['show_datetime']=='1'">
+        <tal:translate i18n:translate="">Start:
+          <span class="newsitemstartdate" tal:content="structure python: formatdate(item.start_datetime())" i18n:name="datetime">
+            start date
+          </span>
+        </tal:translate>
+        <br />
+      </tal:block>
+      <tal:block condition="item/end_datetime">
+        <tal:translate i18n:translate="">End:
+          <span class="newsitemenddate" tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime">
+            end date
+          </span>	
+        </tal:translate>
+        <br />
+      </tal:block>
+      <tal:block condition="python: (int(options['show_location']) and item.location())">
+        <tal:translate i18n:translate="">Location:
+        <span class="newsitemlocation" tal:content="item/location" i18n:name="">
+            location
+        </span>	
+        </tal:translate>
+      </tal:block>
+    </p>
+</div>
 
 <tal:set define="maxchars python: int(options['number_of_characters'])">
 <div class="p newslead" tal:define="intro python:item.intro(maxchars)"
