@@ -17,8 +17,8 @@
 
   <div class="newsiteminfo">
     <tal:publicationinfo 
-        tal:define="publicationdate python: formatdate(version.get_metadata_element('silva-extra', 'publicationtime'));
-                    displaydate python: formatdate(version.display_datetime(), version.display_time());"
+        tal:define="publicationdate python: version.get_metadata_element('silva-extra', 'publicationtime');
+                    displaydate python: version.display_datetime();"
         tal:condition="publicationdate">
             <p 
                 class="p newsiteminfopublicationdate"
@@ -27,7 +27,7 @@
             <span class="newsitempublicationdate"
                 tal:define="date_public_view python: displaydate or publicationdate"
                 tal:condition="date_public_view"
-                tal:content="date_public_view" />
+                tal:content="python: formatdate(date_public_view)" />
            </p>
     </tal:publicationinfo>
     <p class="p newsiteminfodatetime"
