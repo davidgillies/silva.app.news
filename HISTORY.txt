@@ -15,7 +15,7 @@ SilvaNewsNetwork changes
       
       - changed layout more silva-core-like and improved usability cfr issue 1581
       
-      - uniformed css classes for view and viewer newsitems
+      - uniformed css classes for view and viewer newsitems, un-div-ing
       
       - more xhtml compliant
 
@@ -36,6 +36,7 @@ SilvaNewsNetwork changes
       - news articles show now publication date or display date if set cfr issue 1602
       
       - fixed broken external source cfr issue 1434
+      
 
   2.1.3
 
