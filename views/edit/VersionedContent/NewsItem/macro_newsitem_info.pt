@@ -21,7 +21,13 @@
             <li tal:repeat="aid audience_ids"><span tal:content="python: model.service_news.target_audience_title(aid)" /></li>
         </ul>
         </div>
-    </div>
+        <p 
+            tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
+            tal:condition="publicationdate">
+        <span i18n:translate="">publication date: </span><br />
+        <tal:startdate content="publicationdate" />
+        </p>
+</div>
 </metal:newsarticleinfo>
 
 <metal:newsagendaiteminfo define-macro="newsitem_info_agenda_item">
@@ -52,6 +58,12 @@
             tal:condition="location">
         <span i18n:translate="">location: </span><br />
         <tal:enddate content="location" />
+        </p>
+        <p 
+            tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
+            tal:condition="publicationdate">
+        <span i18n:translate="">publication date: </span><br />
+        <tal:startdate content="publicationdate" />
         </p>
         <p 
             tal:define="startdate python: mangle.DateTime(model.get_viewable().start_datetime())"
