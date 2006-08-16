@@ -34,7 +34,6 @@
         tal:define="startdate python: formatdate(version.start_datetime(), version.display_time());
                     enddate python: formatdate(version.end_datetime(), version.display_time())"
         tal:condition="python: startdate or enddate">
-      <tal:translate i18n:translate="">Date and time:</tal:translate><br />
       <tal:if condition="startdate">
           <tal:translate i18n:translate="">Start:</tal:translate>
           <span class="newsitemstartdate" tal:content="python: startdate" /><br />
