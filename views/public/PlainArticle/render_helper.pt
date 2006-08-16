@@ -23,7 +23,7 @@
             <span class="newsitempublicationdate"
                 tal:define="date_public_view python: displaydate or publicationdate"
                 tal:condition="date_public_view"
-                tal:content=" python:formatdate(date_public_view)" />                                                                                   
+                tal:content="python:formatdate(date_public_view)" />                                                                                   
         </p>
 </div>
 
