@@ -1,0 +1,70 @@
+<metal:newsarticleinfo define-macro="newsitem_info_article">
+    <div 
+        class="info" style="float: right; width: 250px; margin-top: 0.4em; margin-bottom: 0.2em;"
+        tal:define="icon python:view.render_icon(model)">
+    <h3 i18n:translate="">
+      <img tal:replace="structure icon" /> newsitem info
+    </h3>
+        <div 
+            tal:define="subject_ids python: model.get_viewable().subjects();"
+            tal:condition="subject_ids">
+        <span i18n:translate="">subject: </span><br />
+        <ul>
+            <li tal:repeat="sid subject_ids"><span tal:content="python: model.service_news.subject_title(sid)" /></li>
+        </ul>
+        </div>
+        <div
+            tal:define="audience_ids python: model.get_viewable().target_audiences();"
+            tal:condition="audience_ids">
+        <span i18n:translate="">target audience: </span><br />
+        <ul>
+            <li tal:repeat="aid audience_ids"><span tal:content="python: model.service_news.target_audience_title(aid)" /></li>
+        </ul>
+        </div>
+    </div>
+</metal:newsarticleinfo>
+
+<metal:newsagendaiteminfo define-macro="newsitem_info_agenda_item">
+    <div
+        class="info" style="float: right; width: 250px; margin-top: 0.4em; margin-bottom: 0.2em;"
+        tal:define="icon python:view.render_icon(model)">
+    <h3 i18n:translate="">
+      <img tal:replace="structure icon" /> newsitem info
+    </h3>
+        <div 
+            tal:define="subject_ids python: model.get_viewable().subjects();"
+            tal:condition="subject_ids">
+        <span i18n:translate="">subject: </span><br />
+        <ul>
+            <li tal:repeat="sid subject_ids"><span tal:content="python: model.service_news.subject_title(sid)" /></li>
+        </ul>
+        </div>
+        <div
+            tal:define="audience_ids python: model.get_viewable().target_audiences();"
+            tal:condition="audience_ids">
+        <span i18n:translate="">target audience: </span><br />
+        <ul>
+            <li tal:repeat="aid audience_ids"><span tal:content="python: model.service_news.target_audience_title(aid)" /></li>
+        </ul>
+        </div>
+        <p 
+            tal:define="location python: model.get_viewable().location()"
+            tal:condition="location">
+        <span i18n:translate="">location: </span><br />
+        <tal:enddate content="location" />
+        </p>
+        <p 
+            tal:define="startdate python: mangle.DateTime(model.get_viewable().start_datetime())"
+            tal:condition="startdate">
+        <span i18n:translate="">start: </span><br />
+        <tal:startdate content="startdate" />
+        </p>
+        <p 
+            tal:define="enddate python: mangle.DateTime(model.get_viewable().end_datetime())"
+            tal:condition="enddate">
+        <span i18n:translate="">end: </span><br />
+        <tal:enddate content="enddate" />
+        </p>
+    </div>
+</metal:newsagendaiteminfo>
+
