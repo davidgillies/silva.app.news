@@ -224,7 +224,7 @@ notes
 <span tal:replace="nothing"> _______ Editor approves _______ </span>
 <div tal:omit-tag=""
   metal:define-macro="approve_new">
-<form action="tab_status_approve" method="post">
+<form action="." method="post">
 <table class="listing sublisting">
 <tr class="top-controls">
 <td colspan="2">
