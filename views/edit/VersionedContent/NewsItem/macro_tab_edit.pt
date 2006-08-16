@@ -13,7 +13,7 @@
 <metal:use-macro metal:use-macro="here/macro_index/macros/master">
 
 <metal:fill-slot fill-slot="metatype_css">
-<tal:condition condition="python: not model.get_unapproved_version() and model.meta_type == 'Silva Document'">
+<tal:condition condition="python: not model.get_unapproved_version() and (model.meta_type == 'Silva Article' or model.meta_type == 'Silva Agenda Item')">
 <link rel="stylesheet"
   type="text/css"
   tal:attributes="href here/frontend.css/absolute_url | nothing"
@@ -181,6 +181,7 @@ h2 {
         this will insert an info box for news articles
     </metal:use>
    <div class="public"
+      style="margin-top: 1.5em;"
       tal:content="structure model/preview">
       <!-- this text is replaced by Silva content -->
     </div>
@@ -190,7 +191,8 @@ h2 {
         this will insert an info box for news agenda items
     </metal:use>
     <div class="public"
-      tal:content="structure model/preview">
+        style="margin-top: 1.5em;"
+        tal:content="structure model/preview">
       <!-- this text is replaced by Silva content -->
     </div>
   </tal:block>
