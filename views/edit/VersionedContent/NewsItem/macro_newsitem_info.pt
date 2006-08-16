@@ -5,6 +5,12 @@
     <h3 i18n:translate="">
       <img tal:replace="structure icon" /> newsitem info
     </h3>
+        <p 
+            tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
+            tal:condition="publicationdate">
+        <span i18n:translate="">publication date: </span><br />
+        <tal:startdate content="publicationdate" />
+        </p>
         <div 
             tal:define="subject_ids python: model.get_viewable().subjects();"
             tal:condition="subject_ids">
@@ -26,6 +32,12 @@
             tal:condition="publicationdate">
         <span i18n:translate="">publication date: </span><br />
         <tal:startdate content="publicationdate" />
+        </p>
+        <p 
+            tal:define="displaydate python: mangle.DateTime(model.get_viewable().display_datetime())"
+            tal:condition="displaydate">
+        <span i18n:translate="">display date: </span><br />
+        <tal:startdate content="displaydate" />
         </p>
 </div>
 </metal:newsarticleinfo>
@@ -60,12 +72,6 @@
         <tal:enddate content="location" />
         </p>
         <p 
-            tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
-            tal:condition="publicationdate">
-        <span i18n:translate="">publication date: </span><br />
-        <tal:startdate content="publicationdate" />
-        </p>
-        <p 
             tal:define="startdate python: mangle.DateTime(model.get_viewable().start_datetime())"
             tal:condition="startdate">
         <span i18n:translate="">start: </span><br />
@@ -76,6 +82,18 @@
             tal:condition="enddate">
         <span i18n:translate="">end: </span><br />
         <tal:enddate content="enddate" />
+        </p>
+        <p 
+            tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
+            tal:condition="publicationdate">
+        <span i18n:translate="">publication date: </span><br />
+        <tal:startdate content="publicationdate" />
+        </p>
+        <p 
+            tal:define="displaydate python: mangle.DateTime(model.get_viewable().display_datetime())"
+            tal:condition="displaydate">
+        <span i18n:translate="">display date: </span><br />
+        <tal:startdate content="displaydate" />
         </p>
     </div>
 </metal:newsagendaiteminfo>
