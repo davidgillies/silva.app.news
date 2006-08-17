@@ -177,9 +177,11 @@ h2 {
   
   <span tal:replace="nothing"> _________ or preview document ____ </span>
   <tal:block condition="python:not model.get_unapproved_version() and model.meta_type == 'Silva Article'">
+    <tal:public tal:condition="python: model.get_viewable()">
     <metal:use use-macro="here/macro_newsitem_info/macros/newsitem_info_article">
         this will insert an info box for news articles
     </metal:use>
+    </tal:public>
    <div class="public"
       style="margin-top: 1.5em;"
       tal:content="structure model/preview">
@@ -187,9 +189,11 @@ h2 {
     </div>
   </tal:block>
   <tal:block condition="python:not model.get_unapproved_version() and model.meta_type == 'Silva Agenda Item'">
+    <tal:public tal:condition="python: model.get_viewable()">
     <metal:use use-macro="here/macro_newsitem_info/macros/newsitem_info_agenda_item">
         this will insert an info box for news agenda items
     </metal:use>
+    </tal:public>
     <div class="public"
         style="margin-top: 1.5em;"
         tal:content="structure model/preview">

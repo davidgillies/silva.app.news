@@ -1,6 +1,6 @@
 <metal:newsarticleinfo define-macro="newsitem_info_article">
     <div 
-        class="info" style="float: right; width: 20%; margin-top: 1.5em; margin-right: 0.8em;"
+        class="info" style="float: right; width: 20%; margin: 1.5em 0.8em 0.8em 0;"
         tal:define="icon python:view.render_icon(model)">
     <h3 i18n:translate="">
       <img tal:replace="structure icon" /> newsitem info
@@ -8,25 +8,25 @@
         <tal:newsarticlesubject 
             tal:define="subject_ids python: model.get_viewable().subjects();"
             tal:condition="subject_ids">
-        <span i18n:translate="" class="subhead">subject: </span><br />
+        <span i18n:translate="" class="subhead">subject</span><br />
         <tal:subjects repeat="sid subject_ids"><tal:sid content="python: model.service_news.subject_title(sid)" /><br /></tal:subjects>
         </tal:newsarticlesubject>
         <tal:newsarticleaudience
             tal:define="audience_ids python: model.get_viewable().target_audiences();"
             tal:condition="audience_ids">
-        <span i18n:translate="" class="subhead">target audience: </span><br />
+        <span i18n:translate="" class="subhead">target audience</span><br />
         <tal:audiences repeat="aid audience_ids"><tal:aid content="python: model.service_news.target_audience_title(aid)" /><br /></tal:audiences>
         </tal:newsarticleaudience>
         <p 
             tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
             tal:condition="publicationdate">
-        <span i18n:translate="" class="subhead">publication date: </span>
+        <span i18n:translate="" class="subhead">publication date</span><br />
         <tal:startdate content="publicationdate" />
         </p>
         <p 
             tal:define="displaydate python: mangle.DateTime(model.get_viewable().display_datetime())"
             tal:condition="displaydate">
-        <span i18n:translate="" class="subhead">display date: </span>
+        <span i18n:translate="" class="subhead">display date</span><br />
         <tal:startdate content="displaydate" />
         </p>
 </div>
@@ -34,7 +34,7 @@
 
 <metal:newsagendaiteminfo define-macro="newsitem_info_agenda_item">
     <div
-        class="info" style="float: right; width: 20%; margin-top: 1.5em; margin-right: 0.8em;"
+        class="info" style="float: right; width: 20%; margin: 1.5em 0.8em 0.8em 0;"
         tal:define="icon python:view.render_icon(model)">
     <h3 i18n:translate="">
       <img tal:replace="structure icon" /> newsitem info
@@ -42,43 +42,43 @@
         <tal:newsarticlesubject 
             tal:define="subject_ids python: model.get_viewable().subjects();"
             tal:condition="subject_ids">
-        <span i18n:translate="" class="subhead">subject: </span><br />
+        <span i18n:translate="" class="subhead">subject</span><br />
         <tal:subjects repeat="sid subject_ids"><tal:sid content="python: model.service_news.subject_title(sid)" /><br /></tal:subjects>
         </tal:newsarticlesubject>
         <tal:newsarticleaudience
             tal:define="audience_ids python: model.get_viewable().target_audiences();"
             tal:condition="audience_ids">
-        <span i18n:translate="" class="subhead">target audience: </span><br />
+        <span i18n:translate="" class="subhead">target audience</span><br />
         <tal:audiences repeat="aid audience_ids"><tal:aid content="python: model.service_news.target_audience_title(aid)" /><br /></tal:audiences>
         </tal:newsarticleaudience>
         <p 
             tal:define="location python: model.get_viewable().location()"
             tal:condition="location">
-        <span i18n:translate="" class="subhead">location: </span>
+        <span i18n:translate="" class="subhead">location</span><br />
         <tal:enddate content="location" />
         </p>
         <p 
             tal:define="startdate python: mangle.DateTime(model.get_viewable().start_datetime())"
             tal:condition="startdate">
-        <span i18n:translate="" class="subhead">start: </span>
+        <span i18n:translate="" class="subhead">start</span><br />
         <tal:startdate content="startdate" />
         </p>
         <p 
             tal:define="enddate python: mangle.DateTime(model.get_viewable().end_datetime())"
             tal:condition="enddate">
-        <span i18n:translate="" class="subhead">end: </span>
+        <span i18n:translate="" class="subhead">end</span><br />
         <tal:enddate content="enddate" />
         </p>
         <p 
             tal:define="publicationdate python: mangle.DateTime(model.get_public_version_publication_datetime())"
             tal:condition="publicationdate">
-        <span i18n:translate="" class="subhead">publication date: </span>
+        <span i18n:translate="" class="subhead">publication date</span><br />
         <tal:startdate content="publicationdate" />
         </p>
         <p 
             tal:define="displaydate python: mangle.DateTime(model.get_viewable().display_datetime())"
             tal:condition="displaydate">
-        <span i18n:translate="" class="subhead">display date: </span>
+        <span i18n:translate="" class="subhead">display date</span><br />
         <tal:startdate content="displaydate" />
         </p>
     </div>
