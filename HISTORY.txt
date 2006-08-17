@@ -12,6 +12,8 @@ SilvaNewsNetwork changes
   2.1.4 (unreleased)
 
     Features
+    
+      - in tab_edit you can now see in the preview of a published NewsItem an infobox showing all related info
       
       - changed layout more silva-core-like and improved usability cfr issue 1581
       
