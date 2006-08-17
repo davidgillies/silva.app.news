@@ -1,1 +1,1 @@
-SilvaNewsNetwork 2.1.4
+SilvaNewsNetwork 2.2

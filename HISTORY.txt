@@ -3,13 +3,13 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.2
+  2.2.1
 
     Features
 
     Bugs fixed
 
-  2.1.4
+  2.2
 
     Features
     
