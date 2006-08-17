@@ -9,7 +9,7 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
-  2.1.4 (unreleased)
+  2.1.4
 
     Features
     
