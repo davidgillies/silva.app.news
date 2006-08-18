@@ -278,6 +278,18 @@ div#kupu-fgcolorchooser div:hover {
   cursor: default;
 }
 
+/* make the subjects and audiences in the edit screen align nicely under the title ff only */
+div.kupu-properties-checkbox-outerdiv {
+  padding-top: 1.2em;
+  margin-left: -21em;
+}
+
+/* fix to make it work again on ie */
+div.kupu-properties-checkbox-outerdiv {
+  _padding-top: 0;
+  _margin-left: 0;
+}
+
 .kupu-properties-checkbox-line {
 }
 
