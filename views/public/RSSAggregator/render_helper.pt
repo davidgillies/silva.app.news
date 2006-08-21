@@ -12,25 +12,33 @@
    silva_root view/silva_root;
 ">
 
-<h2 tal:content="model/get_title">View News</h2>
+<h2 
+    tal:define="title model/get_title | nothing"
+    tal:condition="title"
+    tal:content="title">
+    View News
+</h2>
 
 <tal:feed_item
-  tal:repeat="item result">
+    tal:repeat="item result">
 <h4 style="heading"
-  tal:condition="item/title"
-  tal:content="structure item/title">
-  title
+    tal:define="title item/title | nothing"
+    tal:condition="title"
+    tal:content="structure title">
+       title
 </h4>
 <p class="p feed"
-  tal:condition="item/description">
-<tal:plug content="structure item/description"/>
-<br />
-<a tal:condition="item/link" 
-  tal:attributes="href item/link"
-  i18n:translate="">
-  view article
+    tal:define="description item/description | nothing"
+    tal:condition="description"
+    tal:content="structure description" />
+<a 
+    tal:define="link item/link"
+    tal:condition="link" 
+    tal:attributes="href link"
+    i18n:translate="">
+        view article
 </a>
-</p>
+
 </tal:feed_item>
 
 </div>
