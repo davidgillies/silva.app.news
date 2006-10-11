@@ -301,7 +301,7 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('<title>%s</title>\n' % quote_xml(item.get_title()))
         xml.write('<link>%s</link>\n' % quote_xml(version_container.absolute_url()))
         xml.write('<description>%s</description>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'content_description')))
+                  quote_xml(item.get_intro())
         # DC elements
         xml.write('<dc:subject>%s</dc:subject>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'subject')))

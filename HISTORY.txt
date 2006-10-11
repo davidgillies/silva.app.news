@@ -3,11 +3,12 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.2.1
+  svn/unreleased
 
-    Features
+    Features added
 
-    Bugs fixed
+      - the rss views now use the get_intro methodf of the items, instead
+        of the metadata description.
 
   2.2
 
