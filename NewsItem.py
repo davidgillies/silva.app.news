@@ -305,9 +305,8 @@ class NewsItemVersion(CatalogedVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
     def get_description(self):
-        binding = self.service_metadata.getMetadata(self)
-        desc = binding.get('silva-extra', 'content_description')
-        return desc
+        return self.service_metadata.getMetadataValue(
+            self, 'silva-extra', 'content_description')
         
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
