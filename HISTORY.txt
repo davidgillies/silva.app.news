@@ -5,6 +5,12 @@ SilvaNewsNetwork changes
 
   unreleased
 
+    Features added
+
+      - added interfaces INewsViewer and IAgendaViewer. These interfaces
+        can be used by SilvaLayout/Five to provide special views for 
+        news/agenda viewers.
+
     Bugs fixed
 
       - using 'get_intro' for RSS feeds introduced a bug in at least some

@@ -16,6 +16,8 @@ from Products.SilvaDocument.Document import Document
 from Products.Silva.helpers import add_and_edit
 from Products.Silva import mangle
 
+from Products.SilvaNews.interfaces import INewsViewer
+
 try:
     from cStringIO import StringIO
 except ImportError:
@@ -85,7 +87,7 @@ class NewsViewer(Content, Folder.Folder):
 
     security = ClassSecurityInfo()
 
-    implements(IContent)
+    implements(IContent, INewsViewer)
 
     def __init__(self, id):
         NewsViewer.inheritedAttribute('__init__')(self, id, 'dummy')
