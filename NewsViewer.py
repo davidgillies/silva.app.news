@@ -300,6 +300,9 @@ class NewsViewer(Content, Folder.Folder):
         # RSS elements
         xml.write('<title>%s</title>\n' % quote_xml(item.get_title()))
         xml.write('<link>%s</link>\n' % quote_xml(version_container.absolute_url()))
+        # an ugly hack to make sure 'model' is available when get_intro()
+        # is called. Apparently it looks for this somewhere..
+        self.REQUEST.model = item
         xml.write('<description>%s</description>\n' %
                   quote_xml(item.get_intro()))
         # DC elements
