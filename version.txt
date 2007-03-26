@@ -1,1 +1,1 @@
-SilvaNewsNetwork ? (unreleased)
+SilvaNewsNetwork 2.4 unreleased
