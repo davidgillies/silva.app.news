@@ -43,7 +43,7 @@ div.kupu-tb {
   padding: 2px 0 2px 11px;
   margin-bottom: 0em;
   border: 1px solid #475155;
-  border-top: none; 
+  border-top: none;
 }
 
 #kupu-tb-buttons button {
@@ -206,7 +206,7 @@ div.kupu-toolbox h1, div.kupu-toolbox-active h1 {
   cursor: default;
 }
 
-div.kupu-toolbox h1.kupu-toolbox-heading-opened, 
+div.kupu-toolbox h1.kupu-toolbox-heading-opened,
 div.kupu-toolbox-active h1.kupu-toolbox-heading-opened {
   background-image: url('<dtml-var root>/service_kupu_silva/opened_arrow.gif');
 }
@@ -214,12 +214,12 @@ div.kupu-toolbox-active h1.kupu-toolbox-heading-opened {
 div.kupu-tooltray {
   /* background: #cedae8; */
   margin: 0;
-  padding: 0.4em 0.3em 0.4em 0.4em; 
+  padding: 0.4em 0.3em 0.4em 0.4em;
   color: #333;
 }
 
-div.kupu-toolbox-label, span.kupu-toolbox-searchterm, 
-input.kupu-toolbox-st, button.kupu-toolbox-action, 
+div.kupu-toolbox-label, span.kupu-toolbox-searchterm,
+input.kupu-toolbox-st, button.kupu-toolbox-action,
 div.kupu-toolbox-results {
   margin-left: 0.2em;
   margin-right: 0.2em;
@@ -258,6 +258,10 @@ div#kupu-colorchooser {
 
 div#kupu-fgcolorchooser div:hover {
   /* border: outset 1px; */
+}
+
+#kupu-toolbox-properties {
+  display: none;
 }
 
 #kupu-toolbox-properties .metadata-input {
@@ -321,36 +325,20 @@ div.kupu-properties-checkbox-innerdiv {
   display: none;
 }
 
-#kupu-toolbox-extsource #extsourceform input[type="text"] {
-  width: 14em;
-}
-
-#kupu-toolbox-extsource #extsourceform input[type="password"] {
-  width: 14em;
-}
-
-#kupu-toolbox-extsource #extsourceform select {
-  width: 14em;
-}
-
-#kupu-toolbox-extsource #extsourceform textarea {
-  width: 14em;
-}
-
-#kupu-toolbox-extsource a {
+.kupu-tooltray a {
   color: #187374;
   text-decoration: none;
 }
 
-#kupu-toolbox-extsource a.rollover span {
+.kupu-tooltray a.rollover span {
   display: none;
 }
 
-#kupu-toolbox-extsource a.rollover:hover {  
+.kupu-tooltray a.rollover:hover {
   text-decoration: none;
 }
 
-#kupu-toolbox-extsource span.tooltip {
+.kupu-tooltray span.tooltip {
   color: #444;
   background: #e3f1da;
   margin: 0.8em 0.4em 0 0;
@@ -361,13 +349,13 @@ div.kupu-properties-checkbox-innerdiv {
   display: none
 }
 
-#kupu-toolbox-extsource a.rollover:hover span {
+.kupu-tooltray a.rollover:hover span {
   display:block;
   position:absolute;
   width:21em;
 }
 
-#kupu-toolbox-extsource a.requiredfield {
+.kupu-tooltray a.requiredfield {
  border-bottom: 1px solid #cc0000;
 }
 
