@@ -1,1 +1,1 @@
-SilvaNewsNetwork 2.5 unreleased
+SilvaNewsNetwork 2.4.1
