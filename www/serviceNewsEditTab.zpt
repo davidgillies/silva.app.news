@@ -1,5 +1,5 @@
 <!--
-Copyright (c) 2002-2006 Infrae. All rights reserved.
+Copyright (c) 2002-2007 Infrae and contributors. All rights reserved.
 See also LICENSE.txt
 Version of this file: $Revision: 1.10 $
 -->
@@ -50,7 +50,7 @@ Version of this file: $Revision: 1.10 $
     <tr>
     <td width="50%" valign="top">
 
-    <div class="form-title">Subjects:</div><br />
+    <div class="form-title">Subjects</div><br />
     <form method="POST" action=".">
     <tal:repeat repeat="subjecttuple subject_tree">
     <tal:define define="subject python:subjecttuple[0]; title python: subjecttuple[1]; depth python:int(subjecttuple[2])">
@@ -61,7 +61,7 @@ Version of this file: $Revision: 1.10 $
     <input type="submit" name="manage_rename_start:method" value="Rename subject(s)" class="form-element">
     <input type="submit" name="manage_remove_subject:method" value="Remove subject(s)" class="form-element">
     <br /><br />
-    <div class="form-title">Add subject:</div><br />
+    <div class="form-label">Add subject</div>
     <div class="form-text">Id:</div>
     <input type="text" name="subject"><br />
     <div class="form-text">Title:</div>
@@ -82,7 +82,7 @@ Version of this file: $Revision: 1.10 $
     </td>
     <td valign="top">
 
-    <div class="form-title">Target audiences:</div><br />
+    <div class="form-title">Target audiences</div><br />
     <form method="POST" action=".">
     <tal:repeat repeat="tatuple target_audience_tree">
     <tal:define define="target_audience python:tatuple[0]; title python: tatuple[1]; depth python:int(tatuple[2])">
@@ -93,7 +93,7 @@ Version of this file: $Revision: 1.10 $
     <input type="submit" name="manage_rename_start:method" value="Rename target audience(s)" class="form-element">
     <input type="submit" name="manage_remove_target_audience:method" value="Remove target audience(s)" class="form-element">
     <br /><br />
-    <div class="form-title">Add target audience:</div><br />
+    <div class="form-label">Add target audience</div>
     <div class="form-text">Id:</div>
     <input type="text" name="target_audience"><br />
     <div class="form-text">Title:</div>
@@ -117,22 +117,20 @@ Version of this file: $Revision: 1.10 $
     <form action="." method="post">
       <tr>
         <td colspan="2" class="form-title">
-          Choose the locale:
+          Choose the locale
         </td>
       </tr>
       <tr>
-        <td class="form-text">
-          Locale:
-        </td>
-        <td class="form-text">
+        <td class="form-text"><br />
+          Enter a country code (lowercase):<br />
           <input type="text" name="locale" tal:attributes="value view/locale" />
         </td>
+        <td class="form-text">
+        </td>
       </tr>
       <tr>
-        <td class="form-text">
-          Date format:
-        </td>
         <td class="form-text" tal:define="current view/date_format">
+          Date format length:<br />
           <select name="date_format">
             <option value="short" tal:attributes="selected python:current == 'short' and 'selected' or None">
               short
@@ -148,10 +146,14 @@ Version of this file: $Revision: 1.10 $
             </option>
           </select>
         </td>
+        <td class="form-text">
+        </td>
       </tr>
       <tr>
-        <td colspan="2" align="right" class="form-text">
+        <td class="form-text">
           <input type="submit" name="manage_set_locale:method" value="set locale" />
+        </td>
+        <td class="form-text">
         </td>
       </tr>
     </form>
