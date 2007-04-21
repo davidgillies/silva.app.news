@@ -1,3 +1,4 @@
+<tal:comment replace="nothing">Keep this comment for a line break</tal:comment>
 <div class="newsitem"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -10,14 +11,13 @@
     global formatdate nocall:view/service_news/format_date;
 ">
 <h2 class="heading newsitemheading"
-  tal:content="structure python:version.get_title()" />Hello
+  tal:content="structure python:version.get_title()" />
 <div class="newsiteminfo"
   tal:define="
     publicationdate python: version.get_metadata_element('silva-extra', 'publicationtime');
     displaydate python: version.display_datetime()"
   tal:condition="publicationdate">
-  <p class="p"
-    tal:condition="python: publicationdate or displaydate">
+  <p tal:condition="python: publicationdate or displaydate">
     <tal:translate i18n:translate="">Publication date:</tal:translate>
     <span class="newsitempublicationdate"
       tal:define="date_public_view python: displaydate or publicationdate"
