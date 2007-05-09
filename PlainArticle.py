@@ -18,7 +18,6 @@ from Products.Silva.interfaces import IVersionedContent
 
 # Silva
 from Products.Silva import SilvaPermissions
-from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.helpers import add_and_edit
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.Silva import mangle
