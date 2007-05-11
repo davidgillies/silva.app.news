@@ -32,13 +32,13 @@ class Filter(Asset):
     published NewsItem-objects for the end-users.
     """
     security = ClassSecurityInfo()
-    
+
     implements(IAsset)
 
     _allowed_source_types = ['Silva News Publication']
 
     def __init__(self, id):
-        Filter.inheritedAttribute('__init__')(self, id, 'dummy')
+        Filter.inheritedAttribute('__init__')(self, id)
         self._keep_to_path = 0
         self._subjects = []
         self._target_audiences = []
@@ -220,7 +220,7 @@ class Filter(Asset):
             s = subjects[i]
             if  s in service_subjects:
                 new_subs.append(s)
-        
+
         new_tas = []
         for i in range(len(target_audiences)):
             ta = target_audiences[i]
@@ -267,7 +267,7 @@ class Filter(Asset):
 
     def _query(self, **kw):
         return self.service_catalog(kw)
-    
+
     def _check_meta_types(self, meta_types):
         for type in meta_types:
             if type not in self._allowed_news_meta_types():

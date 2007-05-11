@@ -28,8 +28,8 @@ addable_priority = 3.1
 
 class XMLBuffer:
     """Small file-like object for XML output.
-    
-    Implicitly converts unicode to UTF-8 and replaces characters to 
+
+    Implicitly converts unicode to UTF-8 and replaces characters to
     entities when required
     """
 
@@ -40,11 +40,11 @@ class XMLBuffer:
         if type(data) != type(u''):
             data = unicode(str(data))
         self._buffer.append(data)
-        
+
     def read(self):
         """The semantics are different from the plain file interface's read!
-            
-        This will return the full buffer always, and won't move the 
+
+        This will return the full buffer always, and won't move the
         pointer
         """
         ret = ''.join(self._buffer)
@@ -69,7 +69,7 @@ def quote_xml ( data ):
     return data
 
 
-RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n' 
+RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n'
               '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
               'xmlns:silvanews="http://infrae.com/namespaces/silvanews" '
               'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://purl.org/rss/1.0/">\n')
@@ -90,7 +90,7 @@ class NewsViewer(Content, Folder.Folder):
     implements(IContent, INewsViewer)
 
     def __init__(self, id):
-        NewsViewer.inheritedAttribute('__init__')(self, id, 'dummy')
+        NewsViewer.inheritedAttribute('__init__')(self, id)
         self._number_to_show = 25
         self._number_to_show_archive = 10
         self._number_is_days = 0
@@ -128,7 +128,7 @@ class NewsViewer(Content, Folder.Folder):
     def can_set_title(self):
         """return 1 so the title can be set"""
         return 1
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_is_days')
     def number_is_days(self):
@@ -256,7 +256,7 @@ class NewsViewer(Content, Folder.Folder):
             REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml;charset=UTF-8')
         # get the newest items
         items = self.get_items()
-        
+
         # create RDF/XML for the channel
         xml = XMLBuffer()
         xml.write(RDF_HEADER)
@@ -264,7 +264,7 @@ class NewsViewer(Content, Folder.Folder):
         # get the metadata binding to get the metadata for this viewer
         mdbinding = self.service_metadata.getMetadata(self)
         creationdate = mdbinding.get('silva-extra', 'creationtime')
-        
+
         # create RDF/XML frame
         xml.write('<channel rdf:about="%s">\n' % self.absolute_url())
         xml.write('<title>%s</title>\n' % quote_xml(self.get_title()))
@@ -308,13 +308,13 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('<description>%s</description>\n' %
                   quote_xml(item.get_intro()))
         # DC elements
-        xml.write('<dc:subject>%s</dc:subject>\n' % 
+        xml.write('<dc:subject>%s</dc:subject>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'subject')))
         xml.write('<dc:creator>%s</dc:creator>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'creator')))
         xml.write('<dc:date>%s</dc:date>\n' %
                   quote_xml(mdbinding.get('silva-extra', 'creationtime').HTML4()))
-                  
+
         # SilvaNews specific elements
         if hasattr(item, 'location'):
             xml.write('<silvanews:location>%s</silvanews:location>\n' %
