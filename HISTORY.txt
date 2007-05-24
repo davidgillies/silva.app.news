@@ -1,7 +1,8 @@
-Copyright (c) 2004-2006 Infrae. All rights reserved.
+Copyright (c) 2004-2007 Infrae. All rights reserved.
 See also LICENSE.txt
 
 SilvaNewsNetwork changes
+
 
   2.4.2
 
@@ -13,37 +14,44 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
-      - fix for broken rss feed caused by get_intro() not getting the model
+      - fix for broken rss feed caused by get_intro() not getting the
+        model
 
   2.4
 
     Features added
+    
+      - SilvaNews 2.4 is compatible with Silva 1.6+ only. For Silva
+        1.5 compatibility, the SilvaNews 2.3.x series should be used.
 
-      - added interfaces INewsViewer and IAgendaViewer. These interfaces
-        can be used by SilvaLayout/Five to provide special views for
-        news/agenda viewers.
+      - added interfaces INewsViewer and IAgendaViewer. These
+        interfaces can be used by SilvaLayout/Five to provide special
+        views for news/agenda viewers.
 
     Bugs fixed
 
-      - using 'get_intro' for RSS feeds introduced a bug in at least some
-        RSS feeds. This has been worked around.
+      - using 'get_intro' for RSS feeds introduced a bug in at least
+        some RSS feeds. This has been worked around.
 
   2.3
 
     Features added
 
-      - the rss views now use the get_intro method of the items, instead
-        of the metadata description.
+      - the rss views now use the get_intro method of the items,
+        instead of the metadata description.
 
   2.2
 
     Features
 
-      - in tab_edit you can now see in the preview of a published NewsItem an infobox showing all related info
+      - in tab_edit you can now see in the preview of a published
+        NewsItem an infobox showing all related info
 
-      - changed layout more silva-core-like and improved usability cfr issue 1581
+      - changed layout more silva-core-like and improved usability cfr
+        issue 1581
 
-      - uniformed css classes for view and viewer newsitems, un-div-ing
+      - uniformed css classes for view and viewer newsitems,
+        un-div-ing
 
       - more xhtml compliant
 
@@ -59,9 +67,11 @@ SilvaNewsNetwork changes
 
       - fixed imort/export of InlineNewsViewer cfr issue 1600
 
-      - fixed render error when a News viewer has a image and PIL is not installed cfr issue 1604
+      - fixed render error when a News viewer has a image and PIL is
+        not installed cfr issue 1604
 
-      - news articles show now publication date or display date if set cfr issue 1602
+      - news articles show now publication date or display date if set
+        cfr issue 1602
 
       - fixed broken external source cfr issue 1434
 
@@ -70,24 +80,25 @@ SilvaNewsNetwork changes
 
     Features
 
-      - Reworked public templates: removed divs and replaced by p's with Silva
-        style plus news selectors, indenting, language
+      - Reworked public templates: removed divs and replaced by p's
+        with Silva style plus news selectors, indenting, language
 
-      - Made layout of the INV (Inline News Viewer) more generic using standard
-        Silva html classes
+      - Made layout of the INV (Inline News Viewer) more generic using
+        standard Silva html classes
 
-      - Fixed space above kupu more robustly, so other extensions can control
-        the feedback space too.
+      - Fixed space above kupu more robustly, so other extensions can
+        control the feedback space too.
 
-      - RSS Aggregator public view: removed hard coded table and replaced with
-        standard Silva html rendering
+      - RSS Aggregator public view: removed hard coded table and
+        replaced with standard Silva html rendering
 
-      - Update publish controls with new layout. Still to be fixed is the
-        switch from a publish now checkbox to a publish now button
+      - Update publish controls with new layout. Still to be fixed is
+        the switch from a publish now checkbox to a publish now button
 
     Bugs fixed
 
-      - Update Kupu css with fixes for the Kupu in Firefox edit html problem
+      - Update Kupu css with fixes for the Kupu in Firefox edit html
+        problem
 
       - Fixed space above kupu
 

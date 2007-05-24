@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2006 Infrae. All rights reserved.
+# Copyright (c) 2002-2007 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision: 1.34 $
 
@@ -282,9 +282,9 @@ class NewsViewer(Content, Folder.Folder):
         xml.write('<items>\n<rdf:Seq>\n')
         for item in items:
             item = item.getObject()
-	    itemlist.append(item)
-	    url = item.object().absolute_url()
-	    xml.write('<rdf:li rdf:resource="%s" />\n' % url)
+            itemlist.append(item)
+            url = item.object().absolute_url()
+            xml.write('<rdf:li rdf:resource="%s" />\n' % url)
         xml.write('</rdf:Seq>\n</items>\n')
         xml.write('</channel>\n\n')
         # loop over the itemslist and create the RSS/RDF item elements
