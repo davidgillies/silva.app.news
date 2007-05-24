@@ -33,11 +33,11 @@
 <tal:def define="obj object/getObject">
     <h3 class="heading newsitemheading" tal:content="structure obj/get_title">article title</h3>
   <div class="newsiteminfo">
-    <tal:infopublic 
+    <tal:infopublic
         tal:define="publicationdate python: obj.get_metadata_element('silva-extra', 'publicationtime');
                     displaydate python: obj.display_datetime();"
         tal:condition="publicationdate"
-        > 
+        >
         <p class="p newsiteminfopublicationdate">
         <tal:translate i18n:translate="">Publication date: </tal:translate>
         <span class="newsitempublicationdate"
@@ -67,10 +67,9 @@
     </div>
 
     <div class="newsintro">
-      <img 
+      <img
         tal:define="classname python: test(repeat['object'].odd(), 'newsitem-thumbnail-odd', 'newsitem-thumbnail-even')"
         tal:replace="structure python: obj.get_thumbnail(classname)"
-        tal:attributes="alt string:news article thumbnail image"
       />
       <tal:insert replace="structure obj/get_intro">
         intro text
