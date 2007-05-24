@@ -8,4 +8,10 @@
   <!-- i18n -->
   <i18n:registerTranslations directory="i18n" />
 
+  <subscriber
+      for=".InlineViewer.InlineViewer
+           zope.app.container.interfaces.IObjectMovedEvent"
+      handler=".InlineViewer.inline_viewer_moved" 
+  />
+
 </configure>
