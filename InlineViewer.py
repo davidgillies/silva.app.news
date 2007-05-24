@@ -54,12 +54,6 @@ class InlineViewer(CodeSource):
         self._data_encoding = 'UTF-8'
         self._is_initialized = False
         
-    def manage_afterAdd(self, item, container):
-        if not self._is_initialized:
-            self._set_form()
-            self._set_views()
-            self._is_initialized = True
-
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
     def refresh(self):
@@ -179,3 +173,9 @@ def manage_addInlineViewer(context, id, title, REQUEST=None):
     context._setObject(id, v)
     add_and_edit(context, id, REQUEST)
     return ''
+
+def inline_viewer_moved(object, event):
+    if not object._is_initialized:
+        object._set_form()
+        object._set_views()
+        object._is_initialized = True
