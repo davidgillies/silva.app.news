@@ -21,8 +21,8 @@ withdraw_request_approval Author/Editor withdraws/rejects request for approval
 revoke_approval......Revoke approval
 revert_to_previous...Revert to previous
 manual_close.........Manual close
-</tal:toc>  
-  
+</tal:toc>
+
 <span tal:replace="nothing"> _______ notice of previous version times _______ </span>
 <metal:block define-macro="datetime_info"
   tal:define="
@@ -66,7 +66,7 @@ messages
 <td class="feedback"
   colspan="2" i18n:translate="">
 <span tal:replace="python:model.get_approval_requester()" i18n:name="author_id">author id</span>
-sent a message on 
+sent a message on
 <span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()"
   i18n:name="some_date">some date</span>
 <tal:if condition="python:model.get_approval_request_message()" i18n:name="with_comments">
@@ -95,8 +95,8 @@ message text
 <tr tal:condition="python:model.get_approval_request_message()">
 <td class="feedback"
  colspan="2" i18n:translate="">
-A previous request for approval has been rejected / withdrawn by 
-<span tal:replace="python:model.get_approval_requester()" i18n:name="requester" /> on 
+A previous request for approval has been rejected / withdrawn by
+<span tal:replace="python:model.get_approval_requester()" i18n:name="requester" /> on
 <span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()" i18n:name="some_date">some date</span>.
 <tal:comment condition="nothing"> actually the last message may not have been written
   by the person withdrawing the request; if this person for example made an empty reject,
@@ -120,7 +120,7 @@ message text
 
 <tr class="top-controls">
 <td colspan="2">
-  <h3 i18n:translate="">request approval 
+  <h3 i18n:translate="">request approval
       <span tal:condition="python:may_change_content and unapproved and published" i18n:name="for_new_version">
           <tal:block i18n:translate="">for new version</tal:block>
       </span>
@@ -140,9 +140,9 @@ notes
 <tr class="odd"
   tal:define="field view/tab_status_form_author/message">
 <td class="align-right">
-  <tal:block 
+  <tal:block
     replace="structure python: field.render(REQUEST=request)"
-    attributes="id field/id" 
+    attributes="id field/id"
   />
 </td>
 <td i18n:translate="">
@@ -159,7 +159,7 @@ This message will remain visible in the status screen for other authors and edit
 <tr class="controls">
 <td class="align-right"
   colspan="2">
-<input 
+<input
   type="submit"
   value="request approval"
   class="button"
@@ -202,7 +202,7 @@ notes
 <tr class="inter-controls">
 <td class="align-right"
   colspan="2">
-<input type="submit" 
+<input type="submit"
   value="update timings"
   class="button"
   title="access key: alt-u"
@@ -249,7 +249,7 @@ notes
 </th>
 </tr>
 
-<metal:def define-macro="date_controls"> 
+<metal:def define-macro="date_controls">
 <tr class="even"
   tal:define="field view/tab_status_form_editor/publish_datetime">
 <td class="align-right" style="white-space: nowrap;">
@@ -261,8 +261,7 @@ notes
   i18n:translate="">
   content publish time
 </label>
-<input tal:replace="structure python: field.render(REQUEST=request)"
- tal:attributes="id field/id" />
+<input tal:replace="structure python: field.render(REQUEST=request)" />
 </td>
 <td i18n:translate="">
 day / month / year &nbsp;23:59
@@ -280,9 +279,7 @@ day / month / year &nbsp;23:59
   i18n:translate="">
   expiration time
 </label>
-<input tal:replace="structure python: field.render(REQUEST=request)"
-  tal:attributes="id field/id"
-/>
+<input tal:replace="structure python: field.render(REQUEST=request)" />
 </td>
 <td tal:content="structure field/description">
   description
@@ -293,7 +290,7 @@ day / month / year &nbsp;23:59
 <tr class="even"
  tal:define="field view/tab_status_form_news/display_datetime">
 <td class="align-right">
-<label 
+<label
   title="access key: alt-h"
   accesskey="h"
   tal:attributes="for field/id"
@@ -302,8 +299,7 @@ day / month / year &nbsp;23:59
   i18n:translate="">
   field title
 </label>
-<input tal:replace="structure python: field.render(REQUEST=request)"
- tal:attributes="id field/id" />
+<input tal:replace="structure python: field.render(REQUEST=request)" />
 <td tal:content="structure field/description">
   description
 </td>
@@ -331,7 +327,7 @@ day / month / year &nbsp;23:59
   accesskey="p"
   i18n:attributes="value;title"
 />
-</td> 
+</td>
 </tr>
 </table>
 </form>
@@ -394,23 +390,23 @@ The message may be viewed by local users.
 </td>
 <td class="align-right"
   width="40%">
-<input 
-  type="submit" 
-  class="button"  
-  title="access key: alt-j" 
+<input
+  type="submit"
+  class="button"
+  title="access key: alt-j"
   accesskey="j"
-  tal:condition="may_approve_content" 
-  value="reject approval request" 
-  i18n:attributes="title;value" 
+  tal:condition="may_approve_content"
+  value="reject approval request"
+  i18n:attributes="title;value"
 />
-<input 
-  type="submit" 
-  class="button"  
-  title="access key: alt-r" 
+<input
+  type="submit"
+  class="button"
+  title="access key: alt-r"
   accesskey="r"
-  tal:condition="not: may_approve_content" 
+  tal:condition="not: may_approve_content"
   value="withdraw approval request"
-  i18n:attributes="title;value" 
+  i18n:attributes="title;value"
 />
 </td>
 </tr>
@@ -446,12 +442,12 @@ If further editing is required, first revoke the approval.
 <tfoot>
 <tr class="controls">
 <td class="align-right">
-<input 
-  type="submit" 
-  value="revoke approval" 
-  class="button" 
+<input
+  type="submit"
+  value="revoke approval"
+  class="button"
   title="access key: alt-v"
-  accesskey="v" 
+  accesskey="v"
   i18n:attributes="value;title" />
 </td>
 </tr>
@@ -507,7 +503,7 @@ made to the current version.
 <thead>
 <tr class="top-controls">
 <td>
-  <h3 i18n:translate="">manual close</h3> 
+  <h3 i18n:translate="">manual close</h3>
 </td>
 </tr>
 </thead>
@@ -527,7 +523,7 @@ If necessary, the published version of this content can be manually closed (take
   type="submit"
   value="close published version"
   title="access key: alt-c"
-  accesskey="c" 
+  accesskey="c"
   i18n:attributes="value;title"
 />
 </td>
