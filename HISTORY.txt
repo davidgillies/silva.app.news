@@ -5,6 +5,10 @@ SilvaNewsNetwork changes
 
   2.5
 
+    Features added
+
+      - Made SilvaNews work with Silva 2.0/Zope 2.10.
+
     Bugs fixed
 
       - removed tal:attribute where tal:replace was called.
