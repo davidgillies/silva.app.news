@@ -3,12 +3,13 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.5
 
-  2.4.2
+    Bugs fixed
 
-    Other
+      - removed tal:attribute where tal:replace was called.
 
-      - remove some unused imports
+      - added 'en' to i18n to make the fallback work.
 
   2.4.1
 
