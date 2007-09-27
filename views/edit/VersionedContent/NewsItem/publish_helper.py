@@ -36,8 +36,9 @@ except FormValidationError, e:
 
 unapproved = getattr(model, model.get_unapproved_version())
 
+now = DateTime()
 if publish_now:
-    pdt = DateTime()
+    pdt = now
 else:
     pdt = result['publish_datetime']
     
@@ -45,6 +46,12 @@ else:
 ddt = result_news_form['display_datetime']
 if ddt is None:
     ddt = pdt
+elif pdt > now and unapproved.display_datetime() == ddt:
+    # bug 101729: if ddt is set and unchanged,
+    #             and publication time is in the future,
+    #             set ddt to the future publication time.
+    ddt = pdt
+
 unapproved.set_display_datetime(ddt)
     
 model.set_unapproved_version_publication_datetime(pdt)

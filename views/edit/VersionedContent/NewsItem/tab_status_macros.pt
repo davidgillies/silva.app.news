@@ -299,7 +299,7 @@ day / month / year &nbsp;23:59
   i18n:translate="">
   field title
 </label>
-<input tal:replace="structure python: field.render(REQUEST=request)" />
+<input tal:replace="structure python: field.render()" />
 <td tal:content="structure field/description">
   description
 </td>

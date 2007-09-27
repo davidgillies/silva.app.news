@@ -3,6 +3,16 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.5.1
+
+   Bugs fixed
+
+      - fixed 110570, properties tool not appearing in Kupu
+      - fixed 101577, widgets missing from service_news_sub_viewer
+      - fixed 101299, NoViewError exception when comparing newsitem versions
+      - fixed 101731, NewsItems have "make local" settings tab option
+      - fixed 101729, Display DT isn't updated when NewsItems are
+                      in the future
   2.5
 
     Features added

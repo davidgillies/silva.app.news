@@ -186,8 +186,8 @@ def registerNewsSubViewer(root):
 
     wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_view'))
 
-    for name in ['p', 'list', 'heading', 'pre', 'source', 'image',
-                 'nlist', 'table', 'dlist', 'cite']:
+    for name in ['p', 'list', 'heading', 'pre', 'toc', 'image',
+                 'nlist', 'table', 'dlist', 'code', 'cite']:
         wr.addWidget(
             name,
             ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
