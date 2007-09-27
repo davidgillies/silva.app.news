@@ -13,6 +13,7 @@ SilvaNewsNetwork changes
       - fixed 101731, NewsItems have "make local" settings tab option
       - fixed 101729, Display DT isn't updated when NewsItems are
                       in the future
+      - fixed 101616, inline news viewers don't correct viewer listing
   2.5
 
     Features added

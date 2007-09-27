@@ -17,6 +17,7 @@ from Products.SilvaExternalSources.CodeSource import CodeSource
 
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
+from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
 from OFS.Image import Image
 
@@ -126,14 +127,23 @@ class InlineViewer(CodeSource):
         
             finds all viewers on this level
         """
-        # first get self in the right context
-        phpath = self.getPhysicalPath()
-        parent = self.restrictedTraverse(phpath[:-1])
-        ret = [(o.get_title(), o.id) for o in 
-                    parent.objectValues(['Silva News Viewer', 
-                                            'Silva Agenda Viewer', 
-                                            'Silva RSS Aggregator'])]
-        return ret
+        adapter = getVirtualHostingAdapter(self)
+        root = adapter.getVirtualRoot()
+        if root is None:
+            root = self.get_root()
+
+        #this should get all viewers at this level or higher
+        # (to the vhost root), not at the code sources level
+        objects = []
+        container = self.REQUEST.model.get_container()
+        while container != root.aq_parent:
+            objs = [(o.get_title(), o.id) for o in 
+                     container.objectValues(['Silva News Viewer', 
+                                             'Silva Agenda Viewer', 
+                                             'Silva RSS Aggregator'])]
+            objects.extend(objs)
+            container = container.aq_parent
+        return objects
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_items')
