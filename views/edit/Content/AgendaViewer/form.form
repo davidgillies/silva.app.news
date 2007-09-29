@@ -46,7 +46,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>number</title>
+          <title>archive number</title>
           <description>Number of archive items to show per page.</description>
           <end></end>
           <extra></extra>
