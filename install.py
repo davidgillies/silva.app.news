@@ -47,6 +47,11 @@ def install(root):
 def uninstall(root):
     unregisterViews(root.service_view_registry)
     root.service_views.manage_delObjects(['SilvaNews'])
+    #delete the service_news_sub_editor/viewer widgets
+    root.manage_delObjects(['service_news_sub_viewer'])
+    #the editor isn't installed anymore, but remove it if it is installed
+    if hasattr(root,'service_news_sub_editor'):
+        root.manage_delObjects(['service_news_sub_editor'])
     # The following line is commented out, so the service will remain installed
     # as an uninstall is performed. This will cause a Refresh action to leave
     # the service alone

@@ -14,6 +14,7 @@ SilvaNewsNetwork changes
       - fixed 101729, Display DT isn't updated when NewsItems are
                       in the future
       - fixed 101616, inline news viewers don't correct viewer listing
+      - fixed 128591, status tab of News Items broken for authors
   2.5
 
     Features added
