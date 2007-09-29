@@ -15,6 +15,7 @@ SilvaNewsNetwork changes
                       in the future
       - fixed 101616, inline news viewers don't correct viewer listing
       - fixed 128591, status tab of News Items broken for authors
+      - fixed 115608, news viewer property titles unclear
   2.5
 
     Features added

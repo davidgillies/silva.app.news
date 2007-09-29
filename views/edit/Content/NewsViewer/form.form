@@ -45,7 +45,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>day range</title>
+          <title>days / items number</title>
           <description>Number of news items to show per page.</description>
           <end></end>
           <extra></extra>
@@ -65,7 +65,7 @@
           <required type="int">1</required>
           <css_class></css_class>
           <default></default>
-          <title>number</title>
+          <title>archive number</title>
           <description>Number of archive items to show per page.</description>
           <end></end>
           <extra></extra>
