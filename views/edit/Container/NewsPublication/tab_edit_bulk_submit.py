@@ -37,8 +37,8 @@ for path in session['paths']:
                             linklist.append([entry, entry])
                     value = linklist
                 getattr(version, 'set_%s' % key)(value)
-                m = _('${path} is updated', 'silva_news')
-                m.set_mapping('path':path[-1])
+                m = _('${path} is updated', 'silva_news',
+                      mapping={'path':path[-1]})
                 messages[path] = unicode(m)
 ##                 messages[path] = '%s is updated' % path[-1]
 
