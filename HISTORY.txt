@@ -3,6 +3,11 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  since 2.5.1
+
+     - fixed bug in get_intro which replaced model with the content version,
+             breaking things (like publishing for future)
+
   2.5.1
 
    Bugs fixed
