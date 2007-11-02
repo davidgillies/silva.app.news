@@ -55,6 +55,12 @@ class InlineViewer(CodeSource):
         self._data_encoding = 'UTF-8'
         self._is_initialized = False
         
+    def manage_afterAdd(self, item, container):
+        if not self._is_initialized:
+            self._set_form()
+            self._set_views()
+            self._is_initialized = True
+
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
     def refresh(self):
@@ -124,7 +130,6 @@ class InlineViewer(CodeSource):
                                 'get_viewers')
     def get_viewers(self):
         """returns a list of available viewers
-        
             finds all viewers on this level
         """
         adapter = getVirtualHostingAdapter(self)
@@ -132,15 +137,22 @@ class InlineViewer(CodeSource):
         if root is None:
             root = self.get_root()
 
+        #determine which silva types are IViewers
+        viewer_metatypes = []
+        mts = self.get_root().filtered_meta_types()
+        for mt in mts:
+            if (mt.has_key('instance') and
+                IViewer.implementedBy(mt['instance'])):
+                viewer_metatypes.append(mt['name'])
+                
         #this should get all viewers at this level or higher
         # (to the vhost root), not at the code sources level
         objects = []
         container = self.REQUEST.model.get_container()
+        invcontainer = self.get_container()
         while container != root.aq_parent:
             objs = [(o.get_title(), o.id) for o in 
-                     container.objectValues(['Silva News Viewer', 
-                                             'Silva Agenda Viewer', 
-                                             'Silva RSS Aggregator'])]
+             container.objectValues(viewer_metatypes)]
             objects.extend(objs)
             container = container.aq_parent
         return objects

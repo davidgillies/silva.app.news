@@ -5,12 +5,18 @@
 """Install and Uninstall for Silva News
 """
 
+from zope import interface
+
 from Products.Silva.fssite import manage_addDirectoryView
 from Products.Silva.install import add_fss_directory_view, add_helper, \
                                         py_add_helper
 
 from Products.Silva.i18n import translate as _
 
+try:
+    from Products.Silva.interfaces import IInvisibleService
+except ImportError:
+    IInvisibleService = None
 
 def install(root):
     """The view infrastructure for Silva.
@@ -52,6 +58,7 @@ def uninstall(root):
     #the editor isn't installed anymore, but remove it if it is installed
     if hasattr(root,'service_news_sub_editor'):
         root.manage_delObjects(['service_news_sub_editor'])
+    unconfigureXMLWidgets(root)
     # The following line is commented out, so the service will remain installed
     # as an uninstall is performed. This will cause a Refresh action to leave
     # the service alone
@@ -80,6 +87,10 @@ def registerViews(reg):
                  'Silva Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
     reg.register('edit',
                  'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
+    reg.register('edit',
+                 'Silva News Category Filter', ['edit', 'Asset', 'CategoryFilter'])
+    reg.register('edit',
+                 'Silva News Category Filter', ['edit', 'Asset', 'CategoryFilter'])
 
     # public
     reg.register('public',
@@ -111,6 +122,8 @@ def registerViews(reg):
     reg.register('add', 'Silva Agenda Viewer', ['add', 'AgendaViewer'])
     reg.register('add', 'Silva Article', ['add', 'NewsItem', 'PlainArticle'])
     reg.register('add', 'Silva Agenda Item', ['add', 'NewsItem', 'PlainAgendaItem'])
+    reg.register('add', 'Silva News Category Filter', ['add', 'CategoryFilter'])
+    reg.register('add', 'Silva News Category Filter', ['add', 'CategoryFilter'])
 
 def unregisterViews(reg):
     """Unregister core views on registry.
@@ -124,6 +137,8 @@ def unregisterViews(reg):
     reg.unregister('edit', 'Silva Agenda Viewer')
     reg.unregister('edit', 'Silva Article')
     reg.unregister('edit', 'Silva Agenda Item')
+    reg.unregister('edit', 'Silva News Category Filter')
+    reg.unregister('edit', 'Silva News Category Filter')
     # public
     reg.unregister('public', 'Silva Agenda Filter')
     reg.unregister('public', 'Silva News Filter')
@@ -142,48 +157,31 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva Agenda Viewer')
     reg.unregister('add', 'Silva Article')
     reg.unregister('add', 'Silva Agenda Item')
+    reg.unregister('add', 'Silva News Category Filter')
+    reg.unregister('add', 'Silva News Category Filter')
 
 def configureXMLWidgets(root):
     """Configure XMLWidgets registries, editor, etc'
     """
     # create the services for XMLWidgets
-    for name in ['service_news_sub_editor', 'service_news_sub_viewer']:
+    for name in ['service_news_sub_viewer']:
         if not hasattr(root, name):
             root.manage_addProduct['XMLWidgets'].manage_addWidgetRegistry(name)
 
+    if IInvisibleService is not None:
+            interface.directlyProvides(
+                root['service_news_sub_viewer'],
+                IInvisibleService,
+                *interface.directlyProvidedBy(root['service_news_sub_viewer']))
+
     # now register all widgets
-    registerNewsSubEditor(root)
     registerNewsSubViewer(root)
 
-def registerNewsSubEditor(root):
-    wr = root.service_news_sub_editor
-    wr.clearWidgets()
-
-    wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_normal'))
-
-    for nodeName in ['p', 'heading', 'list', 'pre', 'source'
-                     'image', 'table', 'nlist', 'dlist', 'cite']:
-        wr.addWidget(
-            nodeName,
-            ('service_widgets', 'element', 'doc_elements', nodeName,
-             'mode_normal'))
-
-    wr.setDisplayName('p', unicode(_('paragraph')))
-    wr.setDisplayName('heading', unicode(_('heading')))
-    wr.setDisplayName('list', unicode(_('list')))
-    wr.setDisplayName('pre', unicode(_('preformatted')))
-    wr.setDisplayName('source', unicode(_('external source')))
-    wr.setDisplayName('toc', unicode(_('table of contents')))
-    wr.setDisplayName('image', unicode(_('image')))
-    wr.setDisplayName('table', unicode(_('table')))
-    wr.setDisplayName('nlist', unicode(_('complex list')))
-    wr.setDisplayName('dlist', unicode(_('definition list')))
-    wr.setDisplayName('cite', unicode(_('citation')))
-
-    wr.setAllowed(
-        'doc',
-        ['p', 'heading', 'list', 'pre', 'source', 'nlist', 'table', 'image', 
-            'dlist', 'cite'])
+def unconfigureXMLWidgets(root):
+    if hasattr(root.aq_explicit, 'service_news_sub_viewer'):
+        root.manage_delObjects(['service_news_sub_viewer'])
+    if hasattr(root.aq_explicit, 'service_news_sub_editor'):
+        root.manage_delObjects(['service_news_sub_editor'])
 
 def registerNewsSubViewer(root):
     wr = root.service_news_sub_viewer
@@ -200,8 +198,14 @@ def registerNewsSubViewer(root):
 def setup_catalog(silva_root):
     """Sets the ZCatalog up"""
     catalog = silva_root.service_catalog
-    
-    columns = ['object_path',]
+
+    #object_path is the Content Object path (parent)
+    #of Version objects (e.g. PlainNewsArticleVersion).
+    columns = ['object_path','end_datetime','start_datetime','location','get_title', 'display_datetime','get_intro']
+    #will need to add: external_link, link_method
+    #                  subjects, target_audiences, teaser
+    # , formatEventSummary (need to determine how to integrate "my"
+    #     event intro and get_intro
 
     indexes = [
         ('idx_is_private', 'FieldIndex'),
@@ -247,6 +251,7 @@ def setupMetadata(root):
             {'type': 'Silva Agenda Viewer', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva Article Version', 'chain': 'silva-content, silva-extra'},
             {'type': 'Silva Agenda Item Version', 'chain': 'silva-content, silva-extra'},
+            {'type': 'Silva News Category Filter', 'chain': 'silva-content, silva-extra'},
         )
         
     mapping.editMappings(default, tm)
@@ -265,6 +270,7 @@ def configureSecurity(root):
         'Add Silva News Publications',
         'Add Silva News Viewers',
         'Add Silva RSS Aggregators',
+        'Add Silva News Category Filters',
         ]
 
     for perm in add_permissions:
@@ -280,7 +286,8 @@ def configureAddables(root):
                         'Silva News Publication',
                         'Silva News Viewer',
                         'Silva RSS Aggregator',
-                        'Silva Agenda Viewer'
+                        'Silva Agenda Viewer',
+                        'Silva News Category Filter',
                         ]
     current_addables = root.get_silva_addables_allowed_in_publication()
     new_addables = []

@@ -13,7 +13,7 @@ from DateTime import DateTime
 import OFS
 
 # Silva interfaces
-from interfaces import INewsItem
+from interfaces import INewsItem,IFilter,INewsFilter
 from Products.Silva.interfaces import IAsset
 
 # Silva
@@ -24,6 +24,11 @@ from Products.Silva.helpers import add_and_edit
 class MetaTypeException(Exception):
     pass
 
+def brainsorter(a, b):
+    atime = a.start_datetime
+    btime = b.start_datetime
+    return cmp(atime, btime)
+
 class Filter(Asset):
     """
     Filter object, a small object that shows a couple of different
@@ -32,8 +37,8 @@ class Filter(Asset):
     published NewsItem-objects for the end-users.
     """
     security = ClassSecurityInfo()
-
-    implements(IAsset)
+    
+    implements(IFilter)
 
     _allowed_source_types = ['Silva News Publication']
 
@@ -103,6 +108,21 @@ class Filter(Asset):
         """
         return self._target_audiences
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'filtered_subject_form_tree')
+    def filtered_subject_form_tree(self):
+        audject = self.superValues('Silva News Category Filter')
+        if audject:
+            audject = audject[0].subjects()
+        return self.service_news.subject_form_tree(audject)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'filtered_ta_form_tree')
+    def filtered_ta_form_tree(self):
+        audject = self.superValues('Silva News Category Filter')
+        if audject:
+            audject = audject[0].target_audiences()
+        return self.service_news.target_audience_form_tree(audject)
 
     # MANIPULATORS
 
@@ -220,7 +240,7 @@ class Filter(Asset):
             s = subjects[i]
             if  s in service_subjects:
                 new_subs.append(s)
-
+        
         new_tas = []
         for i in range(len(target_audiences)):
             ta = target_audiences[i]
@@ -265,9 +285,31 @@ class Filter(Asset):
 
     # HELPERS
 
+    def _prepare_query ( self, meta_types=None ):
+        """private method preparing the common fields for a catalog query.
+
+        Return: dict holding the query parameters
+        """
+        self.verify_sources()
+        self.verify_excluded_items()
+        query = {}
+        query['path'] = self._sources
+        query['version_status'] = 'public'
+        query['idx_subjects'] = {'query': self._subjects,
+                                'operator': 'or'}
+        query['idx_target_audiences'] = {'query': self._target_audiences,
+                                        'operator': 'or'}
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+        query['meta_type'] = meta_types
+        # Workaround for ProxyIndex bug
+        query['sort_on'] = 'idx_display_datetime'
+        query['sort_order'] = 'descending'
+        return query
+
     def _query(self, **kw):
         return self.service_catalog(kw)
-
+    
     def _check_meta_types(self, meta_types):
         for type in meta_types:
             if type not in self._allowed_news_meta_types():
@@ -283,5 +325,176 @@ class Filter(Asset):
             addable_dict.has_key('instance') and
             INewsItem.isImplementedByInstancesOf(
             addable_dict['instance']))
+
+    # refactorized functions
+    # these functions where used/copied in both AgendaFilter and NewsFilter,
+    # so place here with clear notes on usage
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_next_items')
+    def get_next_items(self, numdays, meta_types=None):
+        """ Note: ONLY called by AgendaViewers
+        Returns the next <number> AGENDAitems,
+        should return items that conform to the
+        AgendaItem-interface (IAgendaItemVersion), although it will in
+        any way because it requres start_datetime to be set.
+        NewsViewers use only get_last_items.
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+
+        result = []
+
+        #if this is a new filter that doesn't show agenda items
+        if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
+            return result
+
+        lastnight = (DateTime()-1).latestTime()
+        #we want the range from 12:00 a.m. to 11:59 p.m.
+        if numdays == 1: #get only one day
+            enddate = (lastnight+1).latestTime()
+        else:
+            enddate = (lastnight + 1 + (numdays-1)).latestTime()
+
+        query = self._prepare_query(meta_types)
+        query['sort_order'] = 'ascending'
+
+        query['sort_on'] = 'idx_end_datetime'
+        query['idx_end_datetime'] = {'query': [lastnight, enddate],
+                                     'range': 'minmax' }
+        result_enddt = self._query(**query)
+
+        for item in result_enddt:
+            if item.object_path not in self._excluded_items:
+                result.append(item)
+
+        del query['idx_end_datetime']
+        query['idx_start_datetime'] = {'query': [lastnight, enddate],
+                                       'range': 'minmax'}
+        query['sort_on'] = 'idx_start_datetime'
+        result_startdt = self._query(**query)
+
+        # copy only those objects from result_startdt for which an end 
+        # datetime is not set (since the ones with an end date/time are 
+        # already retrieved above)
+        for item in result_startdt:
+            #XXX this needs to be updated once end_datetime is in the catalog
+            #    there will be no need to get the object here
+            edt = item.end_datetime
+            if (item.object_path not in self._excluded_items and
+                (not edt or edt > enddate)):
+                result.append(item)
+
+        #special case where event startime < today, and endtime is > num_days.
+        query['idx_start_datetime'] = { 'query':lastnight,
+                                        'range':'max'}
+        query['idx_end_datetime'] = { 'query': enddate,
+                                      'range': 'min'}
+        result_middle = self._query(**query)
+        for item in result_middle:
+            if not item.object_path in self._excluded_items:
+                result.append(item)
+
+        result = [r for r in result]
+        result.sort(brainsorter)
+
+        return result
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_last_items')
+    def get_last_items(self, number, number_is_days=0, meta_types=None):
+        """Returns the last (number) published items
+           This is _only_ used by News Viewers.
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+
+        query = self._prepare_query(meta_types)
+
+        if number_is_days:
+            # the number specified must be used to restrict the on number of days instead of the number of items
+            now = DateTime()
+            last_night = now.earliestTime()
+            query['idx_display_datetime'] = {'query': [last_night - number, now],
+                                             'range': 'minmax'}
+        result = self._query(**query)
+        filtered_result = [r for r in result if not r.object_path in self._excluded_items]
+
+        if not number_is_days:
+            output = filtered_result[:number]
+        else:
+            output = filtered_result
+        return output
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_agenda_items_by_date')
+    def get_agenda_items_by_date(self, month, year, meta_types=None):
+        """
+        Returns non-excluded published AGENDA-items for a particular
+        month. This method is for exclusive use by AgendaViewers only,
+        NewsViewers should use get_items_by_date instead (which
+        filters on idx_display_datetime instead of start_datetime and
+        returns all objects instead of only IAgendaItem-
+        implementations)
+        -- This was in both News and Agenda Filters, with slightly
+        different code, so refactored into Filter
+        """
+        self.verify_sources()
+        if not self._sources:
+            return []
+        
+        result = []
+
+        #if this is a new filter that doesn't show agenda items
+        if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
+            return result
+
+        month = int(month)
+        year = int(year)
+        startdate = DateTime(year, month, 1).earliestTime()
+        endmonth = month + 1
+        if month == 12:
+            endmonth = 1
+            year = year + 1
+        enddate = DateTime(year, endmonth, 1).earliestTime()
+
+        result = []
+        result_objects = {}
+
+        # first query for objects that do have an end datetime defined
+        query = self._prepare_query(meta_types)
+        query['idx_end_datetime'] = {'query':[startdate, enddate],
+                                     'range':'minmax'}
+        query['sort_on'] = 'idx_end_datetime'
+        query['sort_order'] = 'ascending'
+        result_enddt = self._query(**query)
+
+        for item in result_enddt:
+            if item.object_path not in self._excluded_items:
+                result.append(item)
+                result_objects[item.object_path] = 1
+        
+        # now those that don't have end_datetime
+        del query['idx_end_datetime']
+        query['idx_start_datetime'] = {'query':[startdate, enddate],
+                                       'range':'minmax'}
+        query['sort_on'] = 'idx_start_datetime'
+        result_startdt = self._query(**query)
+
+        # remove the items with an end_dt from the result_startdt
+        # only add items without an end_dt or with an end_dt in a different month.
+        for item in result_startdt:
+            edt = item.end_datetime
+            if (item.object_path not in self._excluded_items and not result_objects.get(item.object_path,None)):
+                if not edt or edt.month()!= month or edt.year() != year:
+                    result_objects[item.object_path] = 1
+                    result.append(item)
+
+        result = [r for r in result]
+        result.sort(brainsorter)
+
+        return result
 
 InitializeClass(Filter)

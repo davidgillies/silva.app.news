@@ -14,51 +14,29 @@
 >
 
   <div class="margins">
-    <h2 class="heading" i18n:translate="">Search Agenda</h2>
+    <h2 class="heading" i18n:translate="">Search <tal:block i18n:name="title" tal:content="model/get_title" /></h2>
   </div>
 
   <tal:comment condition="nothing">Begin items</tal:comment>
 
   <tal:block define="global results python:model.search_items(
-                                            view.REQUEST['query']);" 
+                                            view.REQUEST['query']);"
           on-error="structure string:<span class='error'>Error searching: ${error/value}'</span>" />
 
   <tal:block define="global results results | python:[]" />
 
   <div class="searchbox">
     <form tal:attributes="action model/absolute_url" method="POST">
-      <input type="text" name="query" />
+      <input type="text" name="query" tal:attributes="value request/query|nothing"/>
       <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
               accesskey="s" i18n:attributes="title;value" />
     </form>
   </div>
 
-  <div class="item" tal:repeat="object results">
-    <tal:block define="obj object/getObject">
-      <h2 class="heading" tal:content="structure obj/get_title" />
-      <div class="intro" tal:content="structure obj/get_intro">
-      </div>
-      <div class="datetime">
-        <div>
-          <span i18n:translate="">Startdate/time:</span>
-          <span tal:replace="
-                  structure python: formatdate(obj.start_datetime())">
-            DateTime
-          </span>
-        </div>
-        <div tal:condition="obj/end_datetime | nothing">
-          <span i18n:translate="">Enddate/time:</span>
-          <span tal:replace="
-                  structure python: formatdate(obj.end_datetime())">
-            DateTime
-          </span>
-        </div>
-      </div>
-      <p class="articlelink">
-        <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
-          view article</a>
-      </p>
-    </tal:block>
+  <div class="item" tal:repeat="r results">
+   <tal:block define="obj r/getObject">
+    <metal:macro use-macro="here/agendaitem_macro/macros/agendaitem" />
+   </tal:block>
   </div>
 
   <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">
@@ -70,7 +48,7 @@
       <a href="#" tal:attributes="href string:?view=view_agenda" i18n:translate="">view agenda</a>
     </div>
     <div class="viewlink">
-      <a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">view archive</a>
+      <a href="#" tal:attributes="href string:?view=view_archive" i18n:translate="">view past and future articles</a>
     </div>
   </div>
 

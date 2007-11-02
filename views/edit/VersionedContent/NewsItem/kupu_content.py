@@ -53,11 +53,18 @@ xhtml = version.content.editorHTML()
 
 # gather metadata
 service = context.service_news
+
+audject = model.superValues('Silva News Category Filter')
+ta_filterby = []
+subject_filterby = []
+if audject:
+    ta_filterby = audject[0].target_audiences()
+    subject_filterby = audject[0].subjects()
 all_subjects = [(id, '%s%s' % (depth * u'\xa0\xa0', title)) for
-                    (id, title, depth) in service.subject_tree()]
+                    (id, title, depth) in service.subject_tree(subject_filterby)]
 all_target_audiences = [(id, '%s%s' % (depth * u'\xa0\xa0', title)) for
                             (id, title, depth) in 
-                                service.target_audience_tree()]
+                                service.target_audience_tree(ta_filterby)]
 
 item_subjects = version.subjects()
 item_target_audiences = version.target_audiences()

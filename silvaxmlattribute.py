@@ -30,8 +30,8 @@ class SilvaXMLAttribute(SimpleItem):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_content')
     def get_content(self):
+        """need a way to retrieve xml content from untrusted code"""
         return self._content
-
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation, 
                                 'toXML')

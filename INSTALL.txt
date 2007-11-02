@@ -1,19 +1,20 @@
 $Revision: 1.19 $
 
-Copyright (c) 2002-2007 Infrae. All rights reserved.
+Copyright (c) 2002-2006 Infrae. All rights reserved.
 See also LICENSE.txt
 
 Meta::
 
-  Valid for:   Silva News Network 2.1
-  Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein
-  Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com
+  Valid for:   Silva News Network 2.6
+  Authors:     Guido Wesdorp, Martijn Faassen, Guido Goldstein, Andy Altepeter
+  Emails:      guido@infrae.com, faassen@infrae.com, gst@infrae.com,
+               aaltepet@altepeter.net
   CVS:         $Revision: 1.19 $
 
 Installing Silva News Network
 
-  This package requires Silva 1.6+, SilvaExternalSources 1.1+ and 
-  z3locales 0.1+ (all of which can be found on http://www.infrae.com).
+  This package requires Silva 2.0, SilvaExternalSources 1.4 and 
+  z3locales 0.1 (all of which can be found on http://www.infrae.com).
 
   Unpack the SilvaNews package into the Products directory of your
   Zope installation and restart Zope. Go to the Silva root and click

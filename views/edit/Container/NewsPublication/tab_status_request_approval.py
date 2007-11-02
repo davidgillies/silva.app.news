@@ -86,20 +86,20 @@ for ref in refs:
         obj.set_unapproved_version_expiration_datetime(expiration_datetime)
 
     message = _('Request for approval via a bulk request in the publish '
-                'screen of /${url} (automatically generated message)',
-                mapping={'url': model.absolute_url(1)})
+                'screen of /${url} (automatically generated message)') 
+    message.set_mapping({'url': model.absolute_url(1)})
     obj.request_version_approval(message)    
     approved_ids.append(get_name(obj))
 
 if approved_ids:
     request.set('redisplay_timing_form', 0)
-    m = _('Request approval for: ${ids}',
-          mapping={'ids': view.quotify_list(approved_ids)})
+    m = _('Request approval for: ${ids}') 
+    m.set_mapping({'ids': view.quotify_list(approved_ids)})
     msg.append(unicode(m))
 
 if not_approved:
-    m = _('<span class="error">No request for approval on: ${ids}</span>',
-          mapping={'ids': view.quotify_list_ext(not_approved)})
+    m = _('<span class="error">No request for approval on: ${ids}</span>')
+    m.set_mapping({'ids': view.quotify_list_ext(not_approved)})
     msg.append(unicode(m))
 
 if hasattr(context, 'service_messages'):

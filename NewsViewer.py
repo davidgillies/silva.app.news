@@ -4,75 +4,19 @@
 
 from zope.interface import implements
 
+# Zope
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+#XXX Why do newsViewers inherit/extend OFS.Folder.Folder???
 from OFS import Folder
 
+# Silva/News interfaces
 from Products.Silva.interfaces import IContent
-from Products.Silva import SilvaPermissions
-from Products.Silva.Content import Content
-from Products.SilvaDocument.Document import Document
-from Products.Silva.helpers import add_and_edit
-from Products.Silva import mangle
-
 from Products.SilvaNews.interfaces import INewsViewer
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
-
-icon = 'www/news_viewer.png'
-addable_priority = 3.1
-
-class XMLBuffer:
-    """Small file-like object for XML output.
-
-    Implicitly converts unicode to UTF-8 and replaces characters to
-    entities when required
-    """
-
-    def __init__(self):
-        self._buffer = []
-
-    def write(self, data):
-        if type(data) != type(u''):
-            data = unicode(str(data))
-        self._buffer.append(data)
-
-    def read(self):
-        """The semantics are different from the plain file interface's read!
-
-        This will return the full buffer always, and won't move the
-        pointer
-        """
-        ret = ''.join(self._buffer)
-        ret = self._convert(ret)
-        return ret
-
-    def _convert(self, data):
-        """Convert data to UTF-8.
-        """
-        data = data.encode('UTF-8')
-        return data
-
-def quote_xml ( data ):
-    """Quote string for XML usage.
-    """
-    if not data:
-        return data
-    data = data.replace('&', '&amp;')
-    data = data.replace('"', '&quot;')
-    data = data.replace('<', '&lt;')
-    data = data.replace('>', '&gt;')
-    return data
-
-
-RDF_HEADER = ('<?xml version="1.0" encoding="UTF-8" ?>\n'
-              '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" '
-              'xmlns:silvanews="http://infrae.com/namespaces/silvanews" '
-              'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://purl.org/rss/1.0/">\n')
+# Silva/News
+from Products.Silva import SilvaPermissions
+from Products.Silva.Content import Content
 
 class NewsViewer(Content, Folder.Folder):
     """Used to show news items on a Silva site.
@@ -87,7 +31,7 @@ class NewsViewer(Content, Folder.Folder):
 
     security = ClassSecurityInfo()
 
-    implements(IContent, INewsViewer)
+    implements(INewsViewer)
 
     def __init__(self, id):
         NewsViewer.inheritedAttribute('__init__')(self, id)
@@ -128,7 +72,7 @@ class NewsViewer(Content, Folder.Folder):
     def can_set_title(self):
         """return 1 so the title can be set"""
         return 1
-
+        
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_is_days')
     def number_is_days(self):
@@ -188,22 +132,44 @@ class NewsViewer(Content, Folder.Folder):
                 self._filters.remove(newsfilter)
                 self._p_changed = 1
 
+    def _get_items_helper(self, func, sortattr=None):
+        #1) helper function for get_items...this was the same
+        #code in NV and AV.  Now this helper contains that code
+        #and calls func(obj) for each filter to actually
+        #get the items.  Func can be a simple lamba: function
+        #2) sortattr is an attribute of the CatalogBraings objects
+        #   i.e. a result item.  It's a catalog metadata column
+        #   use it for fast sort / merging of multiple filters
+        #   e.g. on display_datetime or start_datetime
+        self.verify_filters()
+        results = []
+        for newsfilter in self._filters:
+            obj = self.aq_inner.restrictedTraverse(newsfilter)
+            res = func(obj)
+            results += res
+
+        results = self._remove_doubles(results)
+
+        if sortattr:
+            results = [ (getattr(r,sortattr,None),r) for r in results ]
+            results.sort()
+            results = [ r[1] for r in results ]
+        return results
+        
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items')
     def get_items(self):
         """Gets the items from the filters
         """
-        self.verify_filters()
-        results = []
-        for newsfilter in self._filters:
-            obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.get_last_items(self._number_to_show,
-                                     self._number_is_days)
-            results += res
-
-        results = self._remove_doubles(results)
+        func = lambda x: x.get_last_items(self._number_to_show,self._number_is_days)
+        #merge/sort results if > 1 filter
+        sortattr = None
+        if len(self._filters) > 1: 
+            sortattr = 'display_datetime'
+        results = self._get_items_helper(func,sortattr)
         if not self._number_is_days:
             return results[:self._number_to_show]
+            
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -211,30 +177,22 @@ class NewsViewer(Content, Folder.Folder):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        self.verify_filters()
-        results = []
-        for newsfilter in self._filters:
-            obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.get_items_by_date(month, year)
-            results += res
-
-        results = self._remove_doubles(results)
-        return results
+        func = lambda x: x.get_items_by_date(month,year)
+        sortattr = None
+        if len(self._filters) > 1: 
+            sortattr = 'display_datetime'
+        return self._get_items_helper(func,sortattr)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')
     def search_items(self, keywords):
         """Search the items in the filters
         """
-        self.verify_filters()
-        results = []
-        for newsfilter in self._filters:
-            obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = obj.search_items(keywords)
-            results += res
-
-        results = self._remove_doubles(results)
-        return results
+        func = lambda x: x.search_items(keywords)
+        sortattr = None
+        if len(self._filters) > 1:
+            sortattr = 'display_datetime'
+        return self._get_items_helper(func,sortattr)
 
     def _remove_doubles(self, resultlist):
         """Removes double items from a resultset from a ZCatalog-query
@@ -247,92 +205,6 @@ class NewsViewer(Content, Folder.Folder):
                 paths.append(item.getPath())
                 retval.append(item)
         return retval
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'rss')
-    def rss(self, REQUEST=None):
-        """Return the contents of this viewer as an RSS/RDF (RSS 1.0) feed"""
-        if REQUEST is not None:
-            REQUEST.RESPONSE.setHeader('Content-Type', 'text/xml;charset=UTF-8')
-        # get the newest items
-        items = self.get_items()
-
-        # create RDF/XML for the channel
-        xml = XMLBuffer()
-        xml.write(RDF_HEADER)
-
-        # get the metadata binding to get the metadata for this viewer
-        mdbinding = self.service_metadata.getMetadata(self)
-        creationdate = mdbinding.get('silva-extra', 'creationtime')
-
-        # create RDF/XML frame
-        xml.write('<channel rdf:about="%s">\n' % self.absolute_url())
-        xml.write('<title>%s</title>\n' % quote_xml(self.get_title()))
-        xml.write('<link>%s</link>\n' % self.absolute_url())
-        xml.write('<description>%s</description>\n' %
-            quote_xml(mdbinding.get('silva-extra', 'content_description')))
-        xml.write('<dc:creator>%s</dc:creator>\n' %
-            quote_xml(mdbinding.get('silva-extra', 'creator')))
-        date = creationdate.HTML4()
-        xml.write('<dc:date>%s</dc:date>\n' % quote_xml(date))
-
-        # output <items> list
-        # and store items in a list for later use
-        itemlist = []
-        xml.write('<items>\n<rdf:Seq>\n')
-        for item in items:
-            item = item.getObject()
-            itemlist.append(item)
-            url = item.object().absolute_url()
-            xml.write('<rdf:li rdf:resource="%s" />\n' % url)
-        xml.write('</rdf:Seq>\n</items>\n')
-        xml.write('</channel>\n\n')
-        # loop over the itemslist and create the RSS/RDF item elements
-        for item in itemlist:
-            self._rss_item_helper(item, xml)
-        # DONE return XML
-        xml.write('</rdf:RDF>\n')
-        return xml.read()
-
-    def _rss_item_helper(self, item, xml):
-        """convert a single Silva object to an RSS/RDF 'hasitem' element"""
-        version_container = item.object()
-        xml.write('<item rdf:about="%s">\n' % version_container.absolute_url())
-        mdbinding = self.service_metadata.getMetadata(item)
-        # RSS elements
-        xml.write('<title>%s</title>\n' % quote_xml(item.get_title()))
-        xml.write('<link>%s</link>\n' % quote_xml(version_container.absolute_url()))
-        # an ugly hack to make sure 'model' is available when get_intro()
-        # is called. Apparently it looks for this somewhere..
-        self.REQUEST.model = item
-        xml.write('<description>%s</description>\n' %
-                  quote_xml(item.get_intro()))
-        # DC elements
-        xml.write('<dc:subject>%s</dc:subject>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'subject')))
-        xml.write('<dc:creator>%s</dc:creator>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'creator')))
-        xml.write('<dc:date>%s</dc:date>\n' %
-                  quote_xml(mdbinding.get('silva-extra', 'creationtime').HTML4()))
-
-        # SilvaNews specific elements
-        if hasattr(item, 'location'):
-            xml.write('<silvanews:location>%s</silvanews:location>\n' %
-                  quote_xml(item.location()))
-
-        if hasattr(item, 'start_datetime'):
-            xml.write('<silvanews:startdt>%s</silvanews:startdt>\n' %
-                  quote_xml(item.start_datetime().HTML4()))
-
-        if hasattr(item, 'end_datetime'):
-            edt = item.end_datetime()
-            if edt:
-                xml.write('<silvanews:enddt>%s</silvanews:enddt>\n' %
-                    quote_xml(item.end_datetime().HTML4()))
-
-        xml.write('</item>\n')
-        return
-
 
     # MANIPULATORS
 
@@ -370,18 +242,3 @@ class NewsViewer(Content, Folder.Folder):
                 self._filters.remove(newsfilter)
 
 InitializeClass(NewsViewer)
-
-manage_addNewsViewerForm = PageTemplateFile(
-    "www/newsViewerAdd", globals(),
-    __name__='manage_addNewsViewerForm')
-
-def manage_addNewsViewer(self, id, title, REQUEST=None):
-    """Add a News NewsViewer."""
-    if not mangle.Id(self, id).isValid():
-        return
-    object = NewsViewer(id)
-    self._setObject(id, object)
-    object = getattr(self, id)
-    object.set_title(title)
-    add_and_edit(self, id, REQUEST)
-    return ''

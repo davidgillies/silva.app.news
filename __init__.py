@@ -2,28 +2,20 @@
 # See also LICENSE.txt
 # $Revision: 1.23 $
 
+#python
+import os
+
+#Silva
+from Products.SilvaExternalSources import ExternalSource
+
+#SilvaNews
 import AgendaFilter, NewsFilter, ServiceNews, InlineViewer
 import NewsPublication, NewsViewer, AgendaViewer, RSSAggregator
 import PlainArticle, PlainAgendaItem
-
-from Products.Silva.fssite import registerDirectory
-from Products.Silva.ExtensionRegistry import extensionRegistry
-#from Products.Silva.upgrade import upgrade_registry
-from Products.SilvaMetadata.Compatibility import registerTypeForMetadata
+import CategoryFilter
 import install
 
-from Products.SilvaExternalSources import ExternalSource
-import os
-
 def initialize(context):
-
-    extensionRegistry.register(
-        'SilvaNews', 'Silva News', context,
-        [NewsPublication,
-         NewsFilter, NewsViewer, PlainArticle,
-         AgendaFilter, AgendaViewer, PlainAgendaItem,
-         RSSAggregator],
-        install, depends_on='SilvaDocument')
 
     context.registerClass(
         InlineViewer.InlineViewer,
@@ -43,19 +35,6 @@ def initialize(context):
         icon="www/newsservice.gif"
         )
 
-    registerDirectory('views', globals())
-
-    # metadata
-    for obj in [
-        NewsPublication.NewsPublication,
-        NewsFilter.NewsFilter, NewsViewer.NewsViewer,
-        PlainArticle.PlainArticleVersion,
-        AgendaFilter.AgendaFilter, AgendaViewer.AgendaViewer,
-        PlainAgendaItem.PlainAgendaItemVersion,
-        RSSAggregator.RSSAggregator,
-        ]:
-        registerTypeForMetadata(getattr(obj, 'meta_type'))
-    
 import dates
 def __allow_access_to_unprotected_subobjects__(name, value=None):
     return name in ('dates',)

@@ -2,26 +2,22 @@
 # See also LICENSE.txt
 # $Revision: 1.36 $
 
-from OFS import SimpleItem
+from zope.interface import implements
+
+# Zope
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
-import OFS
-# Silva
-import Products.Silva.SilvaPermissions as SilvaPermissions
+
+# Silva/News Interfaces
+from interfaces import INewsFilter
+
+# Silva/News
+from Products.Silva import SilvaPermissions
 from Products.SilvaViews.ViewRegistry import ViewAttribute
-# misc
-from Products.Silva.helpers import add_and_edit
-from Products.Silva import mangle
+from Filter import Filter
 
-from Filter import Filter, MetaTypeException
-from interfaces import INewsItemVersion, INewsFilter, IAgendaItemVersion
-
-from AgendaFilter import brainsorter
-
-icon = 'www/news_filter.png'
-addable_priority = 3.2
+from Filter import brainsorter
 
 class NewsFilter(Filter):
     """To enable editors to channel newsitems on a site, all items
@@ -33,9 +29,7 @@ class NewsFilter(Filter):
 
     meta_type = "Silva News Filter"
 
-    search = ViewAttribute('public', 'index_html')
-
-    #__implements__ = INewsFilter
+    implements(INewsFilter)
 
     _article_meta_types = ['Silva Article Version']
     _agenda_item_meta_types = ['Silva Agenda Item Version']
@@ -45,28 +39,6 @@ class NewsFilter(Filter):
         self._show_agenda_items = 0
 
     # ACCESSORS
-
-    def _prepare_query ( self, meta_types ):
-        """private method preparing the common fields for a catalog query.
-
-        Return: dict holding the query parameters
-        """
-        self.verify_sources()
-        self.verify_excluded_items()
-        query = {}
-        query['path'] = self._sources
-        query['version_status'] = 'public'
-        query['idx_subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
-        query['idx_target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        query['meta_type'] = meta_types
-        # Workaround for ProxyIndex bug
-        query['sort_on'] = 'idx_display_datetime'
-        query['sort_order'] = 'descending'
-        return query
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_items')
@@ -80,73 +52,8 @@ class NewsFilter(Filter):
         if not self._sources:
             return []
         query = self._prepare_query(meta_types)
-        results = self.service_catalog(query)
+        results = self._query(**query)
         return results
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_last_items')
-    def get_last_items(self, number, number_is_days=0, meta_types=None):
-        """Returns the last self._number_to_show published items
-        """
-        query = self._prepare_query(meta_types)
-        if not self._sources:
-            return []
-        if number_is_days:
-            # the number specified must be used to restrict the on number of days instead of the number of items
-            now = DateTime()
-            last_night = DateTime(now.strftime("%Y/%m/%d 01:00am"))
-            query['idx_display_datetime'] = {'query': [last_night - number, now],
-                                                    'range': 'minmax'}
-        result = self.service_catalog(query)
-        filtered_result = [r for r in result if not r.object_path in self._excluded_items]
-        if not number_is_days:
-            output = filtered_result[:number]
-        else:
-            output = filtered_result
-        return output
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_next_items')
-    def get_next_items(self, numdays, meta_types=None):
-        """
-        Returns the next <number> AGENDAitems, called by AgendaViewer
-        only and should return items that conform to the
-        AgendaItem-interface (IAgendaItemVersion), although it will in
-        any way because it requres start_datetime to be set. The
-        NewsViewer uses only get_last_items.
-        """
-        if not self._sources:
-            return []
-        date = DateTime()
-        lastnight = DateTime(date.year(), date.month(), date.day(), 0, 0, 0)
-        enddate = lastnight + numdays
-
-        result = []
-        
-        # first query for items that have an end_datetime defined
-        query = self._prepare_query(meta_types)
-        query['idx_end_datetime'] = (lastnight, enddate)
-        query['idx_end_datetime_usage'] = 'range:min:max'
-        result_enddt = self.service_catalog(query)
-
-        for item in result_enddt:
-            if item.object_path not in self._excluded_items:
-                result.append(item)
-
-        query = self._prepare_query(meta_types)
-        query['idx_start_datetime'] = (lastnight, enddate)
-        query['idx_start_datetime_usage'] = 'range:min:max'
-        result_startdt = self.service_catalog(query)
-
-        for item in result_startdt:
-            if (item.object_path not in self._excluded_items and 
-                    not item.getObject().end_datetime()):
-                result.append(item)
-
-        result = [r for r in result]
-        result.sort(brainsorter)
-
-        return result
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
@@ -157,73 +64,21 @@ class NewsFilter(Filter):
             return []
         month = int(month)
         year = int(year)
-        startdate = DateTime(year, month, 1)
+        startdate = DateTime(year, month, 1).earliestTime()
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1)
+        enddate = DateTime(year, endmonth, 1).latestTime()
         query = self._prepare_query(meta_types)
-        query['idx_display_datetime'] = {'query': (startdate, enddate),
-                                               'range': 'minmax'}
-        result = self.service_catalog(query)
+        query['idx_display_datetime'] = {'query': [startdate, enddate],
+                                         'range': 'minmax'}
+        result = self._query(**query)
 
         result = [r for r in result if not r.object_path in
                 self._excluded_items]
 
         return result
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_agenda_items_by_date')
-    def get_agenda_items_by_date(self, month, year, meta_types=None):
-        """
-        Returns non-excluded published AGENDA-items for a particular
-        month. This method is for exclusive use by AgendaViewers only,
-        NewsViewers should use get_items_by_date instead (which
-        filters on idx_display_datetime instead of start_datetime and
-        returns all objects instead of only IAgendaItem-
-        implementations)
-        """
-        month = int(month)
-        year = int(year)
-        startdate = DateTime(year, month, 1)
-        endmonth = month + 1
-        if month >= 12:
-            endmonth = 1
-            year = year + 1
-        enddate = DateTime(year, endmonth, 1)
-
-        result = []
-        
-        # first query for items that have an end_datetime defined
-        query = self._prepare_query(meta_types)
-        query['idx_end_datetime'] = (startdate, enddate)
-        query['idx_end_datetime_usage'] = 'range:min:max'
-        result_enddt = self.service_catalog(query)
-
-        for item in result_enddt:
-            if item.object_path not in self._excluded_items:
-                result.append(item)
-
-        query = self._prepare_query(meta_types)
-        query['idx_start_datetime'] = (startdate, enddate)
-        query['idx_start_datetime_usage'] = 'range:min:max'
-        result_startdt = self.service_catalog(query)
-
-        for item in result_startdt:
-            if (item.object_path not in self._excluded_items and 
-                    not item.getObject().end_datetime()):
-                result.append(item)
-
-        result = [r for r in result]
-        result.sort(brainsorter)
-
-        return result
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'show_agenda_items')
-    def show_agenda_items(self):
-        return self._show_agenda_items
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
@@ -235,23 +90,14 @@ class NewsFilter(Filter):
 
     # MANIPULATORS
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'show_agenda_items')
+    def show_agenda_items(self):
+        return self._show_agenda_items
+
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_show_agenda_items')
     def set_show_agenda_items(self, value):
         self._show_agenda_items = not not int(value)
 
 InitializeClass(NewsFilter)
-
-manage_addNewsFilterForm = PageTemplateFile("www/newsFilterAdd", globals(),
-                                       __name__='manage_addNewsFilterForm')
-
-def manage_addNewsFilter(self, id, title, REQUEST=None):
-    """Add an NewsFilter."""
-    if not mangle.Id(self, id).isValid():
-        return
-    object = NewsFilter(id)
-    self._setObject(id, object)
-    object = getattr(self, id)
-    object.set_title(title)
-    add_and_edit(self, id, REQUEST)
-    return ''

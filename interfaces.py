@@ -1,5 +1,5 @@
 from zope.interface import Interface
-from Products.Silva.interfaces import ISilvaObject, IVersion
+from Products.Silva.interfaces import ISilvaObject, IVersion, IAsset
 
 class INewsItem(ISilvaObject):
     """Silva News Item interface
@@ -47,9 +47,9 @@ class INewsItemVersion(IVersion):
 
     def to_xml(self):
         """Returns an XML representation of the object"""
-        
+
 class IAgendaItem(INewsItem):
-    """Silva AgendaItem.
+    """Silva AgendaItem Version.
     """
 
 class IAgendaItemVersion(INewsItemVersion):
@@ -74,7 +74,7 @@ class IAgendaItemVersion(INewsItemVersion):
     def set_location(self, value):
         """Sets the manual location"""
 
-class INewsFilter(Interface):
+class IFilter(IAsset):
     """Filter for news items.
 
     A filter picks up news from news sources. Editors can
@@ -115,19 +115,56 @@ class INewsFilter(Interface):
         """Updates the list of target_audiences
         """
 
-    def get_all_items(self, meta_types=('Silva News Article',)):
-        """Returns all items, only to be used on the back-end
+    #functions to aid in compatibility between news and agenda filters
+    # and viewers, so the viewers can pull from both types of filters
+
+    def get_agenda_items_by_date(self):
+        """        Returns non-excluded published AGENDA-items for a particular
+        month. This method is for exclusive use by AgendaViewers only,
+        NewsViewers should use get_items_by_date instead (which
+        filters on idx_display_datetime instead of start_datetime and
+        returns all objects instead of only IAgendaItem-
+        implementations)"""
+
+    def get_next_items(self):
+        """ Note: ONLY called by AgendaViewers
+        Returns the next <number> AGENDAitems,
+        should return items that conform to the
+        AgendaItem-interface (IAgendaItemVersion), although it will in
+        any way because it requres start_datetime to be set.
+        NewsViewers use only get_last_items.
         """
 
-    def get_all_public_items(self, meta_types=('Silva News Article',)):
-        """Returns all published items
+    def get_last_items(self):
+        """Returns the last (number) published items
+           This is _only_ used by News Viewers.
         """
 
-    def get_last_public_items(self, meta_types=('Silva News Article',)):
-        """Returns the last self._number_to_show published items
-        """
+class INewsFilter(IFilter):
+    """a filter for news items"""
 
-class INewsViewer(Interface):
+    def show_agenda_items(self):
+        """should we also show agenda items?"""
+    def set_show_agenda_items(self):
+        """sets whether to show agenda items"""
+    def get_allowed_meta_types(self):
+        """returns what metatypes are filtered on"""
+    def get_all_items(self):
+        """Returns all items, only to be used on the back-end"""
+    def get_items_by_date(self):
+        """For looking through the archives"""
+
+class IAgendaFilter(IFilter):
+    """A filter for agenda items"""
+    def get_allowed_meta_types(self):
+        """returns what metatypes are filtered on"""
+    def get_items_by_date(self):
+        """gets the events for a specific month"""
+
+class IViewer(Interface):
+    """Base interface for SilvaNews Viewers"""
+
+class INewsViewer(IViewer):
     """A viewer of news items.
     """
     # manipulators
@@ -190,6 +227,9 @@ class INewsViewer(Interface):
     def rss():
         """Represent this viewer as an RSS feed. (RSS 1.0)
         """
+
+class IAggregator(INewsViewer):
+    """interface for RSSAggregator"""
     
 class IAgendaViewer(INewsViewer):
     def days_to_show():
@@ -252,3 +292,6 @@ class IServiceNews(Interface):
 
         Each tuple is an (indent, subject) pair.
         """
+
+class ICategoryFilter(IAsset):
+    """A CategoryFilter Asset that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""

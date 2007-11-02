@@ -38,8 +38,8 @@ else:
     changed_metadata.append(('list of allowed addables'))
     model.set_silva_addables_allowed_in_publication(addables)
 
-m = _("Addable settings changed for: ${metadata}", 'silva_news',
-      mapping={'metadata':context.quotify_list(changed_metadata)})
+m = _("Addable settings changed for: ${metadata}", 'silva_news')
+m.set_mapping({'metadata':context.quotify_list(changed_metadata)})
 msg = unicode(m)
 
 return context.settings_addables(message_type="feedback", message=msg)

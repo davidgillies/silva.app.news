@@ -1,0 +1,58 @@
+<configure 
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:five="http://namespaces.zope.org/five">
+
+  <browser:page
+    name="rss.xml"
+    for="Products.SilvaNews.interfaces.IViewer"
+    class="Products.SilvaNews.browser.feed.ViewerFeedView"
+    permission="zope2.View"
+    template="rss.pt"
+  />
+
+  <!-- for backwards compatibility.  This view should eventaully
+       be removed -->
+  <browser:page
+    name="rss"
+    for="Products.SilvaNews.interfaces.IViewer"
+    class="Products.SilvaNews.browser.feed.ViewerFeedView"
+    permission="zope2.View"
+    template="rss.pt"
+  />
+
+  <browser:page
+    name="atom.xml"
+    for="Products.SilvaNews.interfaces.IViewer"
+    class="Products.SilvaNews.browser.feed.ViewerFeedView"
+    permission="zope2.View"
+    template="atom.pt"
+  />
+
+  <browser:page
+    name="rss.xml"
+    for="Products.SilvaNews.interfaces.IAggregator"
+    class="Products.SilvaNews.browser.feed.AggregatorFeedView"
+    permission="zope2.View"
+    template="rss.pt"
+  />
+
+  <!-- for backwards compatibility.  This view should eventaully
+       be removed -->
+  <browser:page
+    name="rss"
+    for="Products.SilvaNews.interfaces.IAggregator"
+    class="Products.SilvaNews.browser.feed.AggregatorFeedView"
+    permission="zope2.View"
+    template="rss.pt"
+  />
+
+  <browser:page
+    name="atom.xml"
+    for="Products.SilvaNews.interfaces.IAggregator"
+    class="Products.SilvaNews.browser.feed.AggregatorFeedView"
+    permission="zope2.View"
+    template="atom.pt"
+  />
+
+</configure>

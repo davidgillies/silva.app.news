@@ -6,29 +6,20 @@ from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Globals import InitializeClass
-# Silva
-from Products.Silva.Publication import Publication
-from Products.Silva.interfaces import IPublication
-#from Products.Silva.Folder import Folder
-from Products.Silva.interfaces import IContainer
-from Products.Silva import SilvaPermissions
-#misc
-from Products.Silva.helpers import add_and_edit
-from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
-from Products.Silva.SilvaObject import SilvaObject
-from Products.Silva import mangle
 
-from ObjectTitle import ObjectTitle
+# Silva/News Interfaces
+from Products.Silva.interfaces import IPublication, IContainer
+from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
+
+# Silva/News
+from Products.Silva.Publication import Publication
+from Products.Silva import SilvaPermissions
 
 class DuplicateError(Exception):
     pass
 
-icon = 'www/news_source.png'
-addable_priority = 3
-
-class NewsPublication(ObjectTitle, Publication):
+class NewsPublication(Publication):
     """A special publication type (a.k.a. News Source) for news 
     and agenda items. News Filters and Agenda Filters can pick up 
     news from these sources anywhere in a Silva site.
@@ -140,20 +131,3 @@ class NewsPublication(ObjectTitle, Publication):
         return (fields, versionpaths)
 
 InitializeClass(NewsPublication)
-
-###
-
-manage_addNewsPublicationForm = PageTemplateFile(
-    "www/newsPublicationAdd", globals(),
-    __name__='manage_addNewsPublicationForm')
-
-def manage_addNewsPublication(self, id, title, create_default=1, REQUEST=None):
-    """Add a Silva Newssource."""
-    if not mangle.Id(self, id).isValid():
-        return
-    object = NewsPublication(id)
-    self._setObject(id, object)
-    object = getattr(self, id)
-    object.set_title(title)
-    add_and_edit(self, id, REQUEST)
-    return ''

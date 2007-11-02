@@ -12,31 +12,31 @@
 ">
 
 <h2 tal:define="title model/get_title | nothing"
-  tal:condition="title"
-  tal:content="title">
+    tal:condition="title"
+    tal:content="title">
   view news
 </h2>
 
 <tal:feed
-  tal:repeat="item result">
+    tal:repeat="item result">
 <h4 class="feed"
-  tal:define="title item/title | nothing"
-  tal:condition="title"
-  tal:content="structure title">
-  title
+    tal:define="title item/title | nothing"
+    tal:condition="title"
+    tal:content="structure title">
+       title
 </h4>
 <p class="feed"
-  tal:define="description item/description | nothing"
-  tal:condition="description"
+    tal:define="description item/description | nothing"
+    tal:condition="description"
   tal:content="structure description">
   feed snippet
 </p>
 <p class="feedlink"
 ><a tal:define="link item/link"
-  tal:condition="link" 
-  tal:attributes="href link"
-  i18n:translate="">
-  view article
+    tal:condition="link" 
+    tal:attributes="href link"
+    i18n:translate="">
+        view article
 </a></p>
 </tal:feed>
 </div>

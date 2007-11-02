@@ -7,49 +7,35 @@
   i18n:domain="silva_news"
 
   tal:define="view here;
-              model view/REQUEST/model;
+              model request/model;
               silva_root view/silva_root;
               global formatdate nocall:view/service_news/format_date;
               "
 >
 
   <div class="margins">
-    <h2 class="heading" i18n:translate="">Search News</h2>
+    <h2 class="heading" i18n:translate="">Search <tal:block i18n:name="title" tal:content="model/get_title" /></h2>
   </div>
 
   <tal:comment condition="nothing">Begin items</tal:comment>
 
-  <tal:block define="global results python:model.search_items(
-                                            view.REQUEST['query']);" 
+  <tal:block define="global results python:model.search_items(request['query']);" 
           on-error="structure string:<span class='error'>Error searching: ${error/value}'</span>" />
 
   <tal:block define="global results results | python:[]" />
 
   <div class="searchbox">
     <form tal:attributes="action model/absolute_url" method="POST">
-      <input type="text" name="query" />
+      <input type="text" name="query" tal:attributes="value request/query|nothing" />
       <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
               accesskey="s" i18n:attributes="title;value" />
     </form>
   </div>
 
-  <div class="item" tal:repeat="object results">
-    <tal:block define="obj object/getObject">
-      <h2 class="heading" tal:content="structure obj/get_title" />
-      <div class="intro" tal:content="structure obj/get_intro">
-      </div>
-      <p class="datetime">
-        <span 
-          tal:replace="structure python: 
-                        'Startdate/time:<br />%s' % 
-                         formatdate(obj.start_datetime())" 
-                         tal:condition="obj/start_datetime | nothing">DateTime</span>
-      </p>
-      <p class="articlelink">
-        <a href="#" tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
-          view article</a>
-      </p>
-    </tal:block>
+  <div class="newsitem" tal:repeat="r results">
+   <tal:block define="obj r/getObject">
+    <metal:macro use-macro="here/newsitem_macro/macros/newsitem" />
+   </tal:block>
   </div>
 
   <div class="item" tal:condition="python: len(results) < 1" i18n:translate="">

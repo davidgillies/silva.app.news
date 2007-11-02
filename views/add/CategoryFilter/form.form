@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<form>
+  <title>silv anews category filter</title>
+  <row_length>4</row_length>
+  <name>add_form</name>
+  <action></action>
+  <method>POST</method>
+  <enctype></enctype>
+  <encoding>UTF-8</encoding>
+  <stored_encoding>ISO-8859-1</stored_encoding>
+  <unicode_mode>false</unicode_mode>
+  <i18n_domain>Silva</i18n_domain>
+  <i18n>default_form_add</i18n>
+  <groups>
+    <group>
+      <title>Default</title>
+      <fields>
+
+      <field><id>object_id</id> <type>StringField</type>    
+         <values>    
+           <alternate_name></alternate_name>   
+           <hidden type="int">0</hidden>   
+           <max_length></max_length>   
+           <external_validator></external_validator>   
+           <display_maxwidth></display_maxwidth>   
+           <display_width type="int">30</display_width>    
+           <required type="int">1</required>   
+           <css_class></css_class>   
+           <default>categoryfilter</default>   
+           <title>id</title>   
+           <truncate type="int">0</truncate>   
+           <description>This field cannot be edited</description>    
+           <extra>readonly="readonly"</extra>   
+           <unicode>1</unicode>    
+         </values>   
+         <tales>   
+         </tales>    
+       </field>    
+       <field><id>object_title</id> <type>StringField</type>   
+         <values>    
+           <alternate_name></alternate_name>   
+           <hidden type="int">0</hidden>   
+           <max_linelength></max_linelength>   
+           <max_length></max_length>   
+           <max_lines></max_lines>
+	   <display_maxwidth></display_maxwidth>
+           <display_width type="int">30</display_width>
+           <external_validator></external_validator>   
+           <required type="int">1</required>   
+           <css_class></css_class>   
+           <default>Silva News Category Filter</default>   
+           <title>title</title>
+	   <height type="int">5</height>
+           <description>This is the title for your SilvaNews Category Filter.</description>   
+           <extra></extra>   
+           <unicode>1</unicode>    
+         </values>   
+         <tales>   
+         </tales>    
+       </field>
+       <field><id>subjects</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">0</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>subjects</title>
+          <orientation>vertical</orientation>
+          <description>
+            Select the news subjects to filter on.
+          </description>
+          <css_class></css_class>
+          <external_validator></external_validator>
+          <unicode type="int">1</unicode>
+        </values>
+        <tales>
+          <items>python:form.service_news.subject_form_tree()</items>
+        </tales>
+      </field>
+      <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">0</required>
+          <hidden type="int">0</hidden>
+          <items>[]</items>
+          <default>[]</default>
+          <title>target audiences</title>
+          <orientation>vertical</orientation>
+          <description>
+            Select the target audiences to filter on.
+          </description>
+          <css_class></css_class>
+          <external_validator></external_validator>
+          <unicode type="int">1</unicode>
+        </values>
+        <tales>
+          <items>python: form.service_news.target_audience_form_tree()</items>
+        </tales>
+      </field>
+      </fields>
+    </group>
+  </groups>
+</form>
