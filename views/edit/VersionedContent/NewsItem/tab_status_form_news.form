@@ -27,7 +27,7 @@
           <required type="int">0</required>
           <default_now type="int">1</default_now>
           <css_class></css_class>
-          <title>display date/time</title>
+          <title>display time</title>
           <description>The date/time that is displayed for the public.</description>
           <extra></extra>
           <allow_empty_time type="int">1</allow_empty_time>

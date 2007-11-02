@@ -27,6 +27,12 @@ class SilvaXMLAttribute(SimpleItem):
         self.id = id
         self._content = ParsedXML(id, '<doc></doc>')
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'get_content')
+    def get_content(self):
+        return self._content
+
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation, 
                                 'toXML')
     def toXML(self, out):

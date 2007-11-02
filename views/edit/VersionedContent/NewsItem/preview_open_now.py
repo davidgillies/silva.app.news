@@ -22,7 +22,7 @@ elif obj.is_version_approved():
     message = _('version already approved')
     message_type = 'error'
     publish = False
-if not obj.get_unapproved_version():
+if not obj.get_unapproved_version() and not obj.is_version_approved():
     if obj.is_version_published():
         message = _('Document already published')
         message_type = 'error'
