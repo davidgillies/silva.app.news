@@ -12,6 +12,11 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
 from zExceptions import NotFound
 
+from OFS.Image import Image
+
+from Products.Formulator.Form import ZMIForm
+from Products.Formulator.XMLToForm import XMLToForm
+
 from Products.SilvaExternalSources.interfaces import IExternalSource
 from Products.SilvaExternalSources.CodeSource import CodeSource
 
@@ -19,10 +24,8 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
-from OFS.Image import Image
-
-from Products.Formulator.Form import ZMIForm
-from Products.Formulator.XMLToForm import XMLToForm
+from interfaces import IViewer
+from adapters.interfaces import INewsProvider
 
 #from Products.Silva.i18n import translate as _
 
@@ -65,16 +68,12 @@ class InlineViewer(CodeSource):
                                 'refresh')
     def refresh(self):
         """reload the form and pt"""
-        if 'view' in self.objectIds():
-            self.manage_delObjects(['view'])
-        if 'feed_footer' in self.objectIds():
-            self.manage_delObjects(['feed_footer'])
-        # XXX this code doesn't look like it can work,
-        # as rrs10.gif is not removed and set_views tries to
-        # add it again
+        for name in ('view','feed_footer','rss10.gif'):
+            if name in self.objectIds():
+                self.manage_delObjects([name])
         self._set_form()
         self._set_views()
-        return 'refreshed for and pagetemplate'
+        return 'refreshed form and pagetemplate'
 
     def _set_form(self):
         self.parameters = ZMIForm('form', 'Properties Form')
@@ -112,19 +111,21 @@ class InlineViewer(CodeSource):
                                 'to_html')
     def to_html(self, *args, **kwargs):
         """render the news list"""
-        # XXX this is screwed up, both because the name clashes with the
-        # 'normal' request.model, and because this leaks memory (have to
-        # store stuff in request.other instead)
-        self.REQUEST.form['model'] = self
+        oldmodel = self.REQUEST.other['model']
+        self.REQUEST.other['oldmodel'] = oldmodel
+        self.REQUEST.other['model'] = self
         try:
             return ustr(getattr(self, 'view')(**kwargs))
-        except:
-            import sys, traceback
-            exc, e, tb = sys.exc_info()
-            tbs = '\n'.join(traceback.format_tb(tb))
-            del tb
-            ret =  '%s - %s<br />\n\n%s<br />' % (exc, e, tbs)
-            return ret
+        finally:
+            self.REQUEST.other['model'] = oldmodel
+            del self.REQUEST.other['oldmodel']
+        #except:
+        #    import sys, traceback
+        #    exc, e, tb = sys.exc_info()
+        #    tbs = '\n'.join(traceback.format_tb(tb))
+        #    del tb
+        #    ret =  '%s - %s<br />\n\n%s<br />' % (exc, e, tbs)
+        #    return ret
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'get_viewers')
@@ -162,10 +163,10 @@ class InlineViewer(CodeSource):
     def get_items(self, number, viewer):
         """returns the items for the selected viewer"""
         from adapters.newsprovider import getNewsProviderAdapter
-        viewerobj = getattr(self.aq_parent, viewer, None)
+        viewerobj = getattr(self.REQUEST.oldmodel, viewer, None)
         if viewerobj == None:
             return []
-        adapter = getNewsProviderAdapter(viewerobj)
+        adapter = INewsProvider(viewerobj)
         return adapter.getitems(number)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

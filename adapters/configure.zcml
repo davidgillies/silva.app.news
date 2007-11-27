@@ -13,5 +13,23 @@
     provides="Products.Silva.adapters.interfaces.IFeedEntry"
     factory=".feedentry.AgendaItemFeedEntryAdapter"
   />
+
+  <adapter
+    for="Products.SilvaNews.interfaces.INewsViewer"
+    provides=".interfaces.INewsProvider"
+    factory=".newsprovider.NewsViewerNewsProvider"
+  />
+
+  <adapter
+    for="Products.SilvaNews.interfaces.IAgendaViewer"
+    provides=".interfaces.INewsProvider"
+    factory=".newsprovider.NewsViewerNewsProvider"
+  />
+
+  <adapter
+    for="Products.SilvaNews.interfaces.IAggregator"
+    provides=".interfaces.INewsProvider"
+    factory=".newsprovider.RSSAggregatorNewsProvider"
+  />
   
 </configure>
