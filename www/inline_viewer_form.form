@@ -43,6 +43,33 @@
             <message name="unknown_selection">You selected an item that was not in the list.</message>
           </messages>
         </field>
+        <field><id>inv_div_id</id> <type>StringField</type>
+          <values>
+            <alternate_name></alternate_name>
+            <css_class>store</css_class>
+            <default></default>
+            <description>ID for div tag for inline viewer; default = _blank_ (ANR)</description>
+            <display_maxwidth></display_maxwidth>
+            <display_width type="int">20</display_width>
+            <enabled type="int">1</enabled>
+            <external_validator></external_validator>
+            <extra></extra>
+            <hidden type="int">0</hidden>
+            <max_length></max_length>
+            <required type="int">0</required>
+            <title>div id</title>
+            <truncate type="int">0</truncate>
+            <unicode type="int">0</unicode>
+            <whitespace_preserve type="int">0</whitespace_preserve>
+          </values>
+          <tales>
+          </tales>
+          <messages>
+            <message name="external_validator_failed">The input failed the external validator.</message>
+            <message name="required_not_found">Input is required but no input given.</message>
+            <message name="too_long">Too much input was given.</message>
+          </messages>
+        </field>
         <field><id>inv_div</id> <type>StringField</type>
           <values>
             <alternate_name></alternate_name>
@@ -123,7 +150,33 @@
             <message name="integer_out_of_range">The integer you entered was out of range.</message>
           </messages>
         </field>
-        <field><id>show_intro</id> <type>RadioField</type>
+        <field><id>title_level</id> <type>ListField</type>
+          <values>
+            <alternate_name></alternate_name>
+            <css_class>store</css_class>
+            <default type="string">h4</default>
+            <description>The heading level for the article title (h3, h4, etc.). (ANR)</description>
+            <enabled type="int">1</enabled>
+            <external_validator></external_validator>
+            <extra></extra>
+            <extra_item></extra_item>
+            <first_item type="int">0</first_item>
+            <hidden type="int">0</hidden>
+            <items type="list">[('h2','h2'),('h3','h3'),('h4','h4'),('h5','h5'),('h6','h6')]</items>
+            <required type="int">0</required>
+            <size type="int">1</size>
+            <title>article level</title>
+            <unicode type="int">1</unicode>
+            <whitespace_preserve type="int">0</whitespace_preserve>
+          </values>
+          <tales />
+          <messages>
+            <message name="external_validator_failed">The input failed the external validator.</message>
+            <message name="required_not_found">Input is required but no input given.</message>
+            <message name="unknown_selection">You selected an item that was not in the list.</message>
+          </messages>
+        </field>
+        <field><id>show_intro</id> <type>ListField</type>
           <values>
             <alternate_name></alternate_name>
             <css_class></css_class>
@@ -137,6 +190,7 @@
             <items type="list">[('intro', 'intro'), ('description', 'description'), ('nothing', 'no')]</items>
             <orientation>vertical</orientation>
             <required type="int">0</required>
+            <size type="int">1</size>
             <title>snippet</title>
             <unicode type="int">0</unicode>
             <whitespace_preserve type="int">0</whitespace_preserve>
@@ -174,6 +228,32 @@
             <message name="required_not_found">Input is required but no input given.</message>
             <message name="not_integer">You did not enter an integer.</message>
             <message name="integer_out_of_range">The integer you entered was out of range.</message>
+          </messages>
+        </field>
+        <field><id>display_image</id> <type>ListField</type>
+          <values>
+            <alternate_name></alternate_name>
+            <css_class>store</css_class>
+            <default type="string">no</default>
+            <description>Display image thumbnail? (AN)</description>
+            <enabled type="int">1</enabled>
+            <external_validator></external_validator>
+            <extra></extra>
+            <extra_item></extra_item>
+            <first_item type="int">0</first_item>
+            <hidden type="int">0</hidden>
+            <items type="list">[('thumbnail','thumbnail'),('nothing','no')]</items>
+            <required type="int">0</required>
+            <size type="int">1</size>
+            <title>image</title>
+            <unicode type="int">1</unicode>
+            <whitespace_preserve type="int">0</whitespace_preserve>
+          </values>
+          <tales />
+          <messages>
+            <message name="external_validator_failed">The input failed the external validator.</message>
+            <message name="required_not_found">Input is required but no input given.</message>
+            <message name="unknown_selection">You selected an item that was not in the list.</message>
           </messages>
         </field>
         <field><id>show_creationdate</id> <type>RadioField</type>
@@ -265,7 +345,7 @@
             <extra_item></extra_item>
             <first_item type="int">1</first_item>
             <hidden type="int">0</hidden>
-            <items type="list">[('heading', 'heading'), ('after', 'separate')]</items>
+            <items type="list">[('heading', 'heading'), ('after', 'separate'), ('nothing','no')]</items>
             <orientation>horizontal</orientation>
             <required type="int">0</required>
             <title>article link</title>

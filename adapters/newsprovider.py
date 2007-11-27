@@ -13,8 +13,10 @@ from Products.SilvaNews.adapters import interfaces
 
 from Products.Silva import SilvaPermissions
 
-class NewsItemReference:
+class NewsItemReference(object):
     """a temporary object to wrap a newsitem"""
+
+    implements(interfaces.INewsItemReference)
 
     __allow_access_to_unprotected_subobjects__ = 1
 
@@ -43,6 +45,9 @@ class NewsItemReference:
     def intro(self, maxchars=1024):
         return self._item.get_intro(maxchars)
     
+    def thumbnail(self):
+        return self._item.get_thumbnail('inv_thumbnail')
+
     def creation_datetime(self):
         pub_dt = self._context.service_metadata.getMetadataValue(
                         self._item, 'silva-extra', 'publicationtime')
@@ -104,6 +109,9 @@ class RSSItemReference(object):
     def intro(self, maxchars=1024):
         return self.description(maxchars)
     
+    def thumbnail(self):
+        return None
+
     def creation_datetime(self):
         return (self._toDateTime(self._item.get('created')) or 
                 self._toDateTime(self._item.get('date')) or None)

@@ -1,14 +1,8 @@
-This macro is provided so the feed footer can be customized. The
-idea is to keep the 'inv' template generic (but you'll probably
-hack into that one too ;)
-
 <metal:def define-macro="footer">
-<p class="p newsviewerfooter"
-  tal:condition="python:options['show_footer']=='1'">
-  <a title="Get the feed...."
-    tal:attributes="href python:viewerobj.absolute_url() + '/rss'">
-    <img alt="RSS feed icon" width="80" height="15"
-      tal:attributes="src here/rss10.gif/absolute_url | nothing"  />
+<p class="p newsviewerfooter">
+  <a title="subscribe to the feed" i18n:attributes="title"
+    tal:attributes="href python:viewerobj.absolute_url() + '/rss.xml'">
+    <img tal:replace="structure here/globals/feed-icon-14x14.png/tag | nothing" /> subscribe
   </a>
 </p>
 </metal:def>

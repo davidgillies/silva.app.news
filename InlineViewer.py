@@ -58,12 +58,6 @@ class InlineViewer(CodeSource):
         self._data_encoding = 'UTF-8'
         self._is_initialized = False
         
-    def manage_afterAdd(self, item, container):
-        if not self._is_initialized:
-            self._set_form()
-            self._set_views()
-            self._is_initialized = True
-
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
     def refresh(self):

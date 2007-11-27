@@ -1,4 +1,4 @@
-from Interface import Interface
+from zope.interface import Interface
 
 class INewsProvider(Interface):
     """is able to provide news items"""
