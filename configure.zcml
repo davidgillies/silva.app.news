@@ -92,7 +92,7 @@
   <silva:content
     content=".CategoryFilter.CategoryFilter"
     extension_name="SilvaNews"
-    icon="www/ucl_icon.gif"
+    icon="www/category_filter.png"
     priority="5"
     />
 
