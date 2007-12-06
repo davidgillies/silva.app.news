@@ -1,30 +1,29 @@
+# Danish translation for silva-news-network
+# Copyright (c) 2007 Rosetta Contributors and Canonical Ltd 2007
+# This file is distributed under the same license as the silva-news-network package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2007.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: instances 286\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: silva-news-network\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: Thu Dec  6 13:25:27 2007\n"
-"PO-Revision-Date: 2007-10-03 10:30+0000\n"
-"Last-Translator: Wim Boucquaert <wim@infrae.com>\n"
-"Language-Team: Dutch <wim@infrae.com>\n"
+"PO-Revision-Date: 2007-12-01 12:19+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2007-12-06 12:08+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"Language-code: nl\n"
-"Domain: silva_news\n"
-"Language-name: Nederlands\n"
-"X-Is-Fallback-For: nl-be\n"
-"Preferred-encodings: utf-8\n"
-"Generated-By: zope/app/translation_files/extract.py\n"
 
 #: /NewsItem.py:102
 msgid "No unapproved version."
-msgstr "Geen versie die nog niet is goedgekeurd."
+msgstr "En ikke godkendt version."
 
 #: /NewsItem.py:89
 msgid "No next version."
-msgstr "Geen volgende versie."
+msgstr "Ingen næste version"
 
 #: /views/add/AgendaViewer/form.form:31 /views/add/NewsFilter/form.form:31
 #: /views/add/AgendaFilter/form.form:31
@@ -37,8 +36,6 @@ msgid ""
 "No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; "
 "or &#8216;.&#8217;"
 msgstr ""
-"Geen spaties of speciale tekens behalve &#8216;_&#8217;, &#8216;-&#8217; of "
-"&#8216;.&#8217;"
 
 #: /views/add/AgendaViewer/form.form:50 /views/add/NewsFilter/form.form:51
 #: /views/add/NewsPublication/form.form:50 /views/add/NewsFolder/form.form:49
@@ -50,8 +47,6 @@ msgid ""
 "The title will be publicly visible, and is used as the default link in "
 "indexes."
 msgstr ""
-"De titel wordt voor iedereen zichtbaar, en zal worden gebruikt voor de link "
-"in indexen."
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited"
@@ -63,31 +58,31 @@ msgstr ""
 
 #: /views/add/NewsFolder/form.form:31
 msgid "id: no spaces or special characters besides an underscore (_)."
-msgstr "id: geen spaties of speciale tekens behalve een underscore (_)."
+msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:71
 msgid "start date/time"
-msgstr "startdatum/-tijd"
+msgstr "start dato/tid"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:72
 msgid "Format: d/m/y, time is optional."
-msgstr "Formaat d/m/j, tijd is optioneel."
+msgstr "Format:d/m/å, tid er tilvalg"
 
 #: /views/edit/Container/NewsPublication/form.form:44
 msgid "Restrict usage"
-msgstr "Gebruik beperken"
+msgstr "Begræns anvendelse"
 
 #: /views/edit/Container/NewsPublication/settings_addables.pt:110
 msgid "save addable settings for this publication: alt-a"
-msgstr "toevoeg-instellingen voor deze publicatie opslaan: alt-a"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/settings_addables.pt:110
 msgid "Save addables data"
-msgstr "toevoeg-gegevens opslaan"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/settings_addables.pt:65
 msgid "addable settings for:"
-msgstr "toevoeg-instellingen voor:"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/settings_addables.pt:74
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:71
@@ -99,26 +94,25 @@ msgstr "Element"
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:77
 #: /views/edit/Filter/NewsFilter/edit.pt:68
 msgid "Content"
-msgstr "Inhoud"
+msgstr "Indhold"
 
 #: /views/edit/Container/NewsPublication/settings_addables.pt:80
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:80
 #: /views/edit/Filter/NewsFilter/edit.pt:69
 msgid "Note"
-msgstr "Opmerking"
+msgstr "Kommentar"
 
 #: /views/edit/Container/NewsPublication/settings_addables_form.form:24
 msgid "Acquire"
-msgstr "Overerven"
+msgstr "Anskaf"
 
 #: /views/edit/Container/NewsPublication/settings_addables_form.form:26
 msgid "If checked, inherit the allowed addables from above."
 msgstr ""
-"Indien aangevinkt, worden de toevoeg-instellingen overgeërfd van boven."
 
 #: /views/edit/Container/NewsPublication/settings_addables_form.form:40
 msgid "Addables"
-msgstr "Toevoegbare inhoudstypen"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/settings_addables_form.form:42
 msgid ""
@@ -126,27 +120,22 @@ msgid ""
 "in this publication. Otherwise the addables are acquired from the "
 "publication above."
 msgstr ""
-"Als overerven niet is aangevinkt, bepalen deze instellingen wat voor items "
-"in deze publicatie mogen worden toegevoegd. Anders worden de toevoeg-"
-"instellingen overgeërfd van de bovenliggende publicatie."
 
-# Default: "silva_news"
 #: /views/edit/Container/NewsPublication/settings_addables_submit.py:41
 msgid "Addable settings changed for: ${metadata}"
-msgstr "Toevoeg-instellingen veranderd voor: ${changed_metadata}"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Container/NewsPublication/settings_submit.py:30
 msgid "The news source is now  available."
-msgstr "De nieuwsbron is nu beschikbaar."
+msgstr "Nyhedskilden er nu tilgængelig."
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:105
 msgid "The objects have different values."
-msgstr "De objecten hebben verschillende waarden."
+msgstr "Objektet har forskellige værdier."
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:123
 msgid "There are no publishable objects found."
-msgstr "Er zijn geen items gevonden die gepubliceerd kunnen worden."
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
 #: /views/edit/Container/NewsPublication/tab_edit_bulk.pt:64
@@ -154,7 +143,7 @@ msgstr "Er zijn geen items gevonden die gepubliceerd kunnen worden."
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
 #: /views/edit/Content/edit.pt:65
 msgid "settings"
-msgstr "instellingen"
+msgstr "opsætning"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
 msgid ""
@@ -162,9 +151,6 @@ msgid ""
 "newssources etc.). Select which items to recurse (walk through) to add to "
 "the list of objects to updated:<br /><br />"
 msgstr ""
-"Sommige items van de selectie zijn containers (mappen, publicaties, "
-"nieuwsbronnen, etc.) Selecteer welke items recursief aan de lijst toegevoegd "
-"dienen te worden."
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
 #: /views/edit/Filter/NewsFilter/edit.pt:133
@@ -180,235 +166,220 @@ msgstr "Titel"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:109
 msgid "Co-promoter"
-msgstr "Co-promoter"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:131
 msgid "Speakers"
-msgstr "Sprekers"
+msgstr "Højtalere"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:153
 msgid "Startdate and time"
-msgstr "Startdatum en -tijd"
+msgstr "Startdato og tid"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:173
 msgid "Enddate and time"
-msgstr "Einddatum en -tijd"
+msgstr "Slutdato og tid"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:189
 msgid "Location"
-msgstr "Locatie"
+msgstr "Placering"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:212
 msgid "Location (if not in list)"
-msgstr "Locatie (indien niet in de lijst)"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:233
 msgid "Pressheader"
-msgstr "Perskop"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:254
 msgid "Subheader"
-msgstr "Subkop"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:275
 msgid "Lead"
-msgstr "Lead"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:29
 msgid "Academic"
-msgstr "Academisch"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:296
 msgid "Pressnote"
-msgstr "Pers-opmerking"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:314
 msgid "Common Info"
-msgstr "Algemene Informatie"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:337
 msgid "Specific Info"
-msgstr "Specifieke Informatie"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:358
 msgid "Specific info (if not in list)"
-msgstr "Specifieke informatie (indien niet in de lijst)"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:379
 msgid "More info links"
-msgstr "Meer informatie links"
+msgstr "Flere info links"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:400
 msgid "Embargo Datetime"
-msgstr "Embargodatum/-tijd"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:414
 msgid "Subjects"
-msgstr "Onderwerpen"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:432
 msgid "Target Audiences"
-msgstr "Doelgroepen"
+msgstr "Målgruppe"
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:49
 msgid "Chair"
-msgstr "Voorzitter"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:69
 msgid "Promovendus"
-msgstr "Promovendus"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_edit_form.form:89
 msgid "Promoter"
-msgstr "Promotor"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Container/NewsPublication/tab_edit_bulk_submit.py:40
 msgid "${path} is updated"
-msgstr "${path} is bijgewerkt"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_edit_open_now.py:9
 #: /views/edit/Container/NewsPublication/tab_status_open_now.py:9
 msgid "Nothing was selected, so nothing was approved."
-msgstr "Er is niets geselecteerd, en dus niets goedgekeurd."
+msgstr "Intet var valgt så intet er godkendt."
 
 #: /views/edit/Container/NewsPublication/tab_info.pt:17
 msgid "Info for"
-msgstr "Informatie voor"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_info.pt:23
 msgid "Authorized users below this level"
-msgstr "Geauthoriseerde gebruikers onder dit niveau"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:103
 msgid "Changed settings on: ${ids}"
-msgstr "Instellingen gewijzigd op: ${ids}"
+msgstr "Ændret opsætning af: ${ids}"
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:108
 msgid "<span class=\"error\">could not change settings on: ${ids}</span>"
-msgstr "<span class=\"error\">kon instellingen niet wijzigen op: ${ids}</span>"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:16
 msgid "Nothing was selected, so no settings were changed."
-msgstr "Niets geselecteerd, en dus geen instellingen gewijzigd."
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:34
 msgid "No publication nor expiration time nor any of the flags were set."
 msgstr ""
-"Geen publicatie- of verloop-tijdstip noch één van de 'flags' ingesteld."
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:51
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:18
 msgid "not applicable"
-msgstr "niet van toepassing"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:60
 msgid "no next or public version available"
-msgstr "Geen volgende of publieke versie beschikbaar"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:64
 msgid "cannot change publication time of already public versions."
-msgstr "Kan het publicatie-tijdstip van reeds publieke versies niet wijzigen."
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:87
 msgid "no unapproved version"
-msgstr "geen versie die wacht op goedkeuring"
+msgstr "ikke godkendt version"
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:101
 msgid "<span class=\"error\">No request for approval on: ${ids}</span>"
-msgstr "<span class=\"error\">Geen verzoek tot goedkeuring voor: ${ids}</span>"
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:15
 msgid "Nothing was selected, so no approval was requested."
-msgstr "Er is niets geselecteerd, en dus geen goedkeuring aangevraagd."
+msgstr ""
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:88
 msgid ""
 "Request for approval via a bulk request in the publish screen of /${url} "
 "(automatically generated message)"
 msgstr ""
-"Verzoek tot goedkeuring via een bulk verzoek in het publicatiescherm van /"
-"${url} (automatisch gegenereerd bericht)"
 
 #: /views/edit/Container/NewsPublication/tab_status_request_approval.py:96
 msgid "Request approval for: ${ids}"
-msgstr "Goedkeuring aanvragen voor: ${ids}"
+msgstr "Anmoder om godkendelse af: ${ids"
 
 #: /views/edit/Content/AgendaViewer/form.form:29
 msgid "day range"
-msgstr "bereik van dagen"
+msgstr ""
 
 #: /views/edit/Content/AgendaViewer/form.form:30
-#, fuzzy
 msgid "Number of days in the future to show."
-msgstr "Aantal dagen in de toekomst te tonen"
+msgstr ""
 
 #: /views/edit/Content/AgendaViewer/form.form:49
 #: /views/edit/Content/NewsViewer/form.form:68
-#, fuzzy
 msgid "archive number"
-msgstr "aantal archief"
+msgstr "arkiv nummer"
 
 #: /views/edit/Content/AgendaViewer/form.form:50
 #: /views/edit/Content/NewsViewer/form.form:69
 msgid "Number of archive items to show per page."
-msgstr "Aantal archiefitems te tonen per pagina"
+msgstr "Antal arkivemner, der vises pr. side."
 
 #: /views/edit/Content/AgendaViewer/form.form:65
 #: /views/edit/Content/NewsViewer/form.form:85
 msgid "filters"
-msgstr "filters"
+msgstr "filtre"
 
-# Default: "silva_news"
 #: /views/edit/Content/AgendaViewer/submit_settings.py:37
 #: /views/edit/Content/NewsViewer/submit_settings.py:39
 #: /views/edit/Content/RSSAggregator/submit_settings.py:27
-#, fuzzy
 msgid "Viewer data changed"
-msgstr "Viewer-gegevens gewijzigd"
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:27
 msgid "show"
-msgstr "tonen"
+msgstr "vis"
 
 #: /views/edit/Content/NewsViewer/form.form:29
 msgid ""
 "Show a specific number of items, or show items from a range of days in the "
 "past."
 msgstr ""
-"Een specifiek aantal items tonen, of items tonen binnen een bereik van dagen "
-"in het verleden"
 
 #: /views/edit/Content/NewsViewer/form.form:48
-#, fuzzy
 msgid "days / items number"
-msgstr "aantal dagen / items"
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:49
 msgid "Number of news items to show per page."
-msgstr "Aantal nieuwsitems per pagina."
+msgstr "Antal nyhedsemner der vises pr. side."
 
 #: /views/edit/Content/RSSAggregator/form.form:30
 msgid "RSS feeds"
-msgstr "RSS-feeds"
+msgstr ""
 
 #: /views/edit/Content/RSSAggregator/form.form:32
 msgid ""
 "List the URLs of RSS feeds (one per line) to use as sources of news items."
 msgstr ""
-"De URLs van RSS feeds tonen (één per regel) om als bronnen van nieuwsitems "
-"te gebruiken."
 
 #: /views/edit/Content/edit.pt:124
 msgid "RDF Feed"
-msgstr "RDF Feed"
+msgstr ""
 
 #: /views/edit/Content/edit.pt:128
 msgid ""
 "This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
 msgstr ""
-"Deze Nieuwsviewer zal middels RDF een RSS-feed beschikbaar maken. De URL van "
-"de feed is:"
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:131
 #: /views/add/AgendaViewer/form.form:29 /views/add/NewsFilter/form.form:29
@@ -434,15 +405,15 @@ msgstr "titel"
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:185
 msgid "There are no news sources available."
-msgstr "Er zijn geen nieuwsbronnen beschikbaar."
+msgstr "Der er ingen nyhedskilder tilgængelige."
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:263
 msgid "use selected sources in this filter: alt-u"
-msgstr "geselecteerde bronnen gebruiken in deze filter: alt-u"
+msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit.pt:94 /views/edit/Content/edit.pt:103
 msgid "save settings"
-msgstr "instellingen opslaan"
+msgstr "gem opsætning"
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
@@ -450,150 +421,142 @@ msgstr "type"
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:106
 msgid "modify"
-msgstr "wijzigen"
+msgstr "ændre"
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:109
 msgid "expiration&nbsp;due"
-msgstr "verloopt op"
+msgstr ""
 
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:205
 msgid ""
 "There are no news items for this period. Check that news sources are "
 "activated (go to the editor screen) and items in the sources are published."
 msgstr ""
-"Er zijn geen nieuwsberichten voor deze periode. Contoleer dat nieuwsbronnen "
-"geactiveerd zijn (ga naar het bewerkscherm) en dat de items in de bronnen "
-"gepubliceerd zijn."
 
 #: /views/edit/Filter/AgendaFilter/settingsform.form:27
 msgid "Select the news subjects to filter on."
 msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:22
 msgid "Input form errors ${errors}"
-msgstr "Fouten invulformulier ${errors}"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Filter/NewsFilter/submit_settings.py:27
 msgid "subjects changed"
-msgstr "onderwerp gewijzigd"
+msgstr "emner ændret"
 
-# Default: "silva_news"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Filter/NewsFilter/submit_settings.py:33
 msgid "target audiences changed"
-msgstr "doelgroepen gewijzigd"
+msgstr "målgruppe ændret"
 
-# Default: "silva_news"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Filter/NewsFilter/submit_settings.py:45
 msgid "stick to path changed"
-msgstr "pad voorkeur veranderd"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Filter/NewsFilter/submit_settings.py:49
 msgid "Settings changed for: "
-msgstr "Instellingen veranderd voor: "
+msgstr "Opsætning ændret for: "
 
 #: /views/edit/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Filter/NewsFilter/use_items.py:40
 #: /views/edit/Filter/use_sources.py:40
 msgid "The filter is updated."
-msgstr "De filter is bijgewerkt."
+msgstr "Filtret er opdateret."
 
 #: /views/edit/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Filter/AgendaFilter/edit.pt:121
 msgid "sources"
-msgstr "bronnen"
+msgstr "kilde"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:132
 msgid "In use"
-msgstr "In gebruik"
+msgstr "I brug"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:154
 msgid "Edit this source"
-msgstr "Deze bron bewerken"
+msgstr "Redigér denne kilde"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:160
 #: /views/edit/Filter/AgendaFilter/edit.pt:158
 msgid "Edit this item"
-msgstr "Dit item bewerken"
+msgstr "Redigér dette emne"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:171
 #: /views/edit/Filter/AgendaFilter/edit.pt:169
 msgid "(not activated)"
-msgstr "(niet geactiveerd)"
+msgstr "(ikke aktiveret)"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:188
 msgid "There are no newssources available."
-msgstr "Er zijn geen nieuwsbronnen beschikbaar."
+msgstr "Der er ingen tilgængelige nyhedskilder."
 
 #: /views/edit/Filter/NewsFilter/edit.pt:208
 #: /views/edit/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Filter/AgendaFilter/edit.pt:206
 msgid "select all"
-msgstr "alles selecteren"
+msgstr "vælg alle"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:208
 #: /views/edit/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Filter/AgendaFilter/edit.pt:206
 msgid "select all items: alt-a"
-msgstr "alle items selecteren: alt-a"
+msgstr "vælg alle emner: alt-a"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:208
 #: /views/edit/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Filter/AgendaFilter/edit.pt:206
 msgid "deselect all"
-msgstr "niets selecteren"
+msgstr "afvælg alle"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:267
 msgid "Use selected sources in this filter: alt-u"
-msgstr "Geselecteerde bronnen gebruiken in deze filter: alt-u"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit.pt:267
 #: /views/edit/Filter/AgendaFilter/edit.pt:263
 msgid "update sources"
-msgstr "bronnen bijwerken"
+msgstr "opdatér kilde"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:281
 #: /views/edit/Filter/NewsFilter/edit_items.pt:253
 #: /views/edit/Filter/AgendaFilter/edit.pt:277
 msgid "Previous"
-msgstr "Vorige"
+msgstr "Forrige"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:285
 #: /views/edit/Filter/NewsFilter/edit_items.pt:257
 #: /views/edit/Filter/AgendaFilter/edit.pt:281
 msgid "Next"
-msgstr "Volgende"
+msgstr "Næste"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:58
 msgid "general settings"
-msgstr "algemene instellingen"
+msgstr "generel opsætning"
 
 #: /views/edit/Filter/NewsFilter/edit.pt:96
 msgid " save settings "
-msgstr " instellingen opslaan "
+msgstr " gem opsætning "
 
 #: /views/edit/Filter/NewsFilter/edit.pt:96
 #: /views/edit/Filter/AgendaFilter/edit.pt:94 /views/edit/Content/edit.pt:103
 msgid "access key: alt-s"
-msgstr "sneltoets: alt-s"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:109
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:153
 msgid "Preview this item"
-msgstr "Voorbeeld van dit item"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:115
 msgid "(deselected)"
-msgstr "(niet geselecteerd)"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:165
 msgid ""
@@ -601,42 +564,39 @@ msgid ""
 "are activated (go to the editor screen) and items in the sources are "
 "published."
 msgstr ""
-"Er zijn geen gepubliceerde items in dit filter. Controleer dat nieuwsbronnen "
-"geactiveerd zijn (ga naar het scherm 'bewerken') en dat items in de bronnen "
-"gepubliceerd zijn."
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:280
 msgid "use selected items in this filter: alt-u"
-msgstr "gebruik geselecteerde items in dit filter: alt-u"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:280
 msgid "update"
-msgstr "bijwerken"
+msgstr "opdatér"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:67
 #: /views/edit/Filter/AgendaFilter/edit.pt:130
 msgid "in use"
-msgstr "in gebruk"
+msgstr "i brug"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:68
 msgid "edit"
-msgstr "bewerken"
+msgstr "redigér"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:69
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:107
 msgid "view"
-msgstr "bekijken"
+msgstr "vis"
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:70
 #: /views/edit/Filter/AgendaFilter/edit_items.pt:108
 msgid "publication&nbsp;due&nbsp;"
-msgstr "publicatie&nbsp;op&nbsp;"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/edit_items.pt:71
 msgid "expiration&nbsp;due&nbsp;"
-msgstr "verloopt&nbsp;&nbsp;"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:25
 #: /views/edit/Filter/AgendaFilter/settingsform.form:25
@@ -645,7 +605,7 @@ msgstr "verloopt&nbsp;&nbsp;"
 #: /views/add/NewsItem/PlainArticle/form.form:67
 #: /views/add/CategoryFilter/form.form:69
 msgid "subjects"
-msgstr "onderwerpen"
+msgstr "emner"
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:29
 #: /views/edit/Asset/CategoryFilter/form.form:30
@@ -655,9 +615,6 @@ msgid ""
 "            Select the news subjects to filter on.\n"
 "          "
 msgstr ""
-"\n"
-"            Selecteer de nieuwsonderwerpen om op te filteren.\n"
-"          "
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:46
 #: /views/edit/Filter/AgendaFilter/settingsform.form:44
@@ -666,7 +623,7 @@ msgstr ""
 #: /views/add/NewsItem/PlainArticle/form.form:86
 #: /views/add/CategoryFilter/form.form:89
 msgid "target audiences"
-msgstr "doelgroepen"
+msgstr "målgruppe"
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:50
 #: /views/edit/Filter/AgendaFilter/settingsform.form:48
@@ -677,15 +634,12 @@ msgid ""
 "            Select the target audiences to filter on.\n"
 "          "
 msgstr ""
-"\n"
-"            Selecteer de nieuwsgroepen om op te filteren.\n"
-"          "
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:69
 #: /views/edit/Filter/AgendaFilter/settingsform.form:67
 #: /views/edit/Filter/AgendaFilter/settingsform.form:86
 msgid "stick to path"
-msgstr "filter lokaal houden"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:71
 #: /views/edit/Filter/AgendaFilter/settingsform.form:69
@@ -694,55 +648,52 @@ msgid ""
 "Setting to 'yes' keeps the filter local, showing only items in the content "
 "tree that are below the location of the filter."
 msgstr ""
-"Indien ingesteld op 'ja', de filter lokaal houden, zodat alleen items "
-"getoond worden die zich onder de locatie van het filter bevinden."
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:88
 msgid "show agenda items"
-msgstr "agenda-items tonen"
+msgstr ""
 
 #: /views/edit/Filter/NewsFilter/settingsform.form:90
 msgid "If set to 'yes', show agenda items as well as news items."
-msgstr "Indien ingesteld op 'ja', agenda-items zowel als nieuwsitems tonen."
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Filter/NewsFilter/submit_settings.py:39
 msgid "show agendaitems changed"
-msgstr "veranderde agenda-items tonen"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
-msgstr "Document gepubliceerd"
+msgstr "Dokument publiseret"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:22
 msgid "version already approved"
-msgstr "versie reeds goedgekeurd"
+msgstr "version allerede godkendt"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:27
 msgid "Document already published"
-msgstr "Document reeds gepubliceerd"
+msgstr "Dokument allerede publiseret"
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:15
 msgid "There is no unapproved version to publish."
-msgstr "Er is geen versie die nog niet is goedgekeurd om te publiceren."
+msgstr "Der er ingen ikke godkendt version at publicere."
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:17
 #: /views/edit/VersionedContent/NewsItem/tab_edit_publish.py:12
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:12
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:12
 msgid "There is no unapproved version to approve."
-msgstr "Er is geen versie die nog niet is goedgekeurd om goed te keuren."
+msgstr "Der er ingen ikke godkendt version at godkende."
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:69
 msgid "Version published."
-msgstr "Versie gepubliceerd."
+msgstr "Version publiceret."
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:71
 #: /views/edit/VersionedContent/NewsItem/tab_edit_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:27
 msgid "Version approved."
-msgstr "Versie goedgekeurd."
+msgstr "Version godkendt."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:30
 msgid "display time"
@@ -750,7 +701,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:31
 msgid "The date/time that is displayed for the public."
-msgstr "De datum/tijd die aan het publiek wordt getoond."
+msgstr "Den dato og tid der vises for besøgende."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:108
 msgid ""
@@ -760,167 +711,161 @@ msgid ""
 "made an empty reject, this is the message of the requester ... The last "
 "message regarding this issue is:"
 msgstr ""
-"Een vorig verzoek om goedkeuring is afgekeurd / ingetrokken door "
-"${requester} op ${some_date}. Het laatste bericht hoeft niet per se "
-"geschreven te zijn door de persoon die het verzoek heeft ingetrokken; Als "
-"deze persoon bijvoorbeeld een lege afkeuring heeft verricht, is dit het "
-"bericht van de aanvrager... Het laatste bericht aangaande deze kwestie is:"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "for new version"
-msgstr "voor nieuwe versie"
+msgstr "for ny version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "request approval ${for_new_version}"
-msgstr "goedkeuring aanvragen ${for_new_version}"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:135
 msgid "message to editor"
-msgstr "boodschap aan redacteur"
+msgstr "meddelelse til redaktør"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:138
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:191
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:244
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:370
 msgid "notes"
-msgstr "opmerkingen"
+msgstr "noter"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:149
 msgid ""
 "This message will remain visible in the status screen for other authors and "
 "editors."
 msgstr ""
-"Deze boodschap zal zichtbaar blijven in het scherm 'status' voor andere "
-"auteurs en redacteuren."
+"Denne meddelelse vil være synlig i statusbilledet for andre forfattere og "
+"redaktører."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 msgid "request approval"
-msgstr "goedkeuring aanvragen"
+msgstr "anmod om godkendelse"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:404
 msgid "access key: alt-r"
-msgstr "sneltoets: alt-r"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:181
 msgid "change settings"
-msgstr "instellingen veranderen"
+msgstr "ændre opsætning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:188
 msgid "current timings"
-msgstr "huidige tijdstippen"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "update timing"
-msgstr "tijdstippen instellen"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "access key: alt-u"
-msgstr "sneltoets: alt-u"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:228
 msgid "publish new version"
-msgstr "nieuwe versie publiceren"
+msgstr "publicer ny version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
 msgid "publish closed version"
-msgstr "gesloten versie publiceren"
+msgstr "publisér lukket version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "approve for future"
-msgstr "goedkeuren voor later"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:301
 msgid "access key: alt-o"
-msgstr "sneltoets: alt-o"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:262
 msgid "publish now"
-msgstr "nu publiceren"
+msgstr "publicér nu"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:262
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:484
 msgid "access key: alt-p"
-msgstr "sneltoets: alt-p"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:283
 msgid "access key: alt-m"
-msgstr "sneltoets: alt-m"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:293
 msgid "day / month / year &nbsp;23:59"
-msgstr "dag / maand / jaar &nbsp;23:59"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:321
 msgid "access key: alt-h"
-msgstr "sneltoets: alt-h"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:349
 msgid "reject"
-msgstr "weigeren"
+msgstr "afvis"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:35
 msgid "Publication time of public version"
-msgstr "Publicatietijdstip van publieke versie"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:350
 msgid "withdraw"
-msgstr "intrekken"
+msgstr "træk tilbage"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:351
 msgid "request"
-msgstr "aanvraag"
+msgstr "anmodning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:360
 msgid "add message on"
-msgstr "boodschap toevoegen over"
+msgstr "tilføj meddelelse på"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:363
 msgid "rejection"
-msgstr "afwijzing"
+msgstr "afvisning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:366
 msgid "withdrawal"
-msgstr "intrekking"
+msgstr "tilbagetrækning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:385
 msgid "The message may be viewed by local users."
-msgstr "De boodschap mag door lokale gebruikers bekeken worden."
+msgstr "Meddelelses kan blive set af lokale brugere."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:395
 msgid "access key: alt-j"
-msgstr "sneltoets: alt-j"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:395
 msgid "reject approval request"
-msgstr "aanvraag voor goedkeuring afwijzen"
+msgstr "afvis godkendelses anmodning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:40
 msgid "Publication and expiration time of public version"
-msgstr "publicatie- en verlooptijdstip van publieke versie"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:404
 msgid "withdraw approval request"
-msgstr "verzoek om goedkeuring intrekken"
+msgstr "træk godkendelsesanmodning tilbage"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:429
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:447
 msgid "revoke approval"
-msgstr "goedkeuring intrekken"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:438
 msgid "If further editing is required, first revoke the approval."
 msgstr ""
-"Als verder bewerken nodig is, moet eerst de goedkeuring worden ingetrokken."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:447
 msgid "access key: alt-v"
-msgstr "sneltoets: alt-v"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:470
 msgid "revert to previous version"
-msgstr "terugvallen op vorige versie"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:476
 msgid ""
@@ -928,45 +873,40 @@ msgid ""
 "version. This can not be undone afterwards and will discard all changes made "
 "to the current version."
 msgstr ""
-"De huidige bewerkbare versie kan vervangen worden door de vorige "
-"(gepubliceerde) versie. Dit kan daarna niet meer ongedaan gemaakt worden en "
-"gooit alle wijzigingen die in de huidige versie zijn gemaakt weg."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:484
 msgid "revert to previous"
-msgstr "terugvallen op vorige"
+msgstr "vend tilbage til foregående"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:508
 msgid "manual close"
-msgstr "handmatig sluiten"
+msgstr "manuel lukning"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:515
 msgid ""
 "If necessary, the published version of this content can be manually closed "
 "(taken offline). It will also be removed from the public index."
 msgstr ""
-"Indien nodig, kan de gepubliceerde versie van deze inhoud handmatig gesloten "
-"(offline gezet) worden. Deze zal ook verwijderd worden uit de publieke index."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:524
 msgid "close published version"
-msgstr "gepubliceerde versie sluiten"
+msgstr "luk publiseret version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:524
 msgid "access key: alt-c"
-msgstr "sneltoets: alt-c"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:64
 msgid "messages"
-msgstr "boodschappen"
+msgstr "meddelelser"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:78
 msgid "${author_id} sent a message on ${some_date} ${with_comments}"
-msgstr "${author_id} verstuurde op ${some_date} een boodschap ${with_comments}"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:112
 msgid "content renderer"
-msgstr "inhoudsweergave"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:117 /views/edit/Filter/AgendaFilter/edit.pt:66
 #: /views/edit/Content/edit.pt:74
@@ -976,77 +916,75 @@ msgstr "element"
 #: /views/edit/tab_settings.pt:122 /views/edit/Filter/AgendaFilter/edit.pt:67
 #: /views/edit/Content/edit.pt:76
 msgid "content"
-msgstr "inhoud"
+msgstr "indhold"
 
 #: /views/edit/tab_settings.pt:125 /views/edit/Filter/AgendaFilter/edit.pt:68
 #: /views/edit/Content/edit.pt:77
 msgid "note"
-msgstr "opmerking"
+msgstr "note"
 
 #: /views/edit/tab_settings.pt:132
 msgid "renderer"
-msgstr "weergave"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:151
 msgid "Select a renderer to render this content."
-msgstr "Selecteer een weergave om deze inhoud mee weer te geven."
+msgstr ""
 
 #: /views/edit/tab_settings.pt:158
 msgid "change renderer"
-msgstr "weergave wijzigen"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:158
 msgid "change renderer: alt-c"
-msgstr "weergave wijzigen: alt-c"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:188 /views/edit/tab_settings.pt:259
 msgid "layout settings for &#xab;${title}&#xbb;"
-msgstr "vormgevingsinstellingen voor &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:202 /views/edit/tab_settings.pt:221
 #: /views/edit/tab_settings.pt:241
 msgid "layout settings"
-msgstr "vormgevingsinstellingen"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:205
 msgid "for approved version of &#xab;${title}&#xbb;"
-msgstr "voor de goedgekeurde versie van &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:224
 msgid "for published version of &#xab;${title}&#xbb;"
-msgstr "voor publieke versie van &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:244
 msgid "for closed version of &#xab;${title}&#xbb;"
-msgstr "voor gesloten versie van &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:60
 msgid "settings for &#xab;${title}&#xbb;"
-msgstr "instellingen voor &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:71
 msgid "local news source setting"
-msgstr "lokale nieuwsbron-instelling"
+msgstr "opsætning af lokale nyhedskilder"
 
 #: /views/edit/tab_settings.pt:76
 msgid ""
 "Make news source local so it is picked up only by filters in the same path "
 "of the source and below."
 msgstr ""
-"Nieuwsbron lokaal maken zodat deze alleen gevonden wordt door filters in "
-"dezelfde locatie als de bron of eronder."
 
 #: /views/edit/tab_settings.pt:81
 msgid "make local?"
-msgstr "lokaal maken?"
+msgstr "gør lokal?"
 
 #: /views/edit/tab_settings.pt:94
 msgid "change the global/local status of the news publication: alt-h"
-msgstr "De status 'globaal'/'lokaal' van de nieuwspublicatie wijzigen: alt-h"
+msgstr ""
 
 #: /views/edit/tab_settings.pt:94
 msgid "change setting"
-msgstr "instelling wijzigen"
+msgstr "ændre opsætning"
 
 #: /views/public/AgendaViewer/search_agenda.pt:17
 #: /views/public/NewsViewer/search_news.pt:17
@@ -1059,7 +997,7 @@ msgstr ""
 #: /views/public/NewsViewer/search_news.pt:30
 #: /views/public/NewsViewer/view_news.pt:22
 msgid "Do a full text search: alt-s"
-msgstr "Een volledige tekst-zoekopdracht uitvoeren: alt-s"
+msgstr "Gennemfør en fuldtekst søgning: alt-s"
 
 #: /views/public/AgendaViewer/search_agenda.pt:31
 #: /views/public/AgendaViewer/view_agenda.pt:21
@@ -1067,69 +1005,69 @@ msgstr "Een volledige tekst-zoekopdracht uitvoeren: alt-s"
 #: /views/public/NewsViewer/search_news.pt:30
 #: /views/public/NewsViewer/view_news.pt:22
 msgid "Search"
-msgstr "Zoeken"
+msgstr "Søgning"
 
 #: /views/public/AgendaViewer/search_agenda.pt:42
 #: /views/public/NewsViewer/search_news.pt:41
 msgid "There are no articles corresponding to your query"
-msgstr "Er zijn geen artikelen die overeenkomen met de zoekopdracht"
+msgstr ""
 
 #: /views/public/AgendaViewer/search_agenda.pt:48
 #: /views/public/AgendaViewer/view_archive.pt:102
 msgid "view agenda"
-msgstr "agenda tonen"
+msgstr ""
 
 #: /views/public/AgendaViewer/search_agenda.pt:51
 #: /views/public/AgendaViewer/view_agenda.pt:45
 msgid "view past and future articles"
-msgstr "oude en toekomstige artikelen bekijken"
+msgstr ""
 
 #: /views/public/AgendaViewer/view_agenda.pt:37
 #: /views/public/NewsViewer/view_news.pt:38
 msgid "There are no articles available."
-msgstr "Er zijn geen artikelen beschikbaar."
+msgstr "Der er ingen artikler tilgængelige."
 
 #: /views/public/AgendaViewer/view_archive.pt:26
 #: /views/public/NewsViewer/view_archive.pt:27
 msgid "Archive of ${title}"
-msgstr "Archief van ${title}"
+msgstr ""
 
 #: /views/public/AgendaViewer/view_archive.pt:66
 #: /views/public/NewsViewer/view_archive.pt:67
 msgid "There are no articles available"
-msgstr "Er zijn geen artikelen beschikbaar"
+msgstr "Der er ingen artikler tilgængelige"
 
 #: /views/public/NewsFilter/search_news.pt:20
 msgid "Search News"
-msgstr "Nieuws doorzoeken"
+msgstr "Søg nyheder"
 
 #: /views/public/NewsFilter/search_news.pt:56
 msgid "Startdate/time:"
-msgstr "Startdatum/-tijd:"
+msgstr ""
 
 #: /views/public/NewsFilter/search_news.pt:58
 #: /views/public/RSSAggregator/render_helper.pt:35
 msgid "view article"
-msgstr "artikel bekijken"
+msgstr "vis artikkel"
 
 #: /views/public/NewsFilter/search_news.pt:71
 msgid "There are no articles corresponding to your query."
-msgstr "Er zijn geen artikelen die overeenkomen met de zoekopdracht."
+msgstr "Der er ingen artikkel der svarer til din forespørgsel."
 
 #: /views/public/NewsViewer/search_news.pt:47
 #: /views/public/NewsViewer/view_archive.pt:103
 msgid "view news"
-msgstr "nieuws bekijken"
+msgstr "vis nyheder"
 
 #: /views/public/NewsViewer/search_news.pt:50
 #: /views/public/NewsViewer/view_news.pt:45
 msgid "view archive"
-msgstr "archief tonen"
+msgstr "vis arkiv"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:26
 #: /views/public/PlainArticle/render_helper.pt:21
 msgid "Publication date:"
-msgstr "Publicatiedatum:"
+msgstr "Publikations dato:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:38
 msgid "Start:"
@@ -1137,27 +1075,25 @@ msgstr "Start:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:42
 msgid "End:"
-msgstr "Einde:"
+msgstr "Slut:"
 
 #: /www/inline_viewer_form.form:105
 msgid "Display title of viewer (ANR)"
-msgstr "Titel van viewer weergeven (ANR)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:114
 msgid "display title"
-msgstr "titel weergeven"
+msgstr "vis titel"
 
 #: /www/inline_viewer_form.form:131
 msgid ""
 "Number of articles to be shown; max. is set by viewer (AN); empty = all "
 "articles (ANR)"
 msgstr ""
-"Aantal artikelen om weer te geven; maximum is ingesteld door de viewer (AN); "
-"leeg = alle artikelen (ANR)"
 
 #: /www/inline_viewer_form.form:141
 msgid "# of articles"
-msgstr "aantal artikelen"
+msgstr "# af artikler"
 
 #: /www/inline_viewer_form.form:158
 msgid "The heading level for the article title (h3, h4, etc.). (ANR)"
@@ -1172,24 +1108,22 @@ msgid ""
 "Display intro (first elements of the article), the metadata description, or "
 "nothing"
 msgstr ""
-"Weergave intro (eerste elementen van het artikel,) de metadatabeschrijving, "
-"of niets."
 
 #: /www/inline_viewer_form.form:194
 msgid "snippet"
-msgstr "knipsel"
+msgstr ""
 
 #: /www/inline_viewer_form.form:211
 msgid "Number of characters shown in snippet; 0 = all (ANR)"
-msgstr "Aantal tekens getoond in knipsel; 0 = all (ANR)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:221
 msgid "# of chars"
-msgstr "aantal karakters"
+msgstr ""
 
 #: /www/inline_viewer_form.form:23
 msgid "Choose a News Viewer, Agenda Viewer, or RSS Aggregator"
-msgstr "Nieuwsviewer Agendaviewer of RSS-Aggregator kiezen."
+msgstr ""
 
 #: /www/inline_viewer_form.form:238
 msgid "Display image thumbnail? (AN)"
@@ -1197,75 +1131,75 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:248
 msgid "image"
-msgstr "afbeelding"
+msgstr "billede"
 
 #: /www/inline_viewer_form.form:264
 msgid "Display cration date (AN)"
-msgstr "Aanmaakdatum weergeven (AN)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:273
 msgid "creation date"
-msgstr "aanmaakdatum"
+msgstr ""
 
 #: /www/inline_viewer_form.form:290
 msgid "Display start/end datetime if available (N)"
-msgstr "Start-/einddatum weergeven indien beschikbaar (N)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:299
 msgid "datetimes"
-msgstr "datums en tijden"
+msgstr ""
 
 #: /www/inline_viewer_form.form:316
 msgid "Display location if available (N)"
-msgstr "Lokatie weergeven, indien beschikbaar (N)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:325
 msgid "location"
-msgstr "locatie"
+msgstr "sted"
 
 #: /www/inline_viewer_form.form:33
 msgid "news source"
-msgstr "nieuwsbron"
+msgstr "nyhedskilde"
 
 #: /www/inline_viewer_form.form:342
 msgid "Where to show link to article (ANR)"
-msgstr "Waar de link naar het artikel te tonen (ANR)"
+msgstr "Hvor link til artikkel skal vises (ANR)"
 
 #: /www/inline_viewer_form.form:351
 msgid "article link"
-msgstr "artikel-link"
+msgstr "artikkel link"
 
 #: /www/inline_viewer_form.form:368
 msgid "Link text for single articles (ANV)"
-msgstr "Linktekst voor enkelvoudige artikelen (ANV)"
+msgstr "Link tekst for en enkelt artikkel (ANV)"
 
 #: /www/inline_viewer_form.form:377
 msgid "link text"
-msgstr "linktekst"
+msgstr "link tekst"
 
 #: /www/inline_viewer_form.form:395
 msgid "Display link to news source (ANR)"
-msgstr "Link naar nieuwsbron weergeven (ANR)"
+msgstr "Vis link til nyhedskilde (ANR)"
 
 #: /www/inline_viewer_form.form:404
 msgid "source link"
-msgstr "bron-link"
+msgstr "kilde link"
 
 #: /www/inline_viewer_form.form:421
 msgid "Link text for news source link (ANR)"
-msgstr "Linktekst voor nieuwsbron-link"
+msgstr ""
 
 #: /www/inline_viewer_form.form:430
 msgid "source text"
-msgstr "brontekst"
+msgstr "kildetekst"
 
 #: /www/inline_viewer_form.form:448
 msgid "Show a footer for the feed (customizable)"
-msgstr "Voettekst voor de feed tonen (aanpasbaar)"
+msgstr ""
 
 #: /www/inline_viewer_form.form:457
 msgid "show footer"
-msgstr "voettekst"
+msgstr ""
 
 #: /www/inline_viewer_form.form:51
 msgid "ID for div tag for inline viewer; default = _blank_ (ANR)"
@@ -1278,11 +1212,10 @@ msgstr ""
 #: /www/inline_viewer_form.form:78
 msgid "CSS class for div tag for inline viewer; default = inv (ANR)"
 msgstr ""
-"CSS class voor div tag voor lopende tekst viewer; standaardwaarde = inv (ANR)"
 
 #: /www/inline_viewer_form.form:87
 msgid "div css class"
-msgstr "div css class"
+msgstr ""
 
 #: /www/inline_viewer_view.pt:53
 msgid "Published: ${datetime}"
@@ -1298,424 +1231,64 @@ msgstr ""
 
 #: /www/inline_viewer_view.pt:74
 msgid "Location: <span class=\"newsitemlocation\"></span>"
-msgstr "Locatie: <span class=\"newsitemlocation\"></span>"
-
-#~ msgid "number"
-#~ msgstr "aantal"
-
-#~ msgid "update timings"
-#~ msgstr "tijdstippen bijwerken"
-
-#~ msgid "approve new versions for publication at a later date: alt-f"
-#~ msgstr "nieuwe versies goedkeuren voor publicatie in de toekomst: alt-l"
-
-#~ msgid "return confirm('Really revert ?')"
-#~ msgstr "return confirm('Terug naar vorige versie?')"
-
-#~ msgid "update display date/time"
-#~ msgstr "weergave- datum/tijd bijwerken"
-
-#~ msgid "Date and time:"
-#~ msgstr "Datum en tijd:"
-
-# Default: "silva_news"
-#~ msgid "Settings changed."
-#~ msgstr "Instellingen veranderd"
-
-#~ msgid "new..."
-#~ msgstr "nieuw..."
-
-#~ msgid "select a new item: alt-s"
-#~ msgstr "kies een nieuw item: alt-s"
-
-#~ msgid "preview"
-#~ msgstr "voorbeeld"
-
-#~ msgid "modified"
-#~ msgstr "gewijzigd"
-
-#~ msgid "author"
-#~ msgstr "auteur"
-
-#~ msgid "shift"
-#~ msgstr "herordenen"
-
-#~ msgid "There is no content here."
-#~ msgstr "Er bevindt zich hier geen inhoud."
-
-#~ msgid "move down"
-#~ msgstr "naar beneden verplaatsen"
-
-#~ msgid "move up"
-#~ msgstr "naar boven verplaatsen"
-
-#~ msgid "unknown"
-#~ msgstr "onbekend"
-
-#~ msgid "move selected items to"
-#~ msgstr "verplaatsen geselecteerde items naar"
-
-#~ msgid "position"
-#~ msgstr "positie"
-
-#~ msgid "end"
-#~ msgstr "einde"
-
-#~ msgid "move selected items into position: alt-m"
-#~ msgstr "geselecteerde items naar positie verplaatsen: alt-m"
-
-#~ msgid "move"
-#~ msgstr "verplaatsen"
-
-#~ msgid "rename and retitle items: alt-r"
-#~ msgstr "naam en titel van items veranderen: alt-r"
-
-#~ msgid "rename..."
-#~ msgstr "hernoemen..."
-
-#~ msgid "cut"
-#~ msgstr "knip"
-
-#~ msgid "cut items: alt-x"
-#~ msgstr "knip items: alt-x"
-
-#~ msgid "copy items: alt-c"
-#~ msgstr "kopiëren items: alt-c"
-
-#~ msgid "copy"
-#~ msgstr "kopiëren"
-
-#~ msgid "paste items: alt-v"
-#~ msgstr "plakken items: alt-v"
-
-#~ msgid "paste"
-#~ msgstr "plakken"
-
-#~ msgid "there's no undo: alt-d"
-#~ msgstr "kan niet ongedaan worden gemaakt: alt-d"
-
-#~ msgid "delete"
-#~ msgstr "verwijderen"
-
-#~ msgid "expiration due"
-#~ msgstr "verloopt op"
-
-#~ msgid "published"
-#~ msgstr "gepubliceerd"
-
-#~ msgid "publish"
-#~ msgstr "publiceren"
-
-#~ msgid "n/a"
-#~ msgstr "n.v.t."
-
-#~ msgid "public version"
-#~ msgstr "publieke versie"
-
-#~ msgid "closed"
-#~ msgstr "gesloten"
-
-#~ msgid "There are no publishable items here."
-#~ msgstr "Er zijn hier geen items die gepubliceerd kunnen worden."
-
-#~ msgid "clear expiration"
-#~ msgstr "verloop-tijdstip wissen"
-
-#~ msgid "reject pending request for approval: alt-j"
-#~ msgstr "uitstaande aanvraag voor goedkeuring afwijzen: alt-j"
-
-#~ msgid "withdraw approval of approved versions: alt-v"
-#~ msgstr "goedkeuring van goedgekeurde versies intrekken: alt-v"
-
-#~ msgid "revoke"
-#~ msgstr "intrekken"
-
-#~ msgid "close published items: alt-c"
-#~ msgstr "gepubliceerde items sluiten"
-
-#~ msgid "close"
-#~ msgstr "sluiten"
-
-#~ msgid "request approval for new versions: alt-r"
-#~ msgstr "goedkeuring van nieuwe versies aanvragen: alt-r"
-
-#~ msgid "Start date/time:"
-#~ msgstr "Start- datum/tijd:"
-
-#~ msgid "End date/time:"
-#~ msgstr "Eind- datum/tijd:"
-
-#~ msgid "Creation date:"
-#~ msgstr "Aanmaakdatum:"
-
-#~ msgid ""
-#~ "Make news source private so it is picked up only by filters in the same "
-#~ "path of the source and below."
-#~ msgstr ""
-#~ "Nieuwsbronnen privaat maken zodat ze enkel opgenomen worden door filters "
-#~ "binnen hetzelfde pad van de bronnen en onderliggende bronnen."
-
-#~ msgid "change the public/private status of the news publication: alt-o"
-#~ msgstr "de publieke/private status van nieuwspublicaties wijzigen: alt-o"
-
-#~ msgid "open/close"
-#~ msgstr "openen/sluiten"
-
-#~ msgid "Approval on: ${ids}"
-#~ msgstr "Goedkeuring op: ${ids}"
-
-#~ msgid "<span class=\"error\">could not approve: ${ids}</span>"
-#~ msgstr "<span class=\"error\">kon niet goedkeuren: ${ids}</span>"
-
-#~ msgid "not a versionable object"
-#~ msgstr "object heeft geen versies"
-
-#~ msgid "version already public"
-#~ msgstr "versie reeds publiek"
-
-#~ msgid "no unapproved version available"
-#~ msgstr "geen versie die wacht op goedkeuring"
-
-#~ msgid "no publication time was set"
-#~ msgstr "geen publicatie-tijdstip ingesteld"
-
-#~ msgid "access key: alt-i"
-#~ msgstr "sneltoets: alt-i"
-
-#~ msgid "add a new item - alt-n"
-#~ msgstr "een nieuw item toevoegen - alt-n"
-
-#~ msgid "select:"
-#~ msgstr "kies:"
-
-#~ msgid "import xml data or a zip file: alt-i"
-#~ msgstr "xml-gegevens of een zipbestand importeren: alt-i"
-
-#~ msgid "import..."
-#~ msgstr "importeren..."
-
-#~ msgid "properties"
-#~ msgstr "eigenschappen"
-
-#~ msgid "content approved, or published..."
-#~ msgstr "inhoud goedgekeurd, of gepubliceerd..."
-
-#~ msgid "content approved or published"
-#~ msgstr "inhoud goedgekeurd, of gepubliceerd..."
-
-# Default: "editor"
-#~ msgid "content-editor"
-#~ msgstr "inhoud editor"
-
-#~ msgid "paste ghost"
-#~ msgstr "ghost plakken"
-
-#~ msgid "paste (items on clipboard) as ghost objects: alt-g"
-#~ msgstr "items als ghost objecten op clipboard plakken: alt-g"
-
-#~ msgid "return confirm('Really delete?')"
-#~ msgstr "return confirm('Weet je zeker dat je dit wilt verwijderen?')"
-
-#~ msgid "index of"
-#~ msgstr "index van"
-
-#~ msgid "access key: alt-x"
-#~ msgstr "sneltoets: alt-x"
-
-#~ msgid "change the public display date: alt-i"
-#~ msgstr "de publieke weergavedatum veranderen: alt-i"
-
-#~ msgid "publish now?"
-#~ msgstr "nu publiceren?"
-
-#~ msgid "create new versions of published docs: alt-n"
-#~ msgstr "nieuwe versie van maken van gepubliceerde documenten: alt-n"
-
-#~ msgid "new version"
-#~ msgstr "nieuwe versie"
-
-#~ msgid "change publish and expiration times: alt-u"
-#~ msgstr "publicatie- en verlooptijdstip veranderen: alt-u"
-
-#~ msgid "open to public"
-#~ msgstr "voor publiek openen"
-
-#~ msgid "approve or publish new versions: alt-p"
-#~ msgstr "nieuwe versies goedkeuren of publiceren: alt-p"
-
-#~ msgid "change publish and expiration times: alt-s"
-#~ msgstr "publicatie- en en verlooptijden instellen: alt-s"
-
-#~ msgid "set timing"
-#~ msgstr "timing instellen"
-
-#~ msgid "request immediate approval for new versions: alt-p"
-#~ msgstr "direct goedkeuring vragen voor nieuwe versies: alt-p"
-
-#~ msgid "request approval now"
-#~ msgstr "nu goedkeuring aanvragen"
-
-#~ msgid "publishing actions"
-#~ msgstr "publicatie-acties"
-
-#~ msgid "export..."
-#~ msgstr "exporteren..."
-
-#~ msgid "modify / preview"
-#~ msgstr "bewerken / voorbeeld"
-
-#~ msgid "revision"
-#~ msgstr "revisie"
-
-#~ msgid "publication due"
-#~ msgstr "publiek op"
-
-#~ msgid "content object or one of its containers is deactivated"
-#~ msgstr "object of een van zijn containers is gedeactiveerd"
-
-#~ msgid "number of news items to show per page"
-#~ msgstr "aantal news items te tonen per pagina"
-
-#~ msgid "number of archive items to display per page"
-#~ msgstr "aantal archief items te tonen per pagina"
-
-#~ msgid "The date/time that is displayed for the  public."
-#~ msgstr "De datum/tijd die wordt weergegeven aan het publiek"
-
-#~ msgid "publish right now?"
-#~ msgstr "nu publiceren?"
-
-#~ msgid "clear ex<u>p</u>iration?"
-#~ msgstr "verloop-tijdstip wissen"
-
-#~ msgid "Show intro, description or nothing"
-#~ msgstr "Intro, beschrijving of niks tonen"
-
-#~ msgid "details"
-#~ msgstr "details"
-
-#~ msgid "Show start/end datetime if available (N)"
-#~ msgstr "Indien beschikbaar start-/eind- datum tonen (N)"
-
-#~ msgid "Show location if available (N)"
-#~ msgstr "Indien beschikbaar locatie tonen (N)"
-
-#~ msgid "Show title of selected object (ANR)"
-#~ msgstr "titel tonen van geselcteerd object (ANR)"
-
-#~ msgid "show title"
-#~ msgstr "titel tonen"
+msgstr ""
 
 #~ msgid "paragraph"
-#~ msgstr "alinea"
+#~ msgstr "afsnit"
 
 #~ msgid "heading"
-#~ msgstr "kop"
+#~ msgstr "overskrift"
 
 #~ msgid "list"
-#~ msgstr "lijst"
+#~ msgstr "liste"
 
 #~ msgid "preformatted"
-#~ msgstr "vooraf opgemaakt"
+#~ msgstr "preformateret"
 
 #~ msgid "external source"
-#~ msgstr "externe bron"
+#~ msgstr "ekstern kilde"
 
 #~ msgid "table of contents"
-#~ msgstr "inhoudsopgave"
+#~ msgstr "Indholdsoversigt"
 
 #~ msgid "table"
 #~ msgstr "tabel"
 
-#~ msgid "complex list"
-#~ msgstr "complexe lijst"
-
-#~ msgid "definition list"
-#~ msgstr "definitielijst"
-
-#~ msgid "citation"
-#~ msgstr "citaat"
-
 #~ msgid "Display time"
-#~ msgstr "Weergavetijd"
-
-#~ msgid ""
-#~ "\n"
-#~ "            The time part of start and end date/time will only be "
-#~ "displayed\n"
-#~ "            if this is checked.\n"
-#~ "          "
-#~ msgstr ""
-#~ "\n"
-#~ "            Het 'tijd' gedeelte van een start- of einddatum wordt alleen "
-#~ "getoond indien dit is aangevinkt.\n"
-#~ "          "
+#~ msgstr "Vis tid"
 
 #~ msgid "date and time"
-#~ msgstr "datum en tijd"
-
-#~ msgid ""
-#~ "\n"
-#~ "            Format: d/m/y, time is optional (will default to 00:00)\n"
-#~ "          "
-#~ msgstr ""
-#~ "\n"
-#~ "            Formaat: d/m/j, tijd is optioneel (standaard 00:00)\n"
-#~ "          "
+#~ msgstr "dato og tid"
 
 #~ msgid "end date and time"
-#~ msgstr "einddatum en -tijd"
-
-#~ msgid "AgendaItem-data changed"
-#~ msgstr "Agenda-itemgegevens gewijzigd"
+#~ msgstr "slut dato og tid"
 
 #~ msgid "Article data changed"
-#~ msgstr "Artikelgegevens gewijzigd"
+#~ msgstr "Artikkel data ændret"
 
 #~ msgid "Target audiences"
-#~ msgstr "Doelgroepen"
+#~ msgstr "Målgruppe"
 
 #~ msgid "modify subjects and target audiences..."
-#~ msgstr "onderwerpen en doelgroepen wijzigen"
+#~ msgstr "ændre emne og målgruppe.."
 
 #~ msgid "save item: alt-s"
-#~ msgstr "item opslaan: alt-s"
+#~ msgstr "gem emne: alt-s"
 
 #~ msgid "save item"
-#~ msgstr "item opslaan"
+#~ msgstr "gem emne"
 
 #~ msgid "content editor..."
-#~ msgstr "inhoud bewerken..."
-
-#~ msgid "Article filtering"
-#~ msgstr "Artikelfiltering"
-
-#~ msgid "save subjects and target audiences"
-#~ msgstr "onderwerpen en doelgroepen opslaan"
+#~ msgstr "indholds redaktør..."
 
 #~ msgid "back to article..."
-#~ msgstr "terug naar artikel..."
+#~ msgstr "tilbage til artikkel..."
 
 #~ msgid "Data changed"
-#~ msgstr "Gegevens gewijzigd"
+#~ msgstr "Data ændret"
 
 #~ msgid "display date/time"
-#~ msgstr "weergavedatum/-tijd"
-
-#~ msgid "Search Agenda"
-#~ msgstr "Agenda doorzoeken"
-
-#~ msgid "Enddate/time:"
-#~ msgstr "Einddatum/-tijd:"
+#~ msgstr "vis dato/tid"
 
 #~ msgid "published:"
-#~ msgstr "gepubliceerd:"
-
-#~ msgid "Creation date: <br /> ${datetime}"
-#~ msgstr "Aanmaakdatum:<br /> ${datetime}"
-
-#~ msgid "Start: ${datetime}"
-#~ msgstr "Start: ${datetime}"
-
-#~ msgid "End: ${datetime}"
-#~ msgstr "Eind: ${datetime}"
+#~ msgstr "publiceret:"
