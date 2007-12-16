@@ -58,6 +58,8 @@ SilvaNewsNetwork changes
 
     Bugs fixed
 
+      - Improved (simplified the css of) the properties toolbox layout 
+
       - fix for broken rss feed caused by get_intro() not getting the model
 
       - using 'get_intro' for RSS feeds introduced a bug in at least some
