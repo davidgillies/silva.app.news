@@ -1,89 +1,80 @@
-<html tal:omit-tag="" tal:define="
-	 global view here;
-         global silva_root here/silva_root;
-         global model request/model; 
-         global editable model/get_editable;
-         global form here/form;
-         global title python:model.get_title_editable();
-       " />
+<tal:init define="
+   global view here;
+   global silva_root here/silva_root;
+   global model request/model; 
+   global editable model/get_editable;
+   global form here/form;
+   global title python:model.get_title_editable();
+"/>
 
+<metal:use-macro use-macro="view/macro_asset_edit/macros/editor">
 
-	<metal:use-macro use-macro="view/macro_asset_edit/macros/editor">
+<metal:block fill-slot="title_metadata">
+<tr class="top-controls">
+  <td colspan="3">
+    <input type="hidden" name="cur_set" value="text" />
+    <input class="button"
+      style="float:right"
+      type="submit"
+      name="submit:method"
+      value="save"
+      title="access key: alt-s"
+      accesskey="s"
+      i18n:attributes="title;value;accesskey save_accesskey"
+  />
+  <h3>Select checkboxes to limit the Subjects and Target Audiences that will appear in your News Filters and News Articles</h3>
+ </td>
+</tr>
+</metal:block>
+    
+<metal:block fill-slot="title_editor">
+<tbody>
+  <tr>
+    <th class="align-right" width="25%" i18n:translate="">element</th>
+    <th i18n:translate="">content</th>
+    <th i18n:translate="">description</th>
+  </tr>
+  <tal:repeat repeat="field form/get_fields">
+  <tr tal:attributes="class python:repeat['field'].odd() and 'odd' or 'even'">
+    <td class="field-title" style="text-align: left;">
+      <label tal:attributes="for field/id" tal:content="python:field['title']" style="text-transform:capitalize;" />
+      <span class="warning" tal:condition="python:field.is_required()">*</span>
+    </td>
+    <td>
+      <div style="float: left;">
+        <input tal:replace="structure python:field.render_from_request(request)" />
+      </div>
+    </td>
+    <td  tal:content="structure python:field.get_value('description')" >
+      description
+    </td>
+  </tr>
+  </tal:repeat>
+</tbody>
+<tfoot>
+  <tr class="controls">
+    <td class="align-right" colspan="3">
+      <input class="button"
+        type="submit"
+        name="submit:method"
+        value="save"
+        title="access key: alt-s"
+        accesskey="s"
+        i18n:attributes="title;value;accesskey save_accesskey"
+      />
+    </td>
+  </tr>
+</tfoot>
+</metal:block>
 
-	<metal:block fill-slot="title_metadata">
-	<tr class="top-controls">
-	 <td colspan="3">
-	  <h3>Check the boxes against the Subjects and Target Audiences you wish to be available for your News filter and News articles</h3>
-	 </td>
-	</tr>
-	</metal:block>
-      
-	<metal:block fill-slot="title_editor">
+<metal:fill-slot fill-slot="info">
+  <div class="info">
+    <h3 i18n:translate="">
+      <img tal:replace="structure icon" />SNN Category Filters
+    </h3>
+    <p>These Filters allow users to edit the lists of subjects and target audiences availabale to your News Filters and News Items.</p>
+    <p>You may select any number of subjects or target audiences, and only those selected will appear in the edit screns.  If, however, you don't select any items in a category, <u>all</u> items in that category will appear.</p>
+  </div>
+</metal:fill-slot>
 
-
-	<thead>
-	 <tr class="controls">
-	  <td class="align-right" colspan="3">
-   <input type="hidden" name="cur_set" value="text" />
-	   <input class="button"
-		  type="submit"
-		  name="submit:method"
-		  value="save"
-		  title="access key: alt-s"
-		  accesskey="s"
-		  i18n:attributes="title;value;accesskey save_accesskey" />
-	  </td>
-	 </tr>
-	</thead>
-
-	<tbody>
-	 <tr>
-	  <th class="align-right" width="25%" i18n:translate="">element</th>
-	  <th i18n:translate="">content</th>
-	  <th i18n:translate="">description</th>
-	 </tr>
-	 <tal:repeat repeat="field form/get_fields">
-	  <tr tal:attributes="class python:repeat['field'].odd() and 'odd' or 'even'">
-	   <td class="field-title" style="text-align: left;">
-	    <label tal:attributes="for field/id" tal:content="python:field['title']" style="text-transform:capitalize;" />
-	    <span class="warning" tal:condition="python:field.is_required()">*</span>
-	   </td>
-	   <td>
-	     <div style="float: left;">
-		<input tal:replace="structure python:field.render_from_request(request)" />
-	     </div>
-	   </td>
-	   <td>
-	    <div tal:content="structure python:field.get_value('description')" />
-	   </td>
-	  </tr>
-	 </tal:repeat>
-	</tbody>
-
-	<tfoot>
-	 <tr class="controls">
-	  <td class="align-right" colspan="3">
-	   <input class="button"
-		  type="submit"
-		  name="submit:method"
-		  value="save"
-		  title="access key: alt-s"
-		  accesskey="s"
-		  i18n:attributes="title;value;accesskey save_accesskey" />
-	  </td>
-	 </tr>
-	</tfoot>
-	</metal:block>
-			
-		
-	<metal:fill-slot fill-slot="info">
-	  <div class="info">
-	    <h3 i18n:translate="">
-	      <img tal:replace="structure icon" />  Silva News Category Filters
-	    </h3>
-	<p>These Filters allow users to edit the lists of subjects and target audiences availabale to your News Filters and News Items.  </p>
-	    <p>You may select any number of subjects or target audiences, and only those selected will appear in the edit screns.  If, however, you don't select any items in a category, <u>all</u> items in that category will appear.</p> </div>
-	</metal:fill-slot>
-
-	</metal:use-macro>
-
+</metal:use-macro>
