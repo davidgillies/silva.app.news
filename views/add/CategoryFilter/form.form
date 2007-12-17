@@ -47,7 +47,7 @@
            <display_maxwidth></display_maxwidth>
            <display_width type="int">30</display_width>
            <external_validator></external_validator>   
-           <required type="int">1</required>   
+           <required type="int">0</required>   
            <css_class>store</css_class>   
            <default>Silva News Category Filter</default>   
            <title>title</title>
