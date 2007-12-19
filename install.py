@@ -89,8 +89,6 @@ def registerViews(reg):
                  'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
     reg.register('edit',
                  'Silva News Category Filter', ['edit', 'Asset', 'CategoryFilter'])
-    reg.register('edit',
-                 'Silva News Category Filter', ['edit', 'Asset', 'CategoryFilter'])
 
     # public
     reg.register('public',
@@ -103,6 +101,7 @@ def registerViews(reg):
     reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
     reg.register('public', 'Silva Article Version', ['public', 'PlainArticle'])
     reg.register('public', 'Silva Agenda Item Version', ['public', 'PlainAgendaItem'])
+    reg.register('public', 'Silva News Category Filter', ['public', 'CategoryFilter'])
     # register also the VersionedContent objects of the articles to allow
     # accessing the objects with an explicit /public/ URL part
     reg.register('public', 'Silva Article', ['public', 'PlainArticle'])

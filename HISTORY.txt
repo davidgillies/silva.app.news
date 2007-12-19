@@ -4,7 +4,15 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.6.0
+  since 2.6.0 beta
+
+    Bugs Fixed
+
+      - 176581: removed Category Filter preview tab, and
+                registered a "dummy" public view for this
+                content type
+
+  2.6.0 beta
   
     New Features
 
