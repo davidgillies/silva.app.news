@@ -8,9 +8,11 @@ SilvaNewsNetwork changes
 
     Bugs Fixed
 
-      - 176581: removed Category Filter preview tab, and
-                registered a "dummy" public view for this
-                content type
+      - Changed the new version button in the editor screen from an input to
+        a button, to avoid css conflicts with frontend.css controls styles 
+
+      - 176581: removed Category Filter preview tab, and registered a "dummy"
+        public view for this content type
 
   2.6.0 beta
   
