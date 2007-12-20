@@ -30,16 +30,6 @@
 <metal:block fill-slot="title_metadata">
 <tr class="top-controls">
   <td colspan="3">
-    <input type="hidden" name="cur_set" value="text" />
-    <input class="button"
-      style="float:right"
-      type="submit"
-      name="submit:method"
-      value="save"
-      title="access key: alt-s"
-      accesskey="s"
-      i18n:attributes="title;value;accesskey save_accesskey"
-  />
   <h3>Select checkboxes to limit the Subjects and Target Audiences that will appear in your News Filters and News Articles</h3>
  </td>
 </tr>
@@ -72,13 +62,14 @@
 <tfoot>
   <tr class="controls">
     <td class="align-right" colspan="3">
+      <input type="hidden" name="cur_set" value="text" />
       <input class="button"
         type="submit"
         name="submit:method"
-        value="save"
+        value="save selection"
         title="access key: alt-s"
         accesskey="s"
-        i18n:attributes="title;value;accesskey save_accesskey"
+        i18n:attributes="title;value"
       />
     </td>
   </tr>
