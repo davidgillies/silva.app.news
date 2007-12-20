@@ -38,13 +38,13 @@
 <metal:block fill-slot="title_editor">
 <tbody>
   <tr>
-    <th class="align-right" width="25%" i18n:translate="">element</th>
+    <th class="align-right" width="12%" i18n:translate="">element</th>
     <th i18n:translate="">content</th>
     <th i18n:translate="">description</th>
   </tr>
   <tal:repeat repeat="field form/get_fields">
   <tr tal:attributes="class python:repeat['field'].odd() and 'odd' or 'even'">
-    <td class="field-title" style="text-align: left;">
+    <td class="field-title">
       <label tal:attributes="for field/id" tal:content="python:field['title']" style="text-transform:capitalize;" />
       <span class="warning" tal:condition="python:field.is_required()">*</span>
     </td>
