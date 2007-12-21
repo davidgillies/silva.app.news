@@ -72,9 +72,9 @@ def registerViews(reg):
     """
     # edit    
     reg.register('edit',
-                 'Silva Agenda Filter', ['edit', 'Filter', 'AgendaFilter'])
+                 'Silva Agenda Filter', ['edit', 'Asset', 'Filter', 'AgendaFilter'])
     reg.register('edit',
-                 'Silva News Filter', ['edit', 'Filter', 'NewsFilter'])
+                 'Silva News Filter', ['edit', 'Asset', 'Filter', 'NewsFilter'])
     reg.register('edit',
                  'Silva News Publication', ['edit', 'Container', 'NewsPublication'])
     reg.register('edit',
@@ -88,7 +88,7 @@ def registerViews(reg):
     reg.register('edit',
                  'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
     reg.register('edit',
-                 'Silva News Category Filter', ['edit', 'Filter', 'CategoryFilter'])
+                 'Silva News Category Filter', ['edit', 'Asset', 'Filter', 'CategoryFilter'])
 
     # public
     reg.register('public',
@@ -137,7 +137,6 @@ def unregisterViews(reg):
     reg.unregister('edit', 'Silva Article')
     reg.unregister('edit', 'Silva Agenda Item')
     reg.unregister('edit', 'Silva News Category Filter')
-    reg.unregister('edit', 'Silva News Category Filter')
     # public
     reg.unregister('public', 'Silva Agenda Filter')
     reg.unregister('public', 'Silva News Filter')
@@ -156,7 +155,6 @@ def unregisterViews(reg):
     reg.unregister('add', 'Silva Agenda Viewer')
     reg.unregister('add', 'Silva Article')
     reg.unregister('add', 'Silva Agenda Item')
-    reg.unregister('add', 'Silva News Category Filter')
     reg.unregister('add', 'Silva News Category Filter')
 
 def configureXMLWidgets(root):
