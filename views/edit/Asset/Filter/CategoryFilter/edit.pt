@@ -9,23 +9,10 @@
    title python:model.get_title_editable();
    root_url model/get_root_url;
    vein string:edit;
+   title_row_colspan string:3;
 ">
 
 <metal:use-macro use-macro="view/macro_asset_edit/macros/editor">
-
-<metal:block fill-slot="title_row">
-<tr>
-  <td class="top"
-    colspan="3">
-    <h2>
-      <img tal:replace="structure icon" />
-      <span style="text-transform:lowercase;"
-        tal:content="meta_type">meta type</span>
-      &#xab;<tal:block content="model/get_title_or_id" />&#xbb;
-    </h2>
-  </td>
-</tr>
-</metal:block>
 
 <metal:block fill-slot="title_metadata">
 <tr class="top-controls">
