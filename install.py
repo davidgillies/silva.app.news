@@ -88,7 +88,7 @@ def registerViews(reg):
     reg.register('edit',
                  'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
     reg.register('edit',
-                 'Silva News Category Filter', ['edit', 'Asset', 'CategoryFilter'])
+                 'Silva News Category Filter', ['edit', 'Filter', 'CategoryFilter'])
 
     # public
     reg.register('public',

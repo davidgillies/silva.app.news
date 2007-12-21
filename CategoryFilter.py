@@ -10,10 +10,10 @@ from interfaces import ICategoryFilter
 # Silva/News
 from Products.Silva import SilvaPermissions
 from Products.Silva.i18n import translate as _
-from Products.Silva.Asset import Asset
+from Products.SilvaNews.Filter import Filter
 
-class CategoryFilter(Asset):
-    """A CategoryFilter Asset that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
+class CategoryFilter(Filter):
+    """A CategoryFilter that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
 
     security = ClassSecurityInfo()
 
@@ -22,37 +22,7 @@ class CategoryFilter(Asset):
     implements(ICategoryFilter)
 
     def __init__(self, id):
-        CategoryFilter.inheritedAttribute('__init__')(self, id)
-	self._subjects = []
-        self._target_audiences = []
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_subjects')
-    def set_subjects(self, subjects):
-        """Sets the subjects"""
-        self._subjects = subjects
-
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_target_audiences')
-    def set_target_audiences(self, ta):
-        self._target_audiences = ta
-
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subjects')
-    def subjects(self):
-        """Returns a list of subjects
-        """
-        return self._subjects
-
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'target_audiences')
-    def target_audiences(self):
-        """Returns a list of target audiences"""
-        return self._target_audiences
-
+        Filter.__init__(self, id)
 
 #I think this stuff below should be integrated somewhere to get the lists of subjects and audiences to indent like they do on service_news
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

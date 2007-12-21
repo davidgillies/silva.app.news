@@ -140,6 +140,9 @@ class IFilter(IAsset):
            This is _only_ used by News Viewers.
         """
 
+class ICategoryFilter(IFilter):
+    """A CategoryFilter Asset that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
+
 class INewsFilter(IFilter):
     """a filter for news items"""
 
@@ -293,5 +296,3 @@ class IServiceNews(Interface):
         Each tuple is an (indent, subject) pair.
         """
 
-class ICategoryFilter(IAsset):
-    """A CategoryFilter Asset that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
