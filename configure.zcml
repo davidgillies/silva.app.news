@@ -25,6 +25,13 @@
     />
 
   <silva:content
+    content=".NewsPublication.NewsPublication"
+    extension_name="SilvaNews"
+    icon="www/news_source.png"
+    priority="3"
+    />
+
+  <silva:content
     content=".NewsViewer.NewsViewer"
     extension_name="SilvaNews"
     icon="www/news_viewer.png"
@@ -76,17 +83,10 @@
     />  
 
   <silva:content
-    content=".NewsPublication.NewsPublication"
-    extension_name="SilvaNews"
-    icon="www/news_source.png"
-    priority="3.8"
-    />
-
-  <silva:content
     content=".CategoryFilter.CategoryFilter"
     extension_name="SilvaNews"
     icon="www/category_filter.png"
-    priority="3.9"
+    priority="3.8"
     />
 
 </configure>
