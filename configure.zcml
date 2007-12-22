@@ -66,12 +66,19 @@
     priority="3.5"
     />
 
+  <silva:content
+    content=".CategoryFilter.CategoryFilter"
+    extension_name="SilvaNews"
+    icon="www/category_filter.png"
+    priority="3.6"
+    />
+
   <silva:versionedcontent
     content=".PlainArticle.PlainArticle"
     version=".PlainArticle.PlainArticleVersion"
     extension_name="SilvaNews"
     icon="www/news_item.png"
-    priority="3.6"
+    priority="3.7"
     />  
 
   <silva:versionedcontent
@@ -79,14 +86,7 @@
     version=".PlainAgendaItem.PlainAgendaItemVersion"
     extension_name="SilvaNews"
     icon="www/agenda_item.png"
-    priority="3.7"
-    />  
-
-  <silva:content
-    content=".CategoryFilter.CategoryFilter"
-    extension_name="SilvaNews"
-    icon="www/category_filter.png"
     priority="3.8"
-    />
+    />  
 
 </configure>
