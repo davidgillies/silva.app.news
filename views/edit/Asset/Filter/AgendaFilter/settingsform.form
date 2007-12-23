@@ -24,7 +24,9 @@
           <default>[]</default>
           <title>subjects</title>
           <orientation>vertical</orientation>
-          <description>Select the news subjects to filter on.</description>
+          <description>
+            Select the news subjects to filter on.
+          </description>
           <css_class></css_class>
           <external_validator></external_validator>
           <unicode type="int">1</unicode>
