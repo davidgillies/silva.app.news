@@ -13,7 +13,11 @@ from Products.Silva.i18n import translate as _
 from Products.SilvaNews.Filter import Filter
 
 class CategoryFilter(Filter):
-    """A CategoryFilter that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
+    """A Category Filter is useful in large sites where the news articles have
+       (too) many subjects and target audiences defined. The Filter will limit
+       those that display so only the appropriate ones for that area of the
+       site appear.
+    """
 
     security = ClassSecurityInfo()
 
