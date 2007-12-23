@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Revision: 1.31 $
 
-"""Install and Uninstall for Silva News
+"""Install and Uninstall for Silva News Network
 """
 
 from zope import interface
@@ -48,7 +48,7 @@ def install(root):
     # and add a service_news to the Silva root
     if not hasattr(root, 'service_news'):
         root.manage_addProduct['SilvaNews'].manage_addServiceNews(
-            'service_news', 'Service for News')
+            'service_news', 'Silva News Network Service')
 
 def uninstall(root):
     unregisterViews(root.service_view_registry)
