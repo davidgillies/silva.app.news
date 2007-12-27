@@ -15,11 +15,9 @@ from interfaces import INewsFilter
 # Silva/News
 from Products.Silva import SilvaPermissions
 from Products.SilvaViews.ViewRegistry import ViewAttribute
-from Filter import Filter
+from NewsItemFilter import brainsorter,NewsItemFilter
 
-from Filter import brainsorter
-
-class NewsFilter(Filter):
+class NewsFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
         are passed from NewsFolder to NewsViewer through filters. On a filter
         you can choose which NewsFolders you want to channel items for and

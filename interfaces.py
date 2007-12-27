@@ -75,50 +75,94 @@ class IAgendaItemVersion(INewsItemVersion):
         """Sets the manual location"""
 
 class IFilter(IAsset):
-    """Filter for news items.
-
-    A filter picks up news from news sources. Editors can
-    browse through this news. It can also be used by
-    public pages to expose published news items to end users.
-    """
     
-    def keep_to_path(self):
-        """Returns true if the item should keep to path
-        """
-
-    def number_to_show(self):
-        """Returns amount of items to show.
-        """
-
     def subjects(self):
-        """Returns the list of subjects.
-        """
+        """Returns the list of subjects."""
 
     def target_audiences(self):
-        """Returns the list of target audiences.
+        """Returns the list of target audiences."""
+
+    def set_subject(self, subject, on_or_off):
+        """Updates the list of subjects"""
+
+    def set_target_audience(self, target_audience, on_or_off):
+        """Updates the list of target_audiences"""
+
+    def synchronize_with_service(self):
+        """Checks whether the lists of subjects and target_audiences
+        only contain items that the service_news-lists contain (to remove
+        items from the object's list that are removed in the service)
         """
+
+class ICategoryFilter(IFilter):
+    """A CategoryFilter is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
+
+class INewsItemFilter(IFilter):
+    """Super-class for news item filters.
+
+    A NewsItemFilter picks up news from news sources. Editors can
+    browse through this news. It can also be used by
+    public pages to expose published news items to end users.
+
+    A super-class for the News Filters (NewsFilter, AgendaFilter)
+    which contains shared code for both filters"""
+
+    def find_sources(self):
+        """returns all the sources available for querying"""
+
+    def sources(self):
+        """return the sourcelist of this newsitemfilter"""
+
+    def verify_sources(self):
+        """Verifies the sourcelist against the available sources,
+           removing those sources that no longer exist"""
+
+    def add_source(self, sourcepath, add_or_remove):
+        """add or remove a source from the sourcelist"""
+
+    def keep_to_path(self):
+        """Returns true if the item should keep to path"""
 
     def set_keep_to_path(self, value):
         """Removes the filter from the list of filters where the item
-        should appear
-        """
+        should appear"""
 
-    def set_subject(self, subject, on_or_off):
-        """Updates the list of subjects
-        """
-
-    def set_target_audience(self, target_audience, on_or_off):
-        """Updates the list of target_audiences
-        """
+    def number_to_show(self):
+        """Returns amount of items to show."""
 
     def set_number_to_show(self, number):
-        """Updates the list of target_audiences
+        """Updates the list of target_audiences"""
+
+    def excluded_items(self):
+        """Returns a list of object-paths of all excluded items
         """
+
+    def set_excluded_items(self, object_path, add_or_remove):
+        """Adds or removes an item to or from the excluded_items list
+        """
+
+    def verity_excluded_items(self):
+        """maintain the list of excluded items in this filter,
+        by removing ones that no longer exist (i.e. have been deleted)"""
+
+    def search_items(self, keywords, meta_types=None):
+        """ Returns the items from the catalog that have keywords
+        in fulltext"""
+
+    def filtered_subject_form_tree(self):
+        """return a subject_form_tree (for the SMI edit screen)
+        that is filtered through a news category filter, or if
+        none are found, all subjects from the news service"""
+
+    def filtered_ta_form_tree(self):
+        """return a ta_form_tree (for the SMI edit screen)
+        that is filtered through a news category filter, or if
+        none are found, all ta's from the news service"""
 
     #functions to aid in compatibility between news and agenda filters
     # and viewers, so the viewers can pull from both types of filters
 
-    def get_agenda_items_by_date(self):
+    def get_agenda_items_by_date(self, month, year, meta_types=None):
         """        Returns non-excluded published AGENDA-items for a particular
         month. This method is for exclusive use by AgendaViewers only,
         NewsViewers should use get_items_by_date instead (which
@@ -126,7 +170,7 @@ class IFilter(IAsset):
         returns all objects instead of only IAgendaItem-
         implementations)"""
 
-    def get_next_items(self):
+    def get_next_items(self, numdays, meta_types=None):
         """ Note: ONLY called by AgendaViewers
         Returns the next <number> AGENDAitems,
         should return items that conform to the
@@ -135,34 +179,50 @@ class IFilter(IAsset):
         NewsViewers use only get_last_items.
         """
 
-    def get_last_items(self):
+    def get_last_items(self, number, number_id_days=0, meta_types=None):
         """Returns the last (number) published items
            This is _only_ used by News Viewers.
         """
 
-class ICategoryFilter(IFilter):
-    """A CategoryFilter Asset that is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
-
-class INewsFilter(IFilter):
-    """a filter for news items"""
+class INewsFilter(INewsItemFilter):
+    """A filter for news items"""
 
     def show_agenda_items(self):
         """should we also show agenda items?"""
+
     def set_show_agenda_items(self):
         """sets whether to show agenda items"""
-    def get_allowed_meta_types(self):
-        """returns what metatypes are filtered on"""
-    def get_all_items(self):
-        """Returns all items, only to be used on the back-end"""
-    def get_items_by_date(self):
-        """For looking through the archives"""
 
-class IAgendaFilter(IFilter):
-    """A filter for agenda items"""
     def get_allowed_meta_types(self):
-        """returns what metatypes are filtered on"""
-    def get_items_by_date(self):
-        """gets the events for a specific month"""
+        """returns what metatypes are filtered on
+        This is different because AgendaFilters search on start/end
+        datetime, whereas NewsFilters look at display datetime"""
+
+    def get_all_items(self, meta_types=None):
+        """Returns all items, only to be used on the back-end"""
+
+    def get_items_by_date(self, month, year, meta_types=None):
+        """For looking through the archives
+        This is different because AgendaFilters search on start/end
+        datetime, whereas NewsFilters look at display datetime"""
+
+class IAgendaFilter(INewsItemFilter):
+    """A filter for agenda items"""
+
+    def get_allowed_meta_types(self):
+        """returns what metatypes are filtered on
+        This is different because AgendaFilters search on start/end
+        datetime, whereas NewsFilters look at display datetime"""
+
+    def get_items_by_date(self, month, year, meta_types=None):
+        """gets the events for a specific month
+        This is different because AgendaFilters search on start/end
+        datetime, whereas NewsFilters look at display datetime"""
+
+    def backend_get_items_by_date(self, month, year, meta_types=None):
+        """Returns all published items for a particular month
+           FOR: the SMI 'items' tab"""
+
 
 class IViewer(Interface):
     """Base interface for SilvaNews Viewers"""

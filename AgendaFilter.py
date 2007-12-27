@@ -14,9 +14,9 @@ from interfaces import IAgendaFilter
 
 # Silva/News
 from Products.Silva import SilvaPermissions
-from Filter import Filter,brainsorter
+from NewsItemFilter import NewsItemFilter,brainsorter
 
-class AgendaFilter(Filter):
+class AgendaFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
        are passed from NewsFolder to NewsViewer through filters. On a filter
        you can choose which NewsFolders you want to channel items for and
@@ -68,7 +68,6 @@ class AgendaFilter(Filter):
         for item in result_enddt:
             if item.object_path not in self._excluded_items:
                 result.append(item)
-
 
         del query['idx_end_datetime']
         query['idx_start_datetime'] = {'query': [startdate, enddate],

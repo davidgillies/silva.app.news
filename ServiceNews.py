@@ -15,9 +15,60 @@ from dates import DateTimeFormatter, getMonthAbbreviations
 
 import Tree
 
-# XXX needs an icon
+class CategoryMixin(object):
+    """Code that can be shared between category users for the
+    purpose of generating flat lists of SilvaNews categories"""
+    """Currently used by NewsService and CategoryFilter"""
 
-class ServiceNews(SimpleItem):
+    security = ClassSecurityInfo()
+
+    security.declareProtected('View', 'subject_tree')
+    def subject_tree(self,audject=None):
+        """returns a list (id, title, depth) for all elements in the tree"""
+        ret = []
+        self._flatten_tree_helper(self._subjects, ret, filterby=audject)
+        return ret
+
+    security.declareProtected('View', 'subject_form_tree')
+    def subject_form_tree(self, audject=None):
+        """returns a list (html_repr, id) for each element
+
+            html_repr consists of '%s%s' % (
+                (depth * 2 * '&nsbp;'), title)
+        """
+        tree = self.subject_tree(audject)
+        return self._form_tree_helper(tree)
+
+    security.declareProtected('View', 'target_audience_tree')
+    def target_audience_tree(self,audject=None):
+        """returns a list (id, title, depth) for all elements in the tree"""
+        ret = []
+        self._flatten_tree_helper(self._target_audiences, ret, filterby=audject)
+        return ret
+
+    security.declareProtected('View', 'target_audience_form_tree')
+    def target_audience_form_tree(self, audject=None):
+        """see subject_form_tree"""
+        tree = self.target_audience_tree(audject)
+        return self._form_tree_helper(tree)
+        
+    def _form_tree_helper(self, tree):
+        ret = []
+        for el in tree:
+            r = '%s%s' % ((el[2] * 2 * '&nbsp;'), el[1])
+            ret.append((r, el[0]))
+        return ret
+
+    def _flatten_tree_helper(self, tree, ret, depth=0, filterby=[]):
+        els = tree.children()
+        els.sort(lambda a, b: cmp(a.id(), b.id()))
+        for el in els:
+            if not filterby or el.id() in filterby:
+                ret.append((el.id(), el.title(), depth))
+            self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
+Globals.InitializeClass(CategoryMixin)
+    
+class ServiceNews(SimpleItem, CategoryMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
     implements(IServiceNews)
@@ -126,55 +177,7 @@ class ServiceNews(SimpleItem):
         node.parent().removeChild(node)
         self._p_changed = 1
 
-    security.declareProtected('View',
-                                'subject_tree')
-    def subject_tree(self,audject=None):
-        """returns a list (id, title, depth) for all elements in the tree"""
-        ret = []
-        self._flatten_tree_helper(self._subjects, ret, filterby=audject)
-        return ret
-
-    security.declareProtected('View',
-                                'target_audiences')
-    def target_audience_tree(self,audject=None):
-        """returns a list (id, title, depth) for all elements in the tree"""
-        ret = []
-        self._flatten_tree_helper(self._target_audiences, ret, filterby=audject)
-        return ret
-
-    def _flatten_tree_helper(self, tree, ret, depth=0, filterby=[]):
-        els = tree.children()
-        els.sort(lambda a, b: cmp(a.id(), b.id()))
-        for el in els:
-            if not filterby or el.id() in filterby:
-                ret.append((el.id(), el.title(), depth))
-            self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
             
-    security.declareProtected('View',
-                                'subject_form_tree')
-    def subject_form_tree(self, audject=None):
-        """returns a list (html_repr, id) for each element
-
-            html_repr consists of '%s%s' % (
-                (depth * 2 * '&nsbp;'), title)
-        """
-        tree = self.subject_tree(audject)
-        return self._form_tree_helper(tree)
-
-    security.declareProtected('View',
-                                'target_audience_form_tree')
-    def target_audience_form_tree(self, audject=None):
-        """see subject_form_tree"""
-        tree = self.target_audience_tree(audject)
-        return self._form_tree_helper(tree)
-        
-    def _form_tree_helper(self, tree):
-        ret = []
-        for el in tree:
-            r = '%s%s' % ((el[2] * 2 * '&nbsp;'), el[1])
-            ret.append((r, el[0]))
-        return ret
-
     security.declareProtected('View',
                                 'locale')
     def locale(self):
