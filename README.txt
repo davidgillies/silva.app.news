@@ -5,7 +5,9 @@ See also LICENSE.txt
 
 Meta::
 
-  Valid for:   Silva News Network 2.6, Silva 2.0.4+, Silva External Sources 1.5
+  Valid for:   Silva News Network 2.6, Silva 2.0.4+, 
+               Silva External Sources 1.5 (required)
+               
   Authors:     Guido Wesdorp, Martijn Faassen, Wim Boucquaert, 
 	       Andy Altepeter
   Emails:      guido@infrae.com, faassen@infrae.com, wim@infrae.com, 

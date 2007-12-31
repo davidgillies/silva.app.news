@@ -20,8 +20,8 @@
 
   <silva:extension
     name="SilvaNews"
-    title="SilvaNewsNetwork"
-    depends="SilvaDocument"
+    title="Silva News Network"
+    depends="SilvaDocument SilvaExternalSources SilvaFind"
     />
 
   <silva:content
