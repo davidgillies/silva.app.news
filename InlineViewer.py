@@ -109,7 +109,7 @@ class InlineViewer(CodeSource):
         self.REQUEST.other['oldmodel'] = oldmodel
         self.REQUEST.other['model'] = self
         try:
-            return ustr(getattr(self, 'view')(**kwargs))
+            return ustr(getattr(self, self._script_id)(**kwargs))
         finally:
             self.REQUEST.other['model'] = oldmodel
             del self.REQUEST.other['oldmodel']
