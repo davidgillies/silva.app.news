@@ -5,6 +5,7 @@
 from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
+from DateTime import DateTime
 
 # Silva 
 import Products.Silva.SilvaPermissions as SilvaPermissions
