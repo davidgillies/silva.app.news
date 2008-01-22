@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: silva-news-network\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Jan  2 15:20:57 2008\n"
+"POT-Creation-Date: 2008-01-02 19:45+0000\n"
 "PO-Revision-Date: 2007-11-10 13:35+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-01-02 14:04+0000\n"
+"X-Launchpad-Export-Date: 2008-01-22 16:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /NewsItem.py:102
@@ -36,8 +36,8 @@ msgstr ""
 #: /views/add/CategoryFilter/form.form:75
 msgid ""
 "\n"
-"            Select the news subjects to filter on. Only those selected "
-"will \n"
+"            Select the news subjects to filter on. Only those selected will "
+"\n"
 "            appear in this area of the site. Select nothing to have all\n"
 "            show up.\n"
 "          "
@@ -59,7 +59,8 @@ msgstr ""
 #: /views/add/NewsFilter/form.form:27
 #: /views/add/NewsItem/PlainAgendaItem/form.form:31
 #: /views/add/NewsItem/PlainArticle/form.form:31
-#: /views/add/AgendaFilter/form.form:27 /views/add/AgendaViewer/form.form:31
+#: /views/add/AgendaFilter/form.form:27
+#: /views/add/AgendaViewer/form.form:31
 msgid ""
 "No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; "
 "or &#8216;.&#8217;"
@@ -67,10 +68,12 @@ msgstr ""
 "Без пробелов и специальных символов кроме &#8216;_&#8217; или &#8216;-"
 "&#8217; или &#8216;.&#8217;"
 
-#: /views/add/NewsFolder/form.form:29 /views/add/NewsFilter/form.form:25
+#: /views/add/NewsFolder/form.form:29
+#: /views/add/NewsFilter/form.form:25
 #: /views/add/NewsItem/PlainAgendaItem/form.form:29
 #: /views/add/NewsItem/PlainArticle/form.form:29
-#: /views/add/AgendaFilter/form.form:25 /views/add/CategoryFilter/form.form:31
+#: /views/add/AgendaFilter/form.form:25
+#: /views/add/CategoryFilter/form.form:31
 #: /views/add/AgendaViewer/form.form:29
 msgid "id"
 msgstr "идентификатор"
@@ -224,10 +227,12 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
-#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
+#: /views/add/NewsFolder/form.form:48
+#: /views/add/NewsFilter/form.form:45
 #: /views/add/NewsItem/PlainAgendaItem/form.form:49
 #: /views/add/NewsItem/PlainArticle/form.form:51
-#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
+#: /views/add/AgendaFilter/form.form:45
+#: /views/add/CategoryFilter/form.form:53
 #: /views/add/AgendaViewer/form.form:49
 msgid "title"
 msgstr "заголовок"
@@ -320,13 +325,17 @@ msgstr "выбрать все пункты: alt-a"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
+#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
+#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
 msgstr "выбрать все"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
+#: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
+#: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
@@ -586,7 +595,8 @@ msgstr "Настройки изменены на:"
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:108
 msgid "<span class=\"error\">could not change settings on: ${ids}</span>"
-msgstr "<span class=\"error\">невозможно изменить настройки на: ${ids}</span>"
+msgstr ""
+"<span class=\"error\">невозможно изменить настройки на: ${ids}</span>"
 
 #: /views/edit/Container/NewsPublication/tab_status_change_settings.py:16
 msgid "Nothing was selected, so no settings were changed."
@@ -983,11 +993,13 @@ msgstr "сменить представителя"
 msgid "change renderer: alt-c"
 msgstr "сменить представителя: alt-c"
 
-#: /views/edit/tab_settings.pt:188 /views/edit/tab_settings.pt:259
+#: /views/edit/tab_settings.pt:188
+#: /views/edit/tab_settings.pt:259
 msgid "layout settings for &#xab;${title}&#xbb;"
 msgstr "Настройка слоя для &#xab;${title}&#xbb;"
 
-#: /views/edit/tab_settings.pt:202 /views/edit/tab_settings.pt:221
+#: /views/edit/tab_settings.pt:202
+#: /views/edit/tab_settings.pt:221
 #: /views/edit/tab_settings.pt:241
 msgid "layout settings"
 msgstr "Настройка слоя"
@@ -1276,6 +1288,3 @@ msgstr ""
 #: /www/inline_viewer_view.pt:74
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr ""
-
-#~ msgid "In use"
-#~ msgstr "Используется"

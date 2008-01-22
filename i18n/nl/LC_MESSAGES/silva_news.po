@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: instances 286\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Wed Jan  2 15:20:57 2008\n"
-"PO-Revision-Date: 2007-12-21 17:30+0000\n"
+"POT-Creation-Date: Tue Jan 22 17:55:39 2008\n"
+"PO-Revision-Date: 2008-01-03 13:51+0000\n"
 "Last-Translator: Wim Boucquaert <wim@infrae.com>\n"
 "Language-Team: Dutch <wim@infrae.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-01-02 14:04+0000\n"
+"X-Launchpad-Export-Date: 2008-01-22 16:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language-code: nl\n"
 "Domain: silva_news\n"
@@ -28,11 +28,11 @@ msgstr "Geen volgende versie."
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
-msgstr ""
+msgstr "Dit veld kan niet bewerkt worden."
 
 #: /views/add/CategoryFilter/form.form:55
 msgid "This is the title for your Category Filter."
-msgstr ""
+msgstr "Dit is de titel van de Categorie-filter"
 
 #: /views/add/CategoryFilter/form.form:75
 msgid ""
@@ -43,6 +43,11 @@ msgid ""
 "            show up.\n"
 "          "
 msgstr ""
+"\n"
+"            Selecteer de nieuwsonderwerpen om op te filteren. Alleen de "
+"geselecteerde onderwerpen zullen in dit gedeelte van de site verschijnen. "
+"Selecteer niets om alle onderwerpen te laten verschijnen.\n"
+"          "
 
 #: /views/add/CategoryFilter/form.form:95
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:50
@@ -196,15 +201,15 @@ msgstr "De filter is bijgewerkt."
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
 msgid "description"
-msgstr ""
+msgstr "omschrijving"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 msgid "save selection"
-msgstr ""
+msgstr "selectie opslaan"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
 msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
-msgstr ""
+msgstr "<abbr title=\"Silva News Network\">SNN</abbr> Categorie-filters"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
@@ -217,7 +222,7 @@ msgstr "eigenschappen"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:16
 msgid "access"
-msgstr ""
+msgstr "toegang"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
@@ -227,7 +232,7 @@ msgstr "bronnen"
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
 msgid "path"
-msgstr ""
+msgstr "pad"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
@@ -1355,6 +1360,9 @@ msgstr "Locatie: <span class=\"newsitemlocation\"></span>"
 #~ msgid "number"
 #~ msgstr "aantal"
 
+#~ msgid "In use"
+#~ msgstr "In gebruik"
+
 #~ msgid "Display time"
 #~ msgstr "Weergavetijd"
 
@@ -1738,15 +1746,3 @@ msgstr "Locatie: <span class=\"newsitemlocation\"></span>"
 
 #~ msgid "show title"
 #~ msgstr "titel tonen"
-
-#~ msgid "This field cannot be edited"
-#~ msgstr "Dit veld kan niet bewerkt worden."
-
-#~ msgid "This is the title for your SilvaNews Category Filter."
-#~ msgstr "Dit is de titel van de SilvaNews Categorie-filter."
-
-#~ msgid "Select the news subjects to filter on."
-#~ msgstr "Selecteer de nieuwsonderwerpen om op te filteren."
-
-#~ msgid "In use"
-#~ msgstr "In gebruik"
