@@ -9,6 +9,8 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   tal:define="
     global vein string:editor;
+    model request/model;
+    is_editable model/get_unapproved_version;
     "
   i18n:domain="silva_news">
 <metal:block use-macro="here/macro_tab_edit/macros/editor">
@@ -23,6 +25,7 @@
 
 <metal:block fill-slot="script">
   <!-- note that the Kupu scripts need to be loaded *before* widgeteer! -->
+ <tal:block condition="is_editable">
   <tal:block condition="python: hasattr(view, 'service_kupu')">
     <tal:block define="dummy python:request.SESSION.set('edit_field', 'content')" />
     <metal:macro use-macro="view/service_kupu_silva/kupumacros/macros/jsincludes" />
@@ -38,6 +41,7 @@
   <script type="text/javascript" 
             tal:attributes="src here/reference.js/absolute_url">
   </script>
+ </tal:block>
 </metal:block>
 
 <metal:block fill-slot="editor_content">
