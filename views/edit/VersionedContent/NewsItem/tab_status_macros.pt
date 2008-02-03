@@ -24,196 +24,40 @@ manual_close.........Manual close
 </tal:toc>
 
 <span tal:replace="nothing"> _______ Notice of previous version times _______ </span>
-<metal:block define-macro="datetime_info"
-  tal:define="
-    start_time python: mangle.DateTime(model.get_public_version_publication_datetime()).toStr();
-    end_time python: mangle.DateTime(model.get_public_version_expiration_datetime()).toStr()"
-  tal:condition="start_time"
-  >
-  <br />
-  <p style="margin-top:0.3em; margin-bottom:0.2em;">
-<span class="subhead"
-  tal:condition="not:end_time"
-  i18n:translate="">
-Publication time of public version
-</span>
-<span class="subhead"
-  tal:condition="end_time"
-  i18n:translate="">
-Publication and expiration time of public version
-</span>
-<br />
-<tal:block replace="structure python: '%s%s' % (start_time, test(end_time, ' - %s' % end_time, ''))" />
-</p>
-  <p style="margin-top:0.3em; margin-bottom:0.2em;"
-    tal:condition="exists: python: model.get_viewable().display_datetime()">
-    <span class="subhead">
-      Display time of public version<br />
-    </span>
-    <tal:plug tal:define="display_time python:mangle.DateTime(model.get_viewable().display_datetime()).toStr();"
-      tal:replace="display_time" />
-  </p>
+<metal:block define-macro="datetime_info">
+ <metal:use-macro use-macro="context/aq_parent/aq_parent/tab_status_macros/macros/datetime_info">
+  <metal:slot fill-slot="extra">
+   <p tal:condition="python: model.get_viewable().display_datetime()">
+     <span class="subhead"
+      i18n:translate="">
+       Display time of public version
+     </span>
+     <br />
+     <tal:plug tal:define="display_time python:mangle.DateTime(model.get_viewable().display_datetime()).toStr();"
+       tal:replace="display_time" />
+   </p>
+  </metal:slot>
+ </metal:use-macro>
 </metal:block>
 
+<!--
+<metal:use-macro use-macro="here/aq_parent/aq_parent/tab_status_macros/macros/XXX" />
+-->
+
 <span tal:replace="nothing"> _______ Author/Editor messages _______ </span>
-<div tal:omit-tag=""
-  tal:condition="python:model.get_approval_request_message()"
-  metal:define-macro="messages">
-<tr class="inter-controls">
-<td colspan="2">
-<h3 i18n:translate="">
-messages
-</h3>
-</td>
-</tr>
-
-<tr class="even">
-<td class="feedback"
-  colspan="2"
-  i18n:translate="">
-<span tal:replace="python:model.get_approval_requester()" i18n:name="author_id">author id</span>
-sent a message on 
-<span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()"
-  i18n:name="some_date">some date</span>
-<tal:if condition="python:model.get_approval_request_message()"
-  i18n:name="with_comments">
-<tal:inline i18n:translate="">with the following comments:</tal:inline>
-</tal:if>
-</td>
-</tr>
-
-<tr class="controls"
-  tal:condition="python:model.get_approval_request_message()">
-<td class="message"
-  colspan="2"
-  style="padding:0">
-<div class="message"
-  tal:content="python:model.get_approval_request_message() or 'whatever'">
-  message text
-</div>
-</td>
-</tr>
-</div>
-
+<metal:block define-macro="messages">
+ <metal:use-macro use-macro="here/aq_parent/aq_parent/tab_status_macros/macros/messages" />
+</metal:block>
 
 <span tal:replace="nothing"> _______ Author requests approval _______ </span>
-<div metal:define-macro="request_approval" tal:omit-tag="">
-<form action="." method="post">
-<tr tal:condition="python:model.get_approval_request_message()">
-<td class="feedback"
- colspan="2" i18n:translate="">
-A previous request for approval has been rejected / withdrawn by 
-<span tal:replace="python:model.get_approval_requester()" i18n:name="requester" /> on 
-<span tal:replace="structure python:mangle.DateTime(model.get_approval_request_datetime()).toStr()" i18n:name="some_date">some date</span>.
-<tal:comment condition="nothing"> actually the last message may not have been written
-  by the person withdrawing the request; if this person for example made an empty reject,
-  this is the message of the requester ...
-</tal:comment>
-The last message regarding this issue is:
-</td>
-</tr>
-
-<tr class="even"
-  tal:define="message python:model.get_approval_request_message()"
-  tal:condition="message">
-<td class="message"
-  colspan="2">
-<div class="message"
-  tal:content="message">
-  message text
-</div>
-</td>
-</tr>
-
-<tr class="inter-controls">
-<td colspan="2">
-<h3 i18n:translate="">request approval <span tal:condition="python:may_change_content and unapproved and published" i18n:name="for_new_version"><tal:block i18n:translate="">for new version</tal:block></span></h3>
-</td>
-</tr>
-
-<tr>
-<th i18n:translate="">
-message to editor
-</th>
-<th style="width:40%" i18n:translate="">
-notes
-</th>
-</tr>
-
-<tr class="odd"
-  tal:define="field view/tab_status_form_author/message">
-<td class="align-right">
-<tal:input
-  replace="structure python: field.render(REQUEST=request)" />
-</td>
-<td i18n:translate="">
-This message will remain visible in the status screen for other authors and editors.
-</td>
-</tr>
-
-<tr metal:use-macro="here/tab_status_macros/macros/date_controls">
-  pub/exp/display controls inserted (see below, @ line 241)
-</tr>
-
-<tr class="controls">
-<td class="align-right" colspan="2">
-<input 
-  type="submit"
-  value="request approval"
-  class="button"
-  name="tab_status_request:method"
-  title="access key: alt-r"
-  accesskey="r"
-  i18n:attributes="value;title"
-/>
-</td>
-</tr>
-</form>
-</div>
-<span tal:replace="nothing"> _______ / Author requests approval _______ </span>
-
+<metal:block define-macro="request_approval">
+ <metal:use-macro use-macro="here/aq_parent/aq_parent/tab_status_macros/macros/request_approval" />
+</metal:block>
 
 <span tal:replace="nothing"> _______ Editor can change settings _______ </span>
-<div metal:define-macro="approved_editor" tal:omit-tag="">
-<form action="." method="post">
-<tr class="inter-controls">
-<td colspan="2">
-<h3 i18n:translate="">
-change settings
-</h3>
-</td>
-</tr>
-
-<tr>
-<th class="align-right" i18n:translate="">
-current timings
-</th>
-<th i18n:translate="">
-notes
-</th>
-</tr>
-
-<tr metal:use-macro="here/tab_status_macros/macros/date_controls">
-  pub/exp/display controls inserted (see below, @ line 241)
-</tr>
-
-<tr class="inter-controls">
-<td class="align-right"
-  colspan="2">
-<input type="submit" 
-  value="update timing"
-  name="tab_status_change_settings:method"
-  class="button"
-  title="access key: alt-u"
-  accesskey="u"
-  i18n:attributes="value;title"
-/>
-</td>
-</tr>
-</form>
-</div>
-<span tal:replace="nothing"> _______ / Editor can change settings _______ </span>
-
+<metal:block define-macro="approved_editor">
+ <metal:use-macro use-macro="here/aq_parent/aq_parent/tab_status_macros/macros/approved_editor" />
+</metal:block>
 
 <span tal:replace="nothing"> ______________ Subtables ______________ </span>
 
