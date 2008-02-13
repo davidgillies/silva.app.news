@@ -21,6 +21,9 @@ SilvaNewsNetwork changes
       - 176581: removed Category Filter preview tab, and registered a "dummy"
         public view for this content type
 
+      - 160505: SNN News Publications cannot have addables settings.  It 
+        should, being News Publications inherit from Publications.
+
   2.6.0 beta
   
     New Features

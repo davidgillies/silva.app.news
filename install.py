@@ -76,7 +76,7 @@ def registerViews(reg):
     reg.register('edit',
                  'Silva News Filter', ['edit', 'Asset', 'Filter', 'NewsFilter'])
     reg.register('edit',
-                 'Silva News Publication', ['edit', 'Container', 'NewsPublication'])
+                 'Silva News Publication', ['edit', 'Container', 'Publication', 'NewsPublication'])
     reg.register('edit',
                  'Silva News Viewer', ['edit', 'Content', 'NewsViewer'])
     reg.register('edit',

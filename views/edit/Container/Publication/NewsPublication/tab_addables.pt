@@ -7,26 +7,29 @@
   xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="silva_news"
   tal:define="
-    global active_tab string:tab_metadata;
-    global parent_screen_name string:settings;
     global vein string:addables;
-"
->
+    global active_tab string:tab_metadata;
+    global parent_screen_name string:properties;
+    "
+  i18n:domain="silva">
 
 <metal:block use-macro="here/macro_index/macros/master">
-<metal:block fill-slot="main">
 
-<tal:block define="
-  global view here;
-  global model request/model;
-  global fields python:view.settings_addables_form.get_fields();
-  "
-  tal:condition="python:request['AUTHENTICATED_USER'].has_permission('Approve silva content', request.model)"
+<metal:block metal:fill-slot="middleground">
+  <metal:block use-macro="here/macro_middleground/macros/properties" />
+</metal:block>
+
+<metal:block fill-slot="main">
+<tal:block
+  define="
+    global view here;
+    global model request/model;
+    global fields python:view.tab_addables_form.get_fields();"
+  condition="may_approve_content"
 >
 
-<form method="POST" name="form" action="settings_addables_submit">
+<form method="post" name="form" action="tab_addables_submit">
   <table class="columns columns2">
     <tbody>
       <tr>
@@ -35,15 +38,11 @@
         </tal:block>
         <td class="left">
           <tal:block replace="nothing">
-            ______________ parent screen link ______________
-          </tal:block >
-          <metal:block use-macro="view/macro_vein_navigation/macros/parent" />
-          <tal:block replace="nothing">
             ______________ vein navigation ______________
           </tal:block >
           <metal:use-macro use-macro="view/macro_vein_navigation/macros/vein">
             <metal:fill-slot fill-slot="sidebar">
-              <tal:block replace="structure python: view.service_sidebar.render(model, 'settings_addables', vein)" />
+              <tal:block replace="structure python: view.service_sidebar.render(model, 'tab_addables', vein)" />
             </metal:fill-slot>
           </metal:use-macro>
         </td>
@@ -62,8 +61,9 @@
                     colspan="3">
                     <h2>
                       <img tal:replace="structure python:view.render_icon(model)" />
-                      <span i18n:translate="">addable settings for: </span>
-                      &#xab;<tal:block content="model/get_title_editable" />&#xbb;
+                      <span i18n:translate=""> addable settings for
+                        &#xab;<tal:block content="title" i18n:name="title" />&#xbb;
+                      </span>
                     </h2>
                   </td>
                 </tr>
@@ -71,14 +71,16 @@
 
               <tbody>
                 <tr>
-                  <th i18n:translate="" class="align-right" width="12%">
-                    Element
+                  <th class="align-right"
+                    width="12%"
+                    i18n:translate="">
+                    element
                   </th>
                   <th i18n:translate="">
-                    Content
+                    content
                   </th>
-                  <th i18n:translate="" width="30%">
-                    Note
+                  <th width="60%" i18n:translate="">
+                    note
                   </th>
                 </tr>
 
@@ -87,16 +89,15 @@
                     <tr valign="top"
                       tal:attributes="class python:oddrow and 'even' or 'odd'">
                       <td class="align-right">
-                        <span tal:replace="structure python: field.title().lower()">Title</span><span class="warning" tal:condition="python:field.is_required()">*</span>
+                        <tal:block content="structure python: field.title()" i18n:translate="">title</tal:block><span class="warning" tal:condition="python:field.is_required()">*</span>
                       </td>
                       <td>
                         <input tal:replace="structure python:field.render(value=model.getProperty(field.id))" />
                       </td>
                       <td>
-                        <span tal:replace="python:field.get_value('description')">
+                        <tal:block content="python:field.get_value('description')" i18n:translate="">
                           comments here (field description)
-                        </span><br />
-                        <span tal:condition="python:field.id == 'contact_name' or field.id == 'contact_email'" tal:omit-tag="">(<i tal:content="python:getattr(model, field.id, 'None')"></i>)</span>
+                        </tal:block><br />
                       </td>
                     </tr>
                   </tal:define>
@@ -110,10 +111,10 @@
                     <input class="button"
                       type="submit"
                       name="form_submitted"
-                      value="Save addables data"
+                      value="save addables settings"
                       title="save addable settings for this publication: alt-a"
-                      accesskey="a" 
-                      i18n:attributes="title;value"
+                      accesskey="a"
+                      i18n:attributes="value;title"
                     />
                   </td>
                 </tr>
