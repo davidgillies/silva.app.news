@@ -1,14 +1,21 @@
+# Spanish translation for silva-news-network
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the silva-news-network package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: SilvaNews trunk"
+"Project-Id-Version: silva-news-network\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: Wed Feb 13 17:50:41 2008\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2008-01-25 00:39+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Silva Translators <eric+i18n@infrae.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generated-By: zope/app/translation_files/extract.py\n"
+"X-Launchpad-Export-Date: 2008-02-13 16:04+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: /NewsItem.py:102
 msgid "No unapproved version."
@@ -20,7 +27,7 @@ msgstr ""
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
-msgstr ""
+msgstr "Este campo no puede ser editado."
 
 #: /views/add/CategoryFilter/form.form:55
 msgid "This is the title for your Category Filter."
@@ -29,7 +36,8 @@ msgstr ""
 #: /views/add/CategoryFilter/form.form:75
 msgid ""
 "\n"
-"            Select the news subjects to filter on. Only those selected will \n"
+"            Select the news subjects to filter on. Only those selected "
+"will \n"
 "            appear in this area of the site. Select nothing to have all\n"
 "            show up.\n"
 "          "
@@ -48,17 +56,16 @@ msgstr ""
 #: /views/add/NewsFilter/form.form:27
 #: /views/add/NewsItem/PlainAgendaItem/form.form:31
 #: /views/add/NewsItem/PlainArticle/form.form:31
-#: /views/add/AgendaFilter/form.form:27
-#: /views/add/AgendaViewer/form.form:31
-msgid "No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; or &#8216;.&#8217;"
+#: /views/add/AgendaFilter/form.form:27 /views/add/AgendaViewer/form.form:31
+msgid ""
+"No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; "
+"or &#8216;.&#8217;"
 msgstr ""
 
-#: /views/add/NewsFolder/form.form:29
-#: /views/add/NewsFilter/form.form:25
+#: /views/add/NewsFolder/form.form:29 /views/add/NewsFilter/form.form:25
 #: /views/add/NewsItem/PlainAgendaItem/form.form:29
 #: /views/add/NewsItem/PlainArticle/form.form:29
-#: /views/add/AgendaFilter/form.form:25
-#: /views/add/CategoryFilter/form.form:31
+#: /views/add/AgendaFilter/form.form:25 /views/add/CategoryFilter/form.form:31
 #: /views/add/AgendaViewer/form.form:29
 msgid "id"
 msgstr ""
@@ -71,7 +78,9 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:50
 #: /views/add/NewsItem/PlainArticle/form.form:52
 #: /views/add/AgendaViewer/form.form:50
-msgid "The title will be publicly visible, and is used as the default link in indexes."
+msgid ""
+"The title will be publicly visible, and is used as the default link in "
+"indexes."
 msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:105
@@ -114,12 +123,12 @@ msgstr ""
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
 msgid "settings"
-msgstr ""
+msgstr "opciones"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
 #: /views/edit/Content/edit.pt:103
 msgid "save settings"
-msgstr ""
+msgstr "guardar opciones"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
@@ -134,37 +143,34 @@ msgid "expiration&nbsp;due"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:205
-msgid "There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published."
+msgid ""
+"There are no news items for this period. Check that news sources are "
+"activated (go to the editor screen) and items in the sources are published."
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:22
-# Default: "silva_news"
 msgid "Input form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:27
-# Default: "silva_news"
 msgid "subjects changed"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:33
-# Default: "silva_news"
 msgid "target audiences changed"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:45
-# Default: "silva_news"
 msgid "stick to path changed"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:49
-# Default: "silva_news"
 msgid "Settings changed for: "
-msgstr ""
+msgstr "Opciones cambiadas para: "
 
 #: /views/edit/Asset/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
@@ -178,7 +184,7 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 msgid "save selection"
-msgstr ""
+msgstr "Guardar selección"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
 msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
@@ -200,7 +206,7 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
 msgid "sources"
-msgstr ""
+msgstr "fuentes"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
@@ -209,19 +215,17 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
-#: /views/add/NewsFolder/form.form:48
-#: /views/add/NewsFilter/form.form:45
+#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
 #: /views/add/NewsItem/PlainAgendaItem/form.form:49
 #: /views/add/NewsItem/PlainArticle/form.form:51
-#: /views/add/AgendaFilter/form.form:45
-#: /views/add/CategoryFilter/form.form:53
+#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
 #: /views/add/AgendaViewer/form.form:49
 msgid "title"
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:154
 msgid "Edit this source"
-msgstr ""
+msgstr "Editar esta fuente"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:160
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:157
@@ -244,11 +248,11 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
 msgid "update sources"
-msgstr ""
+msgstr "actualizar fuentes"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:58
 msgid "general settings"
-msgstr ""
+msgstr "opciones generales"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:67
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
@@ -267,7 +271,7 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
 msgid " save settings "
-msgstr ""
+msgstr " guardar opciones "
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
@@ -286,7 +290,10 @@ msgid "(deselected)"
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:165
-msgid "There are no published news items in this filter. Check that news sources are activated (go to the editor screen) and items in the sources are published."
+msgid ""
+"There are no published news items in this filter. Check that news sources "
+"are activated (go to the editor screen) and items in the sources are "
+"published."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
@@ -298,17 +305,13 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
-#: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
@@ -374,7 +377,9 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:90
-msgid "Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter."
+msgid ""
+"Setting to 'yes' keeps the filter local, showing only items in the content "
+"tree that are below the location of the filter."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:88
@@ -386,7 +391,6 @@ msgid "If set to 'yes', show agenda items as well as news items."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:39
-# Default: "silva_news"
 msgid "show agendaitems changed"
 msgstr ""
 
@@ -395,7 +399,6 @@ msgid "Restrict usage"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/settings_submit.py:30
-# Default: "silva_news"
 msgid "The news source is now  available."
 msgstr ""
 
@@ -408,7 +411,10 @@ msgid "There are no publishable objects found."
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
-msgid "Some items of your selection are containers (folders, publications, newssources etc.). Select which items to recurse (walk through) to add to the list of objects to updated:<br /><br />"
+msgid ""
+"Some items of your selection are containers (folders, publications, "
+"newssources etc.). Select which items to recurse (walk through) to add to "
+"the list of objects to updated:<br /><br />"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
@@ -505,7 +511,6 @@ msgid "Promoter"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_submit.py:40
-# Default: "silva_news"
 msgid "${path} is updated"
 msgstr ""
 
@@ -564,7 +569,9 @@ msgid "Nothing was selected, so no approval was requested."
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:88
-msgid "Request for approval via a bulk request in the publish screen of /${url} (automatically generated message)"
+msgid ""
+"Request for approval via a bulk request in the publish screen of /${url} "
+"(automatically generated message)"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:96
@@ -582,7 +589,6 @@ msgstr ""
 #: /views/edit/Content/AgendaViewer/submit_settings.py:37
 #: /views/edit/Content/NewsViewer/submit_settings.py:39
 #: /views/edit/Content/RSSAggregator/submit_settings.py:27
-# Default: "silva_news"
 msgid "Viewer data changed"
 msgstr ""
 
@@ -591,7 +597,9 @@ msgid "show"
 msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:29
-msgid "Show a specific number of items, or show items from a range of days in the past."
+msgid ""
+"Show a specific number of items, or show items from a range of days in the "
+"past."
 msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:48
@@ -622,7 +630,8 @@ msgid "RSS feeds"
 msgstr ""
 
 #: /views/edit/Content/RSSAggregator/form.form:32
-msgid "List the URLs of RSS feeds (one per line) to use as sources of news items."
+msgid ""
+"List the URLs of RSS feeds (one per line) to use as sources of news items."
 msgstr ""
 
 #: /views/edit/Content/edit.pt:124
@@ -630,7 +639,8 @@ msgid "RDF Feed"
 msgstr ""
 
 #: /views/edit/Content/edit.pt:128
-msgid "This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
+msgid ""
+"This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
@@ -760,13 +770,11 @@ msgstr ""
 msgid "change renderer: alt-c"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:188
-#: /views/edit/tab_settings.pt:259
+#: /views/edit/tab_settings.pt:188 /views/edit/tab_settings.pt:259
 msgid "layout settings for &#xab;${title}&#xbb;"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:202
-#: /views/edit/tab_settings.pt:221
+#: /views/edit/tab_settings.pt:202 /views/edit/tab_settings.pt:221
 #: /views/edit/tab_settings.pt:241
 msgid "layout settings"
 msgstr ""
@@ -792,7 +800,9 @@ msgid "local news source setting"
 msgstr ""
 
 #: /views/edit/tab_settings.pt:76
-msgid "Make news source local so it is picked up only by filters in the same path of the source and below."
+msgid ""
+"Make news source local so it is picked up only by filters in the same path "
+"of the source and below."
 msgstr ""
 
 #: /views/edit/tab_settings.pt:81
@@ -907,7 +917,9 @@ msgid "display title"
 msgstr ""
 
 #: /www/inline_viewer_form.form:131
-msgid "Number of articles to be shown; max. is set by viewer (AN); empty = all articles (ANR)"
+msgid ""
+"Number of articles to be shown; max. is set by viewer (AN); empty = all "
+"articles (ANR)"
 msgstr ""
 
 #: /www/inline_viewer_form.form:141
@@ -923,7 +935,9 @@ msgid "article level"
 msgstr ""
 
 #: /www/inline_viewer_form.form:184
-msgid "Display intro (first elements of the article), the metadata description, or nothing"
+msgid ""
+"Display intro (first elements of the article), the metadata description, or "
+"nothing"
 msgstr ""
 
 #: /www/inline_viewer_form.form:194
@@ -1049,4 +1063,3 @@ msgstr ""
 #: /www/inline_viewer_view.pt:74
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr ""
-
