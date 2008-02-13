@@ -413,8 +413,7 @@ class ServiceNews(SimpleItem, CategoryMixin):
                                 'upgrade_required')
     def upgrade_required(self):
         """returns True if an upgrade is necessary"""
-        from Products.SilvaNews import software_version
-        return not (getattr(self, '_content_version', None) == software_version)
+        return not (self.content_version() == self.software_version())
 
     security.declareProtected('Setup ServiceNews',
                                 'software_version')

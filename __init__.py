@@ -40,11 +40,19 @@ def __allow_access_to_unprotected_subobjects__(name, value=None):
     return name in ('dates',)
 
 # declare a global upgrade registry to use for upgrading SilvaNews
-from Products.Silva.upgrade import UpgradeRegistry
+from Products.Silva.upgrade import UpgradeRegistry, GeneralUpgrader
 upgrade_registry = UpgradeRegistry()
 
 # import the actual upgraders
-import upgrade_13, upgrade_20, upgrade_21
+import upgrade_13, upgrade_20, upgrade_21, upgrade_26
+
+#register generic upgraders for the major software versions
+# where no upgrade is necessary
+NothingUpgrader = GeneralUpgrader(upgrade_handler=lambda x: x)
+upgrade_registry.registerUpgrader(NothingUpgrader, '2.2', 'Silva Root')
+upgrade_registry.registerUpgrader(NothingUpgrader, '2.3', 'Silva Root')
+upgrade_registry.registerUpgrader(NothingUpgrader, '2.4', 'Silva Root')
+upgrade_registry.registerUpgrader(NothingUpgrader, '2.5', 'Silva Root')
 
 # set the software version, NOTE THAT THIS MUST BE UP-TO-DATE for
 # the upgrade to work correctly!!
