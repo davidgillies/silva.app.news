@@ -13,7 +13,7 @@ Meta::
 
 Installing Silva News Network
 
-  This package requires Silva 2.0, SilvaExternalSources 1.4 and 
+  This package requires Silva 2.0, SilvaExternalSources 1.5 and 
   z3locales 0.1 (all of which can be found on http://www.infrae.com).
 
   Unpack the SilvaNews package into the Products directory of your
@@ -28,8 +28,8 @@ Installing Silva News Network
   which the publication status should be updated, and updates that
   status.
 
-  This makes that objects that don't get called directly (only using
-  the catalog, like News does) get their publication status updated,
+  This means that objects which don't get called directly (only using
+  the catalog, like News does) get their publication status' updated,
   which would usually happen by calling them through the web
   (viewing).
 

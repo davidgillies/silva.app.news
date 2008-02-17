@@ -23,6 +23,13 @@ upgrade instructions, as described on the bottom of this document, apply.
 Upgrades
 ========
 
+Upgrading SilvaNewsNetork 2.x to SilvaNewsNetwork 2.6
+-------------------------------------------------------
+
+As in previous upgrades, you will have to visit service_news and press the
+'upgrade' button (in the 'services' tab of the Silva root, ZMI) to get the
+data upgraded.
+
 Upgrading SilvaNewsNetork 2.0.x to SilvaNewsNetwork 2.1
 -------------------------------------------------------
 

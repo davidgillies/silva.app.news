@@ -1,0 +1,70 @@
+===================
+Upgrading SilvaNews
+===================
+
+Meta
+----
+
+Copyright (c) 2003-2007 Infrae. All rights reserved.  See also
+LICENSE.txt
+
+Valid for:  Silva News Network 2.1.x
+Author:     Andy Altepeter
+Email:      aaltepet@altepeter.net
+CVS:        $Revision: 1.8 $
+
+Introduction
+============
+
+This document describes new features in SilvaNewsNetwork releases.
+New features in releases prior to 2.6 are not listed in here.
+
+SilvaNewsNetwork 2.6
+====================
+
+This release of SilvaNewsNetwork contains a number of new features,
+bugfixes, and some major code refactoring.  Most of the changes in
+2.6 will not be visible to the SNN user, however there are a few
+significant ones that are:
+
+News Category Filter Assets
+---------------------------
+
+As time goes on, large Silva installations will have a large number 
+of subjects and target audiences, many of which are only relevant 
+within a single publication or folder.  This large number of 
+categories creates clutter when working with SilvaNews objects, 
+making it difficult to see and select the categories for that
+particular object.
+
+Category Filters provide a means to manage the news categories that 
+are available within a container in Silva.  They can be added to 
+any container, and allow Silva users to filter the news categories 
+that are available to News objects (News and Agenda Filters, 
+Articles, Agenda Items, etc.) within that container and its 
+sub-containers.
+
+Improved Syndication Support
+----------------------------
+
+SilvaNewsNetwork syndication support has been rewritten to use the
+new syndication functionality in Silva 2.0. Both rss and atom 
+syndication formats are supported on News and Agenda Viewers and
+RSSAggregators, by appending '/rss.xml' or '/atom.xml' to the 
+public url of the viewer. 
+
+InlineNewsViewer Improvements
+-----------------------------
+
+The default InlineNewsViewer (INV) formulator form and view templates
+have new features including: containing div id and class, specifying 
+article level, optional image thumbnail, where and whether to place 
+links to articles, and possible a few others.  
+
+If you're using the default INV, you should refresh the template by 
+going to the each INV's url and adding '/refresh', e.g. 
+http://server.com/silva/inv/refresh
+
+NOTE: doing so will probably break any document that uses the INV, so
+you'll want to revisit each to ensure they are still working and to
+enable any new functionality.
