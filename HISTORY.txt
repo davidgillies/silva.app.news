@@ -24,6 +24,8 @@ SilvaNewsNetwork changes
       - 160505: SNN News Publications cannot have addables settings.  It 
         should, being News Publications inherit from Publications.
 
+      - viewers displayed items in reverse order when using multiple filters
+
   2.6.0 beta
   
     New Features

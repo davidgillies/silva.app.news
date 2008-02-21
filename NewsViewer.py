@@ -151,9 +151,10 @@ class NewsViewer(Content, Folder.Folder):
         results = self._remove_doubles(results)
 
         if sortattr:
-            results = [ (getattr(r,sortattr,None),r) for r in results ]
+            results = [ (getattr(r,sortattr,None),getattr(r,'object_path',None),r) for r in results ]
             results.sort()
-            results = [ r[1] for r in results ]
+            results = [ r[2] for r in results ]
+            results.reverse()
         return results
         
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
