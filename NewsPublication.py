@@ -103,7 +103,7 @@ class NewsPublication(Publication):
         # walk through the objects, they should be in direct children of this object
         for item in objectids:
             currentobj = getattr(startpoint, item)
-            if INewsItem.isImplementedBy(currentobj):
+            if INewsItem.providedBy(currentobj):
                 version = currentobj.get_editable()
                 versionpaths.append(currentobj.getPhysicalPath())
                 if not version:
