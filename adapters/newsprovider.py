@@ -63,6 +63,9 @@ class NewsItemReference(object):
     def location(self):
         return getattr(self._item.aq_explicit, 'location', lambda: None)()
 
+    def get_news_item(self):
+        return self._item
+
 Globals.InitializeClass(NewsItemReference)
 
 class NewsViewerNewsProvider(adapter.Adapter):
@@ -137,6 +140,9 @@ class RSSItemReference(object):
             return DateTime(*dt)
         # datetime?
         return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
+
+    def get_news_item(self):
+        return self._item
 
 class RSSAggregatorNewsProvider(adapter.Adapter):
     

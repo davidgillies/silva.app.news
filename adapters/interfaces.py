@@ -34,3 +34,6 @@ class INewsItemReference(Interface):
 
     def location(self):
         """get the  of this reference"""
+
+    def get_news_item(self):
+        """get the real item"""
