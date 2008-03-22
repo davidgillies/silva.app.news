@@ -45,14 +45,6 @@ h2 {
 <metal:block fill-slot="middleground"
   tal:define="unapproved_version model/get_unapproved_version">
   <div class="middleground">
-    <metal:block define-slot="editor_selection" />
-    <a title="see the content in the public layout: alt-;"
-      accesskey=";"
-      tal:attributes="href string:${model/absolute_url}/preview_html"
-      i18n:translate=""
-      i18n:attributes="title">
-      public&nbsp;preview...
-    </a>
     <tal:block define="
       permissions view/get_silva_permissions;
       have_approve_permission permissions/ApproveSilvaContent | nothing">
@@ -67,6 +59,13 @@ h2 {
         publish&nbsp;now
       </a>
     </tal:block>
+    <a title="see the content in the public layout: alt-;"
+      accesskey=";"
+      tal:attributes="href string:${model/absolute_url}/preview_html"
+      i18n:translate=""
+      i18n:attributes="title">
+      public&nbsp;preview...
+    </a>
   </div>
 </metal:block>
 
