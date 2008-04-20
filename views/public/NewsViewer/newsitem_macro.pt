@@ -14,7 +14,7 @@
     </p>
    </tal:infopublic>
 
-   <tal:comment><!-- if the object is an agenda item --></tal:comment>
+   <tal:comment tal:omit-tag=""><!-- if the object is an agenda item --></tal:comment>
    <p class="p eventdates"
      tal:define="
        startdate r/start_datetime;
