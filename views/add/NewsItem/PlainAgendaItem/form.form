@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 
 <form>
   <title></title>
+  <row_length>4</row_length>
   <name>form</name>
   <action></action>
-  <enctype>None</enctype>
   <method>POST</method>
-
+  <enctype>None</enctype>
+  <encoding>UTF-8</encoding>
+  <stored_encoding>ISO-8859-1</stored_encoding>
+  <unicode_mode>false</unicode_mode>
   <i18n_domain>silva_news</i18n_domain>
-  <i18n>form</i18n>
-
   <groups>
     <group>
       <title>Default</title>
@@ -18,100 +19,201 @@
       <field><id>object_id</id> <type>StringField</type>
         <values>
           <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_length></max_length>
-          <external_validator></external_validator>
-          <display_maxwidth></display_maxwidth>
-          <display_width type="int">20</display_width>
-          <required type="int">1</required>
           <css_class>store</css_class>
           <default></default>
+          <description>No spaces or special characters besides &amp;#8216;_&amp;#8217; or &amp;#8216;-&amp;#8217; or &amp;#8216;.&amp;#8217;</description>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">20</display_width>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <extra></extra>
+          <hidden type="int">0</hidden>
+          <max_length></max_length>
+          <required type="int">1</required>
           <title>id</title>
           <truncate type="int">0</truncate>
-          <description>No spaces or special characters besides &amp;#8216;_&amp;#8217; or &amp;#8216;-&amp;#8217; or &amp;#8216;.&amp;#8217;</description>
-          <extra></extra>
           <unicode type="int">1</unicode>
+          <whitespace_preserve type="int">0</whitespace_preserve>
         </values>
         <tales>
         </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="too_long">Too much input was given.</message>
+        </messages>
       </field>
       <field><id>object_title</id> <type>StringField</type>
         <values>
           <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <max_length></max_length>
-          <external_validator></external_validator>
-          <display_maxwidth></display_maxwidth>
-          <display_width type="int">20</display_width>
-          <required type="int">1</required>
           <css_class>store</css_class>
           <default></default>
-          <title>title</title>
           <description>The title will be publicly visible, and is used as the default link in indexes.</description>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">20</display_width>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
           <extra></extra>
+          <hidden type="int">0</hidden>
+          <max_length></max_length>
+          <required type="int">1</required>
+          <title>title</title>
+          <truncate type="int">0</truncate>
           <unicode type="int">1</unicode>
+          <whitespace_preserve type="int">0</whitespace_preserve>
         </values>
         <tales>
         </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="too_long">Too much input was given.</message>
+        </messages>
       </field>
       <field><id>start_datetime</id> <type>DateTimeField</type>
         <values>
           <allow_empty_time type="int">1</allow_empty_time>
-          <date_only type="int">0</date_only>
           <alternate_name></alternate_name>
-          <input_style>text</input_style>
-          <hidden type="int">0</hidden>
-          <input_order>dmy</input_order>
-          <time_separator>:</time_separator>
-          <date_separator>/</date_separator>
-          <external_validator></external_validator>
-          <required type="int">1</required>
-          <default_now type="int">0</default_now>
+          <ampm_time_style type="int">0</ampm_time_style>
           <css_class></css_class>
-          <title>start date/time</title>
+          <date_only type="int">0</date_only>
+          <date_separator>/</date_separator>
+          <default_now type="int">0</default_now>
           <description>Format: d/m/y, time is optional.</description>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <hidden type="int">0</hidden>
+          <hide_day type="int">0</hide_day>
+          <input_order>dmy</input_order>
+          <input_style>text</input_style>
+          <required type="int">1</required>
+          <time_separator>:</time_separator>
+          <title>start date/time</title>
         </values>
         <tales>
+          <date_separator>python:form.get_date_punctuation()</date_separator>
           <time_separator>python:form.get_time_punctuation()</time_separator>
-          <date_separator>python:form.get_date_punctuation()</date_separator>        </tales>
+        </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="not_datetime">You did not enter a valid date and time.</message>
+          <message name="datetime_out_of_range">The date and time you entered were out of range.</message>
+        </messages>
+      </field>
+      <field><id>end_datetime</id> <type>DateTimeField</type>
+        <values>
+          <allow_empty_time type="int">1</allow_empty_time>
+          <alternate_name></alternate_name>
+          <ampm_time_style type="int">0</ampm_time_style>
+          <css_class></css_class>
+          <date_only type="int">0</date_only>
+          <date_separator>/</date_separator>
+          <default_now type="int">0</default_now>
+          <description>Format: d/m/y, time is optional.</description>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <hidden type="int">0</hidden>
+          <hide_day type="int">0</hide_day>
+          <input_order>dmy</input_order>
+          <input_style>text</input_style>
+          <required type="int">0</required>
+          <time_separator>:</time_separator>
+          <title>end date/time</title>
+        </values>
+        <tales>
+          <date_separator>python:form.get_date_punctuation()</date_separator>
+          <time_separator>python:form.get_time_punctuation()</time_separator>
+        </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="not_datetime">You did not enter a valid date and time.</message>
+          <message name="datetime_out_of_range">The date and time you entered were out of range.</message>
+        </messages>
+      </field>
+      <field><id>location</id> <type>StringField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <css_class>store</css_class>
+          <default></default>
+          <description>The location where the event is taking place.</description>
+          <display_maxwidth></display_maxwidth>
+          <display_width type="int">40</display_width>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <extra></extra>
+          <hidden type="int">0</hidden>
+          <max_length></max_length>
+          <required type="int">0</required>
+          <title>location</title>
+          <truncate type="int">0</truncate>
+          <unicode type="int">1</unicode>
+          <whitespace_preserve type="int">0</whitespace_preserve>
+        </values>
+        <tales>
+        </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="too_long">Too much input was given.</message>
+        </messages>
       </field>
       <field><id>subjects</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
+          <css_class></css_class>
+          <default>[]</default>
           <description></description>
-          <required type="int">1</required>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <extra_item></extra_item>
           <hidden type="int">0</hidden>
           <items>[]</items>
-          <default>[]</default>
-          <title>subjects</title>
           <orientation>vertical</orientation>
-          <css_class></css_class>
-          <external_validator></external_validator>
+          <required type="int">1</required>
+          <title>subjects</title>
           <unicode type="int">1</unicode>
+          <view_separator>&lt;br /&gt;
+</view_separator>
         </values>
         <tales>
-          <items>python:form.service_news.subject_form_tree()</items>
           <description>python: test(form.service_news.subjects(), 'Choose at least one subject.', '&lt;span style="color: #c00"&gt;No subjects defined yet! Ask the manager to add subjects to the news service!&lt;/span&gt;')</description>
+          <items>python:form.service_news.subject_form_tree()</items>
         </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="unknown_selection">You selected an item that was not in the list.</message>
+        </messages>
       </field>
       <field><id>target_audiences</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
+          <css_class></css_class>
+          <default>[]</default>
           <description></description>
-          <required type="int">1</required>
+          <enabled type="int">1</enabled>
+          <external_validator></external_validator>
+          <extra_item></extra_item>
           <hidden type="int">0</hidden>
           <items>[]</items>
-          <default>[]</default>
-          <title>target audiences</title>
           <orientation>vertical</orientation>
-          <css_class></css_class>
-          <external_validator></external_validator>
+          <required type="int">1</required>
+          <title>target audiences</title>
           <unicode type="int">1</unicode>
+          <view_separator>&lt;br /&gt;
+</view_separator>
         </values>
         <tales>
-          <items>python:form.service_news.target_audience_form_tree()</items>
           <description>python: test(form.service_news.target_audiences(), 'Choose target audiences.', '&lt;span style="color: #c00"&gt;No target audiences defined yet! Ask the manager to add target audiences to the news service!&lt;/span&gt;')</description>
+          <items>python:form.service_news.target_audience_form_tree()</items>
         </tales>
+        <messages>
+          <message name="external_validator_failed">The input failed the external validator.</message>
+          <message name="required_not_found">Input is required but no input given.</message>
+          <message name="unknown_selection">You selected an item that was not in the list.</message>
+        </messages>
       </field>
       </fields>
     </group>

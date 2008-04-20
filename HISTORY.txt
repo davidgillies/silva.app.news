@@ -13,6 +13,11 @@ SilvaNewsNetwork changes
         because a Silva trainer reported that a trainee couldn't figure out
         how to make a new version. Now it's more obvious, hopefully enough.
 
+      - added the end date/time and location properties of Agenda Items
+        to the agenda item add screen.
+
+      - added the location property of Agenda Items to the public view
+
     Bugs Fixed
 
       - Changed the new version button in the editor screen from an input to

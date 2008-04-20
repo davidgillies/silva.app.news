@@ -13,5 +13,7 @@ version = pai.get_editable()
 version.set_subjects(result['subjects'])
 version.set_target_audiences(result['target_audiences'])
 version.set_start_datetime(result['start_datetime'])
+version.set_end_datetime(result['end_datetime'])
+version.set_location(result['location'])
 
 return pai
