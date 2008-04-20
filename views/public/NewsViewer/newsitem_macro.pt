@@ -1,9 +1,11 @@
 <metal:macro define-macro="newsitem">
   <h3 class="heading newsitemheading" tal:content="structure r/get_title">article title</h3>
+
   <div class="newsiteminfo">
    <tal:infopublic 
-     tal:define="publicationdate python: obj.get_metadata_element('silva-extra', 'publicationtime');
-                 displaydate r/display_datetime;"
+     tal:define="
+       publicationdate python: obj.get_metadata_element('silva-extra', 'publicationtime');
+       displaydate r/display_datetime;"
      tal:condition="publicationdate"> 
     <p class="p newsiteminfopublicationdate">
      <tal:translate i18n:translate="">Published: </tal:translate>
@@ -12,10 +14,11 @@
     </p>
    </tal:infopublic>
 
-   <!-- if the object is an agenda item -->
+   <tal:comment><!-- if the object is an agenda item --></tal:comment>
    <p class="p eventdates"
-     tal:define="startdate r/start_datetime;
-                 enddate r/end_datetime"
+     tal:define="
+       startdate r/start_datetime;
+       enddate r/end_datetime"
      tal:condition="python: startdate or enddate">
     <tal:if condition="startdate">
      <span tal:omit-tag="" i18n:translate="">Starts:</span>
