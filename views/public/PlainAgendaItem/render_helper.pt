@@ -1,51 +1,56 @@
-<span
-  xmlns="http://www.w3.org/1999/xhtml"
+<div class="newsitem"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:notal="http://www.infrae.com/silva/notal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news"
+  tal:define="
+    global model request/model; 
+    global view here; 
+    global version options/version; 
+    global formatdate nocall:view/service_news/format_date
+">
 
-  tal:define="global model request/model; 
-              global view here; 
-              global version options/version; 
-              global formatdate nocall:view/service_news/format_date" 
-              tal:omit-tag=""
->
+<h2 class="heading newsitemheading"
+  tal:content="structure python:version.get_title()" />
 
-  <h2 class="heading newsitemheading" tal:content="structure python:version.get_title()" />
+<div class="newsiteminfo"
+  tal:define="
+    publicationdate python: version.get_metadata_element('silva-extra', 'publicationtime');
+    displaydate python: version.display_datetime();
+    startdate python: formatdate(version.start_datetime(), version.display_time());
+    enddate python: formatdate(version.end_datetime(), version.display_time());
+    date_public_view python: displaydate or publicationdate;
+    location version/location;"
+  tal:condition="python: date_public_view or location">
+  <p class="p publicationdate"
+    tal:condition="date_public_view">
+    <tal:translate i18n:translate="">Publication date:</tal:translate>
+    <span class="datetime"
+      tal:content="python: formatdate(date_public_view)">
+      display date
+    </span>
+  </p>
+  <p class="p eventdates"
+    tal:condition="python: startdate or enddate">
+    <tal:if condition="startdate">
+      <tal:translate i18n:translate="">Start:</tal:translate>
+      <span class="datetime" tal:content="startdate">startdate</span>
+    </tal:if>
+    <tal:if condition="enddate"><br />
+      <tal:translate i18n:translate="">End:</tal:translate>
+      <span class="datetime" tal:content="enddate">enddate</span>
+    </tal:if>
+  </p>
+  <p class="p location"
+    tal:condition="location">
+    <tal:translate i18n:translate="">Location:</tal:translate>
+    <span class="location" tal:content="location">location</span>
+  </p>
+</div>
 
-  <div class="newsiteminfo">
-    <tal:publicationinfo 
-        tal:define="publicationdate python: version.get_metadata_element('silva-extra', 'publicationtime');
-                    displaydate python: version.display_datetime();"
-        tal:condition="publicationdate">
-            <p 
-                class="p newsiteminfopublicationdate"
-                tal:condition="python: publicationdate or displaydate">
-            <tal:translate i18n:translate="">Publication date:</tal:translate>
-            <span class="newsitempublicationdate"
-                tal:define="date_public_view python: displaydate or publicationdate"
-                tal:condition="date_public_view"
-                tal:content="python: formatdate(date_public_view)" />
-           </p>
-    </tal:publicationinfo>
-    <p class="p newsiteminfodatetime"
-        tal:define="startdate python: formatdate(version.start_datetime(), version.display_time());
-                    enddate python: formatdate(version.end_datetime(), version.display_time())"
-        tal:condition="python: startdate or enddate">
-      <tal:if condition="startdate">
-          <tal:translate i18n:translate="">Start:</tal:translate>
-          <span class="newsitemstartdate" tal:content="python: startdate" /><br />
-      </tal:if>
-      <tal:if condition="enddate">
-          <tal:translate i18n:translate="">End:</tal:translate>
-          <span class="newsitemenddate" tal:content="python: enddate" />          
-      </tal:if>
-    </p>
-  </div>
+<div class="newsitemcontent" 
+  tal:content="structure python:view.get_content(version)">
+  view
+</div>
 
-       <div class="newsitemcontent" 
-            tal:content="structure python:view.get_content(version)" />
-
-</span>
+</div>
