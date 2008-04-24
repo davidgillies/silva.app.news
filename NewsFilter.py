@@ -67,7 +67,7 @@ class NewsFilter(NewsItemFilter):
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1).latestTime()
+        enddate = DateTime(year, endmonth, 1).earliestTime()
         query = self._prepare_query(meta_types)
         query['idx_display_datetime'] = {'query': [startdate, enddate],
                                          'range': 'minmax'}
