@@ -179,7 +179,7 @@
         </values>
         <tales>
           <description>python: test(form.service_news.subjects(), 'Choose at least one subject.', '&lt;span style="color: #c00"&gt;No subjects defined yet! Ask the manager to add subjects to the news service!&lt;/span&gt;')</description>
-          <items>python:form.service_news.subject_form_tree()</items>
+          <items>python:form.service_news.filtered_subject_form_tree(request.model)</items>
         </tales>
         <messages>
           <message name="external_validator_failed">The input failed the external validator.</message>
@@ -207,7 +207,7 @@
         </values>
         <tales>
           <description>python: test(form.service_news.target_audiences(), 'Choose target audiences.', '&lt;span style="color: #c00"&gt;No target audiences defined yet! Ask the manager to add target audiences to the news service!&lt;/span&gt;')</description>
-          <items>python:form.service_news.target_audience_form_tree()</items>
+          <items>python:form.service_news.filtered_ta_form_tree(request.model)</items>
         </tales>
         <messages>
           <message name="external_validator_failed">The input failed the external validator.</message>

@@ -140,6 +140,28 @@ class ServiceNews(SimpleItem, CategoryMixin):
             return None
         return el.title()
 
+    def filtered_subject_form_tree(self, context):
+        """ tries to acquire the nearest news category filter
+        in the content, and returns a subject_form_tree with the
+        subjects selected in the filter removed.
+        This method is primarliy used in the add screens of
+        SNN objects"""
+        audject = context.superValues('Silva News Category Filter')
+        if audject:
+            audject = audject[0].subjects()
+        return self.subject_form_tree(audject)
+
+    def filtered_ta_form_tree(self, context):
+        """ tries to acquire the nearest news category filter
+        in the content, and returns a ta_form_tree with the
+        ta's selected in the filter removed.
+        This method is primarliy used in the add screens of
+        SNN objects"""
+        audject = context.superValues('Silva News Category Filter')
+        if audject:
+            audject = audject[0].target_audiences()
+        return self.target_audience_form_tree(audject)
+
     security.declareProtected('View',
                                 'target_audiences')
     def target_audiences(self):
