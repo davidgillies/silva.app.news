@@ -1,22 +1,29 @@
+# Swedish translation for silva-news-network
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the silva-news-network package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: SilvaNews trunk"
+"Project-Id-Version: silva-news-network\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: Wed May  7 15:03:24 2008\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Silva Translators <eric+i18n@infrae.com>\n"
+"PO-Revision-Date: 2008-05-02 13:17+0000\n"
+"Last-Translator: Mikael Hamre <Unknown>\n"
+"Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generated-By: zope/app/translation_files/extract.py\n"
+"X-Launchpad-Export-Date: 2008-05-07 13:00+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: /NewsItem.py:102
 msgid "No unapproved version."
-msgstr ""
+msgstr "Ingen icke godkännd version."
 
 #: /NewsItem.py:89
 msgid "No next version."
-msgstr ""
+msgstr "Ingen nyare version"
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
@@ -29,7 +36,8 @@ msgstr ""
 #: /views/add/CategoryFilter/form.form:75
 msgid ""
 "\n"
-"            Select the news subjects to filter on. Only those selected will \n"
+"            Select the news subjects to filter on. Only those selected "
+"will \n"
 "            appear in this area of the site. Select nothing to have all\n"
 "            show up.\n"
 "          "
@@ -48,20 +56,19 @@ msgstr ""
 #: /views/add/NewsFilter/form.form:27
 #: /views/add/NewsItem/PlainAgendaItem/form.form:24
 #: /views/add/NewsItem/PlainArticle/form.form:31
-#: /views/add/AgendaFilter/form.form:27
-#: /views/add/AgendaViewer/form.form:31
-msgid "No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; or &#8216;.&#8217;"
+#: /views/add/AgendaFilter/form.form:27 /views/add/AgendaViewer/form.form:31
+msgid ""
+"No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; "
+"or &#8216;.&#8217;"
 msgstr ""
 
-#: /views/add/NewsFolder/form.form:29
-#: /views/add/NewsFilter/form.form:25
+#: /views/add/NewsFolder/form.form:29 /views/add/NewsFilter/form.form:25
 #: /views/add/NewsItem/PlainAgendaItem/form.form:33
 #: /views/add/NewsItem/PlainArticle/form.form:29
-#: /views/add/AgendaFilter/form.form:25
-#: /views/add/CategoryFilter/form.form:31
+#: /views/add/AgendaFilter/form.form:25 /views/add/CategoryFilter/form.form:31
 #: /views/add/AgendaViewer/form.form:29
 msgid "id"
-msgstr ""
+msgstr "id"
 
 #: /views/add/NewsFolder/form.form:31
 msgid "id: no spaces or special characters besides an underscore (_)."
@@ -71,7 +78,9 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:51
 #: /views/add/NewsItem/PlainArticle/form.form:52
 #: /views/add/AgendaViewer/form.form:50
-msgid "The title will be publicly visible, and is used as the default link in indexes."
+msgid ""
+"The title will be publicly visible, and is used as the default link in "
+"indexes."
 msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:122
@@ -85,7 +94,7 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:149
 #: /www/inline_viewer_form.form:325
 msgid "location"
-msgstr ""
+msgstr "plats"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:175
 #: /views/add/NewsItem/PlainArticle/form.form:67
@@ -94,7 +103,7 @@ msgstr ""
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
 #: /views/edit/Asset/Filter/CategoryFilter/form.form:26
 msgid "subjects"
-msgstr ""
+msgstr "ämne"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:203
 #: /views/add/NewsItem/PlainArticle/form.form:86
@@ -108,19 +117,19 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainAgendaItem/form.form:113
 msgid "Format: d/m/y, time is optional."
-msgstr ""
+msgstr "Format: d/m/y, tid är valfritt"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:91
 msgid "start date/time"
-msgstr ""
+msgstr "start datum/tid"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:184
 msgid "There are no news sources available."
-msgstr ""
+msgstr "Det finns inga nya källor tillgängliga"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
 msgid "use selected sources in this filter: alt-u"
-msgstr ""
+msgstr "använd valda källor i detta filter: alt-u"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:56
 #: /views/edit/Content/edit.pt:65
@@ -128,75 +137,69 @@ msgstr ""
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
 msgid "settings"
-msgstr ""
+msgstr "inställningar"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
-#: /views/edit/Content/edit.pt:74
-#: /views/edit/Container/tab_settings.pt:117
+#: /views/edit/Content/edit.pt:74 /views/edit/Container/tab_settings.pt:117
 msgid "element"
-msgstr ""
+msgstr "element"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
-#: /views/edit/Content/edit.pt:76
-#: /views/edit/Container/tab_settings.pt:122
+#: /views/edit/Content/edit.pt:76 /views/edit/Container/tab_settings.pt:122
 msgid "content"
-msgstr ""
+msgstr "innehåll"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
-#: /views/edit/Content/edit.pt:77
-#: /views/edit/Container/tab_settings.pt:125
+#: /views/edit/Content/edit.pt:77 /views/edit/Container/tab_settings.pt:125
 msgid "note"
-msgstr ""
+msgstr "anteckning"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
 #: /views/edit/Content/edit.pt:103
 msgid "save settings"
-msgstr ""
+msgstr "spara inställningar"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
-msgstr ""
+msgstr "typ"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:106
 msgid "modify"
-msgstr ""
+msgstr "modifiera"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:109
 msgid "expiration&nbsp;due"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:205
-msgid "There are no news items for this period. Check that news sources are activated (go to the editor screen) and items in the sources are published."
+msgid ""
+"There are no news items for this period. Check that news sources are "
+"activated (go to the editor screen) and items in the sources are published."
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:22
-# Default: "silva_news"
 msgid "Input form errors ${errors}"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:27
-# Default: "silva_news"
 msgid "subjects changed"
-msgstr ""
+msgstr "byta ämne"
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:33
-# Default: "silva_news"
 msgid "target audiences changed"
-msgstr ""
+msgstr "ändrad målgrupp"
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:45
-# Default: "silva_news"
 msgid "stick to path changed"
 msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:49
-# Default: "silva_news"
 msgid "Settings changed for: "
 msgstr ""
 
@@ -204,15 +207,15 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
 #: /views/edit/Asset/Filter/use_sources.py:40
 msgid "The filter is updated."
-msgstr ""
+msgstr "Filtret är uppdterat"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
 msgid "description"
-msgstr ""
+msgstr "beskrivning"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 msgid "save selection"
-msgstr ""
+msgstr "spara urval"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
 msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
@@ -221,37 +224,35 @@ msgstr ""
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
 msgid "edit"
-msgstr ""
+msgstr "redigera"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:15
 msgid "properties"
-msgstr ""
+msgstr "egenskaper"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:16
 msgid "access"
-msgstr ""
+msgstr "åtkomst"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
 msgid "sources"
-msgstr ""
+msgstr "källa"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
 msgid "path"
-msgstr ""
+msgstr "sökväg"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
-#: /views/add/NewsFolder/form.form:48
-#: /views/add/NewsFilter/form.form:45
+#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
 #: /views/add/NewsItem/PlainAgendaItem/form.form:60
 #: /views/add/NewsItem/PlainArticle/form.form:51
-#: /views/add/AgendaFilter/form.form:45
-#: /views/add/CategoryFilter/form.form:53
+#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
 #: /views/add/AgendaViewer/form.form:49
 msgid "title"
-msgstr ""
+msgstr "titel"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:154
 msgid "Edit this source"
@@ -282,22 +283,22 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:58
 msgid "general settings"
-msgstr ""
+msgstr "generella inställningar"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:67
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
 msgid "Element"
-msgstr ""
+msgstr "Element"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:68
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
 msgid "Content"
-msgstr ""
+msgstr "Innehåll"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:69
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
 msgid "Note"
-msgstr ""
+msgstr "Anteckning"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
 msgid " save settings "
@@ -320,7 +321,10 @@ msgid "(deselected)"
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:165
-msgid "There are no published news items in this filter. Check that news sources are activated (go to the editor screen) and items in the sources are published."
+msgid ""
+"There are no published news items in this filter. Check that news sources "
+"are activated (go to the editor screen) and items in the sources are "
+"published."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
@@ -332,21 +336,17 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
-msgstr ""
+msgstr "välj alla"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
-#: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
-msgstr ""
+msgstr "välja inga"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:280
@@ -356,30 +356,30 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:280
 msgid "update"
-msgstr ""
+msgstr "uppdatera"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:253
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:286
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:284
 msgid "Previous"
-msgstr ""
+msgstr "Föregående"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:257
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:290
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:288
 msgid "Next"
-msgstr ""
+msgstr "Nästa"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:67
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:132
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:129
 msgid "in use"
-msgstr ""
+msgstr "används redan"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:69
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:107
 msgid "view"
-msgstr ""
+msgstr "vy"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:70
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:108
@@ -408,7 +408,9 @@ msgstr ""
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:90
-msgid "Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter."
+msgid ""
+"Setting to 'yes' keeps the filter local, showing only items in the content "
+"tree that are below the location of the filter."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:88
@@ -420,7 +422,6 @@ msgid "If set to 'yes', show agenda items as well as news items."
 msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:39
-# Default: "silva_news"
 msgid "show agendaitems changed"
 msgstr ""
 
@@ -429,7 +430,6 @@ msgid "Restrict usage"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/settings_submit.py:30
-# Default: "silva_news"
 msgid "The news source is now  available."
 msgstr ""
 
@@ -442,17 +442,20 @@ msgid "There are no publishable objects found."
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
-msgid "Some items of your selection are containers (folders, publications, newssources etc.). Select which items to recurse (walk through) to add to the list of objects to updated:<br /><br />"
+msgid ""
+"Some items of your selection are containers (folders, publications, "
+"newssources etc.). Select which items to recurse (walk through) to add to "
+"the list of objects to updated:<br /><br />"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
 #: /views/edit/Container/Publication/NewsPublication/form.form:29
 msgid "Title"
-msgstr ""
+msgstr "Titel"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:109
 msgid "Co-promoter"
@@ -460,7 +463,7 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:131
 msgid "Speakers"
-msgstr ""
+msgstr "Högtalare"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:153
 msgid "Startdate and time"
@@ -468,11 +471,11 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:173
 msgid "Enddate and time"
-msgstr ""
+msgstr "Slut datum och tid"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:189
 msgid "Location"
-msgstr ""
+msgstr "Plats"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:212
 msgid "Location (if not in list)"
@@ -500,7 +503,7 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:314
 msgid "Common Info"
-msgstr ""
+msgstr "allmän information"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:337
 msgid "Specific Info"
@@ -520,7 +523,7 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:414
 msgid "Subjects"
-msgstr ""
+msgstr "Ämne"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:432
 msgid "Target Audiences"
@@ -539,7 +542,6 @@ msgid "Promoter"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_submit.py:40
-# Default: "silva_news"
 msgid "${path} is updated"
 msgstr ""
 
@@ -598,7 +600,9 @@ msgid "Nothing was selected, so no approval was requested."
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:88
-msgid "Request for approval via a bulk request in the publish screen of /${url} (automatically generated message)"
+msgid ""
+"Request for approval via a bulk request in the publish screen of /${url} "
+"(automatically generated message)"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:96
@@ -611,7 +615,7 @@ msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:132
 msgid "renderer"
-msgstr ""
+msgstr "läsare"
 
 #: /views/edit/Container/tab_settings.pt:151
 msgid "Select a renderer to render this content."
@@ -657,7 +661,9 @@ msgid "local news source setting"
 msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:76
-msgid "Make news source local so it is picked up only by filters in the same path of the source and below."
+msgid ""
+"Make news source local so it is picked up only by filters in the same path "
+"of the source and below."
 msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:81
@@ -683,21 +689,22 @@ msgstr ""
 #: /views/edit/Content/AgendaViewer/submit_settings.py:37
 #: /views/edit/Content/NewsViewer/submit_settings.py:39
 #: /views/edit/Content/RSSAggregator/submit_settings.py:27
-# Default: "silva_news"
 msgid "Viewer data changed"
 msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:27
 msgid "show"
-msgstr ""
+msgstr "visa"
 
 #: /views/edit/Content/NewsViewer/form.form:29
-msgid "Show a specific number of items, or show items from a range of days in the past."
+msgid ""
+"Show a specific number of items, or show items from a range of days in the "
+"past."
 msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:48
 msgid "days / items number"
-msgstr ""
+msgstr "dagar / objekt nummer"
 
 #: /views/edit/Content/NewsViewer/form.form:49
 msgid "Number of news items to show per page."
@@ -706,7 +713,7 @@ msgstr ""
 #: /views/edit/Content/NewsViewer/form.form:68
 #: /views/edit/Content/AgendaViewer/form.form:49
 msgid "archive number"
-msgstr ""
+msgstr "arkiv nummer"
 
 #: /views/edit/Content/NewsViewer/form.form:69
 #: /views/edit/Content/AgendaViewer/form.form:50
@@ -716,35 +723,37 @@ msgstr ""
 #: /views/edit/Content/NewsViewer/form.form:85
 #: /views/edit/Content/AgendaViewer/form.form:65
 msgid "filters"
-msgstr ""
+msgstr "filter"
 
 #: /views/edit/Content/RSSAggregator/form.form:30
 msgid "RSS feeds"
-msgstr ""
+msgstr "RSS Kanal"
 
 #: /views/edit/Content/RSSAggregator/form.form:32
-msgid "List the URLs of RSS feeds (one per line) to use as sources of news items."
+msgid ""
+"List the URLs of RSS feeds (one per line) to use as sources of news items."
 msgstr ""
 
 #: /views/edit/Content/edit.pt:124
 msgid "RDF Feed"
-msgstr ""
+msgstr "RDF Kanal"
 
 #: /views/edit/Content/edit.pt:128
-msgid "This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
+msgid ""
+"This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
-msgstr ""
+msgstr "Dokumentet är publicerat"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:22
 msgid "version already approved"
-msgstr ""
+msgstr "Versionen är redan godkännd"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:27
 msgid "Document already published"
-msgstr ""
+msgstr "Dokumentet är rendan publicerat"
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:15
 msgid "There is no unapproved version to publish."
@@ -755,29 +764,34 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:12
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:12
 msgid "There is no unapproved version to approve."
-msgstr ""
+msgstr "Det finns ingen icke godkänd version att godkänna."
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:69
 msgid "Version published."
-msgstr ""
+msgstr "Versionen är publicerad"
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:71
 #: /views/edit/VersionedContent/NewsItem/tab_edit_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:27
 msgid "Version approved."
-msgstr ""
+msgstr "Versionen är godkännd."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:30
 msgid "display time"
-msgstr ""
+msgstr "visa tid"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:31
 msgid "The date/time that is displayed for the public."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:108
-msgid "A previous request for approval has been rejected / withdrawn by ${requester} on ${some_date}. actually the last message may not have been written by the person withdrawing the request; if this person for example made an empty reject, this is the message of the requester ... The last message regarding this issue is:"
+msgid ""
+"A previous request for approval has been rejected / withdrawn by "
+"${requester} on ${some_date}. actually the last message may not have been "
+"written by the person withdrawing the request; if this person for example "
+"made an empty reject, this is the message of the requester ... The last "
+"message regarding this issue is:"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
@@ -797,10 +811,12 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:244
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:372
 msgid "notes"
-msgstr ""
+msgstr "anteckningar"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:149
-msgid "This message will remain visible in the status screen for other authors and editors."
+msgid ""
+"This message will remain visible in the status screen for other authors and "
+"editors."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
@@ -830,15 +846,15 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:228
 msgid "publish new version"
-msgstr ""
+msgstr "publicera en ny version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
 msgid "publish closed version"
-msgstr ""
+msgstr "publicera stängd version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "publish now"
-msgstr ""
+msgstr "publicera nu"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
@@ -860,7 +876,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:295
 msgid "day / month / year &nbsp;23:59"
-msgstr ""
+msgstr "dag / månad / år &nbsp:23:59"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:323
 msgid "access key: alt-h"
@@ -932,7 +948,10 @@ msgid "revert to previous version"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:478
-msgid "The current editable version can be replaced with the previous (published) version. This can not be undone afterwards and will discard all changes made to the current version."
+msgid ""
+"The current editable version can be replaced with the previous (published) "
+"version. This can not be undone afterwards and will discard all changes made "
+"to the current version."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
@@ -944,7 +963,9 @@ msgid "manual close"
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:517
-msgid "If necessary, the published version of this content can be manually closed (taken offline). It will also be removed from the public index."
+msgid ""
+"If necessary, the published version of this content can be manually closed "
+"(taken offline). It will also be removed from the public index."
 msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
@@ -988,7 +1009,7 @@ msgstr ""
 #: /views/public/NewsViewer/search_news.pt:17
 #: /views/public/AgendaViewer/search_agenda.pt:17
 msgid "Search ${title}"
-msgstr ""
+msgstr "Sök ${title}"
 
 #: /views/public/NewsViewer/search_news.pt:41
 #: /views/public/AgendaViewer/search_agenda.pt:42
@@ -1003,7 +1024,7 @@ msgstr ""
 #: /views/public/NewsViewer/view_archive.pt:27
 #: /views/public/AgendaViewer/view_archive.pt:26
 msgid "Archive of ${title}"
-msgstr ""
+msgstr "Arkiv för ${title}"
 
 #: /views/public/NewsViewer/view_archive.pt:67
 #: /views/public/AgendaViewer/view_archive.pt:66
@@ -1024,7 +1045,7 @@ msgstr ""
 #: /views/public/AgendaViewer/search_agenda.pt:31
 #: /views/public/AgendaViewer/view_agenda.pt:21
 msgid "Search"
-msgstr ""
+msgstr "Sök"
 
 #: /views/public/NewsViewer/view_news.pt:38
 #: /views/public/AgendaViewer/view_agenda.pt:37
@@ -1043,11 +1064,11 @@ msgstr ""
 
 #: /views/public/PlainAgendaItem/render_helper.pt:36
 msgid "Start:"
-msgstr ""
+msgstr "Start:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:40
 msgid "End:"
-msgstr ""
+msgstr "Slut:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:46
 msgid "Location:"
@@ -1067,7 +1088,9 @@ msgid "display title"
 msgstr ""
 
 #: /www/inline_viewer_form.form:131
-msgid "Number of articles to be shown; max. is set by viewer (AN); empty = all articles (ANR)"
+msgid ""
+"Number of articles to be shown; max. is set by viewer (AN); empty = all "
+"articles (ANR)"
 msgstr ""
 
 #: /www/inline_viewer_form.form:141
@@ -1083,7 +1106,9 @@ msgid "article level"
 msgstr ""
 
 #: /www/inline_viewer_form.form:184
-msgid "Display intro (first elements of the article), the metadata description, or nothing"
+msgid ""
+"Display intro (first elements of the article), the metadata description, or "
+"nothing"
 msgstr ""
 
 #: /www/inline_viewer_form.form:194
@@ -1108,7 +1133,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:248
 msgid "image"
-msgstr ""
+msgstr "bild"
 
 #: /www/inline_viewer_form.form:264
 msgid "Display cration date (AN)"
@@ -1116,7 +1141,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:273
 msgid "creation date"
-msgstr ""
+msgstr "skapt datum"
 
 #: /www/inline_viewer_form.form:290
 msgid "Display start/end datetime if available (N)"
@@ -1132,7 +1157,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:33
 msgid "news source"
-msgstr ""
+msgstr "nyhets källa"
 
 #: /www/inline_viewer_form.form:342
 msgid "Where to show link to article (ANR)"
@@ -1140,7 +1165,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:351
 msgid "article link"
-msgstr ""
+msgstr "artikel länk"
 
 #: /www/inline_viewer_form.form:368
 msgid "Link text for single articles (ANV)"
@@ -1148,7 +1173,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:377
 msgid "link text"
-msgstr ""
+msgstr "länk text"
 
 #: /www/inline_viewer_form.form:395
 msgid "Display link to news source (ANR)"
@@ -1206,3 +1231,5 @@ msgstr ""
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr ""
 
+#~ msgid "Display time of public version"
+#~ msgstr "Visa tid för publik version"

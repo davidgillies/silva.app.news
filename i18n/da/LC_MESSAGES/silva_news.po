@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: silva-news-network\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Wed Feb 13 17:50:41 2008\n"
-"PO-Revision-Date: 2007-12-01 12:19+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: Wed May  7 15:03:24 2008\n"
+"PO-Revision-Date: 2008-03-19 15:08+0000\n"
+"Last-Translator: carson <Unknown>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-02-13 16:04+0000\n"
+"X-Launchpad-Export-Date: 2008-05-07 13:00+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: /NewsItem.py:102
@@ -27,11 +27,11 @@ msgstr "Ingen næste version"
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
-msgstr ""
+msgstr "Dette felt kan ikke redigeres."
 
 #: /views/add/CategoryFilter/form.form:55
 msgid "This is the title for your Category Filter."
-msgstr ""
+msgstr "Dette er titlen på dit kategori filter."
 
 #: /views/add/CategoryFilter/form.form:75
 msgid ""
@@ -54,7 +54,7 @@ msgid ""
 msgstr ""
 
 #: /views/add/NewsFilter/form.form:27
-#: /views/add/NewsItem/PlainAgendaItem/form.form:31
+#: /views/add/NewsItem/PlainAgendaItem/form.form:24
 #: /views/add/NewsItem/PlainArticle/form.form:31
 #: /views/add/AgendaFilter/form.form:27 /views/add/AgendaViewer/form.form:31
 msgid ""
@@ -63,7 +63,7 @@ msgid ""
 msgstr ""
 
 #: /views/add/NewsFolder/form.form:29 /views/add/NewsFilter/form.form:25
-#: /views/add/NewsItem/PlainAgendaItem/form.form:29
+#: /views/add/NewsItem/PlainAgendaItem/form.form:33
 #: /views/add/NewsItem/PlainArticle/form.form:29
 #: /views/add/AgendaFilter/form.form:25 /views/add/CategoryFilter/form.form:31
 #: /views/add/AgendaViewer/form.form:29
@@ -75,7 +75,7 @@ msgid "id: no spaces or special characters besides an underscore (_)."
 msgstr ""
 
 #: /views/add/NewsFolder/form.form:49
-#: /views/add/NewsItem/PlainAgendaItem/form.form:50
+#: /views/add/NewsItem/PlainAgendaItem/form.form:51
 #: /views/add/NewsItem/PlainArticle/form.form:52
 #: /views/add/AgendaViewer/form.form:50
 msgid ""
@@ -83,7 +83,29 @@ msgid ""
 "indexes."
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:105
+#: /views/add/NewsItem/PlainAgendaItem/form.form:122
+msgid "end date/time"
+msgstr ""
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:140
+msgid "The location where the event is taking place."
+msgstr ""
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:149
+#: /www/inline_viewer_form.form:325
+msgid "location"
+msgstr "sted"
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:175
+#: /views/add/NewsItem/PlainArticle/form.form:67
+#: /views/add/CategoryFilter/form.form:69
+#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:25
+#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
+msgid "subjects"
+msgstr "emner"
+
+#: /views/add/NewsItem/PlainAgendaItem/form.form:203
 #: /views/add/NewsItem/PlainArticle/form.form:86
 #: /views/add/CategoryFilter/form.form:91
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:46
@@ -92,22 +114,14 @@ msgstr ""
 msgid "target audiences"
 msgstr "målgruppe"
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:71
-msgid "start date/time"
-msgstr "start dato/tid"
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:72
+#: /views/add/NewsItem/PlainAgendaItem/form.form:82
+#: /views/add/NewsItem/PlainAgendaItem/form.form:113
 msgid "Format: d/m/y, time is optional."
 msgstr "Format:d/m/å, tid er tilvalg"
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:86
-#: /views/add/NewsItem/PlainArticle/form.form:67
-#: /views/add/CategoryFilter/form.form:69
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
-msgid "subjects"
-msgstr "emner"
+#: /views/add/NewsItem/PlainAgendaItem/form.form:91
+msgid "start date/time"
+msgstr "start dato/tid"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:184
 msgid "There are no news sources available."
@@ -119,11 +133,28 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:56
 #: /views/edit/Content/edit.pt:65
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:85
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
 msgid "settings"
 msgstr "opsætning"
+
+#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
+#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
+#: /views/edit/Content/edit.pt:74 /views/edit/Container/tab_settings.pt:117
+msgid "element"
+msgstr "element"
+
+#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
+#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
+#: /views/edit/Content/edit.pt:76 /views/edit/Container/tab_settings.pt:122
+msgid "content"
+msgstr "indhold"
+
+#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
+#: /views/edit/Content/edit.pt:77 /views/edit/Container/tab_settings.pt:125
+msgid "note"
+msgstr "note"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
 #: /views/edit/Content/edit.pt:103
@@ -180,11 +211,11 @@ msgstr "Filtret er opdateret."
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
 msgid "description"
-msgstr ""
+msgstr "beskrivelse"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 msgid "save selection"
-msgstr ""
+msgstr "gem valg"
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
 msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
@@ -197,11 +228,11 @@ msgstr "redigér"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:15
 msgid "properties"
-msgstr ""
+msgstr "egenskaber"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:16
 msgid "access"
-msgstr ""
+msgstr "adgang"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
@@ -211,12 +242,12 @@ msgstr "kilde"
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
 msgid "path"
-msgstr ""
+msgstr "sti"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
 #: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
-#: /views/add/NewsItem/PlainAgendaItem/form.form:49
+#: /views/add/NewsItem/PlainAgendaItem/form.form:60
 #: /views/add/NewsItem/PlainArticle/form.form:51
 #: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
 #: /views/add/AgendaViewer/form.form:49
@@ -287,7 +318,7 @@ msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:115
 msgid "(deselected)"
-msgstr ""
+msgstr "(fravælg)"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:165
 msgid ""
@@ -372,7 +403,7 @@ msgstr ""
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:69
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:88
 msgid "stick to path"
-msgstr ""
+msgstr "bliv på sti"
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
@@ -578,6 +609,75 @@ msgstr ""
 msgid "Request approval for: ${ids}"
 msgstr "Anmoder om godkendelse af: ${ids"
 
+#: /views/edit/Container/tab_settings.pt:112
+msgid "content renderer"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:132
+msgid "renderer"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:151
+msgid "Select a renderer to render this content."
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:158
+msgid "change renderer"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:158
+msgid "change renderer: alt-c"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:188
+#: /views/edit/Container/tab_settings.pt:259
+msgid "layout settings for &#xab;${title}&#xbb;"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:202
+#: /views/edit/Container/tab_settings.pt:221
+#: /views/edit/Container/tab_settings.pt:241
+msgid "layout settings"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:205
+msgid "for approved version of &#xab;${title}&#xbb;"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:224
+msgid "for published version of &#xab;${title}&#xbb;"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:244
+msgid "for closed version of &#xab;${title}&#xbb;"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:60
+msgid "settings for &#xab;${title}&#xbb;"
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:71
+msgid "local news source setting"
+msgstr "opsætning af lokale nyhedskilder"
+
+#: /views/edit/Container/tab_settings.pt:76
+msgid ""
+"Make news source local so it is picked up only by filters in the same path "
+"of the source and below."
+msgstr ""
+
+#: /views/edit/Container/tab_settings.pt:81
+msgid "make local?"
+msgstr "gør lokal?"
+
+#: /views/edit/Container/tab_settings.pt:94
+msgid "change setting"
+msgstr "ændre opsætning"
+
+#: /views/edit/Container/tab_settings.pt:94
+msgid "change the global/local status of the news publication: alt-h"
+msgstr ""
+
 #: /views/edit/Content/AgendaViewer/form.form:29
 msgid "day range"
 msgstr ""
@@ -685,136 +785,203 @@ msgstr ""
 msgid "The date/time that is displayed for the public."
 msgstr "Den dato og tid der vises for besøgende."
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
-msgid "approve for future"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:108
+msgid ""
+"A previous request for approval has been rejected / withdrawn by "
+"${requester} on ${some_date}. actually the last message may not have been "
+"written by the person withdrawing the request; if this person for example "
+"made an empty reject, this is the message of the requester ... The last "
+"message regarding this issue is:"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:107
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:147
-msgid "access key: alt-o"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
+msgid "for new version"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:129
-msgid "access key: alt-m"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
+msgid "request approval ${for_new_version}"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:139
-msgid "day / month / year &nbsp;23:59"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:135
+msgid "message to editor"
 msgstr ""
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:167
-msgid "access key: alt-h"
-msgstr ""
-
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:31
-msgid "Display time of public version"
-msgstr ""
-
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:72
-msgid "publish new version"
-msgstr "publicer ny version"
-
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:76
-msgid "publish closed version"
-msgstr "publisér lukket version"
-
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:88
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:138
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:191
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:244
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:372
 msgid "notes"
 msgstr "noter"
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:98
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:149
+msgid ""
+"This message will remain visible in the status screen for other authors and "
+"editors."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
+msgid "request approval"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
+msgid "access key: alt-r"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:181
+msgid "change settings"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:188
+msgid "current timings"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
+msgid "update timing"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
+msgid "access key: alt-u"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:228
+msgid "publish new version"
+msgstr "publicer ny version"
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
+msgid "publish closed version"
+msgstr "publisér lukket version"
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "publish now"
 msgstr "publicér nu"
 
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:98
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
 msgid "access key: alt-p"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:112
-msgid "content renderer"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:263
+msgid "approve for future"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:117
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
-#: /views/edit/Content/edit.pt:74
-msgid "element"
-msgstr "element"
-
-#: /views/edit/tab_settings.pt:122
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
-#: /views/edit/Content/edit.pt:76
-msgid "content"
-msgstr "indhold"
-
-#: /views/edit/tab_settings.pt:125
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
-#: /views/edit/Content/edit.pt:77
-msgid "note"
-msgstr "note"
-
-#: /views/edit/tab_settings.pt:132
-msgid "renderer"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:263
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:303
+msgid "access key: alt-o"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:151
-msgid "Select a renderer to render this content."
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:285
+msgid "access key: alt-m"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:158
-msgid "change renderer"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:295
+msgid "day / month / year &nbsp;23:59"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:158
-msgid "change renderer: alt-c"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:323
+msgid "access key: alt-h"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:188 /views/edit/tab_settings.pt:259
-msgid "layout settings for &#xab;${title}&#xbb;"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:35
+msgid "Publication time of public version"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:202 /views/edit/tab_settings.pt:221
-#: /views/edit/tab_settings.pt:241
-msgid "layout settings"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:351
+msgid "reject"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:205
-msgid "for approved version of &#xab;${title}&#xbb;"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:352
+msgid "withdraw"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:224
-msgid "for published version of &#xab;${title}&#xbb;"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:353
+msgid "request"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:244
-msgid "for closed version of &#xab;${title}&#xbb;"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:362
+msgid "add message on"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:60
-msgid "settings for &#xab;${title}&#xbb;"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:365
+msgid "rejection"
 msgstr ""
 
-#: /views/edit/tab_settings.pt:71
-msgid "local news source setting"
-msgstr "opsætning af lokale nyhedskilder"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:368
+msgid "withdrawal"
+msgstr ""
 
-#: /views/edit/tab_settings.pt:76
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:387
+msgid "The message may be viewed by local users."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
+msgid "access key: alt-j"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
+msgid "reject approval request"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:40
+msgid "Publication and expiration time of public version"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
+msgid "withdraw approval request"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:431
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
+msgid "revoke approval"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:440
+msgid "If further editing is required, first revoke the approval."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
+msgid "access key: alt-v"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:472
+msgid "revert to previous version"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:478
 msgid ""
-"Make news source local so it is picked up only by filters in the same path "
-"of the source and below."
+"The current editable version can be replaced with the previous (published) "
+"version. This can not be undone afterwards and will discard all changes made "
+"to the current version."
 msgstr ""
 
-#: /views/edit/tab_settings.pt:81
-msgid "make local?"
-msgstr "gør lokal?"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
+msgid "revert to previous"
+msgstr ""
 
-#: /views/edit/tab_settings.pt:94
-msgid "change setting"
-msgstr "ændre opsætning"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:510
+msgid "manual close"
+msgstr ""
 
-#: /views/edit/tab_settings.pt:94
-msgid "change the global/local status of the news publication: alt-h"
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:517
+msgid ""
+"If necessary, the published version of this content can be manually closed "
+"(taken offline). It will also be removed from the public index."
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
+msgid "close published version"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
+msgid "access key: alt-c"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:64
+msgid "messages"
+msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:78
+msgid "${author_id} sent a message on ${some_date} ${with_comments}"
 msgstr ""
 
 #: /views/public/AgendaViewer/search_agenda.pt:48
@@ -890,18 +1057,22 @@ msgstr "Der er ingen artikler tilgængelige."
 msgid "view archive"
 msgstr "vis arkiv"
 
-#: /views/public/PlainAgendaItem/render_helper.pt:26
-#: /views/public/PlainArticle/render_helper.pt:21
+#: /views/public/PlainAgendaItem/render_helper.pt:27
+#: /views/public/PlainArticle/render_helper.pt:24
 msgid "Publication date:"
 msgstr "Publikations dato:"
 
-#: /views/public/PlainAgendaItem/render_helper.pt:38
+#: /views/public/PlainAgendaItem/render_helper.pt:36
 msgid "Start:"
 msgstr "Start:"
 
-#: /views/public/PlainAgendaItem/render_helper.pt:42
+#: /views/public/PlainAgendaItem/render_helper.pt:40
 msgid "End:"
 msgstr "Slut:"
+
+#: /views/public/PlainAgendaItem/render_helper.pt:46
+msgid "Location:"
+msgstr ""
 
 #: /views/public/RSSAggregator/render_helper.pt:35
 #: /views/public/NewsFilter/search_news.pt:58
@@ -950,7 +1121,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:221
 msgid "# of chars"
-msgstr ""
+msgstr "# karakterer"
 
 #: /www/inline_viewer_form.form:23
 msgid "Choose a News Viewer, Agenda Viewer, or RSS Aggregator"
@@ -983,10 +1154,6 @@ msgstr ""
 #: /www/inline_viewer_form.form:316
 msgid "Display location if available (N)"
 msgstr ""
-
-#: /www/inline_viewer_form.form:325
-msgid "location"
-msgstr "sted"
 
 #: /www/inline_viewer_form.form:33
 msgid "news source"
@@ -1050,77 +1217,16 @@ msgstr ""
 
 #: /www/inline_viewer_view.pt:53
 msgid "Published: ${datetime}"
-msgstr ""
+msgstr "Publiseret: ${datetime}"
 
 #: /www/inline_viewer_view.pt:60
 msgid "Starts: ${datetime}"
-msgstr ""
+msgstr "Starter: ${datetime}"
 
 #: /www/inline_viewer_view.pt:67
 msgid "Ends: ${datetime}"
-msgstr ""
+msgstr "Slutter: ${datetime}"
 
 #: /www/inline_viewer_view.pt:74
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr ""
-
-#~ msgid "Acquire"
-#~ msgstr "Anskaf"
-
-#~ msgid "for new version"
-#~ msgstr "for ny version"
-
-#~ msgid "message to editor"
-#~ msgstr "meddelelse til redaktør"
-
-#~ msgid ""
-#~ "This message will remain visible in the status screen for other authors "
-#~ "and editors."
-#~ msgstr ""
-#~ "Denne meddelelse vil være synlig i statusbilledet for andre forfattere og "
-#~ "redaktører."
-
-#~ msgid "request approval"
-#~ msgstr "anmod om godkendelse"
-
-#~ msgid "change settings"
-#~ msgstr "ændre opsætning"
-
-#~ msgid "reject"
-#~ msgstr "afvis"
-
-#~ msgid "withdraw"
-#~ msgstr "træk tilbage"
-
-#~ msgid "request"
-#~ msgstr "anmodning"
-
-#~ msgid "add message on"
-#~ msgstr "tilføj meddelelse på"
-
-#~ msgid "rejection"
-#~ msgstr "afvisning"
-
-#~ msgid "withdrawal"
-#~ msgstr "tilbagetrækning"
-
-#~ msgid "The message may be viewed by local users."
-#~ msgstr "Meddelelses kan blive set af lokale brugere."
-
-#~ msgid "reject approval request"
-#~ msgstr "afvis godkendelses anmodning"
-
-#~ msgid "withdraw approval request"
-#~ msgstr "træk godkendelsesanmodning tilbage"
-
-#~ msgid "revert to previous"
-#~ msgstr "vend tilbage til foregående"
-
-#~ msgid "manual close"
-#~ msgstr "manuel lukning"
-
-#~ msgid "close published version"
-#~ msgstr "luk publiseret version"
-
-#~ msgid "messages"
-#~ msgstr "meddelelser"
