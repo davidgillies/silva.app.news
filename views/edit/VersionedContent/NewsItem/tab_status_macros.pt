@@ -251,7 +251,7 @@ notes
 <tr class="inter-controls">
 <td class="align-right"
   colspan="2">
-<input class="executor"
+<input class="button executor"
   style="float:right"
   name="tab_status_open_now:method"
   type="submit"
