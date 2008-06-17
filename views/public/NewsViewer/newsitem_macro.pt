@@ -36,7 +36,8 @@
      tal:define="classname python: 'newsitem-thumbnail-%s'%(repeat['r'].odd() and 'odd' or 'even')"
      tal:replace="structure python: obj.get_thumbnail(classname)"
     />
-   <tal:insertintro replace="structure r/get_intro" />
+<!--   <tal:insertintro replace="structure r/get_intro" />-->
+   <tal:insertintro replace="structure python:obj.get_intro(max_size=128)" />
   </div>
 
   <p class="p articlelink">
