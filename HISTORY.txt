@@ -62,12 +62,12 @@ SilvaNewsNetwork changes
         the Z3 interface lookup.
 
       - The default INV formulator form and view templates have new
-        features including: containing div id and class, specifying
-        article level, optional image thumbnail, where and whether to
-        place links to articles, and possible a few others.  If you're
-        using the default INV, you should refresh the template by
-        going to the each INV's url and adding '/refresh',
-        e.g. http://server.com/silva/inv/refresh
+        features including: containing div id and class, showing a
+        search box, specifying article level, optional image
+        thumbnail, where and whether to place links to articles, and
+        possible a few others.  If you're using the default INV, you
+        should refresh the template by going to the each INV's url and
+        adding '/refresh', e.g. http://server.com/silva/inv/refresh
         
 
     Bugs fixed
