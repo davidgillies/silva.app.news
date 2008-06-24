@@ -32,6 +32,19 @@
   title
 </h3>
 
+<div class="searchbox" tal:condition="python:options['show_search']=='1'">
+  <form tal:attributes="action viewerobj/absolute_url" method="post">
+    <input type="text" name="query" />
+    <input class="button"
+      type="submit"
+      value="Search"
+      title="Do a full text search: alt-s"
+      accesskey="s"
+      i18n:attributes="title;value"
+    />
+  </form>
+</div>
+
 <tal:loop condition="python:len(items) > 0"
   repeat="item items">
 <div tal:attributes="class python:'newsitem %s'%(repeat['item'].odd() and 'odd' or 'even')">
