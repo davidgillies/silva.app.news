@@ -6,6 +6,7 @@ from zope.interface import implements
 
 import os
 
+import Products
 from Globals import InitializeClass, package_home
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -134,7 +135,7 @@ class InlineViewer(CodeSource):
 
         #determine which silva types are IViewers
         viewer_metatypes = []
-        mts = self.get_root().filtered_meta_types()
+        mts = Products.meta_types
         for mt in mts:
             if (mt.has_key('instance') and
                 IViewer.implementedBy(mt['instance'])):
@@ -147,7 +148,7 @@ class InlineViewer(CodeSource):
         invcontainer = self.get_container()
         while container != root.aq_parent:
             objs = [(o.get_title(), o.id) for o in 
-             container.objectValues(viewer_metatypes)]
+                    container.objectValues(viewer_metatypes)]
             objects.extend(objs)
             container = container.aq_parent
         return objects

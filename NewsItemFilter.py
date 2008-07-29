@@ -6,6 +6,7 @@ from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from DateTime import DateTime
+import Products
 
 # Silva 
 import Products.Silva.SilvaPermissions as SilvaPermissions
@@ -227,14 +228,15 @@ class NewsItemFilter(Filter):
                 raise MetaTypeException, "Illegal meta_type: %s" % type
 
     def _allowed_news_meta_types(self):
+        mts = Products.meta_types
         return [addable_dict['name']
-                for addable_dict in self.filtered_meta_types()
+                for addable_dict in Products.meta_types
                 if self._is_news_addable(addable_dict)]
 
     def _is_news_addable(self, addable_dict):
         return (
             addable_dict.has_key('instance') and
-            INewsItem.isImplementedByInstancesOf(
+            INewsItem.implementedBy(
             addable_dict['instance']))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

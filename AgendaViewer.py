@@ -5,6 +5,7 @@
 from zope.interface import implements
 
 # Zope
+import Products
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -87,10 +88,10 @@ class AgendaViewer(NewsViewer):
         """results are passed to the filters, some of which may be
            news filters -- don't want to return PlainNewsItems"""
         allowed = []
-        mts = self.get_root().filtered_meta_types()
+        mts = Products.meta_types
         for mt in mts:
             if (mt.has_key('instance') and
-                IAgendaItemVersion.isImplementedBy(mt['instance'])):
+                IAgendaItemVersion.implementedBy(mt['instance'])):
                 allowed.append(mt['name'])
         return allowed
 
