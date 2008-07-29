@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Wed May  7 15:03:24 2008\n"
+"POT-Creation-Date: Tue Jul 29 11:25:53 2008\n"
 "PO-Revision-Date: 2008-02-12 12:43+0000\n"
 "Last-Translator: Irene Fellner <irene.fellner@wu-wien.ac.at>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
@@ -1085,7 +1085,7 @@ msgstr "Es sind keine Artikel verfügbar."
 #: /views/public/NewsViewer/search_news.pt:30
 #: /views/public/NewsFilter/search_news.pt:34
 #: /views/public/AgendaViewer/search_agenda.pt:31
-#: /views/public/AgendaViewer/view_agenda.pt:21
+#: /views/public/AgendaViewer/view_agenda.pt:21 /www/inline_viewer_view.pt:38
 msgid "Do a full text search: alt-s"
 msgstr "Volltextsuche: alt-s"
 
@@ -1093,7 +1093,7 @@ msgstr "Volltextsuche: alt-s"
 #: /views/public/NewsViewer/search_news.pt:30
 #: /views/public/NewsFilter/search_news.pt:34
 #: /views/public/AgendaViewer/search_agenda.pt:31
-#: /views/public/AgendaViewer/view_agenda.pt:21
+#: /views/public/AgendaViewer/view_agenda.pt:21 /www/inline_viewer_view.pt:38
 msgid "Search"
 msgstr "Suche"
 
@@ -1253,6 +1253,14 @@ msgstr "Zeige eine Fußnote für den Feed (anpassbar)"
 msgid "show footer"
 msgstr "zeige Fußnote"
 
+#: /www/inline_viewer_form.form:474
+msgid "Show search box (ANR)"
+msgstr ""
+
+#: /www/inline_viewer_form.form:483
+msgid "show search"
+msgstr ""
+
 #: /www/inline_viewer_form.form:51
 msgid "ID for div tag for inline viewer; default = _blank_ (ANR)"
 msgstr "ID für div-Tag für Onlinebetrachter: default = _blank_ (ANR)"
@@ -1269,19 +1277,19 @@ msgstr "CSS Klasse für div-Tag für Onlinebetrachter: default = inv (ANR)"
 msgid "div css class"
 msgstr "div css class"
 
-#: /www/inline_viewer_view.pt:53
+#: /www/inline_viewer_view.pt:66
 msgid "Published: ${datetime}"
 msgstr "Publiziert: ${datetime}"
 
-#: /www/inline_viewer_view.pt:60
+#: /www/inline_viewer_view.pt:73
 msgid "Starts: ${datetime}"
 msgstr "Beginn: ${datetime}"
 
-#: /www/inline_viewer_view.pt:67
+#: /www/inline_viewer_view.pt:80
 msgid "Ends: ${datetime}"
 msgstr "Ende: ${datetime}"
 
-#: /www/inline_viewer_view.pt:74
+#: /www/inline_viewer_view.pt:87
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr "Ort: <span class=\"newsitemlocation\"></span>"
 
