@@ -1,33 +1,33 @@
+# Indonesian translation for silva-news-network
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the silva-news-network package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Silva\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: silva-news-network\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: Tue Jul 29 13:04:48 2008\n"
-"PO-Revision-Date: 2008-03-16 16:00+0000\n"
-"Last-Translator: Sylvain Viollon <sylvain@infrae.com>\n"
-"Language-Team: jpombar\n"
+"PO-Revision-Date: 2008-05-24 23:56+0000\n"
+"Last-Translator: Mahyuddin Susanto <udienz@ubuntu.com>\n"
+"Language-Team: Indonesian <id@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Launchpad-Export-Date: 2008-07-29 09:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
-"Language-code: fr\n"
-"Domain: silva_news\n"
-"Language-name: French\n"
-"Preferred-encodings: utf-8\n"
-"Generated-By: zope/app/translation_files/extract.py\n"
 
 #: /NewsItem.py:102
 msgid "No unapproved version."
-msgstr "Aucune version non approuvée."
+msgstr "Tidak terdapat versi yang tidak disetujui."
 
 #: /NewsItem.py:89
 msgid "No next version."
-msgstr "Il n'y a pas de version suivante."
+msgstr "Tidak ada versi berikutnya."
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
-msgstr "Ce champ ne peut pas être édité."
+msgstr ""
 
 #: /views/add/CategoryFilter/form.form:55
 msgid "This is the title for your Category Filter."
@@ -52,9 +52,6 @@ msgid ""
 "            Select the target audiences to filter on.\n"
 "          "
 msgstr ""
-"\n"
-"            Choisir les audiences ciblées à filtrer.\n"
-"          "
 
 #: /views/add/NewsFilter/form.form:27
 #: /views/add/NewsItem/PlainAgendaItem/form.form:24
@@ -64,8 +61,6 @@ msgid ""
 "No spaces or special characters besides &#8216;_&#8217; or &#8216;-&#8217; "
 "or &#8216;.&#8217;"
 msgstr ""
-"Aucun espace ou caractère spécial autre que &#8216;_&#8217; or &#8216;-"
-"&#8217; or &#8216;.&#8217;"
 
 #: /views/add/NewsFolder/form.form:29 /views/add/NewsFilter/form.form:25
 #: /views/add/NewsItem/PlainAgendaItem/form.form:33
@@ -73,12 +68,11 @@ msgstr ""
 #: /views/add/AgendaFilter/form.form:25 /views/add/CategoryFilter/form.form:31
 #: /views/add/AgendaViewer/form.form:29
 msgid "id"
-msgstr "identifiant"
+msgstr "id"
 
 #: /views/add/NewsFolder/form.form:31
 msgid "id: no spaces or special characters besides an underscore (_)."
 msgstr ""
-"identifiant: aucun espace ou caractère spécial à côté autre que souligné (_)."
 
 #: /views/add/NewsFolder/form.form:49
 #: /views/add/NewsItem/PlainAgendaItem/form.form:51
@@ -88,8 +82,6 @@ msgid ""
 "The title will be publicly visible, and is used as the default link in "
 "indexes."
 msgstr ""
-"Le titre sera visible au public et utilisé en tant que lien par défaut pour "
-"les indexes"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:122
 msgid "end date/time"
@@ -102,7 +94,7 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:149
 #: /www/inline_viewer_form.form:325
 msgid "location"
-msgstr "emplacement"
+msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:175
 #: /views/add/NewsItem/PlainArticle/form.form:67
@@ -111,7 +103,7 @@ msgstr "emplacement"
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
 #: /views/edit/Asset/Filter/CategoryFilter/form.form:26
 msgid "subjects"
-msgstr "sujets"
+msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:203
 #: /views/add/NewsItem/PlainArticle/form.form:86
@@ -120,24 +112,24 @@ msgstr "sujets"
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:46
 #: /views/edit/Asset/Filter/CategoryFilter/form.form:47
 msgid "target audiences"
-msgstr "audiences ciblées"
+msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainAgendaItem/form.form:113
 msgid "Format: d/m/y, time is optional."
-msgstr "Format: j/m/a, heure est optionnelle"
+msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:91
 msgid "start date/time"
-msgstr "date/heure de démarrage"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:184
 msgid "There are no news sources available."
-msgstr "Aucune source de news disponible"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
 msgid "use selected sources in this filter: alt-u"
-msgstr "utiliser les sources choisies dans ce filtre: alt-u"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:56
 #: /views/edit/Content/edit.pt:65
@@ -145,120 +137,112 @@ msgstr "utiliser les sources choisies dans ce filtre: alt-u"
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
 msgid "settings"
-msgstr "paramètres"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
 #: /views/edit/Content/edit.pt:74 /views/edit/Container/tab_settings.pt:117
 msgid "element"
-msgstr "élément"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
 #: /views/edit/Content/edit.pt:76 /views/edit/Container/tab_settings.pt:122
 msgid "content"
-msgstr "contenu"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
 #: /views/edit/Content/edit.pt:77 /views/edit/Container/tab_settings.pt:125
 msgid "note"
-msgstr "note"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
 #: /views/edit/Content/edit.pt:103
 msgid "save settings"
-msgstr "sauvegarder les paramètres"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
-msgstr "type"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:106
 msgid "modify"
-msgstr "modifier"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:109
 msgid "expiration&nbsp;due"
-msgstr "expiration&nbsp;due"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:205
 msgid ""
 "There are no news items for this period. Check that news sources are "
 "activated (go to the editor screen) and items in the sources are published."
 msgstr ""
-"Il n'y a pas pas de news pour cette période. Vérifier que sources news est "
-"activée (dans l'écran d'édition) et que les items des sources sont publiés."
 
-# Default: "silva_news"
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:22
 msgid "Input form errors ${errors}"
-msgstr "Erreur de saisie ${errors}"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:29
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:27
 msgid "subjects changed"
-msgstr "sujets modifiés"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:35
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:33
 msgid "target audiences changed"
-msgstr "audience ciblées modifiées"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:41
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:45
 msgid "stick to path changed"
-msgstr "collage du chemin modifié"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:46
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:49
 msgid "Settings changed for: "
-msgstr "Paramètres modifiés pour: "
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
 #: /views/edit/Asset/Filter/use_sources.py:40
 msgid "The filter is updated."
-msgstr "Le filtre a été mis à jour."
+msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
 msgid "description"
-msgstr "description"
+msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 msgid "save selection"
-msgstr "sauvegarder la sélection"
+msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
 msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
 msgstr ""
 
-# Default: "Edit"
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
 msgid "edit"
-msgstr "éditer"
+msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:15
 msgid "properties"
-msgstr "propriétés"
+msgstr ""
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:16
 msgid "access"
-msgstr "accès"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
 msgid "sources"
-msgstr "sources"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
 msgid "path"
-msgstr "chemin"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
@@ -268,73 +252,73 @@ msgstr "chemin"
 #: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
 #: /views/add/AgendaViewer/form.form:49
 msgid "title"
-msgstr "titre"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:154
 msgid "Edit this source"
-msgstr "Éditer cette source"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:160
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:157
 msgid "Edit this item"
-msgstr "Modifier cet élément"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:171
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:168
 msgid "(not activated)"
-msgstr "non activé"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:187
 msgid "There are no newssources available."
-msgstr "Il n'y a pas de nouvelles ressources disponibles."
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
 msgid "Use selected sources in this filter: alt-u"
-msgstr "Utiliser les sources choisies dans ce filtre: alt-u"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
 msgid "update sources"
-msgstr "mise à jour des sources"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:58
 msgid "general settings"
-msgstr "paramètres générales"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:67
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
 msgid "Element"
-msgstr "Élément"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:68
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
 msgid "Content"
-msgstr "Contenu"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:69
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
 msgid "Note"
-msgstr "Note"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
 msgid " save settings "
-msgstr " sauvegarder les paramètres "
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
 #: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
 #: /views/edit/Content/edit.pt:103
 msgid "access key: alt-s"
-msgstr "raccourci: alt-s"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:109
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:153
 msgid "Preview this item"
-msgstr "Aperçu de cet élément"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:115
 msgid "(deselected)"
-msgstr "(desactivé)"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:165
 msgid ""
@@ -342,72 +326,69 @@ msgid ""
 "are activated (go to the editor screen) and items in the sources are "
 "published."
 msgstr ""
-"Il n'y a pas pas d'items news publiés dans ce filtre. Vérifier que sources "
-"news est activée (dans l'écran d'édition) et que les items des sources sont "
-"publiés."
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all items: alt-a"
-msgstr "choisir tous les items: alt-a"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
-msgstr "sélectionner tout"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
-msgstr "tout désélectionner"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:280
 msgid "use selected items in this filter: alt-u"
-msgstr "utiliser les items choisis dans ce filtre: alt-u"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:238
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:280
 msgid "update"
-msgstr "mettre à jour"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:253
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:286
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:284
 msgid "Previous"
-msgstr "Précédent"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:257
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:290
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:288
 msgid "Next"
-msgstr "Suivant"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:67
 #: /views/edit/Asset/Filter/NewsFilter/edit.pt:132
 #: /views/edit/Asset/Filter/AgendaFilter/edit.pt:129
 msgid "in use"
-msgstr "en cous d'utilisation"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:69
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:107
 msgid "view"
-msgstr "voir"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:70
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:108
 msgid "publication&nbsp;due&nbsp;"
-msgstr "publication&nbsp;due&nbsp;"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:71
 msgid "expiration&nbsp;due&nbsp;"
-msgstr "expiration&nbsp;due&nbsp;"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:29
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:29
@@ -417,15 +398,12 @@ msgid ""
 "            Select the news subjects to filter on.\n"
 "          "
 msgstr ""
-"\n"
-"            Choisir les sujets des news à fltrer.\n"
-"          "
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:69
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:69
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:88
 msgid "stick to path"
-msgstr "coller au chemin"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
 #: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
@@ -434,24 +412,22 @@ msgid ""
 "Setting to 'yes' keeps the filter local, showing only items in the content "
 "tree that are below the location of the filter."
 msgstr ""
-"Placé à 'Oui' garde le filtre local, en montrant seulement les items dans "
-"l'arborescence en dessous de l'mplacement du filtre."
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:88
 msgid "show agenda items"
-msgstr "montrer les éléments d'agenda"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/settingsform.form:90
 msgid "If set to 'yes', show agenda items as well as news items."
-msgstr "Si mis à 'Oui', montre les items d'agenda et de news"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:39
 msgid "show agendaitems changed"
-msgstr "montrer les éléments d'agenda et news modifiés"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/form.form:44
 msgid "Restrict usage"
-msgstr "Utilisation restreinte"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/settings_submit.py:30
 msgid "The news source is now  available."
@@ -459,11 +435,11 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:105
 msgid "The objects have different values."
-msgstr "Les objets ont des valeurs différentes."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:123
 msgid "There are no publishable objects found."
-msgstr "Aucun élément à publier n'a été trouvé."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
 msgid ""
@@ -471,54 +447,51 @@ msgid ""
 "newssources etc.). Select which items to recurse (walk through) to add to "
 "the list of objects to updated:<br /><br />"
 msgstr ""
-"Certains objets de votre sélection sont containeurs (dossiers, publications,"
-"sources de news,etc) . Choisir quels items garder en mémoire pour les "
-"ajouter à la liste d'objets à mettre à jour:<br /><br />"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:74
 msgid "Id"
-msgstr "Identifiant"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:77
 #: /views/edit/Container/Publication/NewsPublication/form.form:29
 msgid "Title"
-msgstr "Titre"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:109
 msgid "Co-promoter"
-msgstr "Co-responsable"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:131
 msgid "Speakers"
-msgstr "Speakers"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:153
 msgid "Startdate and time"
-msgstr "Date et heure de démarrage"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:173
 msgid "Enddate and time"
-msgstr "Date et heure d'arrêt"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:189
 msgid "Location"
-msgstr "Emplacement"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:212
 msgid "Location (if not in list)"
-msgstr "Emplacement (si n'est pas en liste)"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:233
 msgid "Pressheader"
-msgstr "Titre de presse"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:254
 msgid "Subheader"
-msgstr "Sous entête"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:275
 msgid "Lead"
-msgstr "La une"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:29
 msgid "Academic"
@@ -530,19 +503,19 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:314
 msgid "Common Info"
-msgstr "Information générale"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:337
 msgid "Specific Info"
-msgstr "Information Spécifique"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:358
 msgid "Specific info (if not in list)"
-msgstr "Information Spécifique (si non listée)"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:379
 msgid "More info links"
-msgstr "Plus Info liens"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:400
 msgid "Embargo Datetime"
@@ -550,15 +523,15 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:414
 msgid "Subjects"
-msgstr "Sujets"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:432
 msgid "Target Audiences"
-msgstr "Audiences Ciblées"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:49
 msgid "Chair"
-msgstr "Président"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:69
 msgid "Promovendus"
@@ -566,38 +539,36 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_edit_form.form:89
 msgid "Promoter"
-msgstr "Promoteur"
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_submit.py:40
 msgid "${path} is updated"
-msgstr "${path} mis à jour"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_open_now.py:9
 #: /views/edit/Container/Publication/NewsPublication/tab_status_open_now.py:9
 msgid "Nothing was selected, so nothing was approved."
-msgstr "Aucun élément sélectionné donc aucun n'a été approuvé."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_info.pt:17
 msgid "Info for"
-msgstr "Information pour"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_info.pt:23
 msgid "Authorized users below this level"
-msgstr "Utilisateurs autorisés en dessous de ce niveau"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:103
 msgid "Changed settings on: ${ids}"
-msgstr "Paramètres modifiés sur: ${ids}"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:108
 msgid "<span class=\"error\">could not change settings on: ${ids}</span>"
 msgstr ""
-"<span class=\"error\">ne peut pas modifier les paramètres sur: ${ids}</span>"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:16
 msgid "Nothing was selected, so no settings were changed."
-msgstr "Aucun paramètre sélectionné donc aucun paramètre a été modifié."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:34
 msgid "No publication nor expiration time nor any of the flags were set."
@@ -606,30 +577,27 @@ msgstr ""
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:51
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:18
 msgid "not applicable"
-msgstr "non applicable"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:60
 msgid "no next or public version available"
-msgstr "aucune version suivante ou publique de disponible"
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:64
 msgid "cannot change publication time of already public versions."
 msgstr ""
-"ne peut pas changer la date de publication des versions déjà publiques."
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:87
 msgid "no unapproved version"
-msgstr "aucune version sans approbation."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:101
 msgid "<span class=\"error\">No request for approval on: ${ids}</span>"
 msgstr ""
-"<span class=\"error\">Aucune demande d'approbation en cours pour&nbsp;: "
-"${ids}</span>"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:15
 msgid "Nothing was selected, so no approval was requested."
-msgstr "Aucun élément sélectionné donc aucune approbation n'est demandée."
+msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:88
 msgid ""
@@ -639,7 +607,7 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:96
 msgid "Request approval for: ${ids}"
-msgstr "Demander l'approbation de&nbsp;: ${ids}"
+msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:112
 msgid "content renderer"
@@ -686,58 +654,53 @@ msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:60
 msgid "settings for &#xab;${title}&#xbb;"
-msgstr "paramètres pour &#xab;${title}&#xbb;"
+msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:71
 msgid "local news source setting"
-msgstr "local nouvelles publications paramètre"
+msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:76
 msgid ""
 "Make news source local so it is picked up only by filters in the same path "
 "of the source and below."
 msgstr ""
-"Prépare source de news local accésible par filtre dans le même niveau de la "
-"source et dessous."
 
 #: /views/edit/Container/tab_settings.pt:81
 msgid "make local?"
-msgstr "changer à local?"
+msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:94
 msgid "change setting"
-msgstr "changer paramètre"
+msgstr ""
 
 #: /views/edit/Container/tab_settings.pt:94
 msgid "change the global/local status of the news publication: alt-h"
-msgstr "changer l'état global/local des nouvelles publications: alt-h"
+msgstr ""
 
 #: /views/edit/Content/AgendaViewer/form.form:29
 msgid "day range"
-msgstr "nombre de jours"
+msgstr ""
 
 #: /views/edit/Content/AgendaViewer/form.form:30
 msgid "Number of days in the future to show."
-msgstr "Nombre de jours à présenter dans le futur."
+msgstr ""
 
-# Default: "silva_news"
 #: /views/edit/Content/AgendaViewer/submit_settings.py:37
 #: /views/edit/Content/NewsViewer/submit_settings.py:39
 #: /views/edit/Content/RSSAggregator/submit_settings.py:27
 msgid "Viewer data changed"
-msgstr "Visionneur de données modifié"
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:27
 msgid "show"
-msgstr "montrer"
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:29
 msgid ""
 "Show a specific number of items, or show items from a range of days in the "
 "past."
 msgstr ""
-"Montrer un nombre spécifique d'items, ou montrer items pour un nombre de "
-"jours dans le passé."
 
 #: /views/edit/Content/NewsViewer/form.form:48
 msgid "days / items number"
@@ -745,7 +708,7 @@ msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:49
 msgid "Number of news items to show per page."
-msgstr "Nombre d'articles news à montrer sur une page."
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:68
 #: /views/edit/Content/AgendaViewer/form.form:49
@@ -755,27 +718,25 @@ msgstr ""
 #: /views/edit/Content/NewsViewer/form.form:69
 #: /views/edit/Content/AgendaViewer/form.form:50
 msgid "Number of archive items to show per page."
-msgstr "Nombre d'articles d'archives à montrer sur une page."
+msgstr ""
 
 #: /views/edit/Content/NewsViewer/form.form:85
 #: /views/edit/Content/AgendaViewer/form.form:65
 msgid "filters"
-msgstr "filtres"
+msgstr ""
 
 #: /views/edit/Content/RSSAggregator/form.form:30
 msgid "RSS feeds"
-msgstr "fils RSS"
+msgstr ""
 
 #: /views/edit/Content/RSSAggregator/form.form:32
 msgid ""
 "List the URLs of RSS feeds (one per line) to use as sources of news items."
 msgstr ""
-"Liste d'URLs de fils RSS à utiliser en tant que source pour les nouveaux "
-"éléments."
 
 #: /views/edit/Content/edit.pt:124
 msgid "RDF Feed"
-msgstr "fil RDF"
+msgstr ""
 
 #: /views/edit/Content/edit.pt:128
 msgid ""
@@ -784,15 +745,15 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
-msgstr "Document publié"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:22
 msgid "version already approved"
-msgstr "version déjà approuvé"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:27
 msgid "Document already published"
-msgstr "Document déjà publié"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:15
 msgid "There is no unapproved version to publish."
@@ -803,18 +764,18 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:12
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:12
 msgid "There is no unapproved version to approve."
-msgstr "Il n'y a pas de version non approuvée à approuver"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:69
 msgid "Version published."
-msgstr "Version publiée."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/publish_helper.py:71
 #: /views/edit/VersionedContent/NewsItem/tab_edit_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_metadata_publish.py:27
 #: /views/edit/VersionedContent/NewsItem/tab_preview_publish.py:27
 msgid "Version approved."
-msgstr "Version approuvée."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:30
 msgid "display time"
@@ -822,7 +783,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_form_news.form:31
 msgid "The date/time that is displayed for the public."
-msgstr "Le date/heure qui est montré pour le public."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:108
 msgid ""
@@ -835,34 +796,32 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "for new version"
-msgstr "de nouvelle version"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "request approval ${for_new_version}"
-msgstr "demander de l'approbation ${for_new_version}"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:135
 msgid "message to editor"
-msgstr "message au rédacteur"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:138
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:191
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:244
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:372
 msgid "notes"
-msgstr "notes"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:149
 msgid ""
 "This message will remain visible in the status screen for other authors and "
 "editors."
 msgstr ""
-"Ce message demeurera évident dans l'écran de statut pour d'autres auteurs et "
-"rédacteurs."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 msgid "request approval"
-msgstr "demander de l'approbation"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
@@ -887,37 +846,37 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:228
 msgid "publish new version"
-msgstr "publier la nouvelle version"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
 msgid "publish closed version"
-msgstr "publier la version fermée"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "publish now"
-msgstr "publier maintenant"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
 msgid "access key: alt-p"
-msgstr "touche d'accès: alt-p"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:263
 msgid "approve for future"
-msgstr "approuver pour futur"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:263
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:303
 msgid "access key: alt-o"
-msgstr "touche d'accès: alt-o"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:285
 msgid "access key: alt-m"
-msgstr "touche d'accès: alt-m"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:295
 msgid "day / month / year &nbsp;23:59"
-msgstr "jour / mois / année &nbsp;23:59"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:323
 msgid "access key: alt-h"
@@ -929,7 +888,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:351
 msgid "reject"
-msgstr "refuser"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:352
 msgid "withdraw"
@@ -937,23 +896,23 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:353
 msgid "request"
-msgstr "demand"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:362
 msgid "add message on"
-msgstr "ajouter un message avec le"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:365
 msgid "rejection"
-msgstr "le refus"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:368
 msgid "withdrawal"
-msgstr "l'annulation"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:387
 msgid "The message may be viewed by local users."
-msgstr "Le message peut etre regardé par les utilisateurs locaux."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
 msgid "access key: alt-j"
@@ -961,7 +920,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
 msgid "reject approval request"
-msgstr "refuser la demande de l'approbation"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:40
 msgid "Publication and expiration time of public version"
@@ -969,16 +928,16 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
 msgid "withdraw approval request"
-msgstr "retirer la demande de l'approbation"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:431
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
 msgid "revoke approval"
-msgstr "annuler l'approbation"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:440
 msgid "If further editing is required, first revoke the approval."
-msgstr "Si davantage d'édition est exigée, annuler l'approbation."
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
 msgid "access key: alt-v"
@@ -1001,7 +960,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:510
 msgid "manual close"
-msgstr "fermer version publique"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:517
 msgid ""
@@ -1011,7 +970,7 @@ msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
 msgid "close published version"
-msgstr "fermer version publique"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
 msgid "access key: alt-c"
@@ -1028,7 +987,7 @@ msgstr ""
 #: /views/public/AgendaViewer/search_agenda.pt:48
 #: /views/public/AgendaViewer/view_archive.pt:102
 msgid "view agenda"
-msgstr "voir l'ordre du jour"
+msgstr ""
 
 #: /views/public/AgendaViewer/search_agenda.pt:51
 #: /views/public/AgendaViewer/view_agenda.pt:45
@@ -1037,7 +996,7 @@ msgstr ""
 
 #: /views/public/NewsFilter/search_news.pt:20
 msgid "Search News"
-msgstr "Rechercher les nouvelles"
+msgstr ""
 
 #: /views/public/NewsFilter/search_news.pt:56
 msgid "Startdate/time:"
@@ -1045,32 +1004,32 @@ msgstr ""
 
 #: /views/public/NewsFilter/search_news.pt:71
 msgid "There are no articles corresponding to your query."
-msgstr "Aucun article correspondant à votre recherche"
+msgstr ""
 
 #: /views/public/NewsViewer/search_news.pt:17
 #: /views/public/AgendaViewer/search_agenda.pt:17
 msgid "Search ${title}"
-msgstr "Rechercher ${title}"
+msgstr ""
 
 #: /views/public/NewsViewer/search_news.pt:41
 #: /views/public/AgendaViewer/search_agenda.pt:42
 msgid "There are no articles corresponding to your query"
-msgstr "Il n'y a aucun article correspondant à votre recherche."
+msgstr ""
 
 #: /views/public/NewsViewer/view_archive.pt:103
 #: /views/public/NewsViewer/search_news.pt:47
 msgid "view news"
-msgstr "regarder les nouvelles"
+msgstr ""
 
 #: /views/public/NewsViewer/view_archive.pt:27
 #: /views/public/AgendaViewer/view_archive.pt:26
 msgid "Archive of ${title}"
-msgstr "Archive de  ${title}"
+msgstr ""
 
 #: /views/public/NewsViewer/view_archive.pt:67
 #: /views/public/AgendaViewer/view_archive.pt:66
 msgid "There are no articles available"
-msgstr "Il n'y a aucun article disponible."
+msgstr ""
 
 #: /views/public/NewsViewer/view_news.pt:22
 #: /views/public/NewsViewer/search_news.pt:30
@@ -1078,7 +1037,7 @@ msgstr "Il n'y a aucun article disponible."
 #: /views/public/AgendaViewer/search_agenda.pt:31
 #: /views/public/AgendaViewer/view_agenda.pt:21 /www/inline_viewer_view.pt:38
 msgid "Do a full text search: alt-s"
-msgstr "Recherche full-texte: alt-s"
+msgstr ""
 
 #: /views/public/NewsViewer/view_news.pt:22
 #: /views/public/NewsViewer/search_news.pt:30
@@ -1086,39 +1045,39 @@ msgstr "Recherche full-texte: alt-s"
 #: /views/public/AgendaViewer/search_agenda.pt:31
 #: /views/public/AgendaViewer/view_agenda.pt:21 /www/inline_viewer_view.pt:38
 msgid "Search"
-msgstr "Rechercher"
+msgstr ""
 
 #: /views/public/NewsViewer/view_news.pt:38
 #: /views/public/AgendaViewer/view_agenda.pt:37
 msgid "There are no articles available."
-msgstr "Il n'a pas d'articles disponibles."
+msgstr ""
 
 #: /views/public/NewsViewer/view_news.pt:45
 #: /views/public/NewsViewer/search_news.pt:50
 msgid "view archive"
-msgstr "voir les archives"
+msgstr ""
 
 #: /views/public/PlainAgendaItem/render_helper.pt:27
 #: /views/public/PlainArticle/render_helper.pt:24
 msgid "Publication date:"
-msgstr "Date de publication&nbsp;:"
+msgstr ""
 
 #: /views/public/PlainAgendaItem/render_helper.pt:36
 msgid "Start:"
-msgstr "Début&nbsp;:"
+msgstr ""
 
 #: /views/public/PlainAgendaItem/render_helper.pt:40
 msgid "End:"
-msgstr "Fin&nbsp;:"
+msgstr ""
 
 #: /views/public/PlainAgendaItem/render_helper.pt:46
 msgid "Location:"
-msgstr "Emplacement"
+msgstr ""
 
 #: /views/public/RSSAggregator/render_helper.pt:35
 #: /views/public/NewsFilter/search_news.pt:58
 msgid "view article"
-msgstr "voir article"
+msgstr ""
 
 #: /www/inline_viewer_form.form:105
 msgid "Display title of viewer (ANR)"
@@ -1174,7 +1133,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:248
 msgid "image"
-msgstr "image"
+msgstr ""
 
 #: /www/inline_viewer_form.form:264
 msgid "Display cration date (AN)"
@@ -1182,7 +1141,7 @@ msgstr ""
 
 #: /www/inline_viewer_form.form:273
 msgid "creation date"
-msgstr "date de création"
+msgstr ""
 
 #: /www/inline_viewer_form.form:290
 msgid "Display start/end datetime if available (N)"
@@ -1279,376 +1238,3 @@ msgstr ""
 #: /www/inline_viewer_view.pt:87
 msgid "Location: <span class=\"newsitemlocation\"></span>"
 msgstr ""
-
-#~ msgid "save addable settings for this publication: alt-a"
-#~ msgstr "sauvegarder les héritages pour cette publication: alt-a"
-
-#~ msgid "Save addables data"
-#~ msgstr "Sauvegarder les données d'héritage"
-
-#~ msgid "addable settings for:"
-#~ msgstr "parmètres héritages pour:"
-
-#~ msgid "Acquire"
-#~ msgstr "Obtenir"
-
-#~ msgid "If checked, inherit the allowed addables from above."
-#~ msgstr "Si coché, hérite les propriétés du dossier supérieur -parent-"
-
-#~ msgid "Addables"
-#~ msgstr "Héritages"
-
-#~ msgid ""
-#~ "If 'acquire' is not checked, these settings will determine the items "
-#~ "allowed in this publication. Otherwise the addables are acquired from the "
-#~ "publication above."
-#~ msgstr ""
-#~ "Si 'obtenir' n'est pas coché, ces paramètres définissent les items "
-#~ "autorisés dans cette publication. Autrement les héritages sont acquis de "
-#~ "la publication supérieue -parent-"
-
-# Default: "silva_news"
-#~ msgid "Addable settings changed for: ${metadata}"
-#~ msgstr "Paramètres d'héritages modifiés pour: ${metadata}"
-
-#~ msgid "number"
-#~ msgstr "nombre"
-
-#~ msgid "In use"
-#~ msgstr "En utilisation"
-
-#~ msgid "date and time"
-#~ msgstr "date et heure"
-
-#~ msgid "end date and time"
-#~ msgstr "fin date et heure"
-
-#~ msgid "AgendaItem-data changed"
-#~ msgstr "Donnée AgendaItem modifiée"
-
-#~ msgid "Article data changed"
-#~ msgstr "Doonée article modifiée"
-
-#~ msgid "Target audiences"
-#~ msgstr "Audiences ciblées"
-
-#~ msgid "modify subjects and target audiences..."
-#~ msgstr "modifierer sujets et audiences ciblées"
-
-#~ msgid "save item: alt-s"
-#~ msgstr "sauvegarder item: alt-s"
-
-#~ msgid "save item"
-#~ msgstr "sauvegarder item"
-
-#~ msgid "content editor..."
-#~ msgstr "editeur de contenu.."
-
-#~ msgid "Article filtering"
-#~ msgstr "Filtrage articles"
-
-#~ msgid "save subjects and target audiences"
-#~ msgstr "sauvegarder sujets et audiences ciblées"
-
-#~ msgid "back to article..."
-#~ msgstr "Retour à Articles"
-
-#~ msgid "Data changed"
-#~ msgstr "Données modifiées"
-
-#~ msgid "display date/time"
-#~ msgstr "date d'affichage"
-
-#~ msgid "update timings"
-#~ msgstr "fixer les temps"
-
-#~ msgid "Search Agenda"
-#~ msgstr "Rechercher Agenda"
-
-#~ msgid "published:"
-#~ msgstr "publié"
-
-#~ msgid "update display date/time"
-#~ msgstr "changer la date affichage"
-
-#~ msgid ""
-#~ "Changing this will also change where the news item appears in a "
-#~ "chronological list."
-#~ msgstr ""
-#~ "Changer ceci changera également ou la nouvelle apparait dans une liste "
-#~ "chronologique."
-
-#~ msgid "Date and time:"
-#~ msgstr "Date et heure:"
-
-# Default: "silva_news"
-#~ msgid "Settings changed."
-#~ msgstr "Paramètres modifiés."
-
-#~ msgid "new..."
-#~ msgstr "nouveau"
-
-#~ msgid "select a new item: alt-s"
-#~ msgstr "choisir nouvel item: alt-s"
-
-# Default: "Preview"
-#~ msgid "preview"
-#~ msgstr "apperçu"
-
-# Default: "Modified"
-#~ msgid "modified"
-#~ msgstr "modifié"
-
-# Default: "Author"
-#~ msgid "author"
-#~ msgstr "auteur"
-
-# Default: "&nbsp;&nbsp;Shift"
-#~ msgid "shift"
-#~ msgstr "majuscule"
-
-#~ msgid "There is no content here."
-#~ msgstr "Aucun contenu ici"
-
-#~ msgid "move down"
-#~ msgstr "déplacer vers le bas"
-
-#~ msgid "move up"
-#~ msgstr "déplacer vers le haut"
-
-#~ msgid "unknown"
-#~ msgstr "inconnu"
-
-#~ msgid "move selected items to"
-#~ msgstr "déplacer les items choisis vers"
-
-#~ msgid "position"
-#~ msgstr "position"
-
-#~ msgid "end"
-#~ msgstr "fin"
-
-#~ msgid "move selected items into position: alt-m"
-#~ msgstr "déplacer les items choisis vers la position: alt-m"
-
-#~ msgid "move"
-#~ msgstr "déplacer"
-
-#~ msgid "rename and retitle items: alt-r"
-#~ msgstr "renommer et changer le titre des items: alt-r"
-
-#~ msgid "rename..."
-#~ msgstr "renommer"
-
-#~ msgid "cut"
-#~ msgstr "couper"
-
-#~ msgid "cut items: alt-x"
-#~ msgstr "couper items: alt-x"
-
-#~ msgid "copy items: alt-c"
-#~ msgstr "copier items: alt-c"
-
-#~ msgid "copy"
-#~ msgstr "copier"
-
-#~ msgid "paste items: alt-v"
-#~ msgstr "coller items: alt-v"
-
-#~ msgid "paste"
-#~ msgstr "coller"
-
-#~ msgid "there's no undo: alt-d"
-#~ msgstr "il n'y a pas défaire: alt-d"
-
-#~ msgid "delete"
-#~ msgstr "effacer"
-
-#~ msgid "expiration due"
-#~ msgstr "expiration due"
-
-#~ msgid "published"
-#~ msgstr "publié"
-
-#~ msgid "publish"
-#~ msgstr "publier"
-
-# Default: "<i>n/a</i>"
-#~ msgid "n/a"
-#~ msgstr "n/a"
-
-#~ msgid "public version"
-#~ msgstr "version publique"
-
-#~ msgid "closed"
-#~ msgstr "fermé"
-
-#~ msgid "There are no publishable items here."
-#~ msgstr "Il ne sont pas les documents publiable."
-
-#~ msgid "day / month / year"
-#~ msgstr "jour / mois / année"
-
-#~ msgid "publish time"
-#~ msgstr "temp de publication"
-
-#~ msgid "clear expiration"
-#~ msgstr "enlever l'expiration"
-
-#~ msgid "reject pending request for approval: alt-j"
-#~ msgstr "refuser une demande de l'approbation: alt-j"
-
-#~ msgid "withdraw approval of approved versions: alt-v"
-#~ msgstr "annuler l'approbation des versions approuvées"
-
-#~ msgid "revoke"
-#~ msgstr "annuler"
-
-# Default: "v"
-#~ msgid "revoke_accesskey"
-#~ msgstr "v"
-
-#~ msgid "close published items: alt-c"
-#~ msgstr "fermer les documents publié: alt-c"
-
-#~ msgid "close"
-#~ msgstr "fermer"
-
-# Default: "c"
-#~ msgid "close_accesskey"
-#~ msgstr "f"
-
-#~ msgid "request approval for new versions: alt-r"
-#~ msgstr "demander de l'approbation pour les nouvelles versions"
-
-#~ msgid "content publish time"
-#~ msgstr "date de publication"
-
-#~ msgid "expiration time"
-#~ msgstr "date d'expiration"
-
-#~ msgid "Start date/time:"
-#~ msgstr "Date/heure de démarrage"
-
-#~ msgid "End date/time:"
-#~ msgstr "Date/heure de finition"
-
-#~ msgid "Creation date:"
-#~ msgstr "Date de création:"
-
-#~ msgid "Added ${type} ${id}."
-#~ msgstr "${type} ${id} ajouté."
-
-#~ msgid "add a new item: alt-n"
-#~ msgstr "ajouter nouvel item: alt-n"
-
-#~ msgid "select"
-#~ msgstr "choisir"
-
-#~ msgid "bulk edit..."
-#~ msgstr "editer en gros"
-
-#~ msgid "bulk edit items: alt-b"
-#~ msgstr "éditer en gros items: alt-b"
-
-#~ msgid "properties of"
-#~ msgstr "propriétés de"
-
-#~ msgid "convert to publication"
-#~ msgstr "convertir en publication"
-
-#~ msgid "change Folder into Publication: alt-c"
-#~ msgstr "changer Dossier en Publication"
-
-#~ msgid "&nbsp;News Publication settings"
-#~ msgstr "&nbsp;paramètres Publication News"
-
-#~ msgid "edit this item"
-#~ msgstr "éditer cet item"
-
-#~ msgid "Format: d/m/y, time is optional"
-#~ msgstr "Format: j/m/a, heure optionnelle"
-
-# Default: "silva_news"
-#~ msgid "Jan"
-#~ msgstr "Jan"
-
-# Default: "silva_news"
-#~ msgid "Feb"
-#~ msgstr "Fév"
-
-# Default: "silva_news"
-#~ msgid "Mar"
-#~ msgstr "Mar"
-
-# Default: "silva_news"
-#~ msgid "Apr"
-#~ msgstr "Apr"
-
-# Default: "silva_news"
-#~ msgid "May"
-#~ msgstr "May"
-
-# Default: "silva_news"
-#~ msgid "Jun"
-#~ msgstr "Jun"
-
-# Default: "silva_news"
-#~ msgid "Jul"
-#~ msgstr "Jul"
-
-# Default: "silva_news"
-#~ msgid "Aug"
-#~ msgstr "Aug"
-
-# Default: "silva_news"
-#~ msgid "Sep"
-#~ msgstr "Sep"
-
-# Default: "silva_news"
-#~ msgid "Oct"
-#~ msgstr "Oct"
-
-# Default: "silva_news"
-#~ msgid "Nov"
-#~ msgstr "Nov"
-
-# Default: "silva_news"
-#~ msgid "Dec"
-#~ msgstr "Dec"
-
-#~ msgid "View Agenda"
-#~ msgstr "Voir Agenda"
-
-#~ msgid "View Archive"
-#~ msgstr "Voir Archive"
-
-#~ msgid "There are no articles."
-#~ msgstr "Il n'y a pas d'articles"
-
-#~ msgid "search"
-#~ msgstr "rechercher"
-
-#~ msgid "There are no articles for this period."
-#~ msgstr "Il n'y a pas d'articles pour cette période"
-
-#~ msgid "Archive of"
-#~ msgstr "Archive de"
-
-#~ msgid "Date"
-#~ msgstr "Date"
-
-#~ msgid "Author"
-#~ msgstr "Auteur"
-
-#~ msgid "View this item"
-#~ msgstr "Voir cet item"
-
-#~ msgid "View News"
-#~ msgstr "Voir News"
-
-#~ msgid "View"
-#~ msgstr "Voir"
-
-#~ msgid "View archive"
-#~ msgstr "Voir archive"

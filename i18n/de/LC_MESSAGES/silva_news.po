@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Tue Jul 29 11:25:53 2008\n"
+"POT-Creation-Date: Tue Jul 29 13:04:48 2008\n"
 "PO-Revision-Date: 2008-02-12 12:43+0000\n"
 "Last-Translator: Irene Fellner <irene.fellner@wu-wien.ac.at>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-05-07 13:00+0000\n"
+"X-Launchpad-Export-Date: 2008-07-29 09:36+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language-code: de\n"
 "Domain: silva_news\n"
@@ -843,18 +843,24 @@ msgid ""
 "made an empty reject, this is the message of the requester ... The last "
 "message regarding this issue is:"
 msgstr ""
+"Eine vorherige Anfrage auf Bewilligung wurde abgelehnt bzw. zurückgenommen "
+"von ${requester} am ${some_date}. Beachten Sie, daß die letzte Nachricht "
+"unter Umständen nicht von der Person verfaßt wurde, welche die Anfrage "
+"abgelehnt hat; falls z.B. diese Person eine leere Anfrage gemacht hat, ist "
+"dies eine Nachricht des Anfragenden. Die letzte Nachricht zu diesem Thema "
+"ist:"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "for new version"
-msgstr ""
+msgstr "für neue Version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:130
 msgid "request approval ${for_new_version}"
-msgstr ""
+msgstr "Bewilligung beantragen ${for_new_version}"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:135
 msgid "message to editor"
-msgstr ""
+msgstr "Nachricht an Redakteur"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:138
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:191
@@ -868,31 +874,33 @@ msgid ""
 "This message will remain visible in the status screen for other authors and "
 "editors."
 msgstr ""
+"Diese Nachricht bleibt für andere Autoren und Redakteure im Publizieren-"
+"Schirm sichtbar."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 msgid "request approval"
-msgstr ""
+msgstr "Bewilligung beantragen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:160
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
 msgid "access key: alt-r"
-msgstr ""
+msgstr "Tastenkombination: alt-r"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:181
 msgid "change settings"
-msgstr ""
+msgstr "Einstellungen ändern"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:188
 msgid "current timings"
-msgstr ""
+msgstr "Aktuelle Zeiteinstellungen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "update timing"
-msgstr ""
+msgstr "Zeiteinteilung aktualisieren"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "access key: alt-u"
-msgstr ""
+msgstr "Tastenkombination: alt-u"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:228
 msgid "publish new version"
@@ -934,68 +942,69 @@ msgstr "Tastenkombination: alt-h"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:35
 msgid "Publication time of public version"
-msgstr ""
+msgstr "Veröffentlichungszeitpunkt der öffentlichen Version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:351
 msgid "reject"
-msgstr ""
+msgstr "ablehnen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:352
 msgid "withdraw"
-msgstr ""
+msgstr "zurücknehmen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:353
 msgid "request"
-msgstr ""
+msgstr "Anfrage"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:362
 msgid "add message on"
-msgstr ""
+msgstr "Nachricht hinzufügen an"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:365
 msgid "rejection"
-msgstr ""
+msgstr "Ablehnung"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:368
 msgid "withdrawal"
-msgstr ""
+msgstr "Rücknahme"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:387
 msgid "The message may be viewed by local users."
-msgstr ""
+msgstr "Die Nachricht kann von lokalen Benutzern eingesehen werden."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
 msgid "access key: alt-j"
-msgstr ""
+msgstr "Tastenkombination: alt-j"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:397
 msgid "reject approval request"
-msgstr ""
+msgstr "Veröffentlichungsanfrage ablehnen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:40
 msgid "Publication and expiration time of public version"
-msgstr ""
+msgstr "Veröffentlichungs- und Verfallszeitpunkt der öffentlichen Version"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:406
 msgid "withdraw approval request"
-msgstr ""
+msgstr "Bewilligungsanfrage zurücknehmen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:431
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
 msgid "revoke approval"
-msgstr ""
+msgstr "Genehmigung widerrufen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:440
 msgid "If further editing is required, first revoke the approval."
 msgstr ""
+"Falls weitere Bearbeitung nötig ist, zuerst die Bewilligung zurücknehmen."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:449
 msgid "access key: alt-v"
-msgstr ""
+msgstr "Tastenkombination: alt-v"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:472
 msgid "revert to previous version"
-msgstr ""
+msgstr "Zur vorherigen Version zurückkehren"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:478
 msgid ""
@@ -1003,36 +1012,42 @@ msgid ""
 "version. This can not be undone afterwards and will discard all changes made "
 "to the current version."
 msgstr ""
+"Die aktuelle bearbeitbare Version kann durch die vorherige publizierte "
+"Version ersetzt werden. Das kann nicht rückgängig gemacht werden und wird "
+"alle gemachten Änderungen in der bearbeiteten Version verwerfen."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:486
 msgid "revert to previous"
-msgstr ""
+msgstr "durch vorherige Version ersetzen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:510
 msgid "manual close"
-msgstr ""
+msgstr "manuelles Schließen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:517
 msgid ""
 "If necessary, the published version of this content can be manually closed "
 "(taken offline). It will also be removed from the public index."
 msgstr ""
+"Falls nötig, kann die publizierte Version manuell geschlossen (offline "
+"genommen) werden. Sie wird dann auch aus dem öffentlichen Index entfernt."
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
 msgid "close published version"
-msgstr ""
+msgstr "öffentliche Version schließen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:526
 msgid "access key: alt-c"
-msgstr ""
+msgstr "Tastenkombination: alt-c"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:64
 msgid "messages"
-msgstr ""
+msgstr "Nachrichten"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:78
 msgid "${author_id} sent a message on ${some_date} ${with_comments}"
 msgstr ""
+"${author_id} hat eine Nachricht am ${some_date} ${with_comments} gesendet"
 
 #: /views/public/AgendaViewer/search_agenda.pt:48
 #: /views/public/AgendaViewer/view_archive.pt:102
