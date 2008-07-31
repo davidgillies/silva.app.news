@@ -189,9 +189,6 @@ InitializeClass(NewsItem)
 
 class NewsItemVersion(CatalogedVersion):
     """Base class for news item versions.
-    XXX making this subclass DocumentVersion does restrict matters,
-    but is clearer than doing the same thing in here again which was
-    the case before.
     """
     security = ClassSecurityInfo()
 
