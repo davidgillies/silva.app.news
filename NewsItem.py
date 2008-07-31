@@ -73,10 +73,8 @@ class NewsItem(CatalogedVersionedContent):
 
     # MANIPULATORS
 
-    #modifaction to make it possible to set the display datetime
     security.declareProtected(SilvaPermissions.ApproveSilvaContent,
                               'set_next_version_display_datetime')
-
     def set_next_version_display_datetime(self, dt):
         """Set display datetime of next version.
         """
@@ -90,10 +88,8 @@ class NewsItem(CatalogedVersionedContent):
         version = getattr(self, id, None)
         version.set_display_datetime(dt)
 
-    #modifaction to make it possible to set the display datetime unapproved versioned content
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_unapproved_version_display_datetime')
-
     def set_unapproved_version_display_datetime(self, dt):
         """Set display datetime for unapproved
         """
