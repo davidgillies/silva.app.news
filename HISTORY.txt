@@ -4,7 +4,7 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.6 (unreleased)
+  2.6
 
     New Features
 
