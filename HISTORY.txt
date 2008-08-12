@@ -4,6 +4,13 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.7
+    
+    New Features
+
+      - The RSS Aggregator now merges/sorts the feeds based on each
+        feed item's publication date.
+
   2.6
 
     New Features

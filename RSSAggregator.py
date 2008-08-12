@@ -92,7 +92,9 @@ class RSSAggregator(NewsViewer):
         feed_data = self.get_feed_contents()
         ret = []
         for uri, channel in feed_data.items():
-            ret.extend(channel['items'])
-        return ret
+            for item in channel['items']:
+                ret.append((item.get('date_parsed',None),item))
+        ret.sort(reverse=True)
+        return [ r[1] for r in ret ]
 
 InitializeClass(RSSAggregator)
