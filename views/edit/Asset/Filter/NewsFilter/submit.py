@@ -12,9 +12,8 @@ from Products.Formulator.Errors import ValidationError, FormValidationError
 # I18N stuff
 from Products.Silva.i18n import translate as _
 
-
 model = context.REQUEST.model
-form = context.settingsform
+form = context.form
 messages = []
 
 try:
@@ -24,25 +23,25 @@ except FormValidationError, e:
 
 if model.subjects() != result['subjects']:
     model.set_subjects(result['subjects'])
-    m = _('subjects changed', 'silva_news')
+    m = _('subjects', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.target_audiences() != result['target_audiences']:
     model.set_target_audiences(result['target_audiences'])
-    m = _('target audiences changed', 'silva_news')
+    m = _('target audiences', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.show_agenda_items() != result['show_agenda_items']:
     model.set_show_agenda_items(result['show_agenda_items'])
-    m = _('show agendaitems changed', 'silva_news')
+    m = _('show agenda items', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
 if model.keep_to_path() != result['keep_to_path']:
     model.set_keep_to_path(result['keep_to_path'])
-    m = _('stick to path changed', 'silva_news')
+    m = _('stick to path', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
