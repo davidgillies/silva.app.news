@@ -1,18 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html tal:omit-tag="" 
   i18n:domain="silva_news"
-  tal:define="
-   view here;
-   silva_root here/silva_root;
-   model request/model; 
-   editable model/get_editable;
-   form here/form;
-   title python:model.get_title_editable();
-   root_url model/get_root_url;
-   vein string:edit;
-   title_row_colspan string:3;
-">
+  tal:define="vein string:edit;">
 
-<metal:use-macro use-macro="view/macro_asset_edit/macros/editor">
+<metal:use-macro use-macro="context/macro_asset_edit/macros/editor">
 
 <metal:block fill-slot="title_metadata">
 <tr class="top-controls">
