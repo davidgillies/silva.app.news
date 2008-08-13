@@ -67,13 +67,13 @@
           <css_class></css_class>
           <default></default>
           <title>stick to path</title>
-          <first_item type="int">0</first_item>
+          <first_item type="string">0</first_item>
           <description>Show only items in the content tree that are below the location of this filter?</description>
           <external_validator></external_validator>
         </values>
         <tales>
           <items>python: [('yes', '1'), ('no', '0')]</items>
-          <default>python: form.REQUEST.model.keep_to_path() and '1' or '0'</default>
+          <default>python: request.model.keep_to_path() and '1' or '0'</default>
         </tales>
       </field>
       <field><id>show_agenda_items</id> <type>RadioField</type>
@@ -86,13 +86,13 @@
           <css_class></css_class>
           <default></default>
           <title>show agenda items</title>
-          <first_item type="int">0</first_item>
+          <first_item type="string">0</first_item>
           <description>Show agenda items as well as news items?</description>
           <external_validator></external_validator>
         </values>
         <tales>
           <items>python: [('yes', '1'), ('no', '0')]</items>
-          <default>python: form.REQUEST.model.show_agenda_items() and '1' or '0'</default>
+          <default>python: request.model.show_agenda_items() and '1' or '0'</default>
         </tales>
       </field>
       </fields>

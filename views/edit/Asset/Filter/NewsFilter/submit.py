@@ -34,13 +34,14 @@ if model.target_audiences() != result['target_audiences']:
     messages.append(msg)
 
 if model.show_agenda_items() != result['show_agenda_items']:
-    model.set_show_agenda_items(result['show_agenda_items'])
+    model.set_show_agenda_items(result['show_agenda_items']=='1')
     m = _('show agenda items', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
 
+#ktp = result['keep_to_path']!='0'
 if model.keep_to_path() != result['keep_to_path']:
-    model.set_keep_to_path(result['keep_to_path'])
+    model.set_keep_to_path(result['keep_to_path']=='1')
     m = _('stick to path', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
