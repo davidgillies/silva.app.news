@@ -68,7 +68,7 @@
           <default></default>
           <title>stick to path</title>
           <first_item type="string">0</first_item>
-          <description>Show only items in the content tree that are below the location of this filter?</description>
+          <description>Show only items in the content tree which are below the location of this filter?</description>
           <external_validator></external_validator>
         </values>
         <tales>

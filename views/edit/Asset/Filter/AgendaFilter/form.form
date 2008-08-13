@@ -25,7 +25,7 @@
           <title>subjects</title>
           <orientation>vertical</orientation>
           <description>
-            Select the news subjects to filter on.
+            The news subjects to filter on.
           </description>
           <css_class></css_class>
           <external_validator></external_validator>
@@ -46,7 +46,7 @@
           <title>target audiences</title>
           <orientation>vertical</orientation>
           <description>
-            Select the target audiences to filter on.
+            The target audiences to filter on.
           </description>
           <css_class></css_class>
           <external_validator></external_validator>
@@ -67,32 +67,13 @@
           <css_class></css_class>
           <default></default>
           <title>stick to path</title>
-          <first_item type="int">0</first_item>
-          <description>Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter.</description>
+          <first_item type="string">0</first_item>
+          <description>Show only items in the content tree which are below the location of the filter?</description>
           <external_validator></external_validator>
         </values>
         <tales>
-          <items>python: [('yes', 1), ('no', 0)]</items>
-          <default>python: form.REQUEST.model.keep_to_path()</default>
-        </tales>
-      </field>
-      <field><id>keep_to_path</id> <type>RadioField</type>
-        <values>
-          <alternate_name></alternate_name>
-          <hidden type="int">0</hidden>
-          <items>[]</items>
-          <orientation>vertical</orientation>
-          <required type="int">1</required>
-          <css_class></css_class>
-          <default></default>
-          <title>stick to path</title>
-          <first_item type="int">0</first_item>
-          <description>Setting to 'yes' keeps the filter local, showing only items in the content tree that are below the location of the filter.</description>
-          <external_validator></external_validator>
-        </values>
-        <tales>
-          <items>python: [('yes', 1), ('no', 0)]</items>
-          <default>python: form.REQUEST.model.keep_to_path()</default>
+          <items>python: [('yes', '1'), ('no', '0')]</items>
+          <default>python: form.REQUEST.model.keep_to_path() and '1' or '0'</default>
         </tales>
       </field>
       </fields>

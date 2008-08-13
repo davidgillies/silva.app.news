@@ -13,7 +13,7 @@ from Products.Formulator.Errors import ValidationError, FormValidationError
 from Products.Silva.i18n import translate as _
 
 model = context.REQUEST.model
-form = context.settingsform
+form = context.form
 messages = []
 
 try:
@@ -37,7 +37,7 @@ if model.target_audiences() != result['target_audiences']:
     messages.append(msg)
 
 if model.keep_to_path() != result['keep_to_path']:
-    model.set_keep_to_path(result['keep_to_path'])
+    model.set_keep_to_path(result['keep_to_path']=='1')
     m = _('stick to path changed', 'silva_news')
     msg = unicode(m)
     messages.append(msg)
