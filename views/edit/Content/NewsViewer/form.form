@@ -25,13 +25,13 @@
           <items>[('Yes', '1'), ('No', '0')]</items>
           <default></default>
           <title>show</title>
-          <first_item type="int">0</first_item>
+          <first_item type="string">0</first_item>
           <description>Show a specific number of items, or show items from a range of days in the past.</description>
           <external_validator></external_validator>
         </values>
         <tales>
-          <items>python: [('number of days', 1), ('number of items', 0)]</items>
-          <default>python: form.REQUEST.model.number_is_days()</default>
+          <items>python: [('number of days', '1'), ('number of items', '0')]</items>
+          <default>python: form.REQUEST.model.number_is_days() and '1' or '0'</default>
         </tales>
       </field>
       <field><id>number_to_show</id> <type>IntegerField</type>
