@@ -35,8 +35,9 @@ def initialize(context):
         icon="www/newsservice.gif"
         )
 
-    from Products.SilvaNews.silvaxml import xmlexport#, xmlimport
+    from Products.SilvaNews.silvaxml import xmlexport, xmlimport
     xmlexport.initializeXMLExportRegistry()
+    xmlimport.initializeXMLImportRegistry()
 
 import dates
 def __allow_access_to_unprotected_subobjects__(name, value=None):

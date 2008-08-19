@@ -64,7 +64,7 @@ class RSSAggregatorProducer(SilvaBaseProducer):
          self.startElementNS(NS_SILVANEWS,
                            'rssaggregator',
                            {'id': self.context.id,
-                            'rss_feeds': str(self.context.get_feeds())
+                            'feed_urls': str(self.context.get_feeds())
                            })
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'rssaggregator')
