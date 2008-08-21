@@ -102,11 +102,12 @@ class NewsItemFilter(Filter):
         """
         if add_or_remove:
             if not sourcepath in self._sources:
+                self._p_changed = 1
                 self._sources.append(sourcepath)
         else:
             if sourcepath in self._sources:
+                self._p_changed = 1
                 self._sources.remove(sourcepath)
-        self._p_changed = 1
         self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -131,11 +132,12 @@ class NewsItemFilter(Filter):
         """
         if add_or_remove:
             if not objectpath in self._excluded_items:
+                self._p_changed = 1
                 self._excluded_items.append(objectpath)
         else:
             if objectpath in self._excluded_items:
+                self._p_changed = 1
                 self._excluded_items.remove(objectpath)
-        self._p_changed = 1
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'excluded_items')

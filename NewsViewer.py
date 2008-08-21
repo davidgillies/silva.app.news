@@ -110,19 +110,12 @@ class NewsViewer(Content, Folder.Folder):
         # IS THIS THE MOST EFFICIENT WAY?
         pairs = []
         obj = self.aq_inner
-        while 1:
-            parent = obj.aq_parent
-            parentpath = parent.getPhysicalPath()
-            for item in parent.objectValues(['Silva News Filter',
-                                             'Silva Agenda Filter']):
-                joinedpath = '/'.join(item.getPhysicalPath())
-                pairs.append(('%s (<a href="%s/edit">%s</a>)' %
-                              (item.get_title(), joinedpath, joinedpath),
-                              joinedpath))
-            if parent.meta_type == 'Silva Root':
-                break
-            obj = parent
-
+        for item in obj.superValues(['Silva News Filter',
+                                  'Silva Agenda Filter']):
+            joinedpath = '/'.join(item.getPhysicalPath())
+            pairs.append(('%s (<a href="%s/edit">%s</a>)' %
+                          (item.get_title(), joinedpath, joinedpath),
+                          joinedpath))
         return pairs
 
     def verify_filters(self):

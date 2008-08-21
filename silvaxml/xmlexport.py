@@ -64,7 +64,7 @@ class RSSAggregatorProducer(SilvaBaseProducer):
          self.startElementNS(NS_SILVANEWS,
                            'rssaggregator',
                            {'id': self.context.id,
-                            'feed_urls': str(self.context.get_feeds())
+                            'feed_urls': ','.join(self.context.get_feeds())
                            })
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'rssaggregator')
@@ -75,8 +75,8 @@ class CategoryFilterProducer(SilvaBaseProducer):
          self.startElementNS(NS_SILVANEWS,
                            'categoryfilter',
                            {'id': self.context.id,
-                            'target_audiences': str(self.context.target_audiences()),
-                            'subjects': str(self.context.subjects()),
+                            'target_audiences': ','.join(self.context.target_audiences()),
+                            'subjects': ','.join(self.context.subjects()),
                            })
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'categoryfilter')
@@ -87,12 +87,12 @@ class NewsFilterProducer(SilvaBaseProducer):
          self.startElementNS(NS_SILVANEWS,
                            'newsfilter',
                            {'id': self.context.id,
-                            'target_audiences': str(self.context.target_audiences()),
-                            'subjects': str(self.context.subjects()),
+                            'target_audiences': ','.join(self.context.target_audiences()),
+                            'subjects': ','.join(self.context.subjects()),
                             'show_agenda_items': str(self.context.show_agenda_items()),
                             'keep_to_path': str(self.context.keep_to_path()),
-                            'excluded_items': str(self.context.excluded_items()),
-                            'sources': str(self.context.sources())})
+                            'excluded_items': ','.join(self.context.excluded_items()),
+                            'sources': ','.join(self.context.sources())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'newsfilter')
 
