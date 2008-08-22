@@ -231,8 +231,9 @@ class NewsViewer(Content, Folder.Folder):
         if on_or_off:
             if not newsfilter in self._filters:
                 self._filters.append(newsfilter)
+                self._p_changed = 1
         else:
             if newsfilter in self._filters:
                 self._filters.remove(newsfilter)
-
+                self._p_changed = 1
 InitializeClass(NewsViewer)

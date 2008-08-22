@@ -102,11 +102,11 @@ class AgendaFilterProducer(SilvaBaseProducer):
          self.startElementNS(NS_SILVANEWS,
                            'agendafilter',
                            {'id': self.context.id,
-                            'target_audiences': str(self.context.target_audiences()),
-                            'subjects': str(self.context.subjects()),
+                            'target_audiences': ','.join(self.context.target_audiences()),
+                            'subjects': ','.join(self.context.subjects()),
                             'keep_to_path': str(self.context.keep_to_path()),
-                            'excluded_items': str(self.context.excluded_items()),
-                            'sources': str(self.context.sources())})
+                            'excluded_items': ','.join(self.context.excluded_items()),
+                            'sources': ','.join(self.context.sources())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'agendafilter')
 
@@ -119,7 +119,7 @@ class NewsViewerProducer(SilvaBaseProducer):
                             'number_to_show': str(self.context.number_to_show()),
                             'number_to_show_archive': str(self.context.number_to_show_archive()),
                             'number_is_days': str(self.context.number_is_days()),
-                            'filters': str(self.context.filters())})
+                            'filters': ','.join(self.context.filters())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'newsviewer')
 
@@ -131,7 +131,7 @@ class AgendaViewerProducer(SilvaBaseProducer):
                            {'id': self.context.id,
                             'days_to_show': str(self.context.days_to_show()),
                             'number_to_show_archive': str(self.context.number_to_show_archive()),
-                            'filters': str(self.context.filters())})
+                            'filters': ','.join(self.context.filters())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'agendaviewer')
 
@@ -152,19 +152,9 @@ class PlainArticleVersionProducer(DocumentVersionProducer):
     """
     def sax(self):
         """sax"""
-        self.startElement('content', {'version_id': self.context.id})
-        self.startElementNS(NS_SILVANEWS,'subjects')
-        for subject in self.context.subjects():
-            self.startElementNS(NS_SILVANEWS,'subject')
-            self.handler.characters(subject)
-            self.endElementNS(NS_SILVANEWS,'subject')
-        self.endElementNS(NS_SILVANEWS,'subjects')
-        self.startElementNS(NS_SILVANEWS,'target_audiences')
-        for audience in self.context.target_audiences():
-            self.startElementNS(NS_SILVANEWS,'target_audience')
-            self.handler.characters(audience)
-            self.endElementNS(NS_SILVANEWS,'target_audience')
-        self.endElementNS(NS_SILVANEWS,'target_audiences')
+        self.startElement('content', {'version_id': self.context.id,
+                                      'subjects': ','.join(self.context.subjects()),
+                                      'target_audiences': ','.join(self.context.target_audiences())})
         self.metadata()
         node = self.context.content._content.documentElement.getDOMObj()
         self.sax_node(node)
@@ -187,29 +177,15 @@ class PlainAgendaItemVersionProducer(DocumentVersionProducer):
     """
     def sax(self):
         """sax"""
-        self.startElement('content', {'version_id': self.context.id})
-        #additional attributes for agendaItems
-        self.startElementNS(NS_SILVANEWS,'subjects')
-        for subject in self.context.subjects():
-            self.startElementNS(NS_SILVANEWS,'subject')
-            self.handler.characters(subject)
-            self.endElementNS(NS_SILVANEWS,'subject')
-        self.endElementNS(NS_SILVANEWS,'subjects')
-        self.startElementNS(NS_SILVANEWS,'target_audiences')
-        for audience in self.context.target_audiences():
-            self.startElementNS(NS_SILVANEWS,'target_audience')
-            self.handler.characters(audience)
-            self.endElementNS(NS_SILVANEWS,'target_audience')
-        self.endElementNS(NS_SILVANEWS,'target_audiences')
-        self.startElementNS(NS_SILVANEWS,'start_datetime')
-        self.handler.characters(self.context.start_datetime().HTML4())
-        self.endElementNS(NS_SILVANEWS,'start_datetime')
-        self.startElementNS(NS_SILVANEWS,'end_datetime')
-        self.handler.characters(self.context.end_datetime().HTML4())
-        self.endElementNS(NS_SILVANEWS,'end_datetime')
-        self.startElementNS(NS_SILVANEWS,'location')
-        self.handler.characters(self.context.location())
-        self.endElementNS(NS_SILVANEWS,'location')
+        edt = self.context.end_datetime()
+        if edt: edt = edt.HTML4()
+        self.startElement('content', {'version_id': self.context.id,
+                                      'subjects': ','.join(self.context.subjects()),
+                                      'target_audiences': ','.join(self.context.target_audiences()),
+                                      'start_datetime':self.context.start_datetime().HTML4(),
+                                      'end_datetime':edt,
+                                      'location':self.context.location()})
+
         self.metadata()
         # needed to add _content to the line below to access the parsedXML - jon
         node = self.context.content._content.documentElement.getDOMObj()
