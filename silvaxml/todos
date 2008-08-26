@@ -1,8 +1,0 @@
-Any attribute that is currently exported as the str of a list
-needs to be converted into an xml-based list representation:
-
-1) subjects and target audiences
-2) filters
-3) publication sources
-4) rss aggregator: feed urls
-5) excluded items
