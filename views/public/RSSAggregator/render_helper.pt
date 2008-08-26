@@ -19,12 +19,11 @@
 
 <tal:feed
     tal:repeat="item result">
+<span tal:replace="item/parent_channel/uri" />
 <h4 class="feed"
     tal:define="title item/title | nothing"
-    tal:condition="title"
-    tal:content="structure title">
-       title
-</h4>
+    tal:condition="title" 
+    tal:content="structure python:title" />
 <p class="feed"
     tal:define="description item/description | nothing"
     tal:condition="description"
@@ -35,8 +34,12 @@
 ><a tal:define="link item/link"
     tal:condition="link" 
     tal:attributes="href link"
-    i18n:translate="">
-        view article
-</a></p>
+    i18n:translate="">view article</a>
+ | <a tal:define="p item/parent_channel;uri p/uri;title p/title"
+     tal:condition="title"
+     tal:omit-tag="not:uri"
+     tal:attributes="href uri"
+     tal:content="structure string:[$title]" />
+  </p>
 </tal:feed>
 </div>

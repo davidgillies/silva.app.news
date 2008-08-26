@@ -63,6 +63,18 @@ class SNNHandlerMixin(object):
             for f in filters.split(','):
                 obj.set_filter(f,True)
         
+class NewsItemElementHandler(DocElementHandler):
+    def startElementNS(self, name, qname, attrs):
+        if name == (DOC_NS_URI, 'doc'):
+            self._node = self._parent.content._content.documentElement
+            self._tree = self._parent.content._content
+        else:
+            child = self._tree.createElement(name[1])
+            self._node.appendChild(child)
+            self._node = child
+        for ns, attr in attrs.keys():
+            self._node.setAttribute(attr, attrs[(ns, attr)])
+        
 class PlainArticleHandler(SilvaBaseHandler):
     def getOverrides(self):
         return {
@@ -119,7 +131,6 @@ class PlainAgendaItemContentHandler(SilvaBaseHandler):
             if attrs.has_key((None,'subjects')):
                 subjects = attrs[(None,'subjects')]
                 version.set_subjects(subjects.split(','))
-
             
             self.setResult(getattr(self._parent, id))
             updateVersionCount(self)
@@ -130,18 +141,6 @@ class PlainAgendaItemContentHandler(SilvaBaseHandler):
             self.storeMetadata()
             self.storeWorkflow()
 
-class NewsItemElementHandler(DocElementHandler):
-    def startElementNS(self, name, qname, attrs):
-        if name == (DOC_NS_URI, 'doc'):
-            self._node = self._parent.content._content.documentElement
-            self._tree = self._parent.content._content
-        else:
-            child = self._tree.createElement(name[1])
-            self._node.appendChild(child)
-            self._node = child
-        for ns, attr in attrs.keys():
-            self._node.setAttribute(attr, attrs[(ns, attr)])
-        
 class PlainArticleContentHandler(SilvaBaseHandler):
     def getOverrides(self):
         return{

@@ -63,10 +63,14 @@ class AggregatorFeedEntry(object):
         return quote_xml(self.item['link'])
 
     def title(self):
-        return self.item['title']
+        titl = self.item['title']
+        if self.item['parent_channel']['title']:
+            titl += ' [%s]'%self.item['parent_channel']['title']
+        return titl
 
     def html_description(self):
-        return self.item['description']
+        desc = self.item['description']
+        return desc
 
     def description(self):
         return self.html_description()
