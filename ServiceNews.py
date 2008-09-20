@@ -97,7 +97,7 @@ class ServiceNews(SimpleItem, CategoryMixin):
         self._target_audiences = Tree.Root()
         self._locale = 'en'
         self._date_format = 'medium'
-        self._content_version = '2.1'
+        self._content_version = '2.7'
 		
         self.add_subject(u'generic',u'Generic')
         self.add_target_audience(u'all',u'All')

@@ -62,4 +62,4 @@ upgrade_registry.registerUpgrader(NothingUpgrader, '2.5', 'Silva Root')
 # the upgrade to work correctly!!
 # use only major and minor version parts, upgrade shouldn't happen
 # on patch-level updates
-software_version = '2.6'
+software_version = '2.7'
