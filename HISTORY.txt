@@ -10,6 +10,11 @@ SilvaNewsNetwork changes
 
       - The RSS Aggregator now merges/sorts the feeds based on each
         feed item's publication date.
+        
+    Bugs Fixed
+    
+      - The AgendaViewer displays the same number of characters
+        for each item's intro as NewsViewers do (i.e. 128)
 
   2.6
 

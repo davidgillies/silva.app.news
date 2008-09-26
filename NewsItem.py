@@ -241,7 +241,7 @@ class NewsItemVersion(CatalogedVersion):
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_intro')
-    def get_intro(self, max_size=1024):
+    def get_intro(self, max_size=128):
         """Returns first bit of the news item's content
 
             this returns all elements up to and including the first
