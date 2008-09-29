@@ -7,23 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: silva-news-network\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: Tue Jul 29 13:04:48 2008\n"
+"POT-Creation-Date: Mon Sep 29 13:59:49 2008\n"
 "PO-Revision-Date: 2007-11-10 13:35+0000\n"
 "Last-Translator: Sergei Zivukov <Unknown>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-07-29 09:36+0000\n"
+"X-Launchpad-Export-Date: 2008-09-29 11:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: /NewsItem.py:102
-msgid "No unapproved version."
-msgstr "Нет неутвержденных версий."
-
-#: /NewsItem.py:89
+#: /NewsItem.py:87
 msgid "No next version."
 msgstr "Нет следующей версии."
+
+#: /NewsItem.py:98
+msgid "No unapproved version."
+msgstr "Нет неутвержденных версий."
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
@@ -44,8 +44,6 @@ msgid ""
 msgstr ""
 
 #: /views/add/CategoryFilter/form.form:95
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:50
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:50
 #: /views/edit/Asset/Filter/CategoryFilter/form.form:51
 msgid ""
 "\n"
@@ -79,6 +77,14 @@ msgstr "идентификатор"
 msgid "id: no spaces or special characters besides an underscore (_)."
 msgstr "id: без пробелов или специальных символов кроме underscore (_)."
 
+#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
+#: /views/add/NewsItem/PlainAgendaItem/form.form:60
+#: /views/add/NewsItem/PlainArticle/form.form:51
+#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
+#: /views/add/AgendaViewer/form.form:49
+msgid "title"
+msgstr "заголовок"
+
 #: /views/add/NewsFolder/form.form:49
 #: /views/add/NewsItem/PlainAgendaItem/form.form:51
 #: /views/add/NewsItem/PlainArticle/form.form:52
@@ -103,24 +109,6 @@ msgstr ""
 msgid "location"
 msgstr ""
 
-#: /views/add/NewsItem/PlainAgendaItem/form.form:175
-#: /views/add/NewsItem/PlainArticle/form.form:67
-#: /views/add/CategoryFilter/form.form:69
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
-msgid "subjects"
-msgstr ""
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:203
-#: /views/add/NewsItem/PlainArticle/form.form:86
-#: /views/add/CategoryFilter/form.form:91
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:46
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:46
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:47
-msgid "target audiences"
-msgstr ""
-
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainAgendaItem/form.form:113
 msgid "Format: d/m/y, time is optional."
@@ -129,44 +117,6 @@ msgstr ""
 #: /views/add/NewsItem/PlainAgendaItem/form.form:91
 msgid "start date/time"
 msgstr "дата/время начала"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:184
-msgid "There are no news sources available."
-msgstr "Для новостей нет доступных источников."
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
-msgid "use selected sources in this filter: alt-u"
-msgstr "использовать выбранные источники в этом фильтре: alt-u"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:56
-#: /views/edit/Content/edit.pt:65
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
-msgid "settings"
-msgstr "установки"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
-#: /views/edit/Content/edit.pt:74 /views/edit/Container/tab_settings.pt:117
-msgid "element"
-msgstr "элемент"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
-#: /views/edit/Content/edit.pt:76 /views/edit/Container/tab_settings.pt:122
-msgid "content"
-msgstr "содержимое"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
-#: /views/edit/Content/edit.pt:77 /views/edit/Container/tab_settings.pt:125
-msgid "note"
-msgstr "Замечание"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
-#: /views/edit/Content/edit.pt:103
-msgid "save settings"
-msgstr "сохранить настройки"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
@@ -183,34 +133,39 @@ msgstr ""
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:205
 msgid ""
 "There are no news items for this period. Check that news sources are "
-"activated (go to the editor screen) and items in the sources are published."
+"activated (go to the edit screen) and items in the sources are published."
 msgstr ""
-"Нет новостей за этот период. Проверьте, что источники новостей в рабочем "
-"состоянии (перейти к редактору экрана) и пункты в источниках публикуются."
 
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:22
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:71
+msgid ""
+"Show only items in the content tree which are below the location of the "
+"filter?"
+msgstr ""
+
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:22
 msgid "Input form errors ${errors}"
 msgstr "Вывод формы ошибок ${errors}"
 
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:29
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:27
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:29
 msgid "subjects changed"
 msgstr "темы изменены"
 
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:35
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:33
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:35
 msgid "target audiences changed"
 msgstr "цель аудиенции изменена"
 
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:41
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:45
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:41
 msgid "stick to path changed"
 msgstr "привязка пути изменена"
 
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:46
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:49
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:46
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:49
 msgid "Settings changed for: "
 msgstr "Установки изменены для: "
+
+#: /views/edit/Asset/Filter/AgendaFilter/tab_edit.pt:17
+msgid "${icon} Silva Agenda Filters"
+msgstr ""
 
 #: /views/edit/Asset/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
@@ -218,17 +173,15 @@ msgstr "Установки изменены для: "
 msgid "The filter is updated."
 msgstr "Фильтер загружен."
 
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
-msgid "description"
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:30
+msgid ""
+"\n"
+"            Select the news subjects to filter on.\n"
+"          "
 msgstr ""
-
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
-msgid "save selection"
-msgstr ""
-
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
-msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
-msgstr ""
+"\n"
+"            Выберите тему новостей для фильтра.\n"
+"          "
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
@@ -243,82 +196,33 @@ msgstr ""
 msgid "access"
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
-msgid "sources"
-msgstr "источники"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:19
+#: /views/edit/Container/tab_settings.pt:117
+msgid "element"
+msgstr "элемент"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
-msgid "path"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:20
+#: /views/edit/Content/tab_edit.pt:24
+#: /views/edit/Container/tab_settings.pt:122
+msgid "content"
+msgstr "содержимое"
+
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:21
+msgid "description"
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
-#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
-#: /views/add/NewsItem/PlainAgendaItem/form.form:60
-#: /views/add/NewsItem/PlainArticle/form.form:51
-#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
-#: /views/add/AgendaViewer/form.form:49
-msgid "title"
-msgstr "заголовок"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:44
+msgid "save selection"
+msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:154
-msgid "Edit this source"
-msgstr "Редактировать этот источник"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:160
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:157
-msgid "Edit this item"
-msgstr "Редактировать этот пункт"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:171
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:168
-msgid "(not activated)"
-msgstr "(не активирован)"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:187
-msgid "There are no newssources available."
-msgstr "Источники новостей не доступны"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
-msgid "Use selected sources in this filter: alt-u"
-msgstr "Использовать выбранные источники в этом фильтре: alt-u"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
-msgid "update sources"
-msgstr "обновить источники"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:58
-msgid "general settings"
-msgstr "главные установки"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:67
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
-msgid "Element"
-msgstr "Элемент"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:68
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
-msgid "Content"
-msgstr "Содержание"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:69
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
-msgid "Note"
-msgstr "Замечание"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
-msgid " save settings "
-msgstr " сохранить установки "
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
-#: /views/edit/Content/edit.pt:103
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:44
+#: /views/edit/Content/tab_edit.pt:56
 msgid "access key: alt-s"
 msgstr "ключ доступа: alt-s"
+
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:60
+msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
+msgstr ""
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:109
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:153
@@ -340,23 +244,17 @@ msgstr ""
 "публикуются."
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all items: alt-a"
 msgstr "выбрать все пункты: alt-a"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
 msgstr "выбрать все"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
 msgstr "убрать все"
 
@@ -371,20 +269,14 @@ msgid "update"
 msgstr "обновить"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:253
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:286
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:284
 msgid "Previous"
 msgstr "Назад"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:257
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:290
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:288
 msgid "Next"
 msgstr "Далее"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:67
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:132
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:129
 msgid "in use"
 msgstr "используются"
 
@@ -402,42 +294,65 @@ msgstr ""
 msgid "expiration&nbsp;due&nbsp;"
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:29
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:29
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:30
+#: /views/edit/Asset/Filter/NewsFilter/form.form:29
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:29
 msgid ""
 "\n"
-"            Select the news subjects to filter on.\n"
+"            The news subjects to filter on.\n"
 "          "
 msgstr ""
-"\n"
-"            Выберите тему новостей для фильтра.\n"
-"          "
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:69
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:69
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:88
-msgid "stick to path"
-msgstr ""
-
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:90
+#: /views/edit/Asset/Filter/NewsFilter/form.form:50
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:50
 msgid ""
-"Setting to 'yes' keeps the filter local, showing only items in the content "
-"tree that are below the location of the filter."
+"\n"
+"            The target audiences to filter on.\n"
+"          "
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:88
+#: /views/edit/Asset/Filter/NewsFilter/form.form:71
+msgid ""
+"Show only items in the content tree which are below the location of this "
+"filter?"
+msgstr ""
+
+#: /views/edit/Asset/Filter/NewsFilter/form.form:90
+msgid "Show agenda items as well as news items?"
+msgstr ""
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:26
+#: /views/add/NewsItem/PlainAgendaItem/form.form:175
+#: /views/add/NewsItem/PlainArticle/form.form:67
+#: /views/add/CategoryFilter/form.form:69
+#: /views/edit/Asset/Filter/NewsFilter/form.form:25
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:25
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
+msgid "subjects"
+msgstr ""
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:32
+#: /views/add/NewsItem/PlainAgendaItem/form.form:203
+#: /views/add/NewsItem/PlainArticle/form.form:86
+#: /views/add/CategoryFilter/form.form:91
+#: /views/edit/Asset/Filter/NewsFilter/form.form:46
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:46
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:47
+msgid "target audiences"
+msgstr ""
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:38
+#: /views/edit/Asset/Filter/NewsFilter/form.form:88
 msgid "show agenda items"
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:90
-msgid "If set to 'yes', show agenda items as well as news items."
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:45
+#: /views/edit/Asset/Filter/NewsFilter/form.form:69
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:69
+msgid "stick to path"
 msgstr ""
 
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:39
-msgid "show agendaitems changed"
+#: /views/edit/Asset/Filter/NewsFilter/tab_edit.pt:17
+msgid "${icon} Silva News Filters"
 msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/form.form:44
@@ -455,6 +370,18 @@ msgstr "Объекты имеют разную стоймость"
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:123
 msgid "There are no publishable objects found."
 msgstr "Нет найденных пригодных для печати объектов"
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
+msgid "Element"
+msgstr "Элемент"
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
+msgid "Content"
+msgstr "Содержание"
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
+msgid "Note"
+msgstr "Замечание"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
 msgid ""
@@ -628,6 +555,10 @@ msgstr "Запрос одобрен для ${ids}"
 msgid "content renderer"
 msgstr ""
 
+#: /views/edit/Container/tab_settings.pt:125
+msgid "note"
+msgstr "Замечание"
+
 #: /views/edit/Container/tab_settings.pt:132
 msgid "renderer"
 msgstr "Представитель"
@@ -701,9 +632,9 @@ msgstr "диапазон дня"
 msgid "Number of days in the future to show."
 msgstr "День будущего показа"
 
-#: /views/edit/Content/AgendaViewer/submit_settings.py:37
-#: /views/edit/Content/NewsViewer/submit_settings.py:39
-#: /views/edit/Content/RSSAggregator/submit_settings.py:27
+#: /views/edit/Content/AgendaViewer/submit.py:37
+#: /views/edit/Content/NewsViewer/submit.py:39
+#: /views/edit/Content/RSSAggregator/submit.py:27
 msgid "Viewer data changed"
 msgstr "Просмотерщик данных изменен"
 
@@ -753,16 +684,29 @@ msgstr ""
 "Список URL-адресов RSS-каналов (каждый в отдельной строке) для использования "
 "в качестве источников новостей."
 
-#: /views/edit/Content/edit.pt:124
-msgid "RDF Feed"
-msgstr "RDF Канал"
-
-#: /views/edit/Content/edit.pt:128
-msgid ""
-"This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
+#: /views/edit/Content/tab_edit.pt:23
+msgid "attributes"
 msgstr ""
-"Этот Просмотерщик Новостей будет поставлять RSS-канал с помощью RDF. URL-"
-"адресом канала является:"
+
+#: /views/edit/Content/tab_edit.pt:56
+msgid "save"
+msgstr ""
+
+#: /views/edit/Content/tab_edit.pt:71
+msgid "${icon} Syndication Feed for ${meta_type}"
+msgstr ""
+
+#: /views/edit/Content/tab_edit.pt:74
+msgid "A syndication feed is available in either RSS or Atom format."
+msgstr ""
+
+#: /views/edit/Content/tab_edit.pt:79
+msgid "The URL for the RSS feed is:"
+msgstr ""
+
+#: /views/edit/Content/tab_edit.pt:87
+msgid "The URL for the Atom feed is:"
+msgstr ""
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
@@ -872,6 +816,12 @@ msgstr ""
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
 msgid "publish closed version"
 msgstr ""
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
+msgid "settings"
+msgstr "установки"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "publish now"
@@ -1095,7 +1045,7 @@ msgstr ""
 msgid "Location:"
 msgstr ""
 
-#: /views/public/RSSAggregator/render_helper.pt:35
+#: /views/public/RSSAggregator/render_helper.pt:34
 #: /views/public/NewsFilter/search_news.pt:58
 msgid "view article"
 msgstr ""

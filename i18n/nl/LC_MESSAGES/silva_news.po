@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: instances 286\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Tue Jul 29 13:04:48 2008\n"
-"PO-Revision-Date: 2008-02-18 17:31+0000\n"
+"POT-Creation-Date: Mon Sep 29 13:59:49 2008\n"
+"PO-Revision-Date: 2008-09-29 11:40+0000\n"
 "Last-Translator: thisfred <eric@infrae.com>\n"
 "Language-Team: Dutch <wim@infrae.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-07-29 09:36+0000\n"
+"X-Launchpad-Export-Date: 2008-09-29 11:52+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language-code: nl\n"
 "Domain: silva_news\n"
@@ -18,13 +18,13 @@ msgstr ""
 "Preferred-encodings: utf-8\n"
 "Generated-By: zope/app/translation_files/extract.py\n"
 
-#: /NewsItem.py:102
-msgid "No unapproved version."
-msgstr "Geen versie die nog niet is goedgekeurd."
-
-#: /NewsItem.py:89
+#: /NewsItem.py:87
 msgid "No next version."
 msgstr "Geen volgende versie."
+
+#: /NewsItem.py:98
+msgid "No unapproved version."
+msgstr "Geen versie die nog niet is goedgekeurd."
 
 #: /views/add/CategoryFilter/form.form:33
 msgid "This field cannot be edited."
@@ -50,8 +50,6 @@ msgstr ""
 "          "
 
 #: /views/add/CategoryFilter/form.form:95
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:50
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:50
 #: /views/edit/Asset/Filter/CategoryFilter/form.form:51
 msgid ""
 "\n"
@@ -85,6 +83,14 @@ msgstr "id"
 msgid "id: no spaces or special characters besides an underscore (_)."
 msgstr "id: geen spaties of speciale tekens behalve een underscore (_)."
 
+#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
+#: /views/add/NewsItem/PlainAgendaItem/form.form:60
+#: /views/add/NewsItem/PlainArticle/form.form:51
+#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
+#: /views/add/AgendaViewer/form.form:49
+msgid "title"
+msgstr "titel"
+
 #: /views/add/NewsFolder/form.form:49
 #: /views/add/NewsItem/PlainAgendaItem/form.form:51
 #: /views/add/NewsItem/PlainArticle/form.form:52
@@ -98,34 +104,16 @@ msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:122
 msgid "end date/time"
-msgstr ""
+msgstr "einddatum/-tijd"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:140
 msgid "The location where the event is taking place."
-msgstr ""
+msgstr "De locatie waar het evenement plaatsvindt."
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:149
 #: /www/inline_viewer_form.form:325
 msgid "location"
 msgstr "locatie"
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:175
-#: /views/add/NewsItem/PlainArticle/form.form:67
-#: /views/add/CategoryFilter/form.form:69
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:25
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
-msgid "subjects"
-msgstr "onderwerpen"
-
-#: /views/add/NewsItem/PlainAgendaItem/form.form:203
-#: /views/add/NewsItem/PlainArticle/form.form:86
-#: /views/add/CategoryFilter/form.form:91
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:46
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:46
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:47
-msgid "target audiences"
-msgstr "doelgroepen"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:82
 #: /views/add/NewsItem/PlainAgendaItem/form.form:113
@@ -135,44 +123,6 @@ msgstr "Formaat d/m/j, tijd is optioneel."
 #: /views/add/NewsItem/PlainAgendaItem/form.form:91
 msgid "start date/time"
 msgstr "startdatum/-tijd"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:184
-msgid "There are no news sources available."
-msgstr "Er zijn geen nieuwsbronnen beschikbaar."
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
-msgid "use selected sources in this filter: alt-u"
-msgstr "geselecteerde bronnen gebruiken in deze filter: alt-u"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:56
-#: /views/edit/Content/edit.pt:65
-#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
-msgid "settings"
-msgstr "instellingen"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:65
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:28
-#: /views/edit/Content/edit.pt:74 /views/edit/Container/tab_settings.pt:117
-msgid "element"
-msgstr "element"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:66
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:29
-#: /views/edit/Content/edit.pt:76 /views/edit/Container/tab_settings.pt:122
-msgid "content"
-msgstr "inhoud"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:67
-#: /views/edit/Content/edit.pt:77 /views/edit/Container/tab_settings.pt:125
-msgid "note"
-msgstr "opmerking"
-
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
-#: /views/edit/Content/edit.pt:103
-msgid "save settings"
-msgstr "instellingen opslaan"
 
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:105
 msgid "type"
@@ -189,40 +139,49 @@ msgstr "verloopt op"
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:205
 msgid ""
 "There are no news items for this period. Check that news sources are "
-"activated (go to the editor screen) and items in the sources are published."
+"activated (go to the edit screen) and items in the sources are published."
 msgstr ""
-"Er zijn geen nieuwsberichten voor deze periode. Contoleer dat nieuwsbronnen "
-"geactiveerd zijn (ga naar het bewerkscherm) en dat de items in de bronnen "
+"Er zijn geen nieuwsitems voor deze periode. Controleer dat de nieuwsbronnen "
+"geactiveerd zijn (in het scherm 'bewerken') en dat de items in de bronnen "
 "gepubliceerd zijn."
 
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:71
+msgid ""
+"Show only items in the content tree which are below the location of the "
+"filter?"
+msgstr ""
+"Alleen items laten zien die zich lager in de content hiërarchie bevinden dan "
+"de filter?"
+
 # Default: "silva_news"
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:22
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:22
 msgid "Input form errors ${errors}"
 msgstr "Fouten invulformulier ${errors}"
 
 # Default: "silva_news"
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:29
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:27
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:29
 msgid "subjects changed"
 msgstr "onderwerp gewijzigd"
 
 # Default: "silva_news"
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:35
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:33
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:35
 msgid "target audiences changed"
 msgstr "doelgroepen gewijzigd"
 
 # Default: "silva_news"
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:41
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:45
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:41
 msgid "stick to path changed"
 msgstr "pad voorkeur veranderd"
 
 # Default: "silva_news"
-#: /views/edit/Asset/Filter/AgendaFilter/submit_settings.py:46
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:49
+#: /views/edit/Asset/Filter/AgendaFilter/submit.py:46
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:49
 msgid "Settings changed for: "
 msgstr "Instellingen veranderd voor: "
+
+#: /views/edit/Asset/Filter/AgendaFilter/tab_edit.pt:17
+msgid "${icon} Silva Agenda Filters"
+msgstr "${icon} Silva Agendafilters"
 
 #: /views/edit/Asset/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
@@ -230,17 +189,15 @@ msgstr "Instellingen veranderd voor: "
 msgid "The filter is updated."
 msgstr "De filter is bijgewerkt."
 
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:30
-msgid "description"
-msgstr "omschrijving"
-
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
-msgid "save selection"
-msgstr "selectie opslaan"
-
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:69
-msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
-msgstr "<abbr title=\"Silva News Network\">SNN</abbr> Categorie-filters"
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:30
+msgid ""
+"\n"
+"            Select the news subjects to filter on.\n"
+"          "
+msgstr ""
+"\n"
+"            Selecteer de nieuwsonderwerpen om op te filteren.\n"
+"          "
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
@@ -255,82 +212,33 @@ msgstr "eigenschappen"
 msgid "access"
 msgstr "toegang"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:123
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:120
-msgid "sources"
-msgstr "bronnen"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:19
+#: /views/edit/Container/tab_settings.pt:117
+msgid "element"
+msgstr "element"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:133
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:130
-msgid "path"
-msgstr "pad"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:20
+#: /views/edit/Content/tab_edit.pt:24
+#: /views/edit/Container/tab_settings.pt:122
+msgid "content"
+msgstr "inhoud"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:134
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:131
-#: /views/add/NewsFolder/form.form:48 /views/add/NewsFilter/form.form:45
-#: /views/add/NewsItem/PlainAgendaItem/form.form:60
-#: /views/add/NewsItem/PlainArticle/form.form:51
-#: /views/add/AgendaFilter/form.form:45 /views/add/CategoryFilter/form.form:53
-#: /views/add/AgendaViewer/form.form:49
-msgid "title"
-msgstr "titel"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:21
+msgid "description"
+msgstr "omschrijving"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:154
-msgid "Edit this source"
-msgstr "Deze bron bewerken"
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:44
+msgid "save selection"
+msgstr "selectie opslaan"
 
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:160
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:157
-msgid "Edit this item"
-msgstr "Dit item bewerken"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:171
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:168
-msgid "(not activated)"
-msgstr "(niet geactiveerd)"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:187
-msgid "There are no newssources available."
-msgstr "Er zijn geen nieuwsbronnen beschikbaar."
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
-msgid "Use selected sources in this filter: alt-u"
-msgstr "Geselecteerde bronnen gebruiken in deze filter: alt-u"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:208
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:206
-msgid "update sources"
-msgstr "bronnen bijwerken"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:58
-msgid "general settings"
-msgstr "algemene instellingen"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:67
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
-msgid "Element"
-msgstr "Element"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:68
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
-msgid "Content"
-msgstr "Inhoud"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:69
-#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
-msgid "Note"
-msgstr "Opmerking"
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
-msgid " save settings "
-msgstr " instellingen opslaan "
-
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:96
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:93
-#: /views/edit/Asset/Filter/CategoryFilter/edit.pt:53
-#: /views/edit/Content/edit.pt:103
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:44
+#: /views/edit/Content/tab_edit.pt:56
 msgid "access key: alt-s"
 msgstr "sneltoets: alt-s"
+
+#: /views/edit/Asset/Filter/CategoryFilter/tab_edit.pt:60
+msgid "<abbr title=\"Silva News Network\">SNN</abbr> Category Filters"
+msgstr "<abbr title=\"Silva News Network\">SNN</abbr> Categorie-filters"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:109
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:153
@@ -352,23 +260,17 @@ msgstr ""
 "gepubliceerd zijn."
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all items: alt-a"
 msgstr "alle items selecteren: alt-a"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "select all"
 msgstr "alles selecteren"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:181
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:217
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:221
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:215
 msgid "deselect all"
 msgstr "niets selecteren"
 
@@ -383,20 +285,14 @@ msgid "update"
 msgstr "bijwerken"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:253
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:286
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:284
 msgid "Previous"
 msgstr "Vorige"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:257
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:290
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:288
 msgid "Next"
 msgstr "Volgende"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:67
-#: /views/edit/Asset/Filter/NewsFilter/edit.pt:132
-#: /views/edit/Asset/Filter/AgendaFilter/edit.pt:129
 msgid "in use"
 msgstr "in gebruk"
 
@@ -414,46 +310,74 @@ msgstr "publicatie&nbsp;op&nbsp;"
 msgid "expiration&nbsp;due&nbsp;"
 msgstr "verloopt&nbsp;&nbsp;"
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:29
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:29
-#: /views/edit/Asset/Filter/CategoryFilter/form.form:30
+#: /views/edit/Asset/Filter/NewsFilter/form.form:29
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:29
 msgid ""
 "\n"
-"            Select the news subjects to filter on.\n"
+"            The news subjects to filter on.\n"
 "          "
 msgstr ""
 "\n"
-"            Selecteer de nieuwsonderwerpen om op te filteren.\n"
+"            De nieuwsonderwerpen om op te filteren.\n"
 "          "
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:69
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:69
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:88
-msgid "stick to path"
-msgstr "filter lokaal houden"
-
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:71
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:71
-#: /views/edit/Asset/Filter/AgendaFilter/settingsform.form:90
+#: /views/edit/Asset/Filter/NewsFilter/form.form:50
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:50
 msgid ""
-"Setting to 'yes' keeps the filter local, showing only items in the content "
-"tree that are below the location of the filter."
+"\n"
+"            The target audiences to filter on.\n"
+"          "
 msgstr ""
-"Indien ingesteld op 'ja', de filter lokaal houden, zodat alleen items "
-"getoond worden die zich onder de locatie van het filter bevinden."
+"\n"
+"            De doelgroepen om op te filteren.\n"
+"          "
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:88
+#: /views/edit/Asset/Filter/NewsFilter/form.form:71
+msgid ""
+"Show only items in the content tree which are below the location of this "
+"filter?"
+msgstr ""
+"Alleen items laten zien die zich lager in de content hiërarchie bevinden dan "
+"deze filter?"
+
+#: /views/edit/Asset/Filter/NewsFilter/form.form:90
+msgid "Show agenda items as well as news items?"
+msgstr "Laat zowel agenda items als nieuwsitems zien?"
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:26
+#: /views/add/NewsItem/PlainAgendaItem/form.form:175
+#: /views/add/NewsItem/PlainArticle/form.form:67
+#: /views/add/CategoryFilter/form.form:69
+#: /views/edit/Asset/Filter/NewsFilter/form.form:25
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:25
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:26
+msgid "subjects"
+msgstr "onderwerpen"
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:32
+#: /views/add/NewsItem/PlainAgendaItem/form.form:203
+#: /views/add/NewsItem/PlainArticle/form.form:86
+#: /views/add/CategoryFilter/form.form:91
+#: /views/edit/Asset/Filter/NewsFilter/form.form:46
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:46
+#: /views/edit/Asset/Filter/CategoryFilter/form.form:47
+msgid "target audiences"
+msgstr "doelgroepen"
+
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:38
+#: /views/edit/Asset/Filter/NewsFilter/form.form:88
 msgid "show agenda items"
 msgstr "agenda-items tonen"
 
-#: /views/edit/Asset/Filter/NewsFilter/settingsform.form:90
-msgid "If set to 'yes', show agenda items as well as news items."
-msgstr "Indien ingesteld op 'ja', agenda-items zowel als nieuwsitems tonen."
+#: /views/edit/Asset/Filter/NewsFilter/submit.py:45
+#: /views/edit/Asset/Filter/NewsFilter/form.form:69
+#: /views/edit/Asset/Filter/AgendaFilter/form.form:69
+msgid "stick to path"
+msgstr "filter lokaal houden"
 
-# Default: "silva_news"
-#: /views/edit/Asset/Filter/NewsFilter/submit_settings.py:39
-msgid "show agendaitems changed"
-msgstr "veranderde agenda-items tonen"
+#: /views/edit/Asset/Filter/NewsFilter/tab_edit.pt:17
+msgid "${icon} Silva News Filters"
+msgstr "${icon} Silva Nieuwsfilters"
 
 #: /views/edit/Container/Publication/NewsPublication/form.form:44
 msgid "Restrict usage"
@@ -471,6 +395,18 @@ msgstr "De objecten hebben verschillende waarden."
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:123
 msgid "There are no publishable objects found."
 msgstr "Er zijn geen items gevonden die gepubliceerd kunnen worden."
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:71
+msgid "Element"
+msgstr "Element"
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:77
+msgid "Content"
+msgstr "Inhoud"
+
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:80
+msgid "Note"
+msgstr "Opmerking"
 
 #: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:66
 msgid ""
@@ -651,6 +587,10 @@ msgstr "Goedkeuring aanvragen voor: ${ids}"
 msgid "content renderer"
 msgstr "inhoudsweergave"
 
+#: /views/edit/Container/tab_settings.pt:125
+msgid "note"
+msgstr "opmerking"
+
 #: /views/edit/Container/tab_settings.pt:132
 msgid "renderer"
 msgstr "weergave"
@@ -727,9 +667,9 @@ msgid "Number of days in the future to show."
 msgstr "Aantal dagen in de toekomst te tonen"
 
 # Default: "silva_news"
-#: /views/edit/Content/AgendaViewer/submit_settings.py:37
-#: /views/edit/Content/NewsViewer/submit_settings.py:39
-#: /views/edit/Content/RSSAggregator/submit_settings.py:27
+#: /views/edit/Content/AgendaViewer/submit.py:37
+#: /views/edit/Content/NewsViewer/submit.py:39
+#: /views/edit/Content/RSSAggregator/submit.py:27
 msgid "Viewer data changed"
 msgstr "Viewer-gegevens gewijzigd"
 
@@ -779,16 +719,29 @@ msgstr ""
 "De URLs van RSS feeds tonen (één per regel) om als bronnen van nieuwsitems "
 "te gebruiken."
 
-#: /views/edit/Content/edit.pt:124
-msgid "RDF Feed"
-msgstr "RDF Feed"
+#: /views/edit/Content/tab_edit.pt:23
+msgid "attributes"
+msgstr "eigenschappen"
 
-#: /views/edit/Content/edit.pt:128
-msgid ""
-"This News Viewer will supply an RSS feed using RDF. The URL of the feed is:"
+#: /views/edit/Content/tab_edit.pt:56
+msgid "save"
+msgstr "opslaan"
+
+#: /views/edit/Content/tab_edit.pt:71
+msgid "${icon} Syndication Feed for ${meta_type}"
 msgstr ""
-"Deze Nieuwsviewer zal middels RDF een RSS-feed beschikbaar maken. De URL van "
-"de feed is:"
+
+#: /views/edit/Content/tab_edit.pt:74
+msgid "A syndication feed is available in either RSS or Atom format."
+msgstr "Een syndicatie-feed is beschikbaar in RSS dan wel Atom formaat."
+
+#: /views/edit/Content/tab_edit.pt:79
+msgid "The URL for the RSS feed is:"
+msgstr "De URL voor de RSS feed is:"
+
+#: /views/edit/Content/tab_edit.pt:87
+msgid "The URL for the Atom feed is:"
+msgstr "De URL voor de Atom feed is:"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
@@ -905,6 +858,12 @@ msgstr "nieuwe versie publiceren"
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:232
 msgid "publish closed version"
 msgstr "gesloten versie publiceren"
+
+#: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:241
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk.pt:64
+#: /views/edit/Container/Publication/NewsPublication/tab_edit_bulk_ask_recurse.pt:61
+msgid "settings"
+msgstr "instellingen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:254
 msgid "publish now"
@@ -1132,9 +1091,9 @@ msgstr "Einde:"
 
 #: /views/public/PlainAgendaItem/render_helper.pt:46
 msgid "Location:"
-msgstr ""
+msgstr "Locatie:"
 
-#: /views/public/RSSAggregator/render_helper.pt:35
+#: /views/public/RSSAggregator/render_helper.pt:34
 #: /views/public/NewsFilter/search_news.pt:58
 msgid "view article"
 msgstr "artikel bekijken"
@@ -1266,11 +1225,11 @@ msgstr "voettekst"
 
 #: /www/inline_viewer_form.form:474
 msgid "Show search box (ANR)"
-msgstr ""
+msgstr "Laat zoekveld zien (ANR)"
 
 #: /www/inline_viewer_form.form:483
 msgid "show search"
-msgstr ""
+msgstr "zoekveld laten zien"
 
 #: /www/inline_viewer_form.form:51
 msgid "ID for div tag for inline viewer; default = _blank_ (ANR)"
@@ -1370,8 +1329,77 @@ msgstr "Locatie: <span class=\"newsitemlocation\"></span>"
 #~ msgid "number"
 #~ msgstr "aantal"
 
+#~ msgid "RDF Feed"
+#~ msgstr "RDF Feed"
+
+#~ msgid ""
+#~ "This News Viewer will supply an RSS feed using RDF. The URL of the feed "
+#~ "is:"
+#~ msgstr ""
+#~ "Deze Nieuwsviewer zal middels RDF een RSS-feed beschikbaar maken. De URL "
+#~ "van de feed is:"
+
+#~ msgid "There are no news sources available."
+#~ msgstr "Er zijn geen nieuwsbronnen beschikbaar."
+
+#~ msgid "use selected sources in this filter: alt-u"
+#~ msgstr "geselecteerde bronnen gebruiken in deze filter: alt-u"
+
+#~ msgid "save settings"
+#~ msgstr "instellingen opslaan"
+
+#~ msgid ""
+#~ "There are no news items for this period. Check that news sources are "
+#~ "activated (go to the editor screen) and items in the sources are "
+#~ "published."
+#~ msgstr ""
+#~ "Er zijn geen nieuwsberichten voor deze periode. Contoleer dat "
+#~ "nieuwsbronnen geactiveerd zijn (ga naar het bewerkscherm) en dat de items "
+#~ "in de bronnen gepubliceerd zijn."
+
+#~ msgid "sources"
+#~ msgstr "bronnen"
+
 #~ msgid "In use"
 #~ msgstr "In gebruik"
+
+#~ msgid "Edit this source"
+#~ msgstr "Deze bron bewerken"
+
+#~ msgid "Edit this item"
+#~ msgstr "Dit item bewerken"
+
+#~ msgid "(not activated)"
+#~ msgstr "(niet geactiveerd)"
+
+#~ msgid "There are no newssources available."
+#~ msgstr "Er zijn geen nieuwsbronnen beschikbaar."
+
+#~ msgid "Use selected sources in this filter: alt-u"
+#~ msgstr "Geselecteerde bronnen gebruiken in deze filter: alt-u"
+
+#~ msgid "update sources"
+#~ msgstr "bronnen bijwerken"
+
+#~ msgid "general settings"
+#~ msgstr "algemene instellingen"
+
+#~ msgid " save settings "
+#~ msgstr " instellingen opslaan "
+
+#~ msgid "If set to 'yes', show agenda items as well as news items."
+#~ msgstr "Indien ingesteld op 'ja', agenda-items zowel als nieuwsitems tonen."
+
+#~ msgid ""
+#~ "Setting to 'yes' keeps the filter local, showing only items in the "
+#~ "content tree that are below the location of the filter."
+#~ msgstr ""
+#~ "Indien ingesteld op 'ja', de filter lokaal houden, zodat alleen items "
+#~ "getoond worden die zich onder de locatie van het filter bevinden."
+
+# Default: "silva_news"
+#~ msgid "show agendaitems changed"
+#~ msgstr "veranderde agenda-items tonen"
 
 #~ msgid "Display time"
 #~ msgstr "Weergavetijd"
@@ -1756,3 +1784,9 @@ msgstr "Locatie: <span class=\"newsitemlocation\"></span>"
 
 #~ msgid "show title"
 #~ msgstr "titel tonen"
+
+#~ msgid "Syndication Feed for"
+#~ msgstr "Syndicatie-Feed voor"
+
+#~ msgid "${icon} <span>x</span> <span></span>"
+#~ msgstr "${icon} <span>x</span> <span></span>"
