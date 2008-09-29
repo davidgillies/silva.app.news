@@ -67,8 +67,9 @@
       <div class="info" metal:fill-slot="right-column">
         <h3 i18n:translate="">
          <img tal:replace="structure icon" i18n:name="icon"/>
-         <span i18n:translate="">Syndication Feed for </span>
-         <span tal:content="python:model.meta_type.replace('Silva ','')" />
+         Syndication Feed for 
+         <span i18n:name="meta_type" 
+               tal:content="python:model.meta_type.replace('Silva ','')" />
        </h3>
         <p i18n:translate="">
           A syndication feed is available
