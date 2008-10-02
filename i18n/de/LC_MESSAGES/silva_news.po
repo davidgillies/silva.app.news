@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Silva\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: Mon Sep 29 13:59:49 2008\n"
-"PO-Revision-Date: 2008-02-12 12:43+0000\n"
+"POT-Creation-Date: Thu Oct  2 12:19:39 2008\n"
+"PO-Revision-Date: 2008-10-02 10:05+0000\n"
 "Last-Translator: Irene Fellner <irene.fellner@wu-wien.ac.at>\n"
 "Language-Team: Silva i18n team <walco@infrae.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-09-29 11:52+0000\n"
+"X-Launchpad-Export-Date: 2008-10-02 10:16+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 "Language-code: de\n"
 "Domain: silva_news\n"
@@ -107,11 +107,11 @@ msgstr ""
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:122
 msgid "end date/time"
-msgstr ""
+msgstr "Enddatum/-zeit"
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:140
 msgid "The location where the event is taking place."
-msgstr ""
+msgstr "Der Ort, an dem die Veranstaltung stattfindet."
 
 #: /views/add/NewsItem/PlainAgendaItem/form.form:149
 #: /www/inline_viewer_form.form:325
@@ -144,12 +144,17 @@ msgid ""
 "There are no news items for this period. Check that news sources are "
 "activated (go to the edit screen) and items in the sources are published."
 msgstr ""
+"Es sind keine News-Artikel für diese Periode vorhanden. Überprüfen Sie, ob "
+"Newsquellen aktiviert sind (Edit-Tab) und ob Elemente darin veröffentlicht "
+"sind."
 
 #: /views/edit/Asset/Filter/AgendaFilter/form.form:71
 msgid ""
 "Show only items in the content tree which are below the location of the "
 "filter?"
 msgstr ""
+"Sollen nur Elemente angezeigt werden, die sich unterhalb des Filters "
+"befinden?"
 
 #: /views/edit/Asset/Filter/AgendaFilter/submit.py:22
 msgid "Input form errors ${errors}"
@@ -174,7 +179,7 @@ msgstr "Einstellungen geändert für: "
 
 #: /views/edit/Asset/Filter/AgendaFilter/tab_edit.pt:17
 msgid "${icon} Silva Agenda Filters"
-msgstr ""
+msgstr "${icon} Silva Agenda Filter"
 
 #: /views/edit/Asset/Filter/AgendaFilter/use_items.py:41
 #: /views/edit/Asset/Filter/NewsFilter/use_items.py:40
@@ -192,11 +197,10 @@ msgstr ""
 "            Themen für Filter auswählen.\n"
 "          "
 
-# Default: "Edit"
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:14
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:68
 msgid "edit"
-msgstr "Bearbeiten"
+msgstr "bearbeiten"
 
 #: /views/edit/Asset/Filter/CategoryFilter/get_tabs.py:15
 msgid "properties"
@@ -237,7 +241,7 @@ msgstr "<abbr title=\"Silva News Network\">SNN</abbr> Kategorienfilter"
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:109
 #: /views/edit/Asset/Filter/AgendaFilter/edit_items.pt:153
 msgid "Preview this item"
-msgstr "Vorschau dieses Eintrags"
+msgstr "Vorschau für dieses Element"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:115
 msgid "(deselected)"
@@ -280,7 +284,7 @@ msgstr "aktualisieren"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:253
 msgid "Previous"
-msgstr "Vorige"
+msgstr "Vorherige"
 
 #: /views/edit/Asset/Filter/NewsFilter/edit_items.pt:257
 msgid "Next"
@@ -311,6 +315,9 @@ msgid ""
 "            The news subjects to filter on.\n"
 "          "
 msgstr ""
+"\n"
+"            Die Newsthemen, nach denen gefiltert werden soll.\n"
+"          "
 
 #: /views/edit/Asset/Filter/NewsFilter/form.form:50
 #: /views/edit/Asset/Filter/AgendaFilter/form.form:50
@@ -319,16 +326,21 @@ msgid ""
 "            The target audiences to filter on.\n"
 "          "
 msgstr ""
+"\n"
+"            Die Zielgruppen, nach denen gefiltert werden soll.\n"
+"          "
 
 #: /views/edit/Asset/Filter/NewsFilter/form.form:71
 msgid ""
 "Show only items in the content tree which are below the location of this "
 "filter?"
 msgstr ""
+"Zeige nur Einträge in der Inhaltsübersicht, die sich unterhalb des Filters "
+"befinden?"
 
 #: /views/edit/Asset/Filter/NewsFilter/form.form:90
 msgid "Show agenda items as well as news items?"
-msgstr ""
+msgstr "Zeige Agendaeinträge und Newseinträge?"
 
 #: /views/edit/Asset/Filter/NewsFilter/submit.py:26
 #: /views/add/NewsItem/PlainAgendaItem/form.form:175
@@ -363,7 +375,7 @@ msgstr "Im Pfad bleiben"
 
 #: /views/edit/Asset/Filter/NewsFilter/tab_edit.pt:17
 msgid "${icon} Silva News Filters"
-msgstr ""
+msgstr "${icon} Silva News Filter"
 
 #: /views/edit/Container/Publication/NewsPublication/form.form:44
 msgid "Restrict usage"
@@ -532,7 +544,7 @@ msgstr ""
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:34
 msgid "No publication nor expiration time nor any of the flags were set."
 msgstr ""
-"Keine Veröffentlichungs- bzw. Verfallszeit und keines der Flags gessetzt."
+"Keine Veröffentlichungs- bzw. Verfallszeit und keines der Flags gesetzt."
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_change_settings.py:51
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:18
@@ -571,7 +583,7 @@ msgstr ""
 
 #: /views/edit/Container/Publication/NewsPublication/tab_status_request_approval.py:96
 msgid "Request approval for: ${ids}"
-msgstr "Anfrage für Bestätgigung von: ${ids}"
+msgstr "Anfrage für Bestätigung von: ${ids}"
 
 #: /views/edit/Container/tab_settings.pt:112
 msgid "content renderer"
@@ -713,27 +725,28 @@ msgstr ""
 
 #: /views/edit/Content/tab_edit.pt:23
 msgid "attributes"
-msgstr ""
+msgstr "Attribute"
 
 #: /views/edit/Content/tab_edit.pt:56
 msgid "save"
-msgstr ""
+msgstr "speichern"
 
 #: /views/edit/Content/tab_edit.pt:71
 msgid "${icon} Syndication Feed for ${meta_type}"
-msgstr ""
+msgstr "${icon} Syndication Feed für ${meta_type}"
 
 #: /views/edit/Content/tab_edit.pt:74
 msgid "A syndication feed is available in either RSS or Atom format."
 msgstr ""
+"Ein Syndication Feed ist entweder im RSS oder im Atom Format verfügbar."
 
 #: /views/edit/Content/tab_edit.pt:79
 msgid "The URL for the RSS feed is:"
-msgstr ""
+msgstr "Die URL für den RSS feed ist:"
 
 #: /views/edit/Content/tab_edit.pt:87
 msgid "The URL for the Atom feed is:"
-msgstr ""
+msgstr "Die URL für den Atom feed ist:"
 
 #: /views/edit/VersionedContent/NewsItem/preview_open_now.py:14
 msgid "Document published"
@@ -786,9 +799,9 @@ msgid ""
 "message regarding this issue is:"
 msgstr ""
 "Eine vorherige Anfrage auf Bewilligung wurde abgelehnt bzw. zurückgenommen "
-"von ${requester} am ${some_date}. Beachten Sie, daß die letzte Nachricht "
-"unter Umständen nicht von der Person verfaßt wurde, welche die Anfrage "
-"abgelehnt hat; falls z.B. diese Person eine leere Anfrage gemacht hat, ist "
+"von ${requester} am ${some_date}. Beachten Sie, dass die letzte Nachricht "
+"unter Umständen nicht von der Person verfasst wurde, welche die Anfrage "
+"abgelehnt hat; falls z.B. diese Person eine leere Ablehnung gemacht hat, ist "
 "dies eine Nachricht des Anfragenden. Die letzte Nachricht zu diesem Thema "
 "ist:"
 
@@ -838,7 +851,7 @@ msgstr "Aktuelle Zeiteinstellungen"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "update timing"
-msgstr "Zeiteinteilung aktualisieren"
+msgstr "Zeiteinstellung aktualisieren"
 
 #: /views/edit/VersionedContent/NewsItem/tab_status_macros.pt:203
 msgid "access key: alt-u"
@@ -1027,7 +1040,7 @@ msgstr "Suche ${title}"
 #: /views/public/NewsViewer/search_news.pt:41
 #: /views/public/AgendaViewer/search_agenda.pt:42
 msgid "There are no articles corresponding to your query"
-msgstr "Es gibt keine Artikel, die mit der Suchanfrage übereinstimmen."
+msgstr "Es gibt keine Artikel, die mit Ihrer Suchanfrage übereinstimmen."
 
 #: /views/public/NewsViewer/view_archive.pt:103
 #: /views/public/NewsViewer/search_news.pt:47
@@ -1218,11 +1231,11 @@ msgstr "zeige Fußnote"
 
 #: /www/inline_viewer_form.form:474
 msgid "Show search box (ANR)"
-msgstr ""
+msgstr "Zeige Suchebox (ANR)"
 
 #: /www/inline_viewer_form.form:483
 msgid "show search"
-msgstr ""
+msgstr "Zeige Suche"
 
 #: /www/inline_viewer_form.form:51
 msgid "ID for div tag for inline viewer; default = _blank_ (ANR)"
