@@ -2,11 +2,11 @@
 # See also LICENSE.txt
 # $Revision: 1.10 $
 import os, sys
-if __name__ == '__main__':
-    execfile(os.path.join(sys.path[0], 'framework.py'))
  
-import SilvaTestCase
+#import SilvaTestCase
 from Products.SilvaNews.Tree import DuplicateIdError
+import SilvaNewsTestCase
+
 
 def add_helper(object, typename, id, title):
     getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
@@ -16,11 +16,12 @@ def add_helper_news(object, typename, id, title):
     getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
     return getattr(object, id)
 
-class ServiceNewsTestCase(SilvaTestCase.SilvaTestCase):
+class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
     """Test the ServiceNews interface.
     """
 
     def afterSetUp(self):
+        super(ServiceNewsTestCase, self).afterSetUp()
         self.service_news = self.root.service_news
         
     # We're not going to test specific units here but just make a small general test of each datamember,
@@ -53,11 +54,8 @@ class ServiceNewsTestCase(SilvaTestCase.SilvaTestCase):
         self.assert_(self.service_news.target_audience_tree() == [('test1', 'Test 1', 0)])
 
 
-if __name__ == '__main__':
-    framework()
-else:
-    import unittest
-    def test_suite():
-        suite = unittest.TestSuite()
-        suite.addTest(unittest.makeSuite(ServiceNewsTestCase))
-        return suite
+import unittest
+def test_suite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(ServiceNewsTestCase))
+    return suite
