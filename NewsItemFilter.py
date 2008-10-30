@@ -155,6 +155,7 @@ class NewsItemFilter(Filter):
                 self._excluded_items.remove(item)
                 do_reindex = 1
         if do_reindex:
+            self._p_changed = 1
             self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
