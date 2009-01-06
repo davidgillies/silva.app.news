@@ -6,7 +6,6 @@
   <action></action>
   <enctype>None</enctype>
   <method>post</method>
-
   <i18n_domain>silva_news</i18n_domain>
   <i18n>form</i18n>
 
