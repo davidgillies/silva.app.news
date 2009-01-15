@@ -23,7 +23,7 @@
   </thead>
 
   <span tal:replace="nothing"> ______________ table header ______________ </span>
-  <tbody>
+  <tbody class="unblock">
    <tr tal:condition="python:len(sources) != 0">
     <th i18n:translate="" width="3%" nowrap="1">in use</th>
     <th i18n:translate="" width="40%">path</th>
