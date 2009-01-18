@@ -26,7 +26,7 @@
 
      <tal:repeat repeat="field fields">
      <tal:define define="iterate repeat/field/odd">
-     <tr tal:attributes="class python:iterate and 'odd' or 'even'">
+     <tr tal:attributes="class python:iterate and 'odd unblock' or 'even unblock'">
        <td class="designator">
          <label tal:content="structure field/title"
            tal:attributes="for field/id">
