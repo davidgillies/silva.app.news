@@ -59,7 +59,7 @@
     <h3 i18n:translate="">
       <img tal:replace="structure icon" /><abbr title="Silva News Network">SNN</abbr> Category Filters
     </h3>
-    <p>These Filters allow users to edit the lists of subjects and target audiences availabale to your News Filters and News Items.</p>
+    <p>These filters allow users to limit the lists of subjects and target audiences available to filters and news and agenda items. When a Category Filter is created in a branch of a site, all underlying items will be affected.</p>
     <p>You may select any number of subjects or target audiences, and only those selected will appear in the edit screns.  If, however, you don't select any items in a category, <u>all</u> items in that category will appear.</p>
   </div>
 </metal:fill-slot>
