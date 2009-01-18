@@ -4,6 +4,9 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+      - Added 'unblock' css class to viewer field iterators so links render
+        properly (resulting from removal of the sortable id/class)
+
   2.7
     
     New Features
