@@ -3,6 +3,9 @@ See also LICENSE.txt
 
 
 SilvaNewsNetwork changes
+  2.7.2 (unreleased)
+  
+    Bugs Fixed
 
   2.7.1 (2009/02/11)
   
