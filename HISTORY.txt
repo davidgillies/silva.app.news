@@ -4,7 +4,7 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.7.1b1
+  2.7.1 (2009/02/11)
   
       - changed the viewer public language back so that translations 
         work.
