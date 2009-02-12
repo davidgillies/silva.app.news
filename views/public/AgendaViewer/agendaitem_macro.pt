@@ -6,11 +6,11 @@
                    enddate r/end_datetime"
        tal:condition="python: startdate or enddate">
      <tal:if condition="startdate">
-       <span tal:omit-tag="" i18n:translate="">Starts:</span>
+       <span tal:omit-tag="" i18n:translate="">Start:</span>
        <tal:insert replace="python: formatdate(startdate, obj.display_time())" />
      </tal:if>
      <tal:if condition="enddate"><br />
-       <span tal:omit-tag="" i18n:translate="">Ends:</span>
+       <span tal:omit-tag="" i18n:translate="">End:</span>
        <tal:insert replace="python: formatdate(enddate, obj.display_time())" />
      </tal:if>
    </p>

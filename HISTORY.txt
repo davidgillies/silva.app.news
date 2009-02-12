@@ -4,6 +4,11 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.7.1b1
+  
+      - changed the viewer public language back so that translations 
+        work.
+
       - Added 'unblock' css class to viewer field iterators so links render
         properly (resulting from removal of the sortable id/class)
 
