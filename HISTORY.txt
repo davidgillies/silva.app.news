@@ -3,9 +3,15 @@ See also LICENSE.txt
 
 
 SilvaNewsNetwork changes
-  2.7.2 (unreleased)
+  2.7.2 (2009/02/12)
   
     Bugs Fixed
+    
+      - removed debugging output on rss aggregator public view,
+        and added additional css classes
+      
+      - rss aggregator public view: adjusted feed link to be the 
+        html link, rather than the uri of the syndication feed
 
   2.7.1 (2009/02/11)
   
