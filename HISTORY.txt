@@ -11,6 +11,9 @@ SilvaNewsNetwork changes
         setting the display date time.  The result was that new items
         would not be found by filters
 
+      - Added a dummy upgrader for SNN 2.7, so it appears that 
+        the upgrade upgrades to 2.7
+
   2.7.2 (2009/02/12)
   
     Bugs Fixed
