@@ -59,7 +59,7 @@ import upgrade_13, upgrade_20, upgrade_21
 #upgrade_registry.registerUpgrader(NothingUpgrader, '2.5', 'Silva Root')
 #upgrade_registry.registerUpgrader(NothingUpgrader, '2.6', 'Silva Root')
 #upgrade_registry.registerUpgrader(NothingUpgrader, '2.7', 'Silva Root')
-upgrade_registry.registerUpgrader(NothingUpgrader, '2.7', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.7', 'Silva Root')
 
 # set the software version, NOTE THAT THIS MUST BE UP-TO-DATE for
 # the upgrade to work correctly!!
