@@ -3,13 +3,18 @@ See also LICENSE.txt
 
 
 SilvaNewsNetwork changes
-  2.7.3 (unreleased)
+  2.7.3 (2009/02/19)
   
     Bugs Fixed
     
       - The 'publish now' button for news and agenda items was not
         setting the display date time.  The result was that new items
         would not be found by filters
+        
+      - removed the SNN 2.6 upgrader (which refreshes the catalog).
+        All news items do need to be reindexed.  To do this, use the
+        "Partial catalog rebuilds" tab of the Silva Extensions Service
+        (in the ZMI) to rebuild each Silva News Publication.
 
       - Added a dummy upgrader for SNN 2.7, so it appears that 
         the upgrade upgrades to 2.7

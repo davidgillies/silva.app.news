@@ -48,15 +48,17 @@ from Products.Silva.upgrade import UpgradeRegistry, GeneralUpgrader
 upgrade_registry = UpgradeRegistry()
 
 # import the actual upgraders
-import upgrade_13, upgrade_20, upgrade_21, upgrade_26
+import upgrade_13, upgrade_20, upgrade_21
 
 #register generic upgraders for the major software versions
 # where no upgrade is necessary
-NothingUpgrader = GeneralUpgrader(upgrade_handler=lambda x: x)
-upgrade_registry.registerUpgrader(NothingUpgrader, '2.2', 'Silva Root')
-upgrade_registry.registerUpgrader(NothingUpgrader, '2.3', 'Silva Root')
-upgrade_registry.registerUpgrader(NothingUpgrader, '2.4', 'Silva Root')
-upgrade_registry.registerUpgrader(NothingUpgrader, '2.5', 'Silva Root')
+#NothingUpgrader = GeneralUpgrader(upgrade_handler=lambda x: x)
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.2', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.3', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.4', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.5', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.6', 'Silva Root')
+#upgrade_registry.registerUpgrader(NothingUpgrader, '2.7', 'Silva Root')
 upgrade_registry.registerUpgrader(NothingUpgrader, '2.7', 'Silva Root')
 
 # set the software version, NOTE THAT THIS MUST BE UP-TO-DATE for
