@@ -19,8 +19,8 @@ messages = []
 try:
     result = form.validate_all(context.REQUEST)
 except FormValidationError, e:
-    m = _('Input form errors ${errors}', 'silva_news')
-    m.set_mapping({'errors':context.render_form_errors(e)})
+    m = _('Input form errors ${errors}',
+          mapping={'errors':context.render_form_errors(e)})
     msg = unicode(m)
     return context.tab_edit(message_type="error", message=msg )
 
