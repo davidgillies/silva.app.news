@@ -4,6 +4,13 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
+  2.7.4 (unreleased)
+
+   Bugs Fixed
+
+     - The rss.xml feed on news and agenda viewers did not validate against
+       the rss 1.0 specification
+
   2.7.3 (2009/02/19)
   
     Bugs Fixed

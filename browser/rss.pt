@@ -24,7 +24,7 @@
   </rss:channel>
   <tal:block repeat="item data/entries">
     <rss:item tal:attributes="rdf:about item/url">
-      <rss:title type="text" tal:content="item/title"/>
+      <rss:title tal:content="item/title"/>
       <rss:link tal:content="item/url" />
       <rss:description tal:content="item/description" />
       <dc:subject tal:condition="item/subject" tal:content="item/subject" />
