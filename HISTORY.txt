@@ -4,9 +4,12 @@ See also LICENSE.txt
 
 SilvaNewsNetwork changes
 
-  2.7.5 (unreleased)
+  2.7.5 (2009-03-26)
 
    Bugs Fixed
+
+     - The 'publish now' button in the edit tab of news items raised a 404
+       when clicked, and it wasn't translated.
 
   2.7.4 (2009-03-05)
 
