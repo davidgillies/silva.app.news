@@ -21,12 +21,11 @@ class NewsViewerTestCase(SilvaNewsTestCase.NewsBaseTestCase):
 
     def test_verify_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])
-        self.sroot.manage_delObjects('newsfilter')
+        self.root.manage_delObjects('newsfilter')
         self.assert_(self.newsviewer.filters() == [])
 
     def test_get_items(self):
-        self.newsfilter.set_subjects(['test', 'test2'])
-        self.newsfilter.set_target_audiences(['test', 'test2'])
+        self.newsfilter.add_source('/root/source1',1)
         iops = [i.object_path for i in self.newsviewer.get_items()]
         self.assert_(('', 'root', 'source1', 'art1') in iops)
         self.assert_(('', 'root', 'source1', 'art2') in iops)

@@ -1,35 +1,18 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision: 1.25 $
 
-from zope.interface import implements
-
-from Products.SilvaNews import upgrade_registry
-
 # zope imports
 import zLOG
-
 log_severity = zLOG.INFO
 
 # silva imports
-from Products.Silva.interfaces import IUpgrader
 from Products.SilvaNews.Tree import Root, Node
+from Products.Silva.upgrade_130 import VERSION
+from Products.Silva.upgrade import BaseUpgrader
 
-# upgraders for SilvaNews-1.2 (or before) to SilvaNews-1.3
-
-class DummyUpgrader:
-    implements(IUpgrader)
-
-    def upgrade(self, obj):
-        return obj
-
-upgrade_registry.registerUpgrader(
-    DummyUpgrader(), '1.2', 'Silva Root')
-
-class ArticleDisplayTimeSetter:
+class ArticleDisplayTimeSetter(BaseUpgrader):
     """set an attribute '_display_time' on all AgendaItems"""
-
-    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -40,15 +23,11 @@ class ArticleDisplayTimeSetter:
             )
         if not hasattr(obj, '_display_time'):
             obj._display_time = True
-
         return obj
+adts = ArticleDisplayTimeSetter(VERSION, 'Silva Agenda Item Version')
 
-upgrade_registry.registerUpgrader(
-    ArticleDisplayTimeSetter(), '1.3', 'Silva Agenda Item Version')
-
-class ServiceLocaleSetter:
+class ServiceLocaleSetter(BaseUpgrader):
     """set attributes '_locale' and '_date_format' on service_news"""
-    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -60,13 +39,10 @@ class ServiceLocaleSetter:
             obj._locale = 'en'
             obj._date_format = 'medium'
         return obj
+sls = ServiceLocaleSetter(VERSION, 'Silva News Service')
 
-upgrade_registry.registerUpgrader(
-    ServiceLocaleSetter(), '1.3', 'Silva News Service')
-
-class SubjectTargetAudienceUpdater:
+class SubjectTargetAudienceUpdater(BaseUpgrader):
     """convert subjects and target audiences to trees"""
-    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -102,13 +78,10 @@ class SubjectTargetAudienceUpdater:
         if data.has_key(elid):
             for childid in data[elid][1:]:
                 self._build_item(childid, node, data)
-    
-upgrade_registry.registerUpgrader(
-    SubjectTargetAudienceUpdater(), '1.3', 'Silva News Service')
+staa = SubjectTargetAudienceUpdater(VERSION, 'Silva News Service')
 
-class DisplayDateTimeSetter:
+class DisplayDateTimeSetter(BaseUpgrader):
     """set attribute 'display_datetime' of news items"""
-    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -121,15 +94,11 @@ class DisplayDateTimeSetter:
             pdt = obj.publication_datetime()
             obj._display_datetime = pdt
         return obj
+ddts_sav = DisplayDateTimeSetter(VERSION, 'Silva Article Version')
+ddts_saiv = DisplayDateTimeSetter(VERSION, 'Silva Agenda Item Version')
 
-upgrade_registry.registerUpgrader(
-    DisplayDateTimeSetter(), '1.3', 'Silva Article Version')
-upgrade_registry.registerUpgrader(
-    DisplayDateTimeSetter(), '1.3', 'Silva Agenda Item Version')
-
-class NumberToShowArchiveSetter:
+class NumberToShowArchiveSetter(BaseUpgrader):
     """set attribute '_number_to_show_archive' on news items"""
-    implements(IUpgrader)
 
     def upgrade(self, obj):
         zLOG.LOG(
@@ -141,9 +110,5 @@ class NumberToShowArchiveSetter:
         if not hasattr(obj, '_number_to_show_archive'):
             obj._number_to_show_archive = 10
         return obj
-
-upgrade_registry.registerUpgrader(
-    NumberToShowArchiveSetter(), '1.3', 'Silva News Viewer')
-upgrade_registry.registerUpgrader(
-    NumberToShowArchiveSetter(), '1.3', 'Silva Agenda Viewer')
-
+ntsas_snv = NumberToShowArchiveSetter(VERSION, 'Silva News Viewer')
+ntsas_sav = NumberToShowArchiveSetter(VERSION, 'Silva Agenda Viewer')

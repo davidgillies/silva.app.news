@@ -1,5 +1,6 @@
 from Products.Silva.silvaxml.xmlimport import theXMLImporter, SilvaBaseHandler, NS_URI, generateUniqueId, updateVersionCount
 from Products.Silva import mangle
+from silva.core import conf as silvaconf
 
 from Products.SilvaDocument.silvaxml.xmlimport import DOC_NS_URI, DocElementHandler
 

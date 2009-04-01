@@ -8,14 +8,13 @@ from zope.interface import implements
 import Products
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from OFS import Folder
 
-# Silva/News interfaces
-from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
-
-# Silva/News interfaces
+# Silva
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
+
+# SilvaNews
+from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from NewsViewer import NewsViewer
 
 class AgendaViewer(NewsViewer):
@@ -30,6 +29,8 @@ class AgendaViewer(NewsViewer):
     security = ClassSecurityInfo()
 
     implements(IAgendaViewer)
+    silvaconf.icon("www/agenda_viewer.png")
+    silvaconf.priority(3.3)
 
     meta_type = "Silva Agenda Viewer"
 

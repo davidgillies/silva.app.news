@@ -9,10 +9,12 @@ import time
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from Products.SilvaNews.NewsViewer import NewsViewer
-from interfaces import IAggregator
 
+# SilvaNews
+from Products.SilvaNews.NewsViewer import NewsViewer
+from Products.SilvaNews.interfaces import IAggregator
 import feedparser
 
 class RSSAggregator(NewsViewer):
@@ -24,6 +26,8 @@ class RSSAggregator(NewsViewer):
     security = ClassSecurityInfo()
     implements(IAggregator)
     meta_type = 'Silva RSS Aggregator'
+    silvaconf.icon("www/rss_aggregator.png")
+    silvaconf.priority(3.5)
 
     def __init__(self, id):
         RSSAggregator.inheritedAttribute('__init__')(self, id)

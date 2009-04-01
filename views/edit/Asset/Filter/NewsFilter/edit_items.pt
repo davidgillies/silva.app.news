@@ -12,7 +12,6 @@
     model request/model;
     root_url model/get_root_url;
     user_role view/get_user_role;
-    silva_root view/silva_root;
     title model/get_title_editable;
     vein string:editor;
     dummy model/security_trigger;
@@ -86,13 +85,10 @@
                 tal:attributes="class python:test(oddrow, 'odd', 'even')">
 
               <span tal:replace="nothing"> _______ checkbox + icon _______ </span>
-              <td nowrap="1">
+              <td class="listing-left">
                 <input type="checkbox" name="cb:list" value="value"
                     tal:attributes="value string:cb_${id}; checked object/check_checkbox" />
-                <a href="edit" title="edit this item" i18n:attributes="title"
-                  tal:attributes="href string:${object_url}/edit/tab_edit;
-                                  title meta_type">
-                <img tal:replace="structure python:view.render_icon(obj.object())" /></a>
+                <img tal:replace="structure python:view.render_icon(obj.object())" />
               </td>
 
               <span tal:replace="nothing"> _______ id cell _______ </span>
@@ -109,11 +105,11 @@
                   <a class="bluelink" title="Preview this item" i18n:attributes="title"
                     tal:attributes="href string:${object_url}">
                     <span tal:replace="string:${obj/get_title}">title</span>
+                    <span class="warning" tal:condition="not: object/check_checkbox">
+                      &nbsp;<span i18n:translate="">(deselected)</span>
+                    </span>
                   </a>
                 </tal:block>
-                <span class="warning" tal:condition="not: object/check_checkbox">
-                  &nbsp;<span i18n:translate="">(deselected)</span>
-                </span>
                 <tal:block condition="python:obj.get_title == ''">
                 </tal:block>
               </td>
@@ -158,7 +154,7 @@
       <span tal:replace="nothing"> ______________ if no records ______________ </span>
       <check tal:condition="python:len(objects) == 0">
         <tr class="divider">
-          <td colspan="5"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+          <td colspan="5"><img tal:attributes="src string:${root_url}/globals/pixel.gif" width="1" height="1" /></td>
         </tr>
         <tr class="focus-light">
           <td colspan="5">
@@ -166,7 +162,7 @@
           </td>
         </tr>
         <tr class="divider">
-          <td colspan="5"><img tal:attributes="src string:${silva_root}/globals/pixel.gif" width="1" height="1" /></td>
+          <td colspan="5"><img tal:attributes="src string:${root_url}/globals/pixel.gif" width="1" height="1" /></td>
         </tr>
       </check>
       <!-- /iteration -->

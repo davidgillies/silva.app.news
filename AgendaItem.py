@@ -10,13 +10,13 @@ from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
 from Globals import InitializeClass
-from Products.ParsedXML.ParsedXML import ParsedXML
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 
 # Silva
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
@@ -28,8 +28,8 @@ class AgendaItem(NewsItem):
     """Base class for agenda items.
     """
     security = ClassSecurityInfo()
-
-    implements((IAgendaItem, IVersionedContent))
+    implements(IAgendaItem)
+    silvaconf.baseclass()
 
 InitializeClass(AgendaItem)
 
@@ -40,6 +40,7 @@ class AgendaItemVersion(NewsItemVersion):
     security = ClassSecurityInfo()
 
     implements(IAgendaItemVersion)
+    silvaconf.baseclass()
 
     def __init__(self, id):
         AgendaItemVersion.inheritedAttribute('__init__')(self, id)
@@ -116,16 +117,5 @@ class AgendaItemVersion(NewsItemVersion):
         """
         parenttext = AgendaItemVersion.inheritedAttribute('fulltext')(self)
         return "%s %s" % (parenttext, self._location)
-
-    def content_xml(self, context):
-        """Returns the content as a partial XML-doc
-        """
-        AgendaItemVersion.inheritedAttribute('content_xml')(self, context)
-        xml = u'<start_datetime>%s</start_datetime>' % self._prepare_xml(
-            self._start_datetime.rfc822())
-        xml += u'<location>%s</location>' % self._prepare_xml(
-            self._location)
-
-        context.f.write(xml)
 
 InitializeClass(AgendaItemVersion)

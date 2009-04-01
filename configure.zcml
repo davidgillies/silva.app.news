@@ -3,90 +3,16 @@
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:silva="http://infrae.com/ns/silvaconf"
+    xmlns:grok="http://namespaces.zope.org/grok"
     i18n_domain="silva_news"
     >
-
-  <include package=".browser" />
-  <include package=".adapters" />
-
+    
   <!-- i18n -->
   <i18n:registerTranslations directory="i18n" />
 
-  <subscriber
-      for=".InlineViewer.InlineViewer
-           zope.app.container.interfaces.IObjectMovedEvent"
-      handler=".InlineViewer.inline_viewer_moved" 
-  />
+  <include package=".browser" />
 
-  <silva:extension
-    name="SilvaNews"
-    title="Silva News Network"
-    depends="SilvaDocument SilvaExternalSources"
-    />
-
-  <silva:content
-    content=".NewsPublication.NewsPublication"
-    extension_name="SilvaNews"
-    icon="www/news_source.png"
-    priority="3"
-    />
-
-  <silva:content
-    content=".NewsViewer.NewsViewer"
-    extension_name="SilvaNews"
-    icon="www/news_viewer.png"
-    priority="3.1"
-    />
-
-  <silva:content
-    content=".NewsFilter.NewsFilter"
-    extension_name="SilvaNews"
-    icon="www/news_filter.png"
-    priority="3.2"
-    />
-
-  <silva:content
-    content=".AgendaViewer.AgendaViewer"
-    extension_name="SilvaNews"
-    icon="www/agenda_viewer.png"
-    priority="3.3"
-    />
-
-  <silva:content
-    content=".AgendaFilter.AgendaFilter"
-    extension_name="SilvaNews"
-    icon="www/agenda_filter.png"
-    priority="3.4"
-    />
-
-  <silva:content
-    content=".RSSAggregator.RSSAggregator"
-    extension_name="SilvaNews"
-    icon="www/rss_aggregator.png"
-    priority="3.5"
-    />
-
-  <silva:content
-    content=".CategoryFilter.CategoryFilter"
-    extension_name="SilvaNews"
-    icon="www/category_filter.png"
-    priority="3.6"
-    />
-
-  <silva:versionedcontent
-    content=".PlainArticle.PlainArticle"
-    version=".PlainArticle.PlainArticleVersion"
-    extension_name="SilvaNews"
-    icon="www/news_item.png"
-    priority="3.7"
-    />  
-
-  <silva:versionedcontent
-    content=".PlainAgendaItem.PlainAgendaItem"
-    version=".PlainAgendaItem.PlainAgendaItemVersion"
-    extension_name="SilvaNews"
-    icon="www/agenda_item.png"
-    priority="3.8"
-    />  
+  <!-- Grok Silva News -->
+  <grok:grok package="." />
 
 </configure>

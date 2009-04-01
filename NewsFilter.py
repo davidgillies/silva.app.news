@@ -13,9 +13,9 @@ from DateTime import DateTime
 from interfaces import INewsFilter
 
 # Silva/News
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from Products.SilvaViews.ViewRegistry import ViewAttribute
-from NewsItemFilter import brainsorter,NewsItemFilter
+from NewsItemFilter import NewsItemFilter
 
 class NewsFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
@@ -26,6 +26,8 @@ class NewsFilter(NewsItemFilter):
     security = ClassSecurityInfo()
 
     meta_type = "Silva News Filter"
+    silvaconf.icon("www/news_filter.png")
+    silvaconf.priority(3.2)
 
     implements(INewsFilter)
 

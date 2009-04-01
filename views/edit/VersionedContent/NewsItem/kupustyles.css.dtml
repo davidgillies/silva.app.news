@@ -1,4 +1,7 @@
-@import url(<dtml-var "get_root().service_views.Silva.edit.VersionedContent['kupustyles.css'].absolute_url()">);
+/* <dtml-let last_modified="_.DateTime()-14"
+          expires="_.DateTime()+7"
+          root_url="get_root_url()"> */
+@import url(<dtml-var "root_url + '/service_views/Silva/edit/VersionedContent/kupustyles.css'">);
 
 /*****************************************************************************
  *
@@ -15,9 +18,6 @@
 /* import the Silva kupustyles.css, and just override those 
    items specific to SilvaNews */
 
-<dtml-let last_modified="_.DateTime()-14"
-          expires="_.DateTime()+7"
-          root_url="get_root_url()">
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Content-Type', 'text/css' )">
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Last-Modified', last_modified.toZone('GMT').rfc822() )">
 <dtml-call "REQUEST.RESPONSE.setHeader( 'Cache-Control', 'max-age=36000, must-revalidate' )">

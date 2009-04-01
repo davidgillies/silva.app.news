@@ -6,14 +6,22 @@ from zope.interface import implements
 
 import Globals
 from AccessControl import ClassSecurityInfo
+from OFS.interfaces import IObjectWillBeRemovedEvent
 from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from Products.Silva.helpers import add_and_edit
-from interfaces import IServiceNews
 
-from dates import DateTimeFormatter, getMonthAbbreviations
+#Silva
+from silva.core import conf as silvaconf
+from Products.Silva.BaseService import SilvaService
+from Products.Silva.helpers import add_and_edit, \
+     register_service, unregister_service
 
+#SilvaNews
 import Tree
+from dates import DateTimeFormatter, getMonthAbbreviations
+from interfaces import IServiceNews
+from Products.SilvaNews import software_version
+
 
 class CategoryMixin(object):
     """Code that can be shared between category users for the
@@ -21,6 +29,7 @@ class CategoryMixin(object):
     """Currently used by NewsService and CategoryFilter"""
 
     security = ClassSecurityInfo()
+    silvaconf.baseclass()
 
     security.declareProtected('View', 'subject_tree')
     def subject_tree(self,audject=None):
@@ -68,12 +77,15 @@ class CategoryMixin(object):
             self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
 Globals.InitializeClass(CategoryMixin)
     
-class ServiceNews(SimpleItem, CategoryMixin):
+class ServiceNews(SilvaService, CategoryMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
     implements(IServiceNews)
     security = ClassSecurityInfo()
     meta_type = 'Silva News Service'
+
+    silvaconf.icon('www/newsservice.gif')
+    silvaconf.factory('manage_addServiceNews')
 
     manage_options = (
                       {'label': 'Edit', 'action': 'manage_main'},
@@ -91,13 +103,12 @@ class ServiceNews(SimpleItem, CategoryMixin):
                                             __name__='manage_info_tab')
 
     def __init__(self, id, title):
-        self.id = id
-        self.title = title
+        SilvaService.__init__(self, id, title)
         self._subjects = Tree.Root()
         self._target_audiences = Tree.Root()
         self._locale = 'en'
         self._date_format = 'medium'
-        self._content_version = '2.7'
+        self._content_version = software_version
 		
         self.add_subject(u'generic',u'Generic')
         self.add_target_audience(u'all',u'All')
@@ -440,7 +451,6 @@ class ServiceNews(SimpleItem, CategoryMixin):
     security.declareProtected('Setup ServiceNews',
                                 'software_version')
     def software_version(self):
-        from Products.SilvaNews import software_version
         return software_version
 
     security.declareProtected('Setup ServiceNews',
@@ -451,15 +461,16 @@ class ServiceNews(SimpleItem, CategoryMixin):
 
 Globals.InitializeClass(ServiceNews)
 
-manage_addServiceNewsForm = PageTemplateFile(
-        'www/serviceNewsAdd', globals(),
-        __name__ = 'manage_addServiceNewsForm')
-
 def manage_addServiceNews(self, id, title='', REQUEST=None):
     """Add service to folder
     """
     # add actual object
-    id = self._setObject(id, ServiceNews(id, unicode(title, 'UTF-8')))
+    service = ServiceNews(id, title)
+    register_service(self, id, service, IServiceNews)
     # respond to the add_and_edit button if necessary
     add_and_edit(self, id, REQUEST)
     return ''
+
+@silvaconf.subscribe(IServiceNews, IObjectWillBeRemovedEvent)
+def unregisterNewsService(service, event):
+    unregister_service(service, IServiceNews)

@@ -3,21 +3,19 @@
 # $Revision: 1.13 $
 
 from zope.interface import implements
+from zope.app.container.interfaces import IObjectAddedEvent
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-# Silva/News Interfaces
-from Products.Silva.interfaces import IPublication, IContainer
-from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
-
-# Silva/News
+# Silva
+from silva.core import conf as silvaconf
 from Products.Silva.Publication import Publication
 from Products.Silva import SilvaPermissions
 
-class DuplicateError(Exception):
-    pass
+# SilvaNews
+from Products.SilvaNews.interfaces import INewsItem, INewsPublication
 
 class NewsPublication(Publication):
     """A special publication type (a.k.a. News Source) for news 
@@ -26,31 +24,14 @@ class NewsPublication(Publication):
     """
     security = ClassSecurityInfo()
 
+    implements(INewsPublication)
     meta_type = "Silva News Publication"
-
-    implements((IContainer, IPublication))
-
-    hide_from_tocs = 1
-    
-    _addables_allowed_in_publication = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Folder']
+    silvaconf.icon("www/news_source.png")
+    silvaconf.priority(3)
 
     def __init__(self, id):
         NewsPublication.inheritedAttribute('__init__')(self, id)
-        self._is_private = 0
-
-
-    # ACCESSORS
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'is_private')
-    def is_private(self):
-        """Returns the private-state
-        """
-        return self._is_private
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_is_private')
-    idx_is_private = is_private
+        self._addables_allowed_in_container = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Folder']
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'parent_path')
@@ -64,19 +45,6 @@ class NewsPublication(Publication):
     idx_parent_path = parent_path
 
     # MANIPULATORS
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_private')
-    def set_private(self, on_or_off):
-        """
-        Sets the is_private-setting for this source.
-
-        is_private can restrict the availability of this source towards the
-        outside-world (when set, the source can only be found by
-        filters in the same subdirectory)
-        """
-        self._is_private = on_or_off
-        self.reindex_object()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'get_fields_for_bulk_editing')
@@ -129,5 +97,15 @@ class NewsPublication(Publication):
                         elif morefields[key] is not None and fields[key] is not None:
                             fields[key] = '__DO_NOT_FILL_FIELD__'
         return (fields, versionpaths)
+
+@silvaconf.subscribe(INewsPublication, IObjectAddedEvent)
+def np_added(obj, event):
+    """news publications should have their 'hide_from_tocs' set to
+       'hide'.  This can be done after they are added"""
+    binding = obj.service_metadata.getMetadata(obj)
+    binding.setValues('silva-extra', {'hide_from_tocs': 'hide'})
+    binding.setValues('snn-np-settings', {'is_private': 'no'})
+    obj.reindex_object()
+    return
 
 InitializeClass(NewsPublication)

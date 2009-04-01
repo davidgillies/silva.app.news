@@ -4,12 +4,11 @@ from zope.interface import implements
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 
-# Silva/News Interfaces
-from interfaces import ICategoryFilter
+# Silva
+from silva.core import conf as silvaconf
 
-# Silva/News
-from Products.Silva import SilvaPermissions
-from Products.Silva.i18n import translate as _
+# SilvaNews
+from interfaces import ICategoryFilter
 from Products.SilvaNews.Filter import Filter
 from Products.SilvaNews.ServiceNews import CategoryMixin
 
@@ -23,8 +22,9 @@ class CategoryFilter(Filter,CategoryMixin):
     security = ClassSecurityInfo()
 
     meta_type = "Silva News Category Filter"
-
     implements(ICategoryFilter)
+    silvaconf.icon("www/category_filter.png")
+    silvaconf.priority(3.6)
 
     def __init__(self, id):
         Filter.__init__(self, id)

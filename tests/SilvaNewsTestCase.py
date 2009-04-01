@@ -2,80 +2,94 @@
 # See also LICENSE.txt
 # $Id$
 
-from Testing import ZopeTestCase
+from Testing.ZopeTestCase import installProduct
+installProduct('SilvaNews')
+
 from Products.Silva.tests import SilvaTestCase
 from DateTime import DateTime
 
-ZopeTestCase.installProduct('SilvaNews')
-
-
-def add_helper(object, typename, id, title):
-    getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
-    return getattr(object, id)
-
-def add_helper_news(object, typename, id, title):
-    getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
-    return getattr(object, id)
-
-
-
 class SilvaNewsTestCase(SilvaTestCase.SilvaTestCase):
-
-
     def afterSetUp(self):
-        self.root.service_extensions.install('SilvaNews')
+        self.installExtension('SilvaNews')
+        
+    def add_news_publication(self, object, id, title, **kw):
+        return self.addObject(object, 'NewsPublication', id, title=title, product='SilvaNews', **kw)
 
+    def add_plain_article(self, object, id, title, **kw):
+        return self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
 
+    def add_plain_article(self, object, id, title, **kw):
+        return self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+
+    def add_news_viewer(self, object, id, title, **kw):
+        return self.addObject(object, 'NewsViewer', id, title=title, product='SilvaNews', **kw)
+
+    def add_news_filter(self, object, id, title, **kw):
+        return self.addObject(object, 'NewsFilter', id, title=title, product='SilvaNews', **kw)
+    
+    def add_agenda_filter(self, object, id, title, **kw):
+        return self.addObject(object, 'AgendaFilter', id, title=title, product='SilvaNews', **kw)
+
+    def add_published_agenda_item(self, object, id, title, sdt, edt, **kw):
+        obj = self.addObject(object, 'PlainAgendaItem', id, title=title, product='SilvaNews', **kw)
+        ver = obj.get_editable()
+        ver.set_start_datetime(sdt)
+        ver.set_end_datetime(edt)
+        ver.set_subjects(['sub'])
+        ver.set_target_audiences(['ta'])
+        obj.set_next_version_publication_datetime(DateTime())
+        obj.approve_version()
+        obj._update_publication_status()
+        ver.set_display_datetime(DateTime())
 
 class NewsBaseTestCase(SilvaNewsTestCase):
     def afterSetUp(self):
         super(NewsBaseTestCase, self).afterSetUp()
-        self.sroot = self.root
-        service_news = self.service_news = self.sroot.service_news
-        service_news.add_subject('test', 'Test')
-        service_news.add_subject('test2', 'Test 2')
-        service_news.add_target_audience('test', 'Test')
-        service_news.add_target_audience('test2', 'Test 2')
+        self.sm = self.root.service_metadata
+        service_news = self.service_news = self.root.service_news
+        service_news.add_subject('sub', 'Subject')
+        service_news.add_subject('sub2', 'Subject 2')
+        service_news.add_target_audience('ta', 'TA')
+        service_news.add_target_audience('ta2', 'TA 2')
 
-        self.service_catalog = self.sroot.service_catalog
-        
-        self.source1 = add_helper_news(self.sroot, 'NewsPublication', 'source1', 'Folder 1')
+        self.source1 = self.add_news_publication(self.root, 'source1', 'News Pub 1')
 
-        self.item1_1 = add_helper_news(self.source1, 'PlainArticle', 'art1', 'Article 1')
+        self.item1_1 = self.add_plain_article(self.source1, 'art1', 'Article 1')
         self.item1_1.set_next_version_publication_datetime(DateTime())
-        getattr(self.item1_1, '0').set_subjects(['test'])
-        getattr(self.item1_1, '0').set_target_audiences(['test'])
+        getattr(self.item1_1, '0').set_subjects(['sub'])
+        getattr(self.item1_1, '0').set_target_audiences(['ta'])
         self.item1_1.approve_version()
         self.item1_1._update_publication_status()
         getattr(self.item1_1, '0').set_display_datetime(DateTime())
 
-        self.item1_2 = add_helper_news(self.source1, 'PlainArticle', 'art2', 'Article 2')
+        self.item1_2 = self.add_plain_article(self.source1, 'art2', 'Article 2')
         self.item1_2.set_next_version_publication_datetime(DateTime())
-        getattr(self.item1_2, '0').set_subjects(['test2'])
-        getattr(self.item1_2, '0').set_target_audiences(['test2'])
+        getattr(self.item1_2, '0').set_subjects(['sub2'])
+        getattr(self.item1_2, '0').set_target_audiences(['ta2'])
         self.item1_2.approve_version()
         self.item1_2._update_publication_status()
         getattr(self.item1_2, '0').set_display_datetime(DateTime())
 
-        self.source2 = add_helper_news(self.sroot, 'NewsPublication', 'source2', 'Folder 2')
-        self.source2.set_private(1)
+        self.source2 = self.add_news_publication(self.root, 'source2', 'News Pub 2')
+        binding = self.sm.getMetadata(self.source2)
+        binding.setValues('snn-np-settings',{'is_private':'yes'},reindex=1)
 
-        self.folder = add_helper(self.sroot, 'Folder', 'somefolder', 'Some Folder')
-        self.source3 = add_helper_news(self.folder, 'NewsPublication', 'source3', 'Folder 3')
-        self.source3.set_private(1)
+        self.folder = self.add_folder(self.root, 'somefolder', 'Some Folder')
+        self.source3 = self.add_news_publication(self.folder, 'source3', 'Folder ')
+        binding = self.sm.getMetadata(self.source3)
+        binding.setValues('snn-np-settings',{'is_private':'yes'},reindex=1)
 
-        self.item1_3 = add_helper_news(self.source3, 'PlainArticle', 'art3', 'Article 3')
-        self.item1_3.set_next_version_publication_datetime(DateTime())
-        getattr(self.item1_3, '0').set_subjects(['test'])
-        getattr(self.item1_3, '0').set_target_audiences(['test'])
-        self.item1_3.approve_version()
-        self.item1_3._update_publication_status()
-        getattr(self.item1_3, '0').set_display_datetime(DateTime())
+        self.item3_3 = self.add_plain_article(self.source3, 'art3', 'Article 3')
+        self.item3_3.set_next_version_publication_datetime(DateTime())
+        getattr(self.item3_3, '0').set_subjects(['sub'])
+        getattr(self.item3_3, '0').set_target_audiences(['ta'])
+        self.item3_3.approve_version()
+        self.item3_3._update_publication_status()
+        getattr(self.item3_3, '0').set_display_datetime(DateTime())
 
-        self.newsfilter = add_helper_news(self.sroot, 'NewsFilter', 'newsfilter', 'NewsFilter')
-        self.newsfilter.add_source('/root/source1', 1)
-        self.newsfilter.set_subjects(['test', 'test2'])
-        self.newsfilter.set_target_audiences(['test', 'test2'])
+        self.newsfilter = self.add_news_filter(self.root, 'newsfilter', 'NewsFilter')
+        self.newsfilter.set_subjects(['sub', 'sub2'])
+        self.newsfilter.set_target_audiences(['ta', 'ta2'])
 
-        self.newsviewer = add_helper_news(self.newsfilter, 'NewsViewer', 'newsviewer', 'NewsViewer')
+        self.newsviewer = self.add_news_viewer(self.root, 'newsviewer', 'NewsViewer')
         self.newsviewer.set_filter('/root/newsfilter', 1)

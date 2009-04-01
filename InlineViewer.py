@@ -3,7 +3,7 @@
 # $Revision: 1.25 $
 
 from zope.interface import implements
-
+from zope.app.container.interfaces import IObjectMovedEvent
 import os
 
 import Products
@@ -18,17 +18,16 @@ from OFS.Image import Image
 from Products.Formulator.Form import ZMIForm
 from Products.Formulator.XMLToForm import XMLToForm
 
-from Products.SilvaExternalSources.interfaces import IExternalSource
 from Products.SilvaExternalSources.CodeSource import CodeSource
 
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
-from interfaces import IViewer
+from interfaces import IViewer, IInlineViewer
 from adapters.interfaces import INewsProvider
-
-#from Products.Silva.i18n import translate as _
+from adapters.newsprovider import getNewsProviderAdapter
 
 def ustr(x):
     if type(x) == unicode:
@@ -44,9 +43,12 @@ class InlineViewer(CodeSource):
         copied from that product too, thanks Marc!)
     """
 
-    implements(IExternalSource)
+    implements(IInlineViewer)
     meta_type = 'Silva News Inline Viewer'
     security = ClassSecurityInfo()
+    silvaconf.icon('www/codesource.png')
+    silvaconf.factory('manage_addInlineViewerForm')
+    silvaconf.factory('manage_addInlineViewer')
 
     # we know existing objects were already initialized, but
     # they didn't have this attribute yet and we don't want
@@ -54,7 +56,7 @@ class InlineViewer(CodeSource):
     _is_initialized = True
     
     def __init__(self, id):
-        CodeSource.inheritedAttribute('__init__')(self, id)
+        InlineViewer.inheritedAttribute('__init__')(self, id)
         self._script_id = 'view'
         self._data_encoding = 'UTF-8'
         self._is_initialized = False
@@ -128,7 +130,7 @@ class InlineViewer(CodeSource):
         """returns a list of available viewers
             finds all viewers on this level
         """
-        adapter = getVirtualHostingAdapter(self)
+        adapter = getVirtualHostingAdapter(self.REQUEST.model)
         root = adapter.getVirtualRoot()
         if root is None:
             root = self.get_root()
@@ -157,7 +159,6 @@ class InlineViewer(CodeSource):
                                 'get_items')
     def get_items(self, number, viewer):
         """returns the items for the selected viewer"""
-        from adapters.newsprovider import getNewsProviderAdapter
         viewerobj = getattr(self.REQUEST.oldmodel, viewer, None)
         if viewerobj == None:
             return []
@@ -192,6 +193,8 @@ def manage_addInlineViewer(context, id, title, REQUEST=None):
     add_and_edit(context, id, REQUEST)
     return ''
 
+@silvaconf.subscribe(IInlineViewer,
+                     IObjectMovedEvent)
 def inline_viewer_moved(object, event):
     if not object._is_initialized:
         object._set_form()

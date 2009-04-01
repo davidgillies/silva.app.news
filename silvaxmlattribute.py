@@ -2,26 +2,34 @@
 # See also LICENSE.txt
 # $Revision: 1.25 $
 
+from zope.interface import implements
+
+#python
 from StringIO import StringIO
+
+#zope
 from Globals import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
-from Products.Silva.helpers import translateCdata
-from Products.Silva.Metadata import export_metadata
 from Products.ParsedXML.ParsedXML import ParsedXML
-from Products.Silva import SilvaPermissions
-from Products.Silva.i18n import translate as _
 
+#Silva
+from Products.Silva import SilvaPermissions
+from Products.Silva.adapters.renderable import getRenderableAdapter
+from Products.Silva.helpers import translateCdata
+from Products.Silva.i18n import translate as _
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
 
-from Products.Silva.adapters.renderable import getRenderableAdapter
+from interfaces import ISilvaXMLAttribute
 
 class SilvaXMLAttribute(SimpleItem):
     """An attribute that contains Silva XML"""
 
     security = ClassSecurityInfo()
     meta_type = 'Silva XML Attribute'
+    
+    implements(ISilvaXMLAttribute)
 
     def __init__(self, id):
         self.id = id

@@ -1,17 +1,38 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id: newsprovider.py,v 1.3 2005/05/02 14:22:52 guido Exp $
 #
 from zope.interface import implements
 
+from silva.core import conf as silvaconf
+from silva.core.conf import component
+
 import Globals
 from AccessControl import ClassSecurityInfo
 from DateTime import DateTime
 
-from Products.Silva.adapters import adapter
-from Products.SilvaNews.adapters import interfaces
-
 from Products.Silva import SilvaPermissions
+from Products.Silva.adapters import adapter
+
+from Products.SilvaNews.adapters import interfaces
+from Products.SilvaNews.interfaces import INewsViewer, IAggregator, IAgendaViewer, INewsItem
+
+class NewsViewerNewsProvider(component.Adapter):
+    """Works for BOTH News and Agenda Viewers!"""
+
+    silvaconf.context(INewsViewer)
+    implements(interfaces.INewsProvider)
+
+    def getitems(self, number):
+        results = self.context.get_items()
+        ret = []
+        if len(results) < number:
+            number = len(results)
+        for item in results[:number]:
+            obj = item.getObject()
+            ref = NewsItemReference(obj, self.context)
+            ret.append(ref)
+        return ret
 
 class NewsItemReference(object):
     """a temporary object to wrap a newsitem"""
@@ -65,24 +86,7 @@ class NewsItemReference(object):
 
     def get_news_item(self):
         return self._item
-
 Globals.InitializeClass(NewsItemReference)
-
-class NewsViewerNewsProvider(adapter.Adapter):
-    """Works for BOTH News and Agenda Viewers!"""
-
-    implements(interfaces.INewsProvider)
-
-    def getitems(self, number):
-        results = self.context.get_items()
-        ret = []
-        if len(results) < number:
-            number = len(results)
-        for item in results[:number]:
-            obj = item.getObject()
-            ref = NewsItemReference(obj, self.context)
-            ret.append(ref)
-        return ret
 
 class RSSItemReference(object):
     """a temporary object to wrap a newsitem"""
@@ -144,9 +148,10 @@ class RSSItemReference(object):
     def get_news_item(self):
         return self._item
 
-class RSSAggregatorNewsProvider(adapter.Adapter):
+class RSSAggregatorNewsProvider(component.Adapter):
     
     implements(interfaces.INewsProvider)
+    silvaconf.context(IAggregator)
 
     def getitems(self, number):
         """return a number of the most current items
@@ -165,9 +170,3 @@ def getNewsProviderAdapter(context):
     """This function is here in case we need to lookup the adapter from
     untrusted code"""
     return INewsProvider(context)
-    #if context.meta_type == 'Silva News Viewer':
-    #    return NewsViewerNewsProvider(context)
-    #elif context.meta_type == 'Silva Agenda Viewer':
-    #    return AgendaViewerNewsProvider(context) 
-    #elif context.meta_type == 'Silva RSS Aggregator':
-    #    return RSSAggregatorNewsProvider(context)

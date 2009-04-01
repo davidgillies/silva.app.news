@@ -9,6 +9,7 @@ from DateTime import DateTime
 import Products
 
 # Silva 
+from silva.core import conf as silvaconf
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # Silva/News interfaces
@@ -34,6 +35,7 @@ class NewsItemFilter(Filter):
     which contains shared code for both filters"""
 
     implements(INewsItemFilter)
+    silvaconf.baseclass()
     security = ClassSecurityInfo()
 
     def __init__(self, id):
@@ -49,10 +51,10 @@ class NewsItemFilter(Filter):
     def find_sources(self):
         """Returns all the sources available for querying
         """
-        results = self._query(
-            meta_type=self._allowed_source_types,
-            sort_on='id',
-            idx_is_private=0)
+        q = {'meta_type':self._allowed_source_types,
+             'sort_on':'id',
+             'snn-np-settingsis_private':'no'}
+        results = self._query(**q)
 
         pp = []
         cpp = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
@@ -62,11 +64,9 @@ class NewsItemFilter(Filter):
             pp.append(cpp)
             cpp = cpp[:cpp.rfind('/')]
 
-        results += self._query(
-            meta_type=self._allowed_source_types,
-            sort_on='id',
-            idx_is_private=1,
-            idx_parent_path=pp)
+        q['snn-np-settingsis_private'] = 'yes'
+        q['idx_parent_path'] = pp
+        results += self._query(**q)
 
         # remove doubles
         res = []
@@ -318,8 +318,6 @@ class NewsItemFilter(Filter):
         # datetime is not set (since the ones with an end date/time are 
         # already retrieved above)
         for item in result_startdt:
-            #XXX this needs to be updated once end_datetime is in the catalog
-            #    there will be no need to get the object here
             edt = item.end_datetime
             if (item.object_path not in self._excluded_items and
                 (not edt or edt > enddate)):

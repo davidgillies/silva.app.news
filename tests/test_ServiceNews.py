@@ -7,15 +7,6 @@ import os, sys
 from Products.SilvaNews.Tree import DuplicateIdError
 import SilvaNewsTestCase
 
-
-def add_helper(object, typename, id, title):
-    getattr(object.manage_addProduct['Silva'], 'manage_add%s' % typename)(id, title)
-    return getattr(object, id)
-
-def add_helper_news(object, typename, id, title):
-    getattr(object.manage_addProduct['SilvaNews'], 'manage_add%s' % typename)(id, title)
-    return getattr(object, id)
-
 class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
     """Test the ServiceNews interface.
     """
@@ -32,6 +23,8 @@ class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
         self.service_news.add_subject('test2', 'Test 2', 'test1')
         self.assert_(('test1', 'Test 1') in self.service_news.subjects())
         self.assert_(('test2', 'Test 2') in self.service_news.subjects())
+        #remove the default subject
+        self.service_news.remove_subject('generic')
         self.assert_(len(self.service_news.subjects()) == 2)
         self.assert_(self.service_news.subject_tree() == [('test1', 'Test 1', 0), ('test2', 'Test 2', 1)])
         self.assert_(self.service_news.subject_form_tree() == [('Test 1', 'test1'), ('&nbsp;&nbsp;Test 2', 'test2')])
@@ -45,6 +38,8 @@ class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
         self.service_news.add_target_audience('test2', 'Test 2', 'test1')
         self.assert_(('test1', 'Test 1')  in self.service_news.target_audiences())
         self.assert_(('test2', 'Test 2') in self.service_news.target_audiences())
+        #remove the default TA
+        self.service_news.remove_target_audience('all')
         self.assert_(len(self.service_news.target_audiences()) == 2)
         self.assert_(self.service_news.target_audience_tree() == [('test1', 'Test 1', 0), ('test2', 'Test 2', 1)])
         self.assert_(self.service_news.target_audience_form_tree() == [('Test 1', 'test1'), ('&nbsp;&nbsp;Test 2', 'test2')])

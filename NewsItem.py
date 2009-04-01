@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Revision: 1.35 $
 
-from zope.interface import implements
+from zope.interface import implements, implementsOnly, implementedBy
 
 # Python
 from StringIO import StringIO
@@ -15,17 +15,22 @@ from DateTime import DateTime
 from Globals import InitializeClass
 
 # Silva
+from silva.core import conf as silvaconf
+from silva.core.smi.interfaces import IFormsEditorSupport
+from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
-from Products.Silva.VersionedContent import CatalogedVersionedContent
-from Products.Silva.Version import CatalogedVersion
-from Products.Silva.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
-from Products.Silva.Metadata import export_metadata
+from Products.Silva.Image import havePIL
+from Products.Silva.VersionedContent import VersionedContent
+from Products.Silva.interfaces import IRoot
+from Products.Silva.SilvaObject import NoViewError
 
-from silvaxmlattribute import SilvaXMLAttribute
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
-from Products.Silva.Image import havePIL
+from Products.SilvaDocument.Document import Document,DocumentVersion
+
+from silvaxmlattribute import SilvaXMLAttribute
+from interfaces import INewsItem, INewsItemVersion, INewsPublication
 
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
@@ -64,12 +69,15 @@ class MetaDataSaveHandler(ContentHandler):
         data = data.replace('&amp;', '&')
         return data
 
-class NewsItem(CatalogedVersionedContent):
+class NewsItem(Document):
     """Base class for all kinds of news items.
     """
     security = ClassSecurityInfo()
 
-    implements(IVersionedContent)
+    #remove the formed editor support interface, as news items
+    # don't support the forms-based editor
+    implementsOnly(INewsItem, [ i for i in implementedBy(Document) if i != IFormsEditorSupport ])
+    silvaconf.baseclass()
 
     # MANIPULATORS
 
@@ -100,45 +108,6 @@ class NewsItem(CatalogedVersionedContent):
         id = self._unapproved_version[0]
         version = getattr(self, id, None)
         version.set_display_datetime(dt)
-
-    # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_xml')
-    def to_xml(self, context):
-        """Maps to the most useful(?) version
-        (public, else unapproved or approved)
-        """
-        if context.last_version == 1:
-            version_id = self.get_next_version()
-            if version_id is None:
-                version_id = self.get_public_version()
-        else:
-            version_id = self.get_public_version()
-
-        if version_id is None:
-            return
-
-        version = getattr(self, version_id)
-
-        context.f.write('<silva_newsitem id="%s">' % self.id)
-        version.to_xml(context)
-        context.f.write('</silva_newsitem>')
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'editor_xml')
-    def editor_xml(self):
-        browser = 'Mozilla'
-        if self.REQUEST['HTTP_USER_AGENT'].find('MSIE') > -1:
-            browser = 'IE'
-
-        context = Context(f=StringIO(),
-                            last_version=1,
-                            url=self.absolute_url(),
-                            browser=browser,
-                            model=self)
-        self.to_xml(context)
-        xml = context.f.getvalue()
-        return xml
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'implements_newsitem')
@@ -183,18 +152,32 @@ class NewsItem(CatalogedVersionedContent):
                  
 InitializeClass(NewsItem)
 
-class NewsItemVersion(CatalogedVersion):
+class NewsItemVersion(DocumentVersion):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
-
+    silvaconf.baseclass()
+    implements(INewsItemVersion)
+    
     def __init__(self, id):
-        # XXX dummy title?
         NewsItemVersion.inheritedAttribute('__init__')(self, id)
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
         self.content = SilvaXMLAttribute('content')
+        
+    def clearEditorCache(self):
+        """ override this method in DocumentVersion.  There is no
+            editor cache for news/agenda items, as they don't use
+            the forms-based editor """
+        pass
+
+    def _get_document_element(self):
+        """returns the document element of this
+           version's ParsedXML object.
+           for News Items, this is inside a
+           silvaxmlattribute"""
+        return self.content.get_content().documentElement
 
     # XXX I would rather have this get called automatically on setting 
     # the publication datetime, but that would have meant some nasty monkey-
@@ -313,32 +296,36 @@ class NewsItemVersion(CatalogedVersion):
         return self.service_metadata.getMetadataValue(
             self, 'silva-extra', 'content_description')
         
+    def _get_source(self):
+        c = self.aq_inner.aq_parent
+        while (1):
+            if INewsPublication.providedBy(c):
+                return c
+            if IRoot.providedBy(c):
+                return None
+            c = c.aq_parent
+        return None
+    
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
     def source_path(self):
         """Returns the path to the source containing this item
         """
-        obj = self.aq_inner.aq_parent
-        while (obj.getPhysicalPath() != ('',) and
-               not obj.meta_type == 'Silva News Publication'):
-            obj = obj.aq_parent
-        if obj.getPhysicalPath() != ('',):
-            return '/'.join(obj.getPhysicalPath())
-        else:
+        source = self._get_source()
+        if not source:
             return None
+        return source.getPhysicalPath()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_private')
     def is_private(self):
         """Returns whether the object is in a private source
         """
-        # XXX why not rely on acquisition from source?
-        source = self.source_path()
-        if source and self.restrictedTraverse(source).is_private():
-            return 1
-        else:
-            return 0
-
+        source = self._get_source()
+        if not source:
+            return False
+        return self.service_metadata.getMetadataValue(source,'snn-np-settings','is_private')
+        
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_is_private')
     idx_is_private = is_private
@@ -366,11 +353,6 @@ class NewsItemVersion(CatalogedVersion):
     idx_target_audiences = target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'info_item')
-    def info_item(self):
-        return self._info_item
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'last_author_fullname')
     def last_author_fullname(self):
         """Returns the userid of the last author, to be used in
@@ -393,42 +375,30 @@ class NewsItemVersion(CatalogedVersion):
                                       " ".join(self._target_audiences),
                                       content)
  
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'to_xml')
-    def to_xml(self, context):
-        """Returns the content as a partial XML-document
-        """
-        export_metadata(self, context)
-
-        f = context.f
-        f.write(u'<title>%s</title>' % self.get_title())
-        f.write(u'<meta_type>%s</meta_type>' % self.meta_type)
-        # XXX really don't know how to deal with this...
-        f.write(u'<sta>')
-        self.content_xml(context)
-        f.write(u'</sta>')
-        self.content.toXML(f)
-
-    def content_xml(self, context):
-        """Writes all content elements to the XML stream"""
-        f = context.f
-        for subject in self._subjects:
-            f.write(u'<subject>%s</subject>' % self._prepare_xml(subject))
-        for audience in self._target_audiences:
-            f.write(u'<target_audience>%s</target_audience>' % self._prepare_xml(audience))
-    
-    def _prepare_xml(self, inputstring):
-        inputstring = inputstring.replace(u'&', u'&amp;')
-        inputstring = inputstring.replace(u'<', u'&lt;')
-        inputstring = inputstring.replace(u'>', u'&gt;')
-
-        return inputstring
-
-    # XXX had to copy this from SilvaDocument.Document...
-    def _flattenxml(self, xmlinput):
-        """Cuts out all the XML-tags, helper for fulltext (for content-objects)
-        """
-        # XXX this need to be fixed by using ZCTextIndex or the like
-        return xmlinput
-
 InitializeClass(NewsItemVersion)
+
+class NewsItemView(silvaviews.View):
+    """ View on a News Item (either Article / Agenda ) """
+    
+    silvaconf.context(INewsItem)
+    
+    def render(self):
+        """Document uses a grok view, but news items aren't
+           ready for that yet, so call back into the silvaviews
+           machinery.  Note: this is a direct copy of the last
+           part of SilvaObject.view_vesion"""
+        self.request.model = self.content
+        self.request['model'] = self.content
+        try:
+            view = self.context.service_view_registry.get_view(
+                'public', self.content.meta_type)
+        except KeyError:
+            msg = 'no public view defined'
+            raise NoViewError, msg
+        else:
+            rendered = view.render()
+            try:
+                del self.request.model
+            except AttributeError, e:
+                pass
+            return rendered

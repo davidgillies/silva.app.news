@@ -9,6 +9,7 @@ from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
 # Silva
+from silva.core import conf as silvaconf
 from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -25,7 +26,7 @@ class Filter(Asset):
     security = ClassSecurityInfo()
     
     implements(IFilter)
-
+    silvaconf.baseclass()
     _allowed_source_types = ['Silva News Publication']
 
     def __init__(self, id):

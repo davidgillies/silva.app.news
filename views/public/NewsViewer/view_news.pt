@@ -6,11 +6,9 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news"
   tal:define="
-    view here;
     model request/model;
-    results python:model.get_items();
-    silva_root view/silva_root;
-    formatdate nocall:view/service_news/format_date;
+    results model/get_items;
+    formatdate nocall:context/service_news/format_date;
 ">
 
 <h2 class="heading" tal:content="model/get_title"
@@ -31,7 +29,7 @@
 
 <div class="newsitem" tal:repeat="r results">
  <tal:def define="obj r/getObject">
-  <metal:macro use-macro="here/newsitem_macro/macros/newsitem" />
+  <metal:macro use-macro="context/newsitem_macro/macros/newsitem" />
  </tal:def>
 </div>
 

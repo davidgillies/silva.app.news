@@ -1,27 +1,21 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision: 1.25 $
-
-from zope.interface import implements
-
-from Products.SilvaNews import upgrade_registry
-
 # zope imports
 import zLOG
 
 log_severity = zLOG.INFO
 
 # silva imports
-from Products.Silva.interfaces import IUpgrader
+from Products.Silva.upgrade_140 import VERSION
+from Products.Silva.upgrade import BaseUpgrader
 from Products.ParsedXML.ParsedXML import ParsedXML
 from silvaxmlattribute import SilvaXMLAttribute
 
 # upgraders for SilvaNews-1.3 to SilvaNewsNetwork-2.0
 
-class ContentConvertor:
+class ContentConvertor(BaseUpgrader):
     """Convert ParsedXML content to SilvaXMLAttributes"""
-    implements(IUpgrader)
-
     def upgrade(self, obj):
         zLOG.LOG(
             'SilvaNews',
@@ -47,19 +41,14 @@ class ContentConvertor:
         obj.content = SilvaXMLAttribute('content')
         obj.content._content = ParsedXML('content', xml)
         return obj
+cc_sav = ContentConvertor(VERSION, 'Silva Article Version')
+cc_saiv = ContentConvertor(VERSION, 'Silva Agenda Item Version')
 
-upgrade_registry.registerUpgrader(
-    ContentConvertor(), '2.0', 'Silva Article Version')
-upgrade_registry.registerUpgrader(
-    ContentConvertor(), '2.0', 'Silva Agenda Item Version')
-
-class Reindex:
+class Reindex(BaseUpgrader):
     """Reindex all news items after adding the new display_date metadata field
     
         This reindexing is an expensive operation!
     """
-    
-    implements(IUpgrader)
     
     def upgrade(self, silvaroot):
         zLOG.LOG(
@@ -76,6 +65,4 @@ class Reindex:
         catalog.reindexIndex('idx_subjects', None)
         catalog.reindexIndex('idx_target_audiences', None)
         return silvaroot
-
-#upgrade_registry.registerUpgrader(
-#    Reindex(), '2.0', 'Silva Root')
+#reindexer = Reindex(VERSION, 'Silva Root')

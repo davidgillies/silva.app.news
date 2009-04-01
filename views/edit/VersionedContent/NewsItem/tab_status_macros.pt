@@ -141,7 +141,7 @@ notes
 </tr>
 
 <tr class="odd"
-  tal:define="field view/tab_status_form_author/message">
+  tal:define="field context/tab_status_form_author/message">
 <td class="align-right">
 <tal:input
   replace="structure python: field.render(REQUEST=request)" />
@@ -246,7 +246,7 @@ notes
 </th>
 </tr>
 
-<metal:block use-macro="view/NewsItem/tab_status_macros/macros/date_controls" />
+<metal:block use-macro="context/NewsItem/tab_status_macros/macros/date_controls" />
 
 <tr class="inter-controls">
 <td class="align-right"
@@ -280,7 +280,7 @@ notes
 <metal:def define-macro="date_controls"> 
 <tr class="even"
   style="vertical-align:middle"
-  tal:define="field view/tab_status_form_editor/publish_datetime">
+  tal:define="field context/tab_status_form_editor/publish_datetime">
 <td class="align-right" style="white-space: nowrap;">
 <label title="access key: alt-m"
   accesskey="m"
@@ -298,7 +298,7 @@ day / month / year &nbsp;23:59
 </tr>
 
 <tr class="odd"
-  tal:define="field view/tab_status_form_editor/expiration_datetime">
+  tal:define="field context/tab_status_form_editor/expiration_datetime">
 <td class="align-right" style="white-space: nowrap;">
 <label title="access key: alt-o"
   accesskey="o"
@@ -318,7 +318,7 @@ expiration time
 
 <tal:block condition="nothing">__ SilvaNews additional fields __</tal:block>
 <tr class="even"
- tal:define="field view/tab_status_form_news/display_datetime">
+ tal:define="field context/tab_status_form_news/display_datetime">
 <td class="align-right">
 <label 
   title="access key: alt-h"

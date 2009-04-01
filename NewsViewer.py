@@ -6,19 +6,18 @@ from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
+from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
-#XXX Why do newsViewers inherit/extend OFS.Folder.Folder???
-from OFS import Folder
 
-# Silva/News interfaces
-from Products.Silva.interfaces import IContent
-from Products.SilvaNews.interfaces import INewsViewer
-
-# Silva/News
+# Silva
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 
-class NewsViewer(Content, Folder.Folder):
+# SilvaNews
+from Products.SilvaNews.interfaces import INewsViewer
+
+class NewsViewer(Content, SimpleItem):
     """Used to show news items on a Silva site.
 
     When setting up a newsviewer you can choose which news- or
@@ -28,6 +27,8 @@ class NewsViewer(Content, Folder.Folder):
     """
 
     meta_type = 'Silva News Viewer'
+    silvaconf.icon("www/news_viewer.png")
+    silvaconf.priority(3.1)
 
     security = ClassSecurityInfo()
 

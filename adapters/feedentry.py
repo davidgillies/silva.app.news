@@ -1,31 +1,34 @@
-import re
+# Copyright (c) 2002-2009 Infrae. All rights reserved.
+# See also LICENSE.txt
+# $Id$
+
 from zope.interface import implements
+
+from silva.core import conf as silvaconf
+from silva.core.conf import component
+
 from Products.Silva.adapters import interfaces
 from Products.SilvaDocument.adapters import feedentry
+
+from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
 
 class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
     """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
     representation."""
 
     implements(interfaces.IFeedEntry)
+    silvaconf.context(INewsItem)
 
-    def __init__(self, context):
-        self.context = context
-        self.version = self.context.get_viewable()
-        self.ms = self.context.service_metadata
-        
     def html_description(self):
         return self.version.get_intro()
 
     def date_updated(self):
         return self.version.display_datetime()
     
-    def date_published(self):
-        return self.context.get_first_publication_date()
-
 class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
     
     implements(interfaces.IFeedEntry)
+    silvaconf.context(IAgendaItem)
 
     def location(self):
         return self.version.location()

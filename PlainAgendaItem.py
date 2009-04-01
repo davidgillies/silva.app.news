@@ -10,25 +10,13 @@ from DateTime import DateTime
 from Globals import InitializeClass
 
 # Silva interfaces
+from silva.core import conf as silvaconf
+from Products.Silva import SilvaPermissions
 from Products.Silva.interfaces import IVersionedContent
-from Products.SilvaNews.interfaces import INewsItem
-from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
 
 # Silva
-from Products.Silva import SilvaPermissions
-from AgendaItem import AgendaItem, AgendaItemVersion
-
-class PlainAgendaItem (AgendaItem):
-    """A News item for events. Includes date and location
-       metadata, as well settings for subjects and audiences.
-    """
-    security = ClassSecurityInfo()
-
-    meta_type = "Silva Agenda Item"
-
-    implements((IAgendaItem, IVersionedContent))
-
-InitializeClass(PlainAgendaItem)
+from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
+from Products.SilvaNews.AgendaItem import AgendaItem, AgendaItemVersion
 
 class PlainAgendaItemVersion(AgendaItemVersion):
     """Silva News PlainAgendaItemVersion
@@ -40,3 +28,15 @@ class PlainAgendaItemVersion(AgendaItemVersion):
     implements(IAgendaItemVersion)
 
 InitializeClass(PlainAgendaItemVersion)
+
+class PlainAgendaItem (AgendaItem):
+    """A News item for events. Includes date and location
+       metadata, as well settings for subjects and audiences.
+    """
+    security = ClassSecurityInfo()
+    meta_type = "Silva Agenda Item"
+    implements(IAgendaItem)
+    silvaconf.icon("www/agenda_item.png")
+    silvaconf.priority(3.8)
+    silvaconf.versionClass(PlainAgendaItemVersion)
+InitializeClass(PlainAgendaItem)

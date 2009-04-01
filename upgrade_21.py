@@ -1,10 +1,6 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision: 1.25 $
-
-from zope.interface import implements
-
-from Products.SilvaNews import upgrade_registry
 
 # zope imports
 import zLOG
@@ -15,10 +11,12 @@ log_severity = zLOG.INFO
 
 # silva imports
 from Products.Silva.interfaces import IUpgrader
+from Products.Silva.upgrade_150 import VERSION
+from Products.Silva.upgrade import BaseUpgrader
 
 # upgraders for SilvaNewsNetwork 2.0(.x) to 2.1(.x)
 
-class IndexUpgrader:
+class IndexUpgrader(BaseUpgrader):
     """Actually this should be in Zope itself, as it fixes a Zope core issue
 
         In Zope 2.8.x there was an internal API change in the UnIndex class,
@@ -26,9 +24,6 @@ class IndexUpgrader:
         attribute called '_length' to the code) no upgrader was provided in
         Zope itself, however. This upgrader tries to solve this problem.
     """
-
-    implements(IUpgrader)
-
     def upgrade(self, silvaroot):
         zLOG.LOG(
             'SilvaNews', zLOG.INFO,
@@ -51,6 +46,4 @@ class IndexUpgrader:
             "Upgrading index %s" % obj.id)
         obj._length = Length(len(obj._unindex))
         return obj
-
-upgrade_registry.registerUpgrader(
-    IndexUpgrader(), '2.1', 'Silva Root')
+indexupgrader = IndexUpgrader(VERSION, 'Silva Root')

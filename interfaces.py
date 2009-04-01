@@ -1,11 +1,19 @@
 from zope.interface import Interface
-from Products.Silva.interfaces import ISilvaObject, IVersion, IAsset
+from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
+from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
+from Products.SilvaExternalSources.interfaces import IExternalSource
 
-class INewsItem(ISilvaObject):
+class IInlineViewer(IExternalSource):
+    """Marker interface for Inline News Viewer"""
+
+class ISilvaNewsExtension(Interface):
+    """Marker interface for SNN Extension"""
+
+class INewsItem(IDocument):
     """Silva News Item interface
     """
 
-class INewsItemVersion(IVersion):
+class INewsItemVersion(IDocumentVersion):
     """Silva news item version.
 
     This contains the real content for a news item.
@@ -38,15 +46,15 @@ class INewsItemVersion(IVersion):
 
         For fulltext ZCatalog search.
         XXX This should really be on an interface in the Silva core"""
+        bb
+    def to_xml(self):
+        """Returns an XML representation of the object"""
 
     def content_xml(self):
         """Returns the document-element of the XML-content.
 
         XXX what does this mean?
         (not used by all subclasses)"""
-
-    def to_xml(self):
-        """Returns an XML representation of the object"""
 
 class IAgendaItem(INewsItem):
     """Silva AgendaItem Version.
@@ -73,6 +81,9 @@ class IAgendaItemVersion(INewsItemVersion):
 
     def set_location(self, value):
         """Sets the manual location"""
+
+class INewsPublication(IPublication):
+    """Marker interface for INewsPublication"""
 
 class IFilter(IAsset):
     
@@ -224,8 +235,9 @@ class IAgendaFilter(INewsItemFilter):
            FOR: the SMI 'items' tab"""
 
 
-class IViewer(Interface):
+class IViewer(IContent):
     """Base interface for SilvaNews Viewers"""
+
 
 class INewsViewer(IViewer):
     """A viewer of news items.
@@ -303,7 +315,7 @@ class IAgendaViewer(INewsViewer):
         """Sets the number of days to show in the agenda.
         """
 
-class IServiceNews(Interface):
+class IServiceNews(ISilvaService):
     """A service that provides trees of subjects and target_audiences.
 
     It allows these trees to be edited on a site-wide basis. It also
@@ -356,3 +368,9 @@ class IServiceNews(Interface):
         Each tuple is an (indent, subject) pair.
         """
 
+class ISilvaXMLAttribute(Interface):
+    """an interface for SilvaXMLAttribute objects,
+     i.e. an attribute which contains silvaxml
+     A Silva object could have multiple attributes
+     containing silva xml, each of which is a
+     SilvaXMLAttribute"""

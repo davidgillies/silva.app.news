@@ -13,6 +13,7 @@ from DateTime import DateTime
 from interfaces import IAgendaFilter
 
 # Silva/News
+from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from NewsItemFilter import NewsItemFilter,brainsorter
 
@@ -24,9 +25,10 @@ class AgendaFilter(NewsItemFilter):
     """
     security = ClassSecurityInfo()
 
-    meta_type = "Silva Agenda Filter"
-
     implements(IAgendaFilter)
+    meta_type = "Silva Agenda Filter"
+    silvaconf.icon("www/agenda_filter.png")
+    silvaconf.priority(3.4)
 
     _allowed_meta_types = ['Silva Agenda Item Version']
 
