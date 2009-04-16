@@ -38,9 +38,6 @@
   <script type="text/javascript"
           tal:attributes="src here/widgeteer-silva.js/absolute_url"></script>
 
-  <script type="text/javascript" 
-            tal:attributes="src here/reference.js/absolute_url">
-  </script>
  </tal:block>
 </metal:block>
 
