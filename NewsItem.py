@@ -22,7 +22,7 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.Image import havePIL
 from Products.Silva.VersionedContent import VersionedContent
-from Products.Silva.interfaces import IRoot
+from silva.core.interfaces import IRoot
 from Products.Silva.SilvaObject import NoViewError
 
 from Products.SilvaDocument.transform.Transformer import EditorTransformer

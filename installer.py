@@ -5,7 +5,7 @@ from zope.interface import Interface
 from Globals import package_home
 
 from silva.core.conf.installer import DefaultInstaller
-from Products.Silva.interfaces import IInvisibleService
+from silva.core.interfaces import IInvisibleService
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
 from interfaces import ISilvaNewsExtension

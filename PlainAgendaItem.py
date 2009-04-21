@@ -12,7 +12,7 @@ from Globals import InitializeClass
 # Silva interfaces
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from Products.Silva.interfaces import IVersionedContent
+from silva.core.interfaces import IVersionedContent
 
 # Silva
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion

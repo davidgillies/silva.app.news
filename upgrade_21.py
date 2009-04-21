@@ -10,7 +10,7 @@ from Products.PluginIndexes.common.UnIndex import UnIndex
 log_severity = zLOG.INFO
 
 # silva imports
-from Products.Silva.interfaces import IUpgrader
+from silva.core.interfaces import IUpgrader
 from Products.Silva.upgrade_150 import VERSION
 from Products.Silva.upgrade import BaseUpgrader
 

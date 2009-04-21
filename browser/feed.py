@@ -1,5 +1,5 @@
 from Products.Five import BrowserView
-from Products.Silva.adapters.interfaces import IFeedEntry
+from silva.core.interfaces.adapters import IFeedEntry
 
 from DateTime import DateTime
 

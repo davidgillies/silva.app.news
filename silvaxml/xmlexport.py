@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from Products.Silva.silvaxml.xmlexport import theXMLExporter, VersionedContentProducer, SilvaBaseProducer
-from Products.Silva.interfaces import IPublication
+from silva.core.interfaces import IPublication
 from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
 
 NS_SILVANEWS = 'http://infrae.com/ns/silva-news-network'
