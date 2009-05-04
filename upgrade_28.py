@@ -25,6 +25,7 @@ class IndexUpgrader(BaseUpgrader):
     """ remove the idx_is_private catalog index; it's
         not used anymore"""
     def upgrade(self, obj):
-        obj.service_catalog.delIndex('idx_is_private')
+        if 'idx_is_private' in obj.service_catalog.indexes():
+            obj.service_catalog.delIndex('idx_is_private')
         return obj
 indexupgrader = IndexUpgrader(VERSION_B1, 'Silva Root')
