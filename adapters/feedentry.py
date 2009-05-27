@@ -7,7 +7,7 @@ from zope.interface import implements
 from silva.core import conf as silvaconf
 from silva.core.conf import component
 
-from Products.Silva.adapters import interfaces
+from silva.core.interfaces.adapters import IFeedEntry
 from Products.SilvaDocument.adapters import feedentry
 
 from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
@@ -16,7 +16,7 @@ class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
     """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
     representation."""
 
-    implements(interfaces.IFeedEntry)
+    implements(IFeedEntry)
     silvaconf.context(INewsItem)
 
     def html_description(self):
@@ -27,7 +27,7 @@ class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
     
 class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
     
-    implements(interfaces.IFeedEntry)
+    implements(IFeedEntry)
     silvaconf.context(IAgendaItem)
 
     def location(self):

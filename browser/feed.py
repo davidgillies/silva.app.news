@@ -5,7 +5,7 @@ from DateTime import DateTime
 
 from zope.interface import implements
 
-from Products.Silva.adapters import interfaces as silvainterfaces
+from silva.core.interfaces.adapters import IFeedEntry
 from Products.SilvaNews.interfaces import INewsItem
 from Products.SilvaDocument.adapters import feedentry
 
@@ -54,7 +54,7 @@ class ViewerFeedView(BrowserView):
             }
 
 class AggregatorFeedEntry(object):
-    implements(silvainterfaces.IFeedEntry)
+    implements(IFeedEntry)
 
     def __init__(self, item):
         self.item = item
