@@ -5,7 +5,7 @@ from Products.Silva.silvaxml.xmlexport import theXMLExporter, VersionedContentPr
 from silva.core.interfaces import IPublication
 from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
 
-NS_SILVANEWS = 'http://infrae.com/ns/silva-news-network'
+NS_SILVANEWS = 'http://infrae.com/namespace/silva-news-network'
 
 def initializeXMLExportRegistry():
     from Products.SilvaNews.NewsViewer import NewsViewer
