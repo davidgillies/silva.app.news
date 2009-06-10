@@ -43,7 +43,7 @@ class MetaDataSaveHandler(ContentHandler):
             self.inside_title = True
         elif name == 'meta':
             if (attributes.get('scheme') == 
-                    'http://infrae.com/namespaces/metadata/silva-news'
+                    'http://infrae.com/namespace/metadata/silva-news-network'
                     ):
                 name = attributes.get('name', '')
                 content = attributes.get('content', '')

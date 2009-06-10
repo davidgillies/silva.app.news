@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
 
-<metadata_set id="snn-np-settings" ns_uri="http://infrae.com/namespaces/metadata/snn-np-settings" ns_prefix="snn-np-settings">
+<metadata_set id="snn-np-settings" ns_uri="http://infrae.com/namespace/metadata/snn-np-settings" ns_prefix="snn-np-settings">
 <title>News Publication Settings Metadata</title>
 <category>settings</category>
 <description>local news source setting.</description>

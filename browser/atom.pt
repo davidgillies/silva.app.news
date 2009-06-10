@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:silvanews="http://infrae.com/namespaces/silvanews"
+  xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
   tal:define="data view/get_data">
   <id tal:content="data/id" />
   <title type="text" tal:content="data/title"/>

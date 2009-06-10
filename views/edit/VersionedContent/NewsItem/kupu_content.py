@@ -90,9 +90,9 @@ for id, title in all_target_audiences:
 subjects = '||'.join(subjects)
 target_audiences = '||'.join(target_audiences)
 
-scheme = 'http://infrae.com/namespaces/metadata/silva-news'
+scheme = 'http://infrae.com/namespace/metadata/silva-news-network'
 meta_template = (
-    '<meta scheme="http://infrae.com/namespaces/metadata/silva-news" '
+    '<meta scheme="http://infrae.com/namespace/metadata/silva-news-network" '
     'name="%s" content="%s" />')
 metas = [
     meta_template % ('subjects', subjects),
