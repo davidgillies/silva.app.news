@@ -281,7 +281,10 @@ class NewsItemVersion(DocumentVersion):
         if not havePIL:
             return ''
         imgpath = images[0].getAttribute('path').split('/')
-        img = self.restrictedTraverse(imgpath)
+        try:
+            img = self.restrictedTraverse(imgpath)
+        except KeyError:
+            return '[broken image]'
         if not img:
             return '[broken image]'
         tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' % 

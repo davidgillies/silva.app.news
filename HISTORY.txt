@@ -17,6 +17,9 @@ New Features
 Bugs Fixed
 ~~~~~~~~~~
 
+- Fixed issue that made that broken images in news items resulted in
+  failing searches.
+
 - Added 'unblock' css class to viewer field iterators so links render
   properly (resulting from removal of the sortable id/class)
 
