@@ -2,12 +2,15 @@
 # See also LICENSE.txt
 # $Revision: 1.34 $
 
+from logging import getLogger
 from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from Globals import InitializeClass
+from DateTime import DateTime
+from zExceptions import NotFound
 
 # Silva
 from silva.core import conf as silvaconf
@@ -16,6 +19,8 @@ from Products.Silva.Content import Content
 
 # SilvaNews
 from Products.SilvaNews.interfaces import INewsViewer
+
+logger = getLogger('Products.SilvaNews.NewsViewer')
 
 class NewsViewer(Content, SimpleItem):
     """Used to show news items on a Silva site.
@@ -39,9 +44,19 @@ class NewsViewer(Content, SimpleItem):
         self._number_to_show = 25
         self._number_to_show_archive = 10
         self._number_is_days = 0
+        self._year_range = 2
         self._filters = []
 
     # ACCESSORS
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'year_range')
+    def year_range(self):
+        """Returns number of items to show
+        """
+        if not hasattr(self, '_year_range'):
+            self._year_range = 2
+        return self._year_range
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_to_show')
@@ -200,8 +215,33 @@ class NewsViewer(Content, SimpleItem):
                 paths.append(item.getPath())
                 retval.append(item)
         return retval
+    
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'year_in_range_trigger')
+    def year_in_range_trigger(self, year):
+        """only years within self._year_range are allowed,
+        so raise notfound if the year requested is
+        outside of this range.
+        """
+        if not self.year_in_range(year):
+            raise NotFound()
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'year_in_range')
+    def year_in_range(self, year):
+        """only years within self._year_range are allowed,
+        return true if year is in range
+        """
+        return abs(year - DateTime().year()) < self.year_range()
 
     # MANIPULATORS
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_year_range')
+    def set_year_range(self, number):
+        """Sets the range of years to show links to
+        """
+        self._year_range = number
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_number_to_show')

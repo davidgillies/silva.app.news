@@ -8,11 +8,7 @@
        displaydate r/display_datetime;"
      tal:condition="publicationdate"> 
     <p class="p newsiteminfopublicationdate">
-<<<<<<< .working
-     <tal:translate i18n:translate="">Publication date:</tal:translate>
-=======
      <tal:translate i18n:translate="">Publication: </tal:translate>
->>>>>>> .merge-right.r34441
      <span class="newsitempublicationdate"
          tal:content="python: formatdate(displaydate or publicationdate)" />
     </p>

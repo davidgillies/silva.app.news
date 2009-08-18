@@ -13,6 +13,11 @@ New Features
 
 - First release for Silva 2.2, no longer backwards compatible
   with prior Silva releases
+  
+- News and Agenda Viewers now have a "Year Range" property which
+  controls the number of years in the past and future wich are
+  displayed in the archive.  Attempts to access years outside
+  of this range will raise 404's.
 
 Bugs Fixed
 ~~~~~~~~~~
