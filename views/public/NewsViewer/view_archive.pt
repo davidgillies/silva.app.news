@@ -10,7 +10,6 @@
               currentmonth request/month | options/month | view/currentmonth;
               currentyear request/year | options/year | view/currentyear;
               dummy python:model.year_in_range_trigger(int(currentyear));
-              year_range model/year_range;
               months view/get_months;
               results python:model.get_items_by_date(currentmonth, currentyear);
               offset python:int(request.get('offset', 0));
