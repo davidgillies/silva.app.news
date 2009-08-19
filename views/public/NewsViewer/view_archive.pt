@@ -26,7 +26,9 @@
     Archive of <tal:block i18n:name="title" tal:content="model/get_title" />
   </h2>
 
-<metal:block use-macro="here/timetable_macro/macros/timetable" />  
+<tal:block define="toporbottom string:top">
+ <metal:macro use-macro="here/timetable_macro/macros/timetable" />
+</tal:block>
   
   <div class="offsetnav"      
      tal:condition="python: previous or next"
@@ -60,7 +62,9 @@
     <a tal:condition="next" tal:attributes="href python:'?view=view_archive&month=%s&year=%s&offset=%s' % (currentmonth, currentyear, (offset + batch_size))">next</a>
   </div>
 
-<metal:block use-macro="here/timetable_macro/macros/timetable" />  
+<tal:block define="toporbottom string:bottom">
+ <metal:macro use-macro="here/timetable_macro/macros/timetable" />
+</tal:block>
 
    <p class="p viewlink">
       <a href="#" tal:attributes="href string:?view=view_news" i18n:translate="">view news</a>

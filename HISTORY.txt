@@ -18,6 +18,13 @@ New Features
   controls the number of years in the past and future wich are
   displayed in the archive.  Attempts to access years outside
   of this range will raise 404's.
+  
+New Features from SNN 2.7.6
+~~~~~~~~~~
+- removing '<<' and '>>' from links and putting the the html
+  entities in a span
+- adding wrappers for the news and agenda archive content area
+- adding a vertical separator between months
 
 Bugs Fixed
 ~~~~~~~~~~
