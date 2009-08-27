@@ -19,6 +19,8 @@ New Features
   displayed in the archive.  Attempts to access years outside
   of this range will raise 404's.
   
+- SilvaNews has popup calendars for start/end datetimes in the SMI
+  
 New Features from SNN 2.7.6
 ~~~~~~~~~~
 - removing '<<' and '>>' from links and putting the the html

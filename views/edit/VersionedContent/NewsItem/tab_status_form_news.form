@@ -31,6 +31,8 @@
           <description>The date/time that is displayed for the public.</description>
           <extra></extra>
           <allow_empty_time type="int">1</allow_empty_time>
+          <calendar_picker type="int">1</calendar_picker>
+          <calendar_start>0</calendar_start>
         </values>
         <tales>
           <time_separator>python:form.get_time_punctuation()</time_separator>

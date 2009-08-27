@@ -89,6 +89,8 @@
           <required type="int">1</required>
           <time_separator>:</time_separator>
           <title>start date/time</title>
+          <calendar_picker type="int">1</calendar_picker>
+          <calendar_start>0</calendar_start>
         </values>
         <tales>
           <date_separator>python:form.get_date_punctuation()</date_separator>
@@ -120,6 +122,8 @@
           <required type="int">0</required>
           <time_separator>:</time_separator>
           <title>end date/time</title>
+          <calendar_picker type="int">1</calendar_picker>
+          <calendar_start>0</calendar_start>
         </values>
         <tales>
           <date_separator>python:form.get_date_punctuation()</date_separator>
