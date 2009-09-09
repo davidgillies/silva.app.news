@@ -39,6 +39,7 @@ class AgendaViewer(NewsViewer):
     def __init__(self, id):
         AgendaViewer.inheritedAttribute('__init__')(self, id)
         self._days_to_show = 31
+        self._number_is_days = True
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'days_to_show')
