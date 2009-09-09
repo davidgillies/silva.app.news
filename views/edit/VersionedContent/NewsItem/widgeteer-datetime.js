@@ -22,7 +22,7 @@ window.widgeteer_datetime = new function() {
 
 	var calendar = document.createElement('button');
 	calendar.setAttribute('id', 'calendar' + rand);
-	calendar.className ='kupu-button kupu-link-reference calendar-button';
+	calendar.className = 'kupu-button kupu-link-reference calendar-button';
 	calendar.setAttribute('title', 'set date');
 	calendar.appendChild(document.createTextNode(' '));
 	containerdiv.appendChild(calendar);
