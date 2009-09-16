@@ -127,6 +127,7 @@ class NewsItem(Document):
         content = REQUEST['BODYFILE'].read()
         self.save_title_and_metadata(content)
         self.get_editable().content.saveEditorHTML(content)
+        self.sec_update_last_author_info()
 
     def save_title_and_metadata(self, html):
         handler = MetaDataSaveHandler()

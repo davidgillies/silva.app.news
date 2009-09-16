@@ -43,6 +43,8 @@ Bugs Fixed
 - AgendaViewers were pulling the latest number of items, rather
   than all items in X days.
 
+- Update last author when an article/agenda item is saved in kupu.
+
 SilvaNewsNetwork 2.7.5 (2009-03-26)
 -----------------------------------
 
