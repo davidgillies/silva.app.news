@@ -38,7 +38,8 @@ window.widgeteer_datetime = new function() {
 					       displayArea : 'display' + rand,
 					       daFormat : "%A, %B %d, %Y %I:%M %P",
 					       showsTime : true,  
-					       timeFormat:  "12",  
+                                               date: (new Date()).setHours(0,0,0,0),
+                                               timeFormat:  "12",
 					       button : 'calendar' + rand,
 					       weekNumbers: false})},1000);
 
