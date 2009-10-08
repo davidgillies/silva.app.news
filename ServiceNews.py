@@ -1,8 +1,8 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.15 $
+# $Id$
 
-from zope.interface import implements
+from five import grok
 
 import Globals
 from AccessControl import ClassSecurityInfo
@@ -12,7 +12,7 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 #Silva
 from silva.core import conf as silvaconf
-from Products.Silva.BaseService import SilvaService
+from silva.core.services.base import SilvaService
 from Products.Silva.helpers import add_and_edit, \
      register_service, unregister_service
 
@@ -29,7 +29,7 @@ class CategoryMixin(object):
     """Currently used by NewsService and CategoryFilter"""
 
     security = ClassSecurityInfo()
-    silvaconf.baseclass()
+    grok.baseclass()
 
     security.declareProtected('View', 'subject_tree')
     def subject_tree(self,audject=None):
@@ -80,7 +80,7 @@ Globals.InitializeClass(CategoryMixin)
 class ServiceNews(SilvaService, CategoryMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
-    implements(IServiceNews)
+    grok.implements(IServiceNews)
     security = ClassSecurityInfo()
     meta_type = 'Silva News Service'
 
