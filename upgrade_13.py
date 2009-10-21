@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.25 $
+# $Id$
 
 # zope imports
 import zLOG
@@ -8,8 +8,10 @@ log_severity = zLOG.INFO
 
 # silva imports
 from Products.SilvaNews.Tree import Root, Node
-from Products.Silva.upgrade_130 import VERSION
-from Products.Silva.upgrade import BaseUpgrader
+from silva.core.upgrade.upgrade import BaseUpgrader
+
+VERSION='1.3'
+
 
 class ArticleDisplayTimeSetter(BaseUpgrader):
     """set an attribute '_display_time' on all AgendaItems"""
@@ -18,13 +20,16 @@ class ArticleDisplayTimeSetter(BaseUpgrader):
         zLOG.LOG(
             'SilvaNews',
             log_severity,
-            'Add display_date attribute to AgendaItem %s' % 
+            'Add display_date attribute to AgendaItem %s' %
                 '/'.join(obj.getPhysicalPath())
             )
         if not hasattr(obj, '_display_time'):
             obj._display_time = True
         return obj
+
+
 adts = ArticleDisplayTimeSetter(VERSION, 'Silva Agenda Item Version')
+
 
 class ServiceLocaleSetter(BaseUpgrader):
     """set attributes '_locale' and '_date_format' on service_news"""
@@ -39,7 +44,10 @@ class ServiceLocaleSetter(BaseUpgrader):
             obj._locale = 'en'
             obj._date_format = 'medium'
         return obj
+
+
 sls = ServiceLocaleSetter(VERSION, 'Silva News Service')
+
 
 class SubjectTargetAudienceUpdater(BaseUpgrader):
     """convert subjects and target audiences to trees"""
@@ -65,7 +73,7 @@ class SubjectTargetAudienceUpdater(BaseUpgrader):
         return obj
 
     def _build_tree(self, root, data):
-        # first find all the items that have no parent, then 
+        # first find all the items that have no parent, then
         # walk through those items recursively
         for itemid, value in data.items():
             if value[0] == None:
@@ -78,7 +86,10 @@ class SubjectTargetAudienceUpdater(BaseUpgrader):
         if data.has_key(elid):
             for childid in data[elid][1:]:
                 self._build_item(childid, node, data)
+
+
 staa = SubjectTargetAudienceUpdater(VERSION, 'Silva News Service')
+
 
 class DisplayDateTimeSetter(BaseUpgrader):
     """set attribute 'display_datetime' of news items"""
@@ -87,15 +98,18 @@ class DisplayDateTimeSetter(BaseUpgrader):
         zLOG.LOG(
             'SilvaNews',
             log_severity,
-            'Add _display_datetime attribute to news item %s' % 
+            'Add _display_datetime attribute to news item %s' %
                 '/'.join(obj.getPhysicalPath())
             )
         if not hasattr(obj, '_display_datetime'):
             pdt = obj.publication_datetime()
             obj._display_datetime = pdt
         return obj
+
+
 ddts_sav = DisplayDateTimeSetter(VERSION, 'Silva Article Version')
 ddts_saiv = DisplayDateTimeSetter(VERSION, 'Silva Agenda Item Version')
+
 
 class NumberToShowArchiveSetter(BaseUpgrader):
     """set attribute '_number_to_show_archive' on news items"""
@@ -104,11 +118,13 @@ class NumberToShowArchiveSetter(BaseUpgrader):
         zLOG.LOG(
             'SilvaNews',
             log_severity,
-            'Add _number_to_show_archive attribute to news item %s' % 
+            'Add _number_to_show_archive attribute to news item %s' %
                 '/'.join(obj.getPhysicalPath())
             )
         if not hasattr(obj, '_number_to_show_archive'):
             obj._number_to_show_archive = 10
         return obj
+
+
 ntsas_snv = NumberToShowArchiveSetter(VERSION, 'Silva News Viewer')
 ntsas_sav = NumberToShowArchiveSetter(VERSION, 'Silva Agenda Viewer')

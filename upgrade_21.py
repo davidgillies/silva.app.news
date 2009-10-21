@@ -1,6 +1,6 @@
 # Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.25 $
+# $Id$
 
 # zope imports
 import zLOG
@@ -10,11 +10,14 @@ from Products.PluginIndexes.common.UnIndex import UnIndex
 log_severity = zLOG.INFO
 
 # silva imports
-from silva.core.interfaces import IUpgrader
-from Products.Silva.upgrade_150 import VERSION
-from Products.Silva.upgrade import BaseUpgrader
+from silva.core.upgrade.upgrade import BaseUpgrader
+
+
+VERSION='1.5'
+
 
 # upgraders for SilvaNewsNetwork 2.0(.x) to 2.1(.x)
+
 
 class IndexUpgrader(BaseUpgrader):
     """Actually this should be in Zope itself, as it fixes a Zope core issue
@@ -32,7 +35,7 @@ class IndexUpgrader(BaseUpgrader):
         for index in catalog.index_objects():
             self._migrate_length(index)
         return silvaroot
-        
+
     def _migrate_length(self, obj):
         if not isinstance(obj, UnIndex):
             return obj
@@ -42,8 +45,10 @@ class IndexUpgrader(BaseUpgrader):
                 'Skipping already upgraded index %s' % obj.id)
             return obj
         zLOG.LOG(
-            'SilvaNews', zLOG.INFO, 
+            'SilvaNews', zLOG.INFO,
             "Upgrading index %s" % obj.id)
         obj._length = Length(len(obj._unindex))
         return obj
+
+
 indexupgrader = IndexUpgrader(VERSION, 'Silva Root')
