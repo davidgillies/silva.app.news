@@ -381,6 +381,20 @@ class NewsItemVersion(DocumentVersion):
  
 InitializeClass(NewsItemVersion)
 
+
+from Products.Silva.adapters.indexable import IndexableAdapter
+
+
+class NewsItemVersionIndexableAdapter(IndexableAdapter):
+
+    silvaconf.context(INewsItemVersion)
+
+    def getIndexes(self):
+        # Override for news items is it change the content attribute
+        # of a document version, the default adapter break.
+        return []
+
+
 class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda ) """
     
