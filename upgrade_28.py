@@ -56,6 +56,8 @@ class SNNRefresher(BaseUpgrader):
                 se.refresh(name)
             else:
                 se.install(name)
+        return obj
 
-indexupgrader = SNNRefresher(
-    VERSION_B1, 'Silva Root')
+#give it the highest priority so that the silva core 
+# metadata and secondrootupgraders can run first
+indexupgrader = SNNRefresher(VERSION_B1, 'Silva Root', 100)
