@@ -11,8 +11,6 @@ class NewsPubIsPrivateUpgrader(BaseUpgrader):
     metadata set"""
 
     def upgrade(self, obj):
-        # BROKEN
-        return obj
         if obj.__dict__.has_key('_is_private'):
             ip = obj._is_private
             del obj._is_private
