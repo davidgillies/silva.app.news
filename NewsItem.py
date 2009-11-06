@@ -12,7 +12,10 @@ from xml.sax.handler import ContentHandler
 # Zope
 from AccessControl import ClassSecurityInfo
 from DateTime import DateTime
-from Globals import InitializeClass
+try:
+    from App.class_init import InitializeClass # Zope 2.12
+except ImportError:
+    from Globals import InitializeClass # Zope < 2.12
 
 # Silva
 from silva.core import conf as silvaconf

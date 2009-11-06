@@ -8,7 +8,11 @@ from zope.interface import implements
 # Zope
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
-from Globals import InitializeClass
+try:
+    from App.class_init import InitializeClass # Zope 2.12
+except ImportError:
+    from Globals import InitializeClass # Zope < 2.12
+
 from DateTime import DateTime
 from zExceptions import NotFound
 

@@ -9,7 +9,10 @@ from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
-from Globals import InitializeClass
+try:
+    from App.class_init import InitializeClass # Zope 2.12
+except ImportError:
+    from Globals import InitializeClass # Zope < 2.12
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
