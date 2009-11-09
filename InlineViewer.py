@@ -7,7 +7,9 @@ from zope.app.container.interfaces import IObjectMovedEvent
 import os
 
 import Products
-from Globals import InitializeClass, package_home
+from Globals import InitializeClass
+from App.Common import package_home
+
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate

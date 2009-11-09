@@ -2,7 +2,7 @@ from os import path
 
 from zope import interface
 from zope.interface import Interface
-from Globals import package_home
+from App.Common import package_home
 
 from silva.core.conf.installer import DefaultInstaller
 from silva.core.interfaces import IInvisibleService
