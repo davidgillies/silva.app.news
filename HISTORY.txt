@@ -20,8 +20,11 @@ New Features
   of this range will raise 404's.
   
 - SilvaNews has popup calendars for start/end datetimes in the SMI
+
+- SilvaNews no longer manages it's own upgraders.  Upgrading SilvaNews 
+  is now tied into the core Silva upgrade process.
   
-New Features from SNN 2.7.6
+New Features ported from SNN 2.7.6
 ~~~~~~~~~~
 - removing '<<' and '>>' from links and putting the the html
   entities in a span

@@ -20,8 +20,6 @@ from Products.Silva.helpers import add_and_edit, \
 import Tree
 from dates import DateTimeFormatter, getMonthAbbreviations
 from interfaces import IServiceNews
-from Products.SilvaNews import software_version
-
 
 class CategoryMixin(object):
     """Code that can be shared between category users for the
@@ -89,7 +87,6 @@ class ServiceNews(SilvaService, CategoryMixin):
 
     manage_options = (
                       {'label': 'Edit', 'action': 'manage_main'},
-   #                   {'label': 'Info', 'action': 'manage_info_tab'}
                       ) + SimpleItem.manage_options
 
     manage_main = edit_tab = PageTemplateFile('www/serviceNewsEditTab',
@@ -98,9 +95,6 @@ class ServiceNews(SilvaService, CategoryMixin):
     manage_rename_view = PageTemplateFile('www/serviceNewsRenameView',
                                             globals(), 
                                             __name__='manage_rename_view')
-    manage_info_tab = PageTemplateFile('www/serviceNewsInfoTab',
-                                            globals(), 
-                                            __name__='manage_info_tab')
 
     def __init__(self, id, title):
         SilvaService.__init__(self, id, title)
@@ -108,7 +102,6 @@ class ServiceNews(SilvaService, CategoryMixin):
         self._target_audiences = Tree.Root()
         self._locale = 'en'
         self._date_format = 'medium'
-        self._content_version = software_version
 		
         self.add_subject(u'generic',u'Generic')
         self.add_target_audience(u'all',u'All')
@@ -425,39 +418,6 @@ class ServiceNews(SilvaService, CategoryMixin):
     def get_month_abbrs(self):
         """returns a list of localized abbreviated month names"""
         return getMonthAbbreviations(self._locale)
-       
-    security.declareProtected('Setup ServiceNews',
-                                'upgrade')
-    def upgrade(self):
-        """upgrade the Silva instance's news elements"""
-        from Products.SilvaNews import upgrade_registry
-        content_version = self.content_version()
-        software_version = self.software_version()
-        if content_version == software_version:
-            return
-        root = self.get_root()
-        upgrade_registry.upgrade(root, content_version, software_version)
-        
-        root.service_news._content_version = software_version
-
-        return self.edit_tab(manage_tabs_message='Upgrade succeeded')
-
-    security.declareProtected('Setup ServiceNews',
-                                'upgrade_required')
-    def upgrade_required(self):
-        """returns True if an upgrade is necessary"""
-        return not (self.content_version() == self.software_version())
-
-    security.declareProtected('Setup ServiceNews',
-                                'software_version')
-    def software_version(self):
-        return software_version
-
-    security.declareProtected('Setup ServiceNews',
-                                'content_version')
-    def content_version(self):
-        # defaults to 1.2 since the attr is set on 1.3
-        return getattr(self, '_content_version', '1.2')
 
 Globals.InitializeClass(ServiceNews)
 
