@@ -13,6 +13,7 @@ except ImportError:
     from Globals import InitializeClass # Zope < 2.12
 
 from silva.core import conf as silvaconf
+from silva.core.services.interfaces import ICataloging
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
@@ -56,7 +57,7 @@ class RSSAggregator(NewsViewer):
         if old_feeds != rss_feeds:
             self._rss_feeds = rss_feeds
             self._v_cache = None
-            self.reindex_object()
+            ICataloging(self).reindex()
 
     # ACCESSORS
 

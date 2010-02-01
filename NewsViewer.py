@@ -92,7 +92,7 @@ class NewsViewer(Content, SimpleItem):
     def can_set_title(self):
         """return 1 so the title can be set"""
         return 1
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_is_days')
     def number_is_days(self):
@@ -169,7 +169,7 @@ class NewsViewer(Content, SimpleItem):
             results = [ r[2] for r in results ]
             results.reverse()
         return results
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items')
     def get_items(self):
@@ -178,12 +178,12 @@ class NewsViewer(Content, SimpleItem):
         func = lambda x: x.get_last_items(self._number_to_show,self._number_is_days)
         #merge/sort results if > 1 filter
         sortattr = None
-        if len(self._filters) > 1: 
+        if len(self._filters) > 1:
             sortattr = 'display_datetime'
         results = self._get_items_helper(func,sortattr)
         if not self._number_is_days:
             return results[:self._number_to_show]
-            
+
         return results
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -193,7 +193,7 @@ class NewsViewer(Content, SimpleItem):
         """
         func = lambda x: x.get_items_by_date(month,year)
         sortattr = None
-        if len(self._filters) > 1: 
+        if len(self._filters) > 1:
             sortattr = 'display_datetime'
         return self._get_items_helper(func,sortattr)
 
@@ -219,7 +219,7 @@ class NewsViewer(Content, SimpleItem):
                 paths.append(item.getPath())
                 retval.append(item)
         return retval
-    
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'year_in_range_trigger')
     def year_in_range_trigger(self, year):

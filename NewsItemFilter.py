@@ -14,6 +14,7 @@ import Products
 
 # Silva 
 from silva.core import conf as silvaconf
+from silva.core.services.interfaces import ICataloging
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # Silva/News interfaces
@@ -112,7 +113,7 @@ class NewsItemFilter(Filter):
             if sourcepath in self._sources:
                 self._p_changed = 1
                 self._sources.remove(sourcepath)
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'verify_sources')
@@ -127,7 +128,7 @@ class NewsItemFilter(Filter):
                 do_reindex = 1
         if do_reindex:
             self._p_changed=1
-            self.reindex_object()
+            ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_excluded_item')
@@ -160,7 +161,7 @@ class NewsItemFilter(Filter):
                 do_reindex = 1
         if do_reindex:
             self._p_changed = 1
-            self.reindex_object()
+            ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_keep_to_path')
@@ -171,7 +172,7 @@ class NewsItemFilter(Filter):
         """
         # make sure the var will contain either 0 or 1
         self._keep_to_path = not not value
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')

@@ -20,6 +20,7 @@ except ImportError:
 # Silva
 from silva.core import conf as silvaconf
 from silva.core.smi.interfaces import IFormsEditorSupport
+from silva.core.services.interfaces import ICataloging
 from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
@@ -45,13 +46,13 @@ class MetaDataSaveHandler(ContentHandler):
         if name == 'h2' and not self.title:
             self.inside_title = True
         elif name == 'meta':
-            if (attributes.get('scheme') == 
+            if (attributes.get('scheme') ==
                     'http://infrae.com/namespace/metadata/silva-news-network'
                     ):
                 name = attributes.get('name', '')
                 content = attributes.get('content', '')
                 self.metadata[name] = self.parse_content(content)
-                
+
     def endElement(self, name):
         if name == 'h2':
             self.inside_title = False
@@ -61,7 +62,7 @@ class MetaDataSaveHandler(ContentHandler):
             self.title += data
 
     def parse_content(self, content):
-        return [self.deentitize_and_deescape_pipes(x) for 
+        return [self.deentitize_and_deescape_pipes(x) for
                     x in content.split('|')]
 
     def deentitize_and_deescape_pipes(self, data):
@@ -107,7 +108,7 @@ class NewsItem(Document):
         if self._unapproved_version == empty_version:
             raise VersioningError,\
                   _('No unapproved version.')
-        
+
         id = self._unapproved_version[0]
         version = getattr(self, id, None)
         version.set_display_datetime(dt)
@@ -153,7 +154,7 @@ class NewsItem(Document):
         if hasattr(version, 'location'):
             version.set_location(handler.metadata['location'][0])
         version.set_title(handler.title)
-                 
+
 InitializeClass(NewsItem)
 
 class NewsItemVersion(DocumentVersion):
@@ -162,14 +163,14 @@ class NewsItemVersion(DocumentVersion):
     security = ClassSecurityInfo()
     silvaconf.baseclass()
     implements(INewsItemVersion)
-    
+
     def __init__(self, id):
         NewsItemVersion.inheritedAttribute('__init__')(self, id)
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
         self.content = SilvaXMLAttribute('content')
-        
+
     def clearEditorCache(self):
         """ override this method in DocumentVersion.  There is no
             editor cache for news/agenda items, as they don't use
@@ -183,7 +184,7 @@ class NewsItemVersion(DocumentVersion):
            silvaxmlattribute"""
         return self.content.get_content().documentElement
 
-    # XXX I would rather have this get called automatically on setting 
+    # XXX I would rather have this get called automatically on setting
     # the publication datetime, but that would have meant some nasty monkey-
     # patching would be required...
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -192,11 +193,11 @@ class NewsItemVersion(DocumentVersion):
         """set the display datetime
 
             this datetime is used to determine whether an item should be shown
-            in the news viewer, and to determine the order in which the items 
+            in the news viewer, and to determine the order in which the items
             are shown
         """
         self._display_datetime = ddt
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'display_datetime')
@@ -217,13 +218,13 @@ class NewsItemVersion(DocumentVersion):
 
     def set_subjects(self, subjects):
         self._subjects = subjects
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_target_audiences')
     def set_target_audiences(self, target_audiences):
         self._target_audiences = target_audiences
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -291,18 +292,18 @@ class NewsItemVersion(DocumentVersion):
             return '[broken image]'
         if not img:
             return '[broken image]'
-        tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' % 
+        tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
                     (self.object().absolute_url(), img.tag(thumbnail=1)))
         if divclass:
             tag = '<div class="%s">%s</div>' % (divclass, tag)
         return tag
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
     def get_description(self):
         return self.service_metadata.getMetadataValue(
             self, 'silva-extra', 'content_description')
-        
+
     def _get_source(self):
         c = self.aq_inner.aq_parent
         while (1):
@@ -312,7 +313,7 @@ class NewsItemVersion(DocumentVersion):
                 return None
             c = c.aq_parent
         return None
-    
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'source_path')
     def source_path(self):
@@ -332,7 +333,7 @@ class NewsItemVersion(DocumentVersion):
         if not source:
             return False
         return self.service_metadata.getMetadataValue(source,'snn-np-settings','is_private')
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_is_private')
     idx_is_private = is_private
@@ -381,7 +382,7 @@ class NewsItemVersion(DocumentVersion):
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences),
                                       content)
- 
+
 InitializeClass(NewsItemVersion)
 
 
@@ -400,9 +401,9 @@ class NewsItemVersionIndexableAdapter(IndexableAdapter):
 
 class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda ) """
-    
+
     silvaconf.context(INewsItem)
-    
+
     def render(self):
         """Document uses a grok view, but news items aren't
            ready for that yet, so call back into the silvaviews

@@ -23,6 +23,8 @@ from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from silva.core.interfaces import IVersionedContent
 from Products.Silva.helpers import add_and_edit
+from silva.core.services.interfaces import ICataloging
+
 
 # SilvaNews
 from NewsItem import NewsItem, NewsItemVersion
@@ -62,19 +64,19 @@ class AgendaItemVersion(NewsItemVersion):
                               'set_start_datetime')
     def set_start_datetime(self, value):
         self._start_datetime = value
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_end_datetime')
     def set_end_datetime(self, value):
         self._end_datetime = value
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_location')
     def set_location(self, value):
         self._location = value
-        self.reindex_object()
+        ICataloging(self).reindex()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

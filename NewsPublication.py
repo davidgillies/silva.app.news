@@ -106,9 +106,8 @@ def np_added(obj, event):
     """news publications should have their 'hide_from_tocs' set to
        'hide'.  This can be done after they are added"""
     binding = obj.service_metadata.getMetadata(obj)
-    binding.setValues('silva-extra', {'hide_from_tocs': 'hide'})
-    binding.setValues('snn-np-settings', {'is_private': 'no'})
-    obj.reindex_object()
+    binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
+    binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
     return
 
 InitializeClass(NewsPublication)

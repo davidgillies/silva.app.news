@@ -13,6 +13,7 @@ except ImportError:
 
 # Silva
 from silva.core import conf as silvaconf
+from silva.core.services.interfaces import ICataloging
 from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -99,7 +100,7 @@ class Filter(Asset):
         self._subjects = new_subs
         self._target_audiences = new_tas
 
-        self.reindex_object()
+        ICataloging(self).reindex()
         return removed_subjects + removed_target_audiences
 
 InitializeClass(Filter)

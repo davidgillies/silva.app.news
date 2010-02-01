@@ -50,7 +50,7 @@ class INewsItemVersion(IDocumentVersion):
 
         For fulltext ZCatalog search.
         XXX This should really be on an interface in the Silva core"""
-        bb
+
     def to_xml(self):
         """Returns an XML representation of the object"""
 
