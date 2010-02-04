@@ -41,7 +41,7 @@ InitializeClass(AgendaItem)
 class AgendaItemVersion(NewsItemVersion):
     """Base class for agenda item versions.
     """
-    
+
     security = ClassSecurityInfo()
 
     implements(IAgendaItemVersion)
