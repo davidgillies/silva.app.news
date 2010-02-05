@@ -24,5 +24,4 @@ import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestEvent))
-    suite.addTest(unittest.makeSuite(TestCalendar))
     return suite
