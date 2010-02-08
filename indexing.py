@@ -124,8 +124,9 @@ class IntegerRangesIndex(SimpleItem):
                 self.__unindex_range(expired_entry)
 
         for new_entry in new_entries:
-            self.__insert_in_index_set(self._unindex, document_id,
-                new_entry)
+            if self.__insert_in_index_set(self._unindex, document_id,
+                    new_entry):
+                self._length.change(1)
             self.__insert_in_index_set(self._index, new_entry, document_id)
 
     def unindex_object(self, document_id):
@@ -138,6 +139,7 @@ class IntegerRangesIndex(SimpleItem):
                     document_id):
                 # range is not used anymore, retire it
                 self.__unindex_range(expired_entry)
+        self._length.change(-1)
         del self._unindex[document_id]
 
     def __insert_in_index_set(self, index, key, value, set_type=IISet):
