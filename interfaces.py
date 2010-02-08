@@ -71,6 +71,10 @@ class IAgendaItemVersion(INewsItemVersion):
         """Returns start_datetime
         """
 
+    def end_datetime():
+        """Returns end_datetime
+        """
+
     def location():
         """Returns location
         """
@@ -78,11 +82,11 @@ class IAgendaItemVersion(INewsItemVersion):
     def set_start_datetime(value):
         """Sets the start datetime to value (DateTime)"""
 
-    def set_location(value):
-        """Sets the location"""
+    def set_end_datetime(value):
+        """Sets the end datetime to value (DateTime)"""
 
     def set_location(value):
-        """Sets the manual location"""
+        """Sets the location"""
 
 
 class INewsPublication(IPublication):
