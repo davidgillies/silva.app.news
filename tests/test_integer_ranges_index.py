@@ -100,6 +100,30 @@ class TestCollectionIndex(unittest.TestCase):
         self.cindex.unindex_object(1)
         self.assertEquals(0, len(self.cindex))
 
+    def test_unofficial_size(self):
+        now = datetime_to_unixtimestamp(datetime.now())
+        r1 = (now, now + 60,)
+        r2 = (now + 120, now + 240,)
+        r3 = (now, now + 3600)
+        ranges = [r1, r2, r3]
+        ranges2 = [r2, r3]
+        doc1 = Doc(ranges)
+        doc2 = Doc(ranges2)
+        # adding 2 documents
+        self.cindex.index_object(1, doc1)
+        self.cindex.index_object(2, doc2)
+        self.assertEquals(2, self.cindex.numObjects())
+        self.assertEquals(3, self.cindex.indexSize())
+        doc1.ranges = [r2]
+        self.cindex.index_object(1, doc1)
+        self.assertEquals(2, self.cindex.numObjects())
+        self.assertEquals(2, self.cindex.indexSize())
+        self.cindex.unindex_object(1)
+        self.cindex.unindex_object(2)
+        self.assertEquals(0, self.cindex.numObjects())
+        self.assertEquals(0, self.cindex.indexSize())
+
+
     def test_unindex_object(self):
         now = datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
@@ -150,6 +174,7 @@ class TestCollectionIndex(unittest.TestCase):
 
         result = self.query(now + 200, now + 210)
         self.assertEquals(set([0,2,3]), result)
+
 
     def query(self, start, end):
         test_range = (start, end)

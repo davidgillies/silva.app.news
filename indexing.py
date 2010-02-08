@@ -43,6 +43,7 @@ class IntegerRangesIndex(SimpleItem):
         self._since_index = IOBTree() # {since: [rangeid,...]}
         self._until_index = IOBTree() # {until: [rangeid,...]}
         self._length = Length()
+        self._unique_values_length = Length()
 
     def __get_range_id(self, range_):
         return self._reverse_range_mapping.get(range_, None)
@@ -57,6 +58,7 @@ class IntegerRangesIndex(SimpleItem):
         if range_id is None:
             range_id = self.genid()
             # index range
+            self._unique_values_length.change(1)
             self._range_mapping[range_id] = range_
             self._reverse_range_mapping[range_] = range_id
             # index range boundaries
@@ -72,6 +74,7 @@ class IntegerRangesIndex(SimpleItem):
         since, until = range_
         self.__remove_in_index_set(self._since_index, since, range_id)
         self.__remove_in_index_set(self._until_index, until, range_id)
+        self._unique_values_length.change(-1)
         del self._range_mapping[range_id]
         del self._reverse_range_mapping[range_]
         return range_
@@ -134,6 +137,8 @@ class IntegerRangesIndex(SimpleItem):
         entries = self._unindex.get(document_id, _marker)
         if entries is _marker:
             return
+        if isinstance(entries, int):
+            entries = [entries]
         for expired_entry in entries:
             if self.__remove_in_index_set(self._index, expired_entry, \
                     document_id):
@@ -222,11 +227,11 @@ class IntegerRangesIndex(SimpleItem):
 
     def numObjects(self):
         """Return the number of indexed objects"""
-        return len(self._unindex.keys())
+        return self._length()
 
     def indexSize(self):
         """Return the size of the index in terms of distinct values"""
-        return len(self)
+        return self._unique_values_length()
 
     def _get_object_data(self, obj, attr):
         # self.id is the name of the index, which is also the name of the
