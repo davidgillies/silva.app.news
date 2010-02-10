@@ -12,8 +12,8 @@ from AccessControl import ClassSecurityInfo
 from silva.core import conf as silvaconf
 
 # SilvaNews
-from interfaces import ICategoryFilter
-from Products.SilvaNews.Filter import Filter
+from Products.SilvaNews.interfaces import ICategoryFilter
+from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews.ServiceNews import CategoryMixin
 
 class CategoryFilter(Filter,CategoryMixin):

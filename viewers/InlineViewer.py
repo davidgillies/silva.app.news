@@ -27,9 +27,9 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
-from interfaces import IViewer, IInlineViewer
-from adapters.interfaces import INewsProvider
-from adapters.newsprovider import getNewsProviderAdapter
+from Products.SilvaNews.interfaces import IViewer, IInlineViewer
+from Products.SilvaNews.adapters.interfaces import INewsProvider
+from Products.SilvaNews.adapters.newsprovider import getNewsProviderAdapter
 
 def ustr(x):
     if type(x) == unicode:

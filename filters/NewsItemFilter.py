@@ -18,8 +18,8 @@ from silva.core.services.interfaces import ICataloging
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # Silva/News interfaces
-from interfaces import INewsItem,INewsFilter,INewsItemFilter
-from Products.SilvaNews.Filter import Filter
+from Products.SilvaNews.interfaces import INewsItem,INewsFilter,INewsItemFilter
+from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews.datetimeutils import utc_datetime, local_timezone
 
 

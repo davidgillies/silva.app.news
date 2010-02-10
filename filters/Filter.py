@@ -18,7 +18,7 @@ from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # SilvaNews interfaces
-from interfaces import IFilter
+from Products.SilvaNews.interfaces import IFilter
 
 class Filter(Asset):
     """

@@ -14,12 +14,12 @@ except ImportError:
 from DateTime import DateTime
 
 # Silva/News Interfaces
-from interfaces import INewsFilter
+from Products.SilvaNews.interfaces import INewsFilter
 
 # Silva/News
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from NewsItemFilter import NewsItemFilter
+from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
 
 class NewsFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items

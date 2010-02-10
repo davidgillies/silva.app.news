@@ -219,7 +219,6 @@ class IntegerRangesIndex(SimpleItem):
 
         result = union(start_into, end_into)
         result = union(result, start_before_end_after)
-
         return multiunion(map(self._index.__getitem__, result)), (self.id,)
 
     def numObjects(self):

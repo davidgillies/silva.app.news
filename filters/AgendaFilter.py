@@ -14,12 +14,12 @@ except ImportError:
 from DateTime import DateTime
 
 # Silva/News interfaces
-from interfaces import IAgendaFilter
+from Products.SilvaNews.interfaces import IAgendaFilter
 
 # Silva/News
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from Products.SilvaNews.NewsItemFilter import NewsItemFilter,brainsorter
+from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter,brainsorter
 from Products.SilvaNews.datetimeutils import UTC, local_timezone
 
 

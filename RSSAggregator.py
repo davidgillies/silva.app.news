@@ -17,7 +17,7 @@ from silva.core.services.interfaces import ICataloging
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.NewsViewer import NewsViewer
+from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.interfaces import IAggregator
 import feedparser
 

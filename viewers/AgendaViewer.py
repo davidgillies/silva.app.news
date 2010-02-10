@@ -18,7 +18,7 @@ from Products.Silva import SilvaPermissions
 
 # SilvaNews
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
-from NewsViewer import NewsViewer
+from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 
 class AgendaViewer(NewsViewer):
     """

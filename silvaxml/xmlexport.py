@@ -8,11 +8,11 @@ from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
 NS_SILVANEWS = 'http://infrae.com/namespace/silva-news-network'
 
 def initializeXMLExportRegistry():
-    from Products.SilvaNews.NewsViewer import NewsViewer
-    from Products.SilvaNews.AgendaViewer import AgendaViewer
-    from Products.SilvaNews.NewsFilter import NewsFilter
-    from Products.SilvaNews.AgendaFilter import AgendaFilter
-    from Products.SilvaNews.CategoryFilter import CategoryFilter
+    from Products.SilvaNews.viewers.NewsViewer import NewsViewer
+    from Products.SilvaNews.viewers.AgendaViewer import AgendaViewer
+    from Products.SilvaNews.filters.NewsFilter import NewsFilter
+    from Products.SilvaNews.filters.AgendaFilter import AgendaFilter
+    from Products.SilvaNews.filters.CategoryFilter import CategoryFilter
     from Products.SilvaNews.RSSAggregator import RSSAggregator
     from Products.SilvaNews.NewsPublication import NewsPublication
     from Products.SilvaNews.PlainArticle import PlainArticle, PlainArticleVersion
