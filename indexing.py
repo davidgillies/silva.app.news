@@ -200,8 +200,6 @@ class IntegerRangesIndex(SimpleItem):
             qstart, qend = record.keys
         except TypeError:
             return None
-        if not qstart and qend:
-            return None
         # start in inside range
         start = multiunion(self._since_index.values(max=qstart))
         end = multiunion(self._until_index.values(min=qstart))
@@ -219,6 +217,7 @@ class IntegerRangesIndex(SimpleItem):
 
         result = union(start_into, end_into)
         result = union(result, start_before_end_after)
+
         return multiunion(map(self._index.__getitem__, result)), (self.id,)
 
     def numObjects(self):

@@ -164,7 +164,7 @@ class TestCollectionIndex(unittest.TestCase):
         self.assertEquals(set([0,1,3,4,5]), result)
 
         result = self.query(-10000, -1000)
-        self.assertEquals(None, result)
+        self.assertEquals(set(), result)
 
         result = self.query(-100, now - 1)
         self.assertEquals(set([0, 5]), result)
