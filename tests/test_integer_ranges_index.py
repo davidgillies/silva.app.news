@@ -11,7 +11,7 @@ class Doc(object):
         return self.ranges
 
 
-def datetime_to_unixtimestamp(dt):
+def utc_datetime_to_unixtimestamp(dt):
     return int(dt.strftime("%s"))
 
 class TestCollectionIndex(unittest.TestCase):
@@ -23,7 +23,7 @@ class TestCollectionIndex(unittest.TestCase):
         return self.cindex._IntegerRangesIndex__get_range(range_id)
 
     def test_indexing_a_document(self):
-        now = datetime_to_unixtimestamp(datetime.now())
+        now = utc_datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
         r2 = (now + 120, now + 240,)
         ranges = [r1, r2,]
@@ -47,7 +47,7 @@ class TestCollectionIndex(unittest.TestCase):
 
 
     def test_reindexing_a_document_removing_an_item(self):
-        now = datetime_to_unixtimestamp(datetime.now())
+        now = utc_datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
         r2 = (now + 120, now + 240,)
         r3 = (now, now + 3600)
@@ -73,7 +73,7 @@ class TestCollectionIndex(unittest.TestCase):
 
 
     def test_length(self):
-        now = datetime_to_unixtimestamp(datetime.now())
+        now = utc_datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
         r2 = (now + 120, now + 240,)
         r3 = (now, now + 3600)
@@ -101,7 +101,7 @@ class TestCollectionIndex(unittest.TestCase):
         self.assertEquals(0, len(self.cindex))
 
     def test_unofficial_size(self):
-        now = datetime_to_unixtimestamp(datetime.now())
+        now = utc_datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
         r2 = (now + 120, now + 240,)
         r3 = (now, now + 3600)
@@ -125,7 +125,7 @@ class TestCollectionIndex(unittest.TestCase):
 
 
     def test_unindex_object(self):
-        now = datetime_to_unixtimestamp(datetime.now())
+        now = utc_datetime_to_unixtimestamp(datetime.now())
         r1 = (now, now + 60,)
         r2 = (now + 120, now + 240,)
         ranges = [r1, r2,]
@@ -164,7 +164,7 @@ class TestCollectionIndex(unittest.TestCase):
         self.assertEquals(set([0,1,3,4,5]), result)
 
         result = self.query(-10000, -1000)
-        self.assertEquals(set(), result)
+        self.assertEquals(None, result)
 
         result = self.query(-100, now - 1)
         self.assertEquals(set([0, 5]), result)
@@ -177,10 +177,12 @@ class TestCollectionIndex(unittest.TestCase):
 
 
     def query(self, start, end):
-        test_range = (start, end)
-        (results, used) = self.cindex._apply_index(
-            {'ranges': {'start': test_range[0], 'end': test_range[1]}})
-        return set(results)
+        test_range = (start, end,)
+        ret = self.cindex._apply_index(
+            {'ranges': {'query': test_range}})
+        if ret is None:
+            return None
+        return set(ret[0])
 
 
 def test_suite():

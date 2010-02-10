@@ -19,7 +19,9 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # Silva/News interfaces
 from interfaces import INewsItem,INewsFilter,INewsItemFilter
-from Filter import Filter
+from Products.SilvaNews.Filter import Filter
+from Products.SilvaNews.datetimeutils import utc_datetime, local_timezone
+
 
 class MetaTypeException(Exception):
     pass
@@ -57,17 +59,13 @@ class NewsItemFilter(Filter):
         """Returns all the sources available for querying
         """
         q = {'meta_type':self._allowed_source_types,
-             'sort_on':'id',
              'snn-np-settingsis_private':'no'}
         results = self._query(**q)
-
         pp = []
-        cpp = '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
-        while 1:
-            if cpp == '':
-                break
-            pp.append(cpp)
-            cpp = cpp[:cpp.rfind('/')]
+        cpp = list(self.aq_inner.aq_parent.getPhysicalPath())
+        while cpp:
+            pp.append("/".join(cpp))
+            cpp.pop()
 
         q['snn-np-settingsis_private'] = 'yes'
         q['idx_parent_path'] = pp
@@ -80,7 +78,6 @@ class NewsItemFilter(Filter):
             if not r.getURL() in urls:
                 res.append(r)
                 urls.append(r.getURL())
-
         return res
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -188,7 +185,7 @@ class NewsItemFilter(Filter):
         # replace +'es with spaces so the effect is the same...
         keywords = keywords.replace('+', ' ')
 
-        result = self._query(
+        result = self._query_items(
             fulltext = keywords.split(' '),
             version_status = 'public',
             path = self._sources,
@@ -197,9 +194,6 @@ class NewsItemFilter(Filter):
             meta_type = meta_types,
             sort_on = 'idx_display_datetime',
             sort_order = 'descending')
-
-        result =  [r for r in result if not r.object_path in
-                   self._excluded_items]
 
         return result
 
@@ -229,7 +223,11 @@ class NewsItemFilter(Filter):
 
     def _query(self, **kw):
         return self.service_catalog(kw)
-    
+
+    def _query_items(self, **kw):
+        brains = self._query(**kw)
+        return self.__filter_excluded_items(brains)
+
     def _check_meta_types(self, meta_types):
         for type in meta_types:
             if type not in self._allowed_news_meta_types():
@@ -288,60 +286,16 @@ class NewsItemFilter(Filter):
         if not self._sources:
             return []
 
-        result = []
+        results = []
 
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
             return result
 
         lastnight = (DateTime()-1).latestTime()
-        #we want the range from 12:00 a.m. to 11:59 p.m.
-        if numdays == 1: #get only one day
-            enddate = (lastnight+1).latestTime()
-        else:
-            enddate = (lastnight + 1 + (numdays-1)).latestTime()
+        endate = (lastnight + numdays).latestTime()
 
-        query = self._prepare_query(meta_types)
-        query['sort_order'] = 'ascending'
-
-        query['sort_on'] = 'idx_end_datetime'
-        query['idx_end_datetime'] = {'query': [lastnight, enddate],
-                                     'range': 'minmax' }
-        result_enddt = self._query(**query)
-
-        for item in result_enddt:
-            if item.object_path not in self._excluded_items:
-                result.append(item)
-
-        del query['idx_end_datetime']
-        query['idx_start_datetime'] = {'query': [lastnight, enddate],
-                                       'range': 'minmax'}
-        query['sort_on'] = 'idx_start_datetime'
-        result_startdt = self._query(**query)
-
-        # copy only those objects from result_startdt for which an end 
-        # datetime is not set (since the ones with an end date/time are 
-        # already retrieved above)
-        for item in result_startdt:
-            edt = item.end_datetime
-            if (item.object_path not in self._excluded_items and
-                (not edt or edt > enddate)):
-                result.append(item)
-
-        #special case where event startime < today, and endtime is > num_days.
-        query['idx_start_datetime'] = { 'query':lastnight,
-                                        'range':'max'}
-        query['idx_end_datetime'] = { 'query': enddate,
-                                      'range': 'min'}
-        result_middle = self._query(**query)
-        for item in result_middle:
-            if not item.object_path in self._excluded_items:
-                result.append(item)
-
-        result = [r for r in result]
-        result.sort(brainsorter)
-
-        return result
+        return self.get_items_by_date_range(lastnight, endate, meta_types)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_last_items')
@@ -361,13 +315,11 @@ class NewsItemFilter(Filter):
             last_night = now.earliestTime()
             query['idx_display_datetime'] = {'query': [last_night - number, now],
                                              'range': 'minmax'}
-        result = self._query(**query)
-        filtered_result = [r for r in result if not r.object_path in self._excluded_items]
-
+        result = self._query_items(**query)
         if not number_is_days:
-            output = filtered_result[:number]
+            output = result[:number]
         else:
-            output = filtered_result
+            output = result
         return output
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -386,56 +338,44 @@ class NewsItemFilter(Filter):
         self.verify_sources()
         if not self._sources:
             return []
-        
-        result = []
-
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
             return result
-
+        
+        result = []
         month = int(month)
         year = int(year)
-        startdate = DateTime(year, month, 1).earliestTime()
+        startdate = datetime(year, month, 1, tzinfo=local_timezone)
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1).earliestTime()
+        enddate = datetime(year, endmonth, 1, tzinfo=local_timezone)
+        return self.get_items_by_date_range(startdate, enddate, meta_types)
 
-        result = []
-        result_objects = {}
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_items_by_date_range')
+    def get_items_by_date_range(self, start, end, meta_types=None):
+        self.verify_sources()
+        if not self._sources:
+            return []
 
-        # first query for objects that do have an end datetime defined
+        results = []
+
         query = self._prepare_query(meta_types)
-        query['idx_end_datetime'] = {'query':[startdate, enddate],
-                                     'range':'minmax'}
-        query['sort_on'] = 'idx_end_datetime'
-        query['sort_order'] = 'ascending'
-        result_enddt = self._query(**query)
+        self.__filter_on_date_range(query, start, end)
+        results = self._query_items(**query)
+        results.sort(brainsorter)
+        return results
 
-        for item in result_enddt:
-            if item.object_path not in self._excluded_items:
-                result.append(item)
-                result_objects[item.object_path] = 1
-        
-        # now those that don't have end_datetime
-        del query['idx_end_datetime']
-        query['idx_start_datetime'] = {'query':[startdate, enddate],
-                                       'range':'minmax'}
-        query['sort_on'] = 'idx_start_datetime'
-        result_startdt = self._query(**query)
+    def __filter_on_date_range(self, query, start, end):
+        startdt = utc_datetime(start)
+        enddt = utc_datetime(end)
+        query['idx_timestamp_ranges'] = {'query': [startdt, enddt]}
 
-        # remove the items with an end_dt from the result_startdt
-        # only add items without an end_dt or with an end_dt in a different month.
-        for item in result_startdt:
-            edt = item.end_datetime
-            if (item.object_path not in self._excluded_items and not result_objects.get(item.object_path,None)):
-                if not edt or edt.month()!= month or edt.year() != year:
-                    result_objects[item.object_path] = 1
-                    result.append(item)
+    def __filter_excluded_items(self, results):
+        return [r for r in results if not r.object_path in
+                   self._excluded_items]
 
-        result = [r for r in result]
-        result.sort(brainsorter)
 
-        return result
 InitializeClass(NewsItemFilter)

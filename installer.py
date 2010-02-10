@@ -186,6 +186,7 @@ class SilvaNewsInstaller(DefaultInstaller):
             ('idx_start_datetime', 'DateIndex'),
             ('idx_end_datetime', 'DateIndex'),
             ('idx_display_datetime', 'DateIndex'),
+            ('idx_timestamp_ranges', 'IntegerRangesIndex'),
             ('idx_subjects', 'KeywordIndex'),
             ('idx_target_audiences', 'KeywordIndex'),
             ]

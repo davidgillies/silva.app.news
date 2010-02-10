@@ -11,8 +11,20 @@ from OFS.SimpleItem import SimpleItem
 
 _marker = []
 
-def datetime_to_unixtimestamp(dt):
-    return int(dt.strftime("%s"))
+from Products.PageTemplates.PageTemplateFile import PageTemplateFile
+
+manage_addIntegerRangesIndexForm = \
+    PageTemplateFile('www/add_integer_ranges_index.zpt', globals())
+
+def manage_addIntegerRangesIndex(self, id, extra=None, REQUEST=None,
+        RESPONSE=None, URL3=None, **kw):
+    """Add a proxy index"""
+    return self.manage_addIndex(id,
+                                'IntegerRangesIndex',
+                                REQUEST=REQUEST,
+                                RESPONSE=RESPONSE,
+                                URL1=URL3)
+
 
 class IntegerRangesIndex(SimpleItem):
     """ Index a set of integer ranges: 
@@ -20,6 +32,7 @@ class IntegerRangesIndex(SimpleItem):
     """
 
     implements(IPluggableIndex)
+    meta_type = 'IntegerRangesIndex'
 
     def __init__(self, id, caller=None, extra=None):
         self.id = id
@@ -116,8 +129,7 @@ class IntegerRangesIndex(SimpleItem):
 
         if not (new_entries or expired_entries):
             # nothing to do, bail out !
-            return
-
+            return 0
         for expired_entry in expired_entries:
             self.__remove_in_index_set(self._unindex, document_id,
                 expired_entry)
@@ -131,6 +143,8 @@ class IntegerRangesIndex(SimpleItem):
                     new_entry):
                 self._length.change(1)
             self.__insert_in_index_set(self._index, new_entry, document_id)
+        
+        return 1
 
     def unindex_object(self, document_id):
         """Remove the document_id from the index."""
@@ -181,43 +195,26 @@ class IntegerRangesIndex(SimpleItem):
         return True
 
     def _apply_index(self, request):
-        """Apply the index to query parameters given in 'request'.
-
-        The argument should be a mapping object.
-
-        If the request does not contain the needed parameters, then
-        None is returned.
-
-        If the request contains a parameter with the name of the column
-        + "_usage", it is sniffed for information on how to handle applying
-        the index. (Note: this style or parameters is deprecated)
-
-        If the request contains a parameter with the name of the
-        column and this parameter is either a Record or a class
-        instance then it is assumed that the parameters of this index
-        are passed as attribute (Note: this is the recommended way to
-        pass parameters since Zope 2.4)
-
-        Otherwise two objects are returned.  The first object is a
-        ResultSet containing the record numbers of the matching
-        records.  The second object is a tuple containing the names of
-        all data fields used.
-        """
-        record = parseIndexRequest(request, self.id, ('start', 'end',))
-
-        # case one : start in inside range
-        start = multiunion(self._since_index.values(max=record.start))
-        end = multiunion(self._until_index.values(min=record.start))
+        record = parseIndexRequest(request, self.id)
+        try:
+            qstart, qend = record.keys
+        except TypeError:
+            return None
+        if not qstart and qend:
+            return None
+        # start in inside range
+        start = multiunion(self._since_index.values(max=qstart))
+        end = multiunion(self._until_index.values(min=qstart))
         start_into = intersection(start, end)
 
-        # case two end in inside range
-        start = multiunion(self._since_index.values(max=record.end))
-        end = multiunion(self._until_index.values(min=record.end))
+        # end inside range
+        start = multiunion(self._since_index.values(max=qend))
+        end = multiunion(self._until_index.values(min=qend))
         end_into = intersection(start, end)
 
         # start before range and end after range
-        start = multiunion(self._since_index.values(min=record.start))
-        end = multiunion(self._until_index.values(max=record.end))
+        start = multiunion(self._since_index.values(min=qstart))
+        end = multiunion(self._until_index.values(max=qend))
         start_before_end_after = intersection(start, end)
 
         result = union(start_into, end_into)

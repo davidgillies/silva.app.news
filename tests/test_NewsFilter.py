@@ -12,10 +12,10 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     def test_find_sources(self):
         res = self.newsfilter.find_sources()
         ids = [i.id for i in res]
-        self.assert_('source1' in ids)
-        self.assert_('source2' in ids)
-        self.assert_('source3' not in ids)
-        self.assert_(len(res) == 2)
+        self.assertTrue('source1' in ids)
+        self.assertTrue('source2' in ids)
+        self.assertTrue('source3' not in ids)
+        self.assertEquals(2, len(res))
 
     def test_sources(self):
         self.assert_(self.newsfilter.sources() == [])

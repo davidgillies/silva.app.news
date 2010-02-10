@@ -19,7 +19,9 @@ from interfaces import IAgendaFilter
 # Silva/News
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
-from NewsItemFilter import NewsItemFilter,brainsorter
+from Products.SilvaNews.NewsItemFilter import NewsItemFilter,brainsorter
+from Products.SilvaNews.datetimeutils import UTC, local_timezone
+
 
 class AgendaFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
@@ -54,12 +56,12 @@ class AgendaFilter(NewsItemFilter):
         self.verify_excluded_items()
         month = int(month)
         year = int(year)
-        startdate = DateTime(year, month, 1).earliestTime()
+        startdate = datetime(year, month, 1, tzinfo=local_timezone).astimezone(UTC)
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1).earliestTime()
+        enddate = datetime(year, endmonth, 1, tzinfo=local_timezone).astimezone(UTC)
 
         result = []
 

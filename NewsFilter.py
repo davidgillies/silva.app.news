@@ -59,31 +59,6 @@ class NewsFilter(NewsItemFilter):
         results = self._query(**query)
         return results
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None):
-        """Returns the last self._number_to_show published items
-        """
-        if not self._sources:
-            return []
-        month = int(month)
-        year = int(year)
-        startdate = DateTime(year, month, 1).earliestTime()
-        endmonth = month + 1
-        if month == 12:
-            endmonth = 1
-            year = year + 1
-        enddate = DateTime(year, endmonth, 1).earliestTime()
-        query = self._prepare_query(meta_types)
-        query['idx_display_datetime'] = {'query': [startdate, enddate],
-                                         'range': 'minmax'}
-        result = self._query(**query)
-
-        result = [r for r in result if not r.object_path in
-                self._excluded_items]
-
-        return result
-
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""

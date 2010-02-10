@@ -38,7 +38,6 @@ class AgendaFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
                                              'ai3','ai3',
                                              sdt=now-5,
                                              edt=now+5)
-        
         results = self.af.get_next_items(2)
         
         self.assertEquals(len(results),3)

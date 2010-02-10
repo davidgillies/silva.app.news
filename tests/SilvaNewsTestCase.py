@@ -13,22 +13,28 @@ class SilvaNewsTestCase(SilvaTestCase.SilvaTestCase):
         self.installExtension('SilvaNews')
 
     def add_news_publication(self, object, id, title, **kw):
-        return self.addObject(object, 'NewsPublication', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'NewsPublication', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_plain_article(self, object, id, title, **kw):
-        return self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_plain_article(self, object, id, title, **kw):
-        return self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_news_viewer(self, object, id, title, **kw):
-        return self.addObject(object, 'NewsViewer', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'NewsViewer', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_news_filter(self, object, id, title, **kw):
-        return self.addObject(object, 'NewsFilter', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'NewsFilter', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_agenda_filter(self, object, id, title, **kw):
-        return self.addObject(object, 'AgendaFilter', id, title=title, product='SilvaNews', **kw)
+        self.addObject(object, 'AgendaFilter', id, title=title, product='SilvaNews', **kw)
+        return getattr(object, id)
 
     def add_published_agenda_item(self, object, id, title, sdt, edt, **kw):
         obj = self.addObject(object, 'PlainAgendaItem', id, title=title, product='SilvaNews', **kw)
@@ -41,6 +47,7 @@ class SilvaNewsTestCase(SilvaTestCase.SilvaTestCase):
         obj.approve_version()
         obj._update_publication_status()
         ver.set_display_datetime(DateTime())
+        return getattr(object, id)
 
 class NewsBaseTestCase(SilvaNewsTestCase):
     def afterSetUp(self):
@@ -53,7 +60,6 @@ class NewsBaseTestCase(SilvaNewsTestCase):
         service_news.add_target_audience('ta2', 'TA 2')
 
         self.source1 = self.add_news_publication(self.root, 'source1', 'News Pub 1')
-
         self.item1_1 = self.add_plain_article(self.source1, 'art1', 'Article 1')
         self.item1_1.set_next_version_publication_datetime(DateTime())
         getattr(self.item1_1, '0').set_subjects(['sub'])
