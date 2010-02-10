@@ -1,0 +1,2 @@
+2010-02-10 :
+    - fix ordering of items with catalog queries
