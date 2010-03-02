@@ -3,6 +3,7 @@
 # $Revision: 1.21 $
 
 from zope.interface import implements
+from five import grok
 
 # Zope
 from AccessControl import ClassSecurityInfo

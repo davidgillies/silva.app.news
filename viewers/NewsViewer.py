@@ -4,6 +4,7 @@
 
 from logging import getLogger
 from zope.interface import implements
+from five import grok
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -289,7 +290,7 @@ class NewsViewerView(silvaviews.View):
     """ Default view for news viewer
     """
     grok.context(INewsViewer)
-    template = grok.PageTemplate(filename='templates/NewsViewer/index.pt')
+    template = grok.PageTemplate(filename='../templates/NewsViewer/index.pt')
 
 
 class NewsViewerSearchView(silvaviews.Page):
@@ -297,7 +298,7 @@ class NewsViewerSearchView(silvaviews.Page):
     """
     grok.context(INewsViewer)
     grok.name('search')
-    template = grok.PageTemplate(filename='templates/NewsViewer/search.pt')
+    template = grok.PageTemplate(filename='../templates/NewsViewer/search.pt')
 
     def update(self):
         self.query = self.request.get('query', '')
@@ -313,7 +314,7 @@ class NewsViewerArchivesView(silvaviews.Page):
 
     grok.context(INewsViewer)
     grok.name('archives')
-    template = grok.PageTemplate(filename='templates/NewsViewer/archives.pt')
+    template = grok.PageTemplate(filename='../templates/NewsViewer/archives.pt')
 
     def update(self):
         pass

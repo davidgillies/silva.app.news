@@ -323,6 +323,33 @@ class NewsItemFilter(Filter):
         return output
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_items_by_date')
+    def get_items_by_date(self, month, year, meta_types=None):
+        """ This does play well with recurrence, this should not be used
+        with agenda items
+        """
+        if not self._sources:
+            return []
+        month = int(month)
+        year = int(year)
+        startdate = DateTime(year, month, 1).earliestTime()
+        endmonth = month + 1
+        if month == 12:
+            endmonth = 1
+            year = year + 1
+        enddate = DateTime(year, endmonth, 1).earliestTime()
+        query = self._prepare_query(meta_types)
+        query['idx_display_datetime'] = {'query': [startdate, enddate],
+                                         'range': 'minmax'}
+        result = self._query(**query)
+
+        result = [r for r in result if not r.object_path in
+                self._excluded_items]
+
+        return result
+
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_agenda_items_by_date')
     def get_agenda_items_by_date(self, month, year, meta_types=None):
         """

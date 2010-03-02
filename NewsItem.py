@@ -3,7 +3,7 @@
 # $Revision: 1.35 $
 
 from zope.interface import implements, implementsOnly, implementedBy
-
+from five import grok
 # Python
 from StringIO import StringIO
 from xml.sax import parseString
@@ -382,6 +382,13 @@ class NewsItemVersion(DocumentVersion):
                                       " ".join(self._subjects),
                                       " ".join(self._target_audiences),
                                       content)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'publication_time')
+    def publication_time(self):
+        binding = self.service_metadata.getMetadata(self)
+        return binding.get('silva-extra', 'publicationtime')
+
 
 InitializeClass(NewsItemVersion)
 
