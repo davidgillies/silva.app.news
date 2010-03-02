@@ -424,3 +424,27 @@ class NewsItemView(silvaviews.View):
             except AttributeError, e:
                 pass
             return rendered
+
+
+
+
+class NewsItemView(silvaviews.View):
+    """ View on a News Item (either Article / Agenda ) """
+
+    grok.context(INewsItem)
+    template = grok.PageTemplate(filename='templates/NewsItem/index.pt')
+
+    def update(self):
+        self.request['model'] = self.content
+        self.document_body = self.content.content.render()
+
+
+class NewsItemListItemView(grok.View):
+    """ Render as a list items (search results)
+    """
+
+    grok.context(INewsItemVersion)
+    grok.name('search_result')
+    template = grok.PageTemplate(filename='templates/NewsItem/search_result.pt')
+
+

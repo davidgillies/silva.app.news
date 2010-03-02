@@ -140,3 +140,12 @@ class AgendaItemVersion(NewsItemVersion):
         return "%s %s" % (parenttext, self._location)
 
 InitializeClass(AgendaItemVersion)
+
+
+class AgendaListItemView(grok.View):
+    """ Render as a list items (search results)
+    """
+
+    grok.context(IAgendaItemVersion)
+    grok.name('agenda_search_result')
+    template = grok.PageTemplate(filename='templates/NewsItem/agenda_search_result.pt')
