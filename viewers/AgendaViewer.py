@@ -13,10 +13,17 @@ except ImportError:
     from Globals import InitializeClass # Zope < 2.12
 
 # Silva
+
+from silva.core.views import views as silvaviews
+from five import grok
+import calendar
+from datetime import datetime
+
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
+from Products.SilvaNews.datetimeutils import datetime_with_timezone
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 
@@ -108,3 +115,38 @@ class AgendaViewer(NewsViewer):
         self._days_to_show = number
 
 InitializeClass(AgendaViewer)
+
+
+class HTMLCalendar(calendar.calendar):
+    
+
+
+class AgendaViewerMonthCalendar(silvaviews.Page):
+
+    grok.context(IAgendaViewer)
+    grok.name('month_calendar')
+
+    def update(self):
+        now = datetime_with_timezone(datetime.now())
+        self.calendar = calendar.HTMLCalendar()
+        self.month = self.request.get('month', now.month)
+        self.year = self.request.get('year', now.year)
+
+    def render(self):
+        return self.calendar.formatmonth(self.year, self.month)
+
+
+class AgendaViewerYearCalendar(silvaviews.Page):
+
+    grok.context(IAgendaViewer)
+    grok.name('year_calendar')
+
+    def update(self):
+        now = datetime_with_timezone(datetime.now())
+        self.calendar = calendar.HTMLCalendar()
+        self.year = self.request.get('year', now.year)
+
+    def render(self):
+        return self.calendar.formatyear(self.year)
+
+
