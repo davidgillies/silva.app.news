@@ -7,6 +7,13 @@
 
   <h2 class="heading newsitemheading"
     tal:content="structure python:content.get_title()" />
+  <div class="event_actions">
+    <a tal:attributes="href view/event_url"
+       title="Add this event to your calendar">
+      <img tal:attributes="src python: context.absolute_url() + '/++resource++Products.SilvaNews.browser/date.png'" />
+      Add this event to my calendar
+    </a>
+  </div>
   <div class="newsiteminfo"        
     tal:define="
       publicationdate python: content.publication_time();
@@ -22,15 +29,9 @@
     </p>
   </div>
 
-  <a tal:attributes="href view/event_url"
-     title="Add this event to your calendar">
-    <img tal:attributes="src python: context.absolute_url() + '/++resource++Products.SilvaNews.browser/date.png'" />
-    Add this event to my calendar
-  </a>
-
   <div class="newsitemcontent" 
     tal:content="structure view/document_body">
-    view
+    content
   </div>
 
 </div>

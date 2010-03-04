@@ -1,2 +1,6 @@
 2010-02-10 :
     - fix ordering of items with catalog queries
+
+- Add nav link on calendar
+- Display no events for <data> when no event
+- timezone and first day of the week settings

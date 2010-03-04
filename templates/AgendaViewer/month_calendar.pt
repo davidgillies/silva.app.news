@@ -8,6 +8,10 @@
     formatdate nocall:context/service_news/format_date;">
 
   <style type="text/css">
+    h2.heading {
+      font-size: 3em;
+    }
+  
     .calendar td {
       text-align: center;
       vertical-align: middle;
@@ -16,6 +20,8 @@
     .calendar th, .calendar td {
       text-align: center;
       vertical-align: middle;
+      width: 2em;
+      height: 2em;
       padding: 5px;
     }
 
@@ -29,14 +35,48 @@
       margin-bottom: 50px;
     }
 
+    .newsitem {
+      border-top: 1px dashed #7BAA0F;
+      padding-top: 5px;
+    }
+
+    .event_actions {
+      float: right;
+    }
+
+    .event_actions a {
+      text-decoration: none;
+      font-size: 0.8em;
+    }
+
+    .calendar_actions a {
+      font-size: 0.8em;
+    }
+
+    .calendar_intro {
+      color: #7BAA0F;
+      margin: 0px 0px 30px 0px;
+    }
+
+    .calendar td.calendar_today {
+      background-color: #ddd;
+    }
+
+    .calendar td.calendar_current {
+      border: 1px solid #7BAA0F;
+    }
+
   </style>
-  <a tal:attributes="href view/prev_month_url" class="previous">previous</a>
-  <a tal:attributes="href view/next_month_url" class="next">next</a> - 
-  <a tal:attributes="href view/subscribe_url" class="next">subscribe</a>
+
   <h2 class="heading" tal:content="context/get_title"
     tal:condition="not:context/suppress_title | context/suppress_title | nothing">View News</h2>
 
+  <div class="calendar_actions">
+    <a tal:attributes="href view/subscribe_url" class="next">subscribe</a>
+  </div>
+
   <div class="calendar" tal:content="structure view/render_calendar" />
+  <h3 class="calendar_intro" tal:content="view/intro" />
 
   <div class="newsitem" tal:repeat="event view/day_events">
     <div tal:replace="structure event/search_result" />

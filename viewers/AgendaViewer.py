@@ -33,7 +33,7 @@ from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
-
+from Products.SilvaNews.dates import DateTimeFormatter
 
 class AgendaViewer(NewsViewer):
     """
@@ -127,17 +127,19 @@ InitializeClass(AgendaViewer)
 class AgendaViewerMonthCalendar(silvaviews.Page):
 
     grok.context(IAgendaViewer)
-    grok.name('month_calendar')
+    grok.name('month_calendar.html')
     template = grok.PageTemplateFile(
         filename='../templates/AgendaViewer/month_calendar.pt')
 
     def update(self):
         now = datetime.now(local_timezone)
-        self.calendar = HTMLCalendar()
         self.month = int(self.request.get('month', now.month))
         self.year = int(self.request.get('year', now.year))
         (first_weekday, lastday,) = calendar.monthrange(
             self.year, self.month)
+        self.day = int(self.request.get('day', now.day)) or 1
+        self.day_datetime = datetime(self.year, self.month, self.day,
+            tzinfo=local_timezone)
 
         self.start = datetime(self.year, self.month, 1, tzinfo=local_timezone)
         self.end = datetime(self.year, self.month, lastday, tzinfo=local_timezone)
@@ -145,6 +147,8 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         self._month_events = self.context.get_items_by_date(self.month, self.year)
         self._day_events = self._selected_day_events()
         self._events_index = {}
+
+        self.calendar = HTMLCalendar(today=now, current_day=self.day_datetime)
 
         for event_brain in self._month_events:
             sdt = event_brain.start_datetime.astimezone(local_timezone)
@@ -161,13 +165,15 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
                         return self._render_events(year, month, day)
                     self.calendar.register_day_hook(day_datetime, callback)
 
+        self._set_calendar_nav()
+
     def next_month_url(self):
         year = self.start.year
         month = self.start.month + 1
         if month == 13:
             month = 1
             year = year + 1
-        return "%s/month_calendar?month=%d&amp;year=%d" % (
+        return "%s/month_calendar.html?month=%d&amp;year=%d&amp;day=1" % (
             self.context.absolute_url(), month, year)
 
     def prev_month_url(self):
@@ -176,8 +182,16 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         if month == 0:
             month = 12
             year = year - 1
-        return "%s/month_calendar?month=%d&amp;year=%d" % (
+        return "%s/month_calendar.html?month=%d&amp;year=%d&amp;day=1" % (
                 self.context.absolute_url(), month, year)
+
+    def intro(self):
+        dayinfo = u"for %s" % \
+                DateTimeFormatter(self.day_datetime).l_toString(
+                    format="full", display_time=False)
+        if self._day_events:
+            return "Events on %s" % dayinfo
+        return u"No events on %s" % dayinfo
 
     def subscribe_url(self):
         return "%s/subscribe.html" % self.context.absolute_url()
@@ -189,14 +203,8 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        day = self.request.get('day', None)
-        if day is None:
-            return []
-        self.day = int(day)
-        day_datetime = datetime(self.year, self.month, self.day,
-            tzinfo=local_timezone)
         events = self.context.get_items_by_date_range(
-            start_of_day(day_datetime), end_of_day(day_datetime))
+            start_of_day(self.day_datetime), end_of_day(self.day_datetime))
         return [event.getObject() for event in events]
 
     def _render_events(self, year, month, day):
@@ -205,6 +213,14 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         html = ""
         return '<a href="?day=%s">%s</a><div class="events">%s</div>' % \
             (day, day, html,)
+
+    def _set_calendar_nav(self):
+        self.calendar.prev_link = \
+            '<a class="prevmonth caljump" href="%s">&lt;</a>' % \
+                self.prev_month_url()
+        self.calendar.next_link = \
+            '<a class="nextmonth caljump" href="%s">&gt</a>' % \
+                self.next_month_url()
 
 
 class AgendarViewerCalendar(grok.View):

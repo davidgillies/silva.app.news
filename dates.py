@@ -27,6 +27,7 @@ except ImportError:
     import localdatetime
 
 from datetime import datetime
+from DateTime import DateTime
 
 module_security = ModuleSecurityInfo('Products.SilvaNews.dates')
 __allow_access_to_unprotected_subobjects__ = 1
@@ -49,7 +50,7 @@ class DateTimeFormatter:
 
     def __init__(self, dt, locale=None):
         if isinstance(dt, datetime):
-            self._datetime = DateTime(datetime)
+            self._datetime = DateTime(dt)
         else:
             self._datetime = dt
         self._locale = locale
