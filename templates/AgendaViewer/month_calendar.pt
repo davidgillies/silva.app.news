@@ -31,8 +31,8 @@
 
   </style>
   <a tal:attributes="href view/prev_month_url" class="previous">previous</a>
-  <a tal:attributes="href view/next_month_url" class="next">next</a>
-
+  <a tal:attributes="href view/next_month_url" class="next">next</a> - 
+  <a tal:attributes="href view/subscribe_url" class="next">subscribe</a>
   <h2 class="heading" tal:content="context/get_title"
     tal:condition="not:context/suppress_title | context/suppress_title | nothing">View News</h2>
 

@@ -161,7 +161,8 @@ class AgendaListItemView(grok.View):
 
     grok.context(IAgendaItemVersion)
     grok.name('search_result')
-    template = grok.PageTemplate(filename='templates/AgendaItem/search_result.pt')
+    template = grok.PageTemplate(
+        filename='templates/AgendaItem/search_result.pt')
 
     def event_url(self):
         return "%s/event.ics" % self.context.object().absolute_url()

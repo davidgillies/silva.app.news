@@ -423,6 +423,7 @@ class NewsItemListItemView(grok.View):
 
     grok.context(INewsItemVersion)
     grok.name('search_result')
-    template = grok.PageTemplate(filename='templates/NewsItem/search_result.pt')
+    template = grok.PageTemplate(
+        filename='templates/NewsItem/search_result.pt')
 
 

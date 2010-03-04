@@ -129,7 +129,7 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
     grok.context(IAgendaViewer)
     grok.name('month_calendar')
     template = grok.PageTemplateFile(
-        filename='../templates/NewsViewer/month_calendar.pt')
+        filename='../templates/AgendaViewer/month_calendar.pt')
 
     def update(self):
         now = datetime.now(local_timezone)
@@ -179,6 +179,9 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         return "%s/month_calendar?month=%d&amp;year=%d" % (
                 self.context.absolute_url(), month, year)
 
+    def subscribe_url(self):
+        return "%s/subscribe.html" % self.context.absolute_url()
+
     def day_events(self):
         return self._day_events
 
@@ -215,4 +218,16 @@ class AgendarViewerCalendar(grok.View):
 
     def render(self):
         return unicode(self.calendar)
+
+
+class AgendaViewerSubscribeView(silvaviews.Page):
+
+    grok.context(IAgendaViewer)
+    grok.name('subscribe.html')
+    template = grok.PageTemplate(
+        filename="../templates/AgendaViewer/subscribe.pt")
+
+    def calendar_url(self):
+        return "%s/calendar.ics" % self.context.absolute_url()
+
 
