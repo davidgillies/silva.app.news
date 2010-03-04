@@ -410,7 +410,7 @@ class ServiceNews(SilvaService, CategoryMixin):
         if not datetime:
             return ''
         formatter = DateTimeFormatter(datetime, self._locale)
-        return formatter.l_toString(self._date_format, 
+        return formatter.l_toString(self._date_format,
                                     display_time=display_time)
 
     security.declareProtected('View',

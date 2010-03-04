@@ -26,6 +26,8 @@ except ImportError:
     # put the Z3Locale/src dir in your PYTHONPATH to test this stand-alone
     import localdatetime
 
+from datetime import datetime
+
 module_security = ModuleSecurityInfo('Products.SilvaNews.dates')
 __allow_access_to_unprotected_subobjects__ = 1
 
@@ -44,9 +46,12 @@ class DateTimeFormatter:
     MEDIUM = 'medium'
     LONG = 'long'
     FULL = 'full'
-    
-    def __init__(self, datetime, locale=None):
-        self._datetime = datetime
+
+    def __init__(self, dt, locale=None):
+        if isinstance(dt, datetime):
+            self._datetime = DateTime(datetime)
+        else:
+            self._datetime = dt
         self._locale = locale
 
     def _get_parts(self):

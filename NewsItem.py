@@ -409,35 +409,6 @@ class NewsItemVersionIndexableAdapter(IndexableAdapter):
 class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda ) """
 
-    silvaconf.context(INewsItem)
-
-    def render(self):
-        """Document uses a grok view, but news items aren't
-           ready for that yet, so call back into the silvaviews
-           machinery.  Note: this is a direct copy of the last
-           part of SilvaObject.view_vesion"""
-        self.request.model = self.content
-        self.request['model'] = self.content
-        try:
-            view = self.context.service_view_registry.get_view(
-                'public', self.content.meta_type)
-        except KeyError:
-            msg = 'no public view defined'
-            raise NoViewError, msg
-        else:
-            rendered = view.render()
-            try:
-                del self.request.model
-            except AttributeError, e:
-                pass
-            return rendered
-
-
-
-
-class NewsItemView(silvaviews.View):
-    """ View on a News Item (either Article / Agenda ) """
-
     grok.context(INewsItem)
     template = grok.PageTemplate(filename='templates/NewsItem/index.pt')
 

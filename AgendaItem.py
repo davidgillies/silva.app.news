@@ -28,7 +28,7 @@ from Products.Silva.helpers import add_and_edit
 from silva.core.services.interfaces import ICataloging
 
 # SilvaNews
-from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion, NewsItemView
 from Products.SilvaNews.datetimeutils import (utc_datetime,
     CalendarDateRepresentation)
 from datetime import datetime
@@ -147,13 +147,24 @@ class AgendaItemVersion(NewsItemVersion):
 InitializeClass(AgendaItemVersion)
 
 
+class AgendaItemView(NewsItemView):
+    grok.context(IAgendaItem)
+    template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
+
+    def event_url(self):
+        return "%s/event.ics" % self.context.absolute_url()
+
+
 class AgendaListItemView(grok.View):
     """ Render as a list items (search results)
     """
 
     grok.context(IAgendaItemVersion)
-    grok.name('agenda_search_result')
-    template = grok.PageTemplate(filename='templates/NewsItem/agenda_search_result.pt')
+    grok.name('search_result')
+    template = grok.PageTemplate(filename='templates/AgendaItem/search_result.pt')
+
+    def event_url(self):
+        return "%s/event.ics" % self.context.object().absolute_url()
 
 
 class AgendaItemICS(grok.View):
@@ -169,8 +180,9 @@ class AgendaItemICS(grok.View):
 
     def render(self):
         cal = Calendar()
-        cal.add('prodid', '-//Silva News Calendaring//silvanews//')
+        cal.add('prodid', '-//Silva News Calendaring//lonely event//')
         cal.add('version', '2.0')
         cal.add_component(self.event)
         return unicode(cal)
+
 
