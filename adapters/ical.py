@@ -4,10 +4,11 @@ from zope.interface import implements
 from zope.app.intid.interfaces import IIntIds
 from icalendar import Calendar, Event, vText, vDatetime, vDate
 from icalendar.interfaces import ICalendar, IEvent
-from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaFilter
+from Products.SilvaNews.interfaces import (IAgendaItemVersion, IAgendaFilter,
+    IAgendaViewer)
 from Products.SilvaNews.datetimeutils import UTC, local_timezone
-from datetime import date
-
+from datetime import date, datetime
+from dateutil.relativedelta import relativedelta
 
 def utc_vdatetime(dt):
     dtref = dt
@@ -57,13 +58,18 @@ class AgendaCalendar(Calendar, grok.Adapter):
         super(AgendaCalendar, self).__init__()
         self.context = context
         self['PRODID'] = \
-            vText('Infrae SilvaNews Calendaring//NONSGML Calendar//EN')
+            vText('-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN')
         self['VERSION'] = '2.0'
-        for agenda_item in self.context.get_items():
-            version = agenda_item.get_viewable()
-            if version is not None:
-                event = queryAdapter(version, IEvent)
-                if event is not None:
-                    self.add(event)
+        self['X-WR-CALNAME'] = self.context.get_title()
+        # self['X-WR-CALDESC'] = ''
+        self['CALSCALE'] = 'GREGORIAN'
+        now = datetime.now(UTC)
+        for brain in self.context.get_items_by_date_range(
+                now + relativedelta(years=-1), now + relativedelta(years=+1)):
+            # version = agenda_item.get_viewable()
+            agenda_item_version = brain.getObject()
+            event = queryAdapter(agenda_item_version, IEvent)
+            if event is not None:
+                self.add_component(event)
 
 

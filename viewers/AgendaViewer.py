@@ -3,6 +3,7 @@
 # $Revision: 1.17 $
 
 from zope.interface import implements
+from zope.component import getAdapter
 
 # Zope
 import Products
@@ -13,6 +14,7 @@ except ImportError:
     from Globals import InitializeClass # Zope < 2.12
 
 from dateutil import relativedelta
+from icalendar.interfaces import ICalendar
 
 # Silva
 
@@ -202,8 +204,6 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
             (day, day, html,)
 
 
-from icalendar.interfaces import ICalendar
-
 class AgendarViewerCalendar(grok.View):
 
     grok.context(IAgendaViewer)
@@ -211,7 +211,7 @@ class AgendarViewerCalendar(grok.View):
 
     def update(self):
         self.request.response.setHeader('Content-Type', 'text/calendar')
-        self.calendar = self.getAdapter(ICalendar)
+        self.calendar = getAdapter(self.context, ICalendar)
 
     def render(self):
         return unicode(self.calendar)
