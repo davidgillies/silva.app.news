@@ -49,4 +49,5 @@ class PlainArticle(NewsItem):
     silvaconf.icon("www/news_item.png")
     silvaconf.priority(3.7)
     silvaconf.versionClass(PlainArticleVersion)
+
 InitializeClass(PlainArticle)

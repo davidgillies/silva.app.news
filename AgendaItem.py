@@ -3,6 +3,7 @@
 # $Revision: 1.21 $
 
 from zope.interface import implements
+from zope.component import getAdapter
 from five import grok
 
 # Zope
@@ -31,6 +32,9 @@ from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.datetimeutils import (utc_datetime,
     CalendarDateRepresentation)
 from datetime import datetime
+from icalendar.interfaces import IEvent
+from icalendar import Calendar
+
 
 class AgendaItem(NewsItem):
     """Base class for agenda items.
@@ -150,3 +154,23 @@ class AgendaListItemView(grok.View):
     grok.context(IAgendaItemVersion)
     grok.name('agenda_search_result')
     template = grok.PageTemplate(filename='templates/NewsItem/agenda_search_result.pt')
+
+
+class AgendaItemICS(grok.View):
+    """ render an ics event
+    """
+    grok.context(IAgendaItem)
+    grok.name('event.ics')
+
+    def update(self):
+        self.request.response.setHeader('Content-Type', 'text/calendar')
+        self.content = self.context.get_viewable()
+        self.event = getAdapter(self.content, IEvent)
+
+    def render(self):
+        cal = Calendar()
+        cal.add('prodid', '-//Silva News Calendaring//silvanews//')
+        cal.add('version', '2.0')
+        cal.add_component(self.event)
+        return unicode(cal)
+

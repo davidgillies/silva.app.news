@@ -10,6 +10,7 @@ except ImportError:
     from Globals import InitializeClass # Zope < 2.12
 
 from DateTime import DateTime
+from datetime import datetime
 import Products
 
 # Silva 
@@ -20,7 +21,11 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 # Silva/News interfaces
 from Products.SilvaNews.interfaces import INewsItem,INewsFilter,INewsItemFilter
 from Products.SilvaNews.filters.Filter import Filter
-from Products.SilvaNews.datetimeutils import utc_datetime, local_timezone
+from Products.SilvaNews.datetimeutils import (utc_datetime, local_timezone,
+    datetime_to_unixtimestamp)
+
+import logging
+logger = logging.getLogger('silvanews.itemfilter')
 
 
 class MetaTypeException(Exception):
@@ -61,14 +66,14 @@ class NewsItemFilter(Filter):
         q = {'meta_type':self._allowed_source_types,
              'snn-np-settingsis_private':'no'}
         results = self._query(**q)
-        pp = []
-        cpp = list(self.aq_inner.aq_parent.getPhysicalPath())
+        paths = []
+        cpp = "/".join(self.aq_inner.aq_parent.getPhysicalPath())
         while cpp:
-            pp.append("/".join(cpp))
-            cpp.pop()
+            paths.append(cpp)
+            cpp = cpp[:cpp.rfind('/')]
 
         q['snn-np-settingsis_private'] = 'yes'
-        q['idx_parent_path'] = pp
+        q['idx_parent_path'] = paths
         results += self._query(**q)
 
         # remove doubles
@@ -222,6 +227,7 @@ class NewsItemFilter(Filter):
         return query
 
     def _query(self, **kw):
+        logger.info('query %s', repr(kw))
         return self.service_catalog(kw)
 
     def _query_items(self, **kw):
@@ -295,7 +301,8 @@ class NewsItemFilter(Filter):
         lastnight = (DateTime()-1).latestTime()
         endate = (lastnight + numdays).latestTime()
 
-        return self.get_items_by_date_range(lastnight, endate, meta_types)
+        return self.get_items_by_date_range(
+            utc_datetime(lastnight), utc_datetime(endate), meta_types)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_last_items')
@@ -368,7 +375,7 @@ class NewsItemFilter(Filter):
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
             return result
-        
+
         result = []
         month = int(month)
         year = int(year)
@@ -396,8 +403,8 @@ class NewsItemFilter(Filter):
         return results
 
     def __filter_on_date_range(self, query, start, end):
-        startdt = utc_datetime(start)
-        enddt = utc_datetime(end)
+        startdt = datetime_to_unixtimestamp(start)
+        enddt = datetime_to_unixtimestamp(end)
         query['idx_timestamp_ranges'] = {'query': [startdt, enddt]}
 
     def __filter_excluded_items(self, results):

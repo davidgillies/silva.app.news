@@ -200,6 +200,17 @@ class NewsViewer(Content, SimpleItem):
         return self._get_items_helper(func,sortattr)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_items_by_date_range')
+    def get_items_by_date_range(self, start, end):
+        """Gets the items from the filters
+        """
+        func = lambda x: x.get_items_by_date_range(start, end)
+        sortattr = None
+        if len(self._filters) > 1:
+            sortattr = 'start_datetime'
+        return self._get_items_helper(func,sortattr)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')
     def search_items(self, keywords):
         """Search the items in the filters

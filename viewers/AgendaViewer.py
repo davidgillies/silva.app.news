@@ -12,20 +12,26 @@ try:
 except ImportError:
     from Globals import InitializeClass # Zope < 2.12
 
+from dateutil import relativedelta
+
 # Silva
 
 from silva.core.views import views as silvaviews
 from five import grok
 import calendar
 from datetime import datetime
+from datetime import date
 
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.datetimeutils import datetime_with_timezone
+from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
+    local_timezone, start_of_day, end_of_day, DayWalk)
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
+from Products.SilvaNews.htmlcalendar import HTMLCalendar
+
 
 class AgendaViewer(NewsViewer):
     """
@@ -116,37 +122,97 @@ class AgendaViewer(NewsViewer):
 
 InitializeClass(AgendaViewer)
 
-
-class HTMLCalendar(calendar.calendar):
-    
-
-
 class AgendaViewerMonthCalendar(silvaviews.Page):
 
     grok.context(IAgendaViewer)
     grok.name('month_calendar')
+    template = grok.PageTemplateFile(
+        filename='../templates/NewsViewer/month_calendar.pt')
 
     def update(self):
-        now = datetime_with_timezone(datetime.now())
-        self.calendar = calendar.HTMLCalendar()
-        self.month = self.request.get('month', now.month)
-        self.year = self.request.get('year', now.year)
+        now = datetime.now(local_timezone)
+        self.calendar = HTMLCalendar()
+        self.month = int(self.request.get('month', now.month))
+        self.year = int(self.request.get('year', now.year))
+        (first_weekday, lastday,) = calendar.monthrange(
+            self.year, self.month)
 
-    def render(self):
+        self.start = datetime(self.year, self.month, 1, tzinfo=local_timezone)
+        self.end = datetime(self.year, self.month, lastday, tzinfo=local_timezone)
+
+        self._month_events = self.context.get_items_by_date(self.month, self.year)
+        self._day_events = self._selected_day_events()
+        self._events_index = {}
+
+        for event_brain in self._month_events:
+            sdt = event_brain.start_datetime.astimezone(local_timezone)
+            edt = event_brain.end_datetime.astimezone(local_timezone)
+
+            for day_datetime in DayWalk(sdt, edt):
+                key = "%d%02d%02d" % (
+                    day_datetime.year, day_datetime.month, day_datetime.day,)
+                events = self._events_index.get(key, list())
+                events.append(event_brain)
+                self._events_index[key] = events
+                if len(events) == 1:
+                    def callback(year, month, day):
+                        return self._render_events(year, month, day)
+                    self.calendar.register_day_hook(day_datetime, callback)
+
+    def next_month_url(self):
+        year = self.start.year
+        month = self.start.month + 1
+        if month == 13:
+            month = 1
+            year = year + 1
+        return "%s/month_calendar?month=%d&amp;year=%d" % (
+            self.context.absolute_url(), month, year)
+
+    def prev_month_url(self):
+        year = self.start.year
+        month = self.start.month - 1
+        if month == 0:
+            month = 12
+            year = year - 1
+        return "%s/month_calendar?month=%d&amp;year=%d" % (
+                self.context.absolute_url(), month, year)
+
+    def day_events(self):
+        return self._day_events
+
+    def render_calendar(self):
         return self.calendar.formatmonth(self.year, self.month)
 
+    def _selected_day_events(self):
+        day = self.request.get('day', None)
+        if day is None:
+            return []
+        self.day = int(day)
+        day_datetime = datetime(self.year, self.month, self.day,
+            tzinfo=local_timezone)
+        events = self.context.get_items_by_date_range(
+            start_of_day(day_datetime), end_of_day(day_datetime))
+        return [event.getObject() for event in events]
 
-class AgendaViewerYearCalendar(silvaviews.Page):
+    def _render_events(self, year, month, day):
+        # key = "%d%02d%02d" % (year, month, day,)
+        # events = self._events_index[key]
+        html = ""
+        return '<a href="?day=%s">%s</a><div class="events">%s</div>' % \
+            (day, day, html,)
+
+
+from icalendar.interfaces import ICalendar
+
+class AgendarViewerCalendar(grok.View):
 
     grok.context(IAgendaViewer)
-    grok.name('year_calendar')
+    grok.name('calendar.ics')
 
     def update(self):
-        now = datetime_with_timezone(datetime.now())
-        self.calendar = calendar.HTMLCalendar()
-        self.year = self.request.get('year', now.year)
+        self.request.response.setHeader('Content-Type', 'text/calendar')
+        self.calendar = self.getAdapter(ICalendar)
 
     def render(self):
-        return self.calendar.formatyear(self.year)
-
+        return unicode(self.calendar)
 

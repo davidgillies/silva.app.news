@@ -1,0 +1,51 @@
+<html tal:omit-tag=""
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news"
+  tal:define="
+    formatdate nocall:context/service_news/format_date;">
+
+  <style type="text/css">
+    .calendar td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .calendar th, .calendar td {
+      text-align: center;
+      vertical-align: middle;
+      padding: 5px;
+    }
+
+    .calendar td.event a {
+      color: #7BAA0F;
+      text-decoration: none;
+    }
+
+    .calendar {
+      margin-top: 20px;
+      margin-bottom: 50px;
+    }
+
+  </style>
+  <a tal:attributes="href view/prev_month_url" class="previous">previous</a>
+  <a tal:attributes="href view/next_month_url" class="next">next</a>
+
+  <h2 class="heading" tal:content="context/get_title"
+    tal:condition="not:context/suppress_title | context/suppress_title | nothing">View News</h2>
+
+  <div class="calendar" tal:content="structure view/render_calendar" />
+
+  <div class="newsitem" tal:repeat="event view/day_events">
+    <div tal:replace="structure event/search_result" />
+  </div>
+
+  <p class="p archivelink">
+    <a tal:attributes="href python: context.absolute_url() + '/archives'"
+     i18n:translate="">
+     view archive
+   </a>
+  </p>
+</html>

@@ -175,7 +175,6 @@ class TestCollectionIndex(unittest.TestCase):
         result = self.query(now + 200, now + 210)
         self.assertEquals(set([0,2,3]), result)
 
-
     def query(self, start, end):
         test_range = (start, end,)
         ret = self.cindex._apply_index(

@@ -2,7 +2,7 @@ import sys
 import datetime
 import locale as _locale
 
-from calendar import day_abbr, Calendar
+from calendar import day_abbr, month_name, Calendar
 
 class HTMLCalendar(Calendar):
     """
@@ -12,19 +12,19 @@ class HTMLCalendar(Calendar):
     # CSS classes for the day <td>s
     cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 
-    def __init__(*args):
-        super(HTMLCalendar, self).__init__(*args)
+    def __init__(self, *args, **kw):
+        super(HTMLCalendar, self).__init__(*args, **kw)
         self.__hooks = {}
 
-    def register_day_hook(self, date, hook):
-        key = date.strftime('%Y%m%d')
-        hooks = self.__hooks[key] or list()
+    def register_day_hook(self, formatable_date, hook):
+        key = formatable_date.strftime('%Y%m%d')
+        hooks = self.__hooks.get(key, list())
         hooks.append(hook)
         self.__hooks[key] = hooks
 
     def __get_hooks(self, year, month, day):
-        hooks = self.__hooks['%s%s%s' % (year, month, day,)]
-        global_hook = self.__hooks['*']
+        hooks = self.__hooks.get('%d%02d%02d' % (year, month, day,), list())
+        global_hook = self.__hooks.get('*', None)
         if global_hook:
             hooks.append(global_hook)
         return hooks
@@ -36,13 +36,13 @@ class HTMLCalendar(Calendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>' # day outside month
         else:
-            hooks = self._get_hooks(theyear, themonth, day)
+            hooks = self.__get_hooks(theyear, themonth, day)
             if hooks:
                 hook_rendering = ""
-                [hook_rendering += hook(theyear, themonth, day)
-                    for hook in hooks]
-                return '<td class="%s">%s</td>' % (self.cssclasses[weekday],
-                    hook_rendering)
+                for hook in hooks:
+                    hook_rendering += hook(theyear, themonth, day)
+                return '<td class="%s event">%s</td>' % \
+                    (self.cssclasses[weekday], hook_rendering,)
             return '<td class="%s">%d</td>' % (self.cssclasses[weekday], day)
 
     def formatweek(self, theweek, theyear, themonth):
