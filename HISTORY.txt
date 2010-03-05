@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-SilvaNewsNetwork 2.8 (unreleased)
+SilvaNewsNetwork 2.9 (unreleased)
 ---------------------------------
 
 - A catalog index able to index multiple ranges for one object in order
