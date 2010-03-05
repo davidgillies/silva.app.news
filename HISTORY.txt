@@ -4,7 +4,14 @@ ChangeLog
 SilvaNewsNetwork 2.8 (unreleased)
 ---------------------------------
 
-- ...
+- A catalog index able to index multiple ranges for one object in order
+    to store datetime ranges with recurrence
+
+- Calendar views for agenda viewers
+
+- Export of agenda viewers and agenda items to the iCalendar format
+
+- Agenda viewers know have settings for timezone and first week of the day
 
 SilvaNewsNetwork 2.8b1 (2010-02-01)
 -----------------------------------
