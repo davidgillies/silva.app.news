@@ -137,10 +137,9 @@ class AgendaViewer(NewsViewer):
 
 InitializeClass(AgendaViewer)
 
-class AgendaViewerMonthCalendar(silvaviews.Page):
+class AgendaViewerMonthCalendar(silvaviews.View):
 
     grok.context(IAgendaViewer)
-    grok.name('month_calendar.html')
     template = grok.PageTemplateFile(
         filename='../templates/AgendaViewer/month_calendar.pt')
 
@@ -190,7 +189,7 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         if month == 13:
             month = 1
             year = year + 1
-        return "%s/month_calendar.html?month=%d&amp;year=%d&amp;day=1" % (
+        return "%s?month=%d&amp;year=%d&amp;day=1" % (
             self.context.absolute_url(), month, year)
 
     def prev_month_url(self):
@@ -199,7 +198,7 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         if month == 0:
             month = 12
             year = year - 1
-        return "%s/month_calendar.html?month=%d&amp;year=%d&amp;day=1" % (
+        return "%s?month=%d&amp;year=%d&amp;day=1" % (
                 self.context.absolute_url(), month, year)
 
     def intro(self):

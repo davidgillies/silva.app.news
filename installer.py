@@ -99,14 +99,14 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('public', 'Silva News Publication', ['public', 'NewsPublication'])
         # reg.register('public', 'Silva News Viewer', ['public', 'NewsViewer'])
         reg.register('public', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
-        reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
+        # reg.register('public', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
         # reg.register('public', 'Silva Article Version', ['public', 'PlainArticle'])
         # reg.register('public', 'Silva Agenda Item Version', ['public', 'PlainAgendaItem'])
     
         ## preview - required for e.g. the compare versions feature
         # reg.register('preview', 'Silva News Viewer', ['public', 'NewsViewer'])
         reg.register('preview', 'Silva News Filter', ['public', 'NewsFilter'])
-        reg.register('preview', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
+        # reg.register('preview', 'Silva Agenda Viewer', ['public', 'AgendaViewer'])
         reg.register('preview', 'Silva Agenda Filter', ['public', 'AgendaFilter'])
         reg.register('preview', 'Silva News Publication', ['public', 'NewsPublication'])
         reg.register('preview', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
