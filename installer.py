@@ -266,5 +266,5 @@ class SilvaNewsInstaller(DefaultInstaller):
                 name,
                 ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
 
-        
+
 install = SilvaNewsInstaller("SilvaNews", ISilvaNewsExtension)

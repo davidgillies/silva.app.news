@@ -64,7 +64,7 @@ class AgendaItemVersion(NewsItemVersion):
         self._v_timezone = tz
 
     def timezone(self):
-        getattr(self, '_v_timezone', local_timezone)
+        return getattr(self, '_v_timezone', local_timezone)
 
     def get_calendar_date_representation(self):
         cdr = getattr(self, '_calendar_date_representation', None)
