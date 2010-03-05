@@ -6,10 +6,13 @@ from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc, tzlocal
 from DateTime import DateTime
 
+system_timezone = tzlocal()
 local_timezone = tzlocal()
 UTC = tzutc()
 
 def utc_datetime(aDateTime_or_datetime, end=False):
+    """ build a datetime in the utc timezone from DateTime or datetime object
+    """
     if isinstance(aDateTime_or_datetime, datetime):
         return datetime_with_timezone(aDateTime_or_datetime).astimezone(UTC)
     if isinstance(aDateTime_or_datetime, date):
@@ -28,16 +31,18 @@ def utc_datetime(aDateTime_or_datetime, end=False):
         return aDateTime_or_datetime.utcdatetime().replace(tzinfo=UTC)
 
 def datetime_with_timezone(dt, tz=local_timezone):
+    """ set the timezone on datetime is dt does have one already
+    """
     new_dt = dt
     if dt.tzinfo is None:
         new_dt = dt.replace(tzinfo=tz)
     return new_dt
 
 def datetime_to_unixtimestamp(dt):
-    """ Workaround a bug in python : unix time is wrong if not in the local
+    """ Workaround a bug in python : unix time is wrong if not in the system
     timezone
     """
-    return int(datetime_with_timezone(dt).astimezone(local_timezone).\
+    return int(datetime_with_timezone(dt).astimezone(system_timezone).\
         strftime("%s"))
 
 def end_of_day(dt):
@@ -48,7 +53,9 @@ def start_of_day(dt):
 
 
 class CalendarDateRepresentation(object):
-
+    """ This class provides a abstraction over a datetime ranges and it's
+    recurrences
+    """
     default_duration = relativedelta(hours=+1)
 
     def __init__(self, start_datetime,
@@ -167,7 +174,8 @@ class CalendarDateRepresentation(object):
 
 
 class DayWalk(object):
-
+    """ Iterator that yields each days in an interval of datetimes
+    """
     def __init__(self, start_datetime, end_datetime):
         if end_datetime < start_datetime:
             raise ValueError('end before start')
