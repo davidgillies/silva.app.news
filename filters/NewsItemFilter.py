@@ -4,11 +4,7 @@
 
 from zope.interface import implements
 from AccessControl import ClassSecurityInfo
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
-
+from App.class_init import InitializeClass
 from DateTime import DateTime
 from datetime import datetime
 import Products
@@ -331,7 +327,8 @@ class NewsItemFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None):
+    def get_items_by_date(self, month, year, meta_types=None,
+            timezone=local_timezone):
         """ This does play well with recurrence, this should not be used
         with agenda items
         """
@@ -339,12 +336,14 @@ class NewsItemFilter(Filter):
             return []
         month = int(month)
         year = int(year)
-        startdate = DateTime(year, month, 1).earliestTime()
+        startdate = DateTime(
+            datetime(year, month, 1, tzinfo=timezone)).earliestTime()
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1).earliestTime()
+        enddate = DateTime(
+            datetime(year, endmonth, 1, tzinfo=timezone)).earliestTime()
         query = self._prepare_query(meta_types)
         query['idx_display_datetime'] = {'query': [startdate, enddate],
                                          'range': 'minmax'}
@@ -358,7 +357,8 @@ class NewsItemFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_agenda_items_by_date')
-    def get_agenda_items_by_date(self, month, year, meta_types=None):
+    def get_agenda_items_by_date(self, month, year, meta_types=None,
+            timezone=local_timezone):
         """
         Returns non-excluded published AGENDA-items for a particular
         month. This method is for exclusive use by AgendaViewers only,
@@ -379,12 +379,12 @@ class NewsItemFilter(Filter):
         result = []
         month = int(month)
         year = int(year)
-        startdate = datetime(year, month, 1, tzinfo=local_timezone)
+        startdate = datetime(year, month, 1, tzinfo=timezone)
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = datetime(year, endmonth, 1, tzinfo=local_timezone)
+        enddate = datetime(year, endmonth, 1, tzinfo=timezone)
         return self.get_items_by_date_range(startdate, enddate, meta_types)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,

@@ -1,10 +1,7 @@
 from zope.interface import implements
 
 # Zope
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+from App.class_init import InitializeClass # Zope 2.12
 
 from AccessControl import ClassSecurityInfo
 

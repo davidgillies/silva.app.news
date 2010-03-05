@@ -7,7 +7,7 @@ from zope.interface import implements
 from silva.core import conf as silvaconf
 from silva.core.conf import component
 
-import Globals
+from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from DateTime import DateTime
 
@@ -86,7 +86,8 @@ class NewsItemReference(object):
 
     def get_news_item(self):
         return self._item
-Globals.InitializeClass(NewsItemReference)
+
+InitializeClass(NewsItemReference)
 
 class RSSItemReference(object):
     """a temporary object to wrap a newsitem"""

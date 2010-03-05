@@ -93,6 +93,23 @@
           <default>python: form.REQUEST.model.year_range()</default>
         </tales>
       </field>
+      <field><id>timezone</id><type>ListField</type>
+        <values>
+          <alternate_name></alternate_name>
+          <required type="int">1</required>
+          <hidden type="int">0</hidden>
+          <css_class></css_class>
+          <default></default>
+          <title>timezone</title>
+          <description></description>
+          <external_validator></external_validator>
+          <items></items>
+        </values>
+        <tales>
+          <items>python: form.service_news.timezone_list()</items>
+          <default>python: form.REQUEST.model.timezone_name() or form.service_news.default_timezone()</default>
+        </tales>
+      </field>
       <field><id>filters</id> <type>MultiCheckBoxField</type>
         <values>
           <alternate_name></alternate_name>
@@ -112,6 +129,7 @@
           <default>python: form.REQUEST.model.filters()</default>
         </tales>
       </field>
+      
       </fields>
     </group>
   </groups>

@@ -183,7 +183,8 @@ class INewsItemFilter(IFilter):
     #functions to aid in compatibility between news and agenda filters
     # and viewers, so the viewers can pull from both types of filters
 
-    def get_agenda_items_by_date(self, month, year, meta_types=None):
+    def get_agenda_items_by_date(self, month, year, meta_types=None,
+            timezone=None):
         """        Returns non-excluded published AGENDA-items for a particular
         month. This method is for exclusive use by AgendaViewers only,
         NewsViewers should use get_items_by_date instead (which

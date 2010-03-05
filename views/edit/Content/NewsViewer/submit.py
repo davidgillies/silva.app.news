@@ -33,6 +33,8 @@ if model.year_range() != result['year_range']:
 
 model.set_number_is_days(result['number_is_days'])
 
+model.set_timezone_name(result['timezone'])
+
 for path in model.findfilters():
     if path in result['filters']:
         model.set_filter(path, 1)

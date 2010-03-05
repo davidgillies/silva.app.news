@@ -9,10 +9,7 @@ from five import grok
 # Zope
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+from App.class_init import InitializeClass # Zope 2.12
 
 from DateTime import DateTime
 from zExceptions import NotFound
@@ -25,6 +22,9 @@ from Products.Silva.Content import Content
 
 # SilvaNews
 from Products.SilvaNews.interfaces import INewsViewer
+from Products.SilvaNews.datetimeutils import local_timezone
+from datetime import datetime
+import pytz
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
@@ -52,8 +52,19 @@ class NewsViewer(Content, SimpleItem):
         self._number_is_days = 0
         self._year_range = 2
         self._filters = []
+        self._timezone = local_timezone
+        self._timezone_name = self._timezone.tzname(datetime.now())
 
     # ACCESSORS
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'timezone')
+    def timezone(self):
+        return getattr(self, '_timezone', local_timezone)
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'timezone_name')
+    def timezone_name(self):
+        return getattr(self, '_timezone_name', None)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'year_range')
@@ -193,7 +204,8 @@ class NewsViewer(Content, SimpleItem):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_items_by_date(month,year)
+        func = lambda x: x.get_items_by_date(month,year,
+            timezone=self.timezone())
         sortattr = None
         if len(self._filters) > 1:
             sortattr = 'display_datetime'
@@ -294,6 +306,13 @@ class NewsViewer(Content, SimpleItem):
             if newsfilter in self._filters:
                 self._filters.remove(newsfilter)
                 self._p_changed = 1
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_timezone_name')
+    def set_timezone_name(self, name):
+        self._timezone_name = name
+        self._timezone = pytz.timezone(name)
+
 InitializeClass(NewsViewer)
 
 

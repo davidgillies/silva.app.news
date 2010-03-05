@@ -8,10 +8,7 @@ from zope.component import getAdapter
 # Zope
 import Products
 from AccessControl import ClassSecurityInfo
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+from App.class_init import InitializeClass
 
 from dateutil import relativedelta
 from icalendar.interfaces import ICalendar
@@ -58,6 +55,14 @@ class AgendaViewer(NewsViewer):
         AgendaViewer.inheritedAttribute('__init__')(self, id)
         self._days_to_show = 31
         self._number_is_days = True
+        self._first_weeday = 0
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'first_weekday')
+    def first_weekday(self):
+        """Returns number of the first day of the week (0 => Monday)
+        """
+        return getattr(self, '_first_weeday', 0)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'days_to_show')
@@ -82,9 +87,10 @@ class AgendaViewer(NewsViewer):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_agenda_items_by_date(month,year)
+        func = lambda x: x.get_agenda_items_by_date(month,year,
+            timezone=self.timezone())
         sortattr = None
-        if len(self._filters) > 1: 
+        if len(self._filters) > 1:
             sortattr = 'start_datetime'
         results = self._get_items_helper(func,sortattr)
         return results
@@ -122,6 +128,13 @@ class AgendaViewer(NewsViewer):
         """
         self._days_to_show = number
 
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_first_weekday')
+    def set_first_weekday(self, number):
+        """Sets the number of days to show in the agenda
+        """
+        self._first_weeday = number
+
 InitializeClass(AgendaViewer)
 
 class AgendaViewerMonthCalendar(silvaviews.Page):
@@ -132,7 +145,7 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         filename='../templates/AgendaViewer/month_calendar.pt')
 
     def update(self):
-        now = datetime.now(local_timezone)
+        now = datetime.now(self.context.timezone())
         self.month = int(self.request.get('month', now.month))
         self.year = int(self.request.get('year', now.year))
         (first_weekday, lastday,) = calendar.monthrange(
@@ -141,18 +154,22 @@ class AgendaViewerMonthCalendar(silvaviews.Page):
         self.day_datetime = datetime(self.year, self.month, self.day,
             tzinfo=local_timezone)
 
-        self.start = datetime(self.year, self.month, 1, tzinfo=local_timezone)
-        self.end = datetime(self.year, self.month, lastday, tzinfo=local_timezone)
+        self.start = datetime(self.year, self.month, 1,
+            tzinfo=self.context.timezone())
+        self.end = datetime(self.year, self.month, lastday,
+            tzinfo=self.context.timezone())
 
-        self._month_events = self.context.get_items_by_date(self.month, self.year)
+        self._month_events = self.context.get_items_by_date(self.month,
+            self.year)
         self._day_events = self._selected_day_events()
         self._events_index = {}
 
-        self.calendar = HTMLCalendar(today=now, current_day=self.day_datetime)
+        self.calendar = HTMLCalendar(self.context.first_weekday(),
+            today=now, current_day=self.day_datetime)
 
         for event_brain in self._month_events:
-            sdt = event_brain.start_datetime.astimezone(local_timezone)
-            edt = event_brain.end_datetime.astimezone(local_timezone)
+            sdt = event_brain.start_datetime.astimezone(self.context.timezone())
+            edt = event_brain.end_datetime.astimezone(self.context.timezone())
 
             for day_datetime in DayWalk(sdt, edt):
                 key = "%d%02d%02d" % (

@@ -7,10 +7,7 @@ from zope.interface import implements
 import time
 
 from AccessControl import ClassSecurityInfo
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+from App.class_init import InitializeClass
 
 from silva.core import conf as silvaconf
 from silva.core.services.interfaces import ICataloging

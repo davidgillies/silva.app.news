@@ -11,10 +11,8 @@ from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from DateTime import DateTime
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+
+from App.class_init import InitializeClass # Zope 2.12
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
@@ -30,7 +28,7 @@ from silva.core.services.interfaces import ICataloging
 # SilvaNews
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion, NewsItemView
 from Products.SilvaNews.datetimeutils import (utc_datetime,
-    CalendarDateRepresentation)
+    CalendarDateRepresentation, local_timezone)
 from datetime import datetime
 from icalendar.interfaces import IEvent
 from icalendar import Calendar
@@ -61,6 +59,12 @@ class AgendaItemVersion(NewsItemVersion):
         self._location = ''
         self._display_time = True
         self._calendar_date_representation = None
+
+    def set_volatile_timezone(self, tz):
+        self._v_timezone = tz
+
+    def timezone(self):
+        getattr(self, '_v_timezone', local_timezone)
 
     def get_calendar_date_representation(self):
         cdr = getattr(self, '_calendar_date_representation', None)

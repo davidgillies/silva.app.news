@@ -7,7 +7,7 @@ from zope.app.container.interfaces import IObjectMovedEvent
 import os
 
 import Products
-from Globals import InitializeClass
+from App.class_init import InitializeClass
 from App.Common import package_home
 
 from AccessControl import ClassSecurityInfo

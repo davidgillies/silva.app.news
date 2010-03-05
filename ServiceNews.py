@@ -4,7 +4,7 @@
 
 from five import grok
 
-import Globals
+from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.interfaces import IObjectWillBeRemovedEvent
 from OFS.SimpleItem import SimpleItem
@@ -20,6 +20,9 @@ from Products.Silva.helpers import add_and_edit, \
 import Tree
 from dates import DateTimeFormatter, getMonthAbbreviations
 from interfaces import IServiceNews
+import pytz
+from datetimeutils import local_timezone
+from datetime import datetime
 
 class CategoryMixin(object):
     """Code that can be shared between category users for the
@@ -73,8 +76,8 @@ class CategoryMixin(object):
             if not filterby or el.id() in filterby:
                 ret.append((el.id(), el.title(), depth))
             self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
-Globals.InitializeClass(CategoryMixin)
-    
+InitializeClass(CategoryMixin)
+
 class ServiceNews(SilvaService, CategoryMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
@@ -418,7 +421,26 @@ class ServiceNews(SilvaService, CategoryMixin):
         """returns a list of localized abbreviated month names"""
         return getMonthAbbreviations(self._locale)
 
-Globals.InitializeClass(ServiceNews)
+    security.declareProtected('View',
+                                'timezone_list')
+    def timezone_list(self):
+        zones = pytz.common_timezones
+        default = self.default_timezone()
+        if default not in zones:
+            zones.append(default)
+        return zones
+
+    security.declareProtected('View',
+                                'default_timezone')
+    def default_timezone(self):
+        return local_timezone.tzname(datetime.now())
+
+    security.declareProtected('View',
+                                'first_weekday')
+    def first_weekday(self):
+        return getattr(self, '_first_weekday', 0)
+
+InitializeClass(ServiceNews)
 
 def manage_addServiceNews(self, id, title='', REQUEST=None):
     """Add service to folder

@@ -31,6 +31,9 @@ if model.days_to_show() != result['days_to_show']:
 if model.year_range() != result['year_range']:
     model.set_year_range(result['year_range'])
 
+model.set_timezone_name(result['timezone'])
+model.set_first_weekday(int(result['first_weekday']))
+
 for id, path in model.findfilters_pairs():
     if path in result['filters']:
         model.set_filter(path, 1)

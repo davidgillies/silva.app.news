@@ -6,10 +6,7 @@ from zope.interface import implements
 
 # Zope
 from AccessControl import ClassSecurityInfo
-try:
-    from App.class_init import InitializeClass # Zope 2.12
-except ImportError:
-    from Globals import InitializeClass # Zope < 2.12
+from App.class_init import InitializeClass # Zope 2.12
 
 from DateTime import DateTime
 
@@ -43,7 +40,8 @@ class AgendaFilter(NewsItemFilter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None):
+    def get_items_by_date(self, month, year, meta_types=None,
+            timezone=local_timezone):
         """
         Returns non-excluded published items for a particular
         publication month
@@ -56,12 +54,12 @@ class AgendaFilter(NewsItemFilter):
         self.verify_excluded_items()
         month = int(month)
         year = int(year)
-        startdate = datetime(year, month, 1, tzinfo=local_timezone).astimezone(UTC)
+        startdate = datetime(year, month, 1, tzinfo=timezone).astimezone(UTC)
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = datetime(year, endmonth, 1, tzinfo=local_timezone).astimezone(UTC)
+        enddate = datetime(year, endmonth, 1, tzinfo=timezone).astimezone(UTC)
 
         result = []
 
@@ -95,7 +93,8 @@ class AgendaFilter(NewsItemFilter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'backend_get_items_by_date')
-    def backend_get_items_by_date(self, month, year, meta_types=None):
+    def backend_get_items_by_date(self, month, year, meta_types=None,
+            timezone=local_timezone):
         """Returns all published items for a particular month
         """
         self.verify_sources()
@@ -104,13 +103,15 @@ class AgendaFilter(NewsItemFilter):
 
         month = int(month)
         year = int(year)
-        startdate = DateTime(year, month, 1).earliestTime()
+        startdate = DateTime(
+            datetime(year, month, 1, tzinfo=timezone)).earliestTime()
         endmonth = month + 1
         if month == 12:
             endmonth = 1
             year = year + 1
-        enddate = DateTime(year, endmonth, 1).earliestTime()
-        
+        enddate = DateTime(
+            datetime(year, endmonth, 1, tzinfo=timezone)).earliestTime()
+
         # end dt first
         query = self._prepare_query()
         query['sort_order'] = 'ascending'
