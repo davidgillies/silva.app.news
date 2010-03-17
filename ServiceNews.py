@@ -12,9 +12,9 @@ from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 #Silva
 from silva.core import conf as silvaconf
+from silva.core.conf.utils import registerService, unregisterService
 from silva.core.services.base import SilvaService
-from Products.Silva.helpers import add_and_edit, \
-     register_service, unregister_service
+from Products.Silva.helpers import add_and_edit
 
 #SilvaNews
 import Tree
@@ -447,11 +447,11 @@ def manage_addServiceNews(self, id, title='', REQUEST=None):
     """
     # add actual object
     service = ServiceNews(id, title)
-    register_service(self, id, service, IServiceNews)
+    registerService(self, id, service, IServiceNews)
     # respond to the add_and_edit button if necessary
     add_and_edit(self, id, REQUEST)
     return ''
 
 @silvaconf.subscribe(IServiceNews, IObjectWillBeRemovedEvent)
 def unregisterNewsService(service, event):
-    unregister_service(service, IServiceNews)
+    unregisterService(service, IServiceNews)
