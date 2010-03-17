@@ -402,6 +402,19 @@ class NewsItemFilter(Filter):
         results.sort(brainsorter)
         return results
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_item')
+    def get_item(self, path):
+        self.verify_sources()
+        if not self._sources:
+            return None
+        query = self._prepare_query()
+        query['object_path'] = path
+        results = self._query_items(**query)
+        if len(results) > 0:
+            return results[0].getObject()
+        return None
+
     def __filter_on_date_range(self, query, start, end):
         startdt = datetime_to_unixtimestamp(start)
         enddt = datetime_to_unixtimestamp(end)

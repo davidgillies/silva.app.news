@@ -4,6 +4,9 @@
 
 from logging import getLogger
 from zope.interface import implements
+from zope.component import getUtility
+from zope.app.intid.interfaces import IIntIds
+
 from five import grok
 
 # Zope
@@ -21,14 +24,16 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 
 # SilvaNews
-from Products.SilvaNews.interfaces import INewsViewer
+from Products.SilvaNews.interfaces import INewsViewer, INewsItemVersion
 from Products.SilvaNews.datetimeutils import local_timezone
+from Products.SilvaNews.ServiceNews import TimezoneMixin
 from datetime import datetime
 import pytz
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
-class NewsViewer(Content, SimpleItem):
+
+class NewsViewer(Content, SimpleItem, TimezoneMixin):
     """Used to show news items on a Silva site.
 
     When setting up a newsviewer you can choose which news- or
@@ -52,19 +57,33 @@ class NewsViewer(Content, SimpleItem):
         self._number_is_days = 0
         self._year_range = 2
         self._filters = []
-        self._timezone = local_timezone
-        self._timezone_name = self._timezone.tzname(datetime.now())
 
-    # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'timezone')
-    def timezone(self):
-        return getattr(self, '_timezone', local_timezone)
+    def url_for(self, obj):
+        intids = getUtility(IIntIds)
+        if INewsItemVersion.providedBy(obj):
+            obj = obj.object()
+        id = intids.register(obj)
+        return "%s/++items++%d" % (self.absolute_url(), id,)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'timezone_name')
-    def timezone_name(self):
-        return getattr(self, '_timezone_name', None)
+                              'default_timezone')
+    def default_timezone(self):
+        """ this is an override of TimezoneMixin to make the service news
+        to decide the default timezone
+        """
+        return self.service_news.get_timezone()
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'default_timezone_name')
+    def default_timezone_name(self):
+        return self.service_news.get_timezone_name()
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_first_weekday')
+    def get_first_weekday(self):
+        return getattr(self,
+            '_first_weekday',
+            self.service_news.get_first_weekday())
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'year_range')
@@ -205,7 +224,7 @@ class NewsViewer(Content, SimpleItem):
         """Gets the items from the filters
         """
         func = lambda x: x.get_items_by_date(month,year,
-            timezone=self.timezone())
+            timezone=self.get_timezone())
         sortattr = None
         if len(self._filters) > 1:
             sortattr = 'display_datetime'
@@ -307,11 +326,6 @@ class NewsViewer(Content, SimpleItem):
                 self._filters.remove(newsfilter)
                 self._p_changed = 1
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_timezone_name')
-    def set_timezone_name(self, name):
-        self._timezone_name = name
-        self._timezone = pytz.timezone(name)
 
 InitializeClass(NewsViewer)
 
@@ -322,6 +336,9 @@ class NewsViewerView(silvaviews.View):
     grok.context(INewsViewer)
     template = grok.PageTemplate(filename='../templates/NewsViewer/index.pt')
 
+    def update(self):
+        self.request.timezone = self.context.get_timezone()
+
 
 class NewsViewerSearchView(silvaviews.Page):
     """ Search view for news viewer
@@ -331,6 +348,7 @@ class NewsViewerSearchView(silvaviews.Page):
     template = grok.PageTemplate(filename='../templates/NewsViewer/search.pt')
 
     def update(self):
+        self.request.timezone = self.context.get_timezone()
         self.query = self.request.get('query', '')
         self.results = []
         try:
@@ -347,7 +365,7 @@ class NewsViewerArchivesView(silvaviews.Page):
     template = grok.PageTemplate(filename='../templates/NewsViewer/archives.pt')
 
     def update(self):
-        pass
+        self.request.timezone = self.context.get_timezone()
 
     def currentmonth(self):
         return DateTime().month()

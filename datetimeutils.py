@@ -49,7 +49,7 @@ def end_of_day(dt):
     return dt.replace(hour=23, minute=59, second=59, microsecond=99999)
 
 def start_of_day(dt):
-    return dt.replace(hour=0, minute=0, second=0)
+    return dt.replace(hour=0, minute=0, second=0, microsecond=0)
 
 
 class CalendarDateRepresentation(object):
@@ -70,11 +70,11 @@ class CalendarDateRepresentation(object):
         self.all_day = all_day
 
         if self.all_day:
-            self.start_datetime = start_of_day(utc_start_datetime)
+            self.start_datetime = start_of_day(start_datetime)
             if end_datetime is None:
                 self.end_datetime = end_of_day(self.start_datetime)
             self.end_datetime = utc_end_datetime and \
-                end_of_day(utc_end_datetime)
+                end_of_day(end_datetime)
         else:
             self.start_datetime = utc_start_datetime
             self.end_datetime = utc_end_datetime
@@ -176,11 +176,11 @@ class CalendarDateRepresentation(object):
 class DayWalk(object):
     """ Iterator that yields each days in an interval of datetimes
     """
-    def __init__(self, start_datetime, end_datetime):
+    def __init__(self, start_datetime, end_datetime, tz=local_timezone):
         if end_datetime < start_datetime:
             raise ValueError('end before start')
-        self.start_datetime = start_datetime
-        self.end_datetime = end_datetime
+        self.start_datetime = start_datetime.astimezone(tz)
+        self.end_datetime = end_datetime.astimezone(tz)
         # copy
         self.cursor = start_datetime.replace()
 

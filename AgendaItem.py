@@ -16,7 +16,9 @@ from App.class_init import InitializeClass # Zope 2.12
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
-from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
+from Products.SilvaNews.interfaces import (INewsItem, INewsItemVersion,
+    INewsViewer)
+from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
@@ -64,7 +66,7 @@ class AgendaItemVersion(NewsItemVersion):
         self._v_timezone = tz
 
     def timezone(self):
-        return getattr(self, '_v_timezone', local_timezone)
+        return getattr(self, '_v_timezone', self.service_news.get_timezone())
 
     def get_calendar_date_representation(self):
         cdr = getattr(self, '_calendar_date_representation', None)
@@ -121,17 +123,19 @@ class AgendaItemVersion(NewsItemVersion):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'start_datetime')
-    def start_datetime(self):
+    def start_datetime(self, tz=None):
         """Returns the start date/time
         """
-        return self.get_calendar_date_representation().start_datetime
+        return self.get_calendar_date_representation().\
+            start_datetime.astimezone(tz or self.timezone())
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'end_datetime')
-    def end_datetime(self):
+    def end_datetime(self, tz=None):
         """Returns the start date/time
         """
-        return self.get_calendar_date_representation().end_datetime
+        return self.get_calendar_date_representation().\
+            end_datetime.astimezone(tz or self.timezone())
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'location')
@@ -179,15 +183,19 @@ class AgendaItemICS(grok.View):
     grok.name('event.ics')
 
     def update(self):
+        self.viewer = None
+        parent = aq_parent(self.context)
+        if INewsViewer.providedBy(parent):
+            self.viewer = parent
         self.request.response.setHeader('Content-Type', 'text/calendar')
         self.content = self.context.get_viewable()
-        self.event = getAdapter(self.content, IEvent)
+        self.event_factory = getAdapter(self.content, IEvent)
 
     def render(self):
         cal = Calendar()
         cal.add('prodid', '-//Silva News Calendaring//lonely event//')
         cal.add('version', '2.0')
-        cal.add_component(self.event)
+        cal.add_component(self.event_factory(self.viewer))
         return unicode(cal)
 
 

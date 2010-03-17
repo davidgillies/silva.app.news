@@ -11,18 +11,23 @@ from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 
-class AgendaEvent(Event, grok.Adapter):
+class AgendaFactoryEvent(grok.Adapter):
     grok.context(IAgendaItemVersion)
     grok.implements(IEvent)
     grok.provides(IEvent)
 
-    def __init__(self, context):
+    def __call__(self, viewer):
+        return AgendaEvent(self.context, viewer)
+
+class AgendaEvent(Event):
+
+    def __init__(self, context, viewer=None):
         super(AgendaEvent, self).__init__()
-        self.context = context
-        date_rep = self.context.get_calendar_date_representation()
+        date_rep = context.get_calendar_date_representation()
         intid = getUtility(IIntIds)
-        start_dt = context.start_datetime().astimezone(self.context.timezone())
-        end_dt = context.end_datetime().astimezone(self.context.timezone())
+        timezone = viewer and viewer.get_timezone() or context.timezone()
+        start_dt = context.start_datetime().astimezone(timezone)
+        end_dt = context.end_datetime().astimezone(timezone)
         start_date = date(start_dt.year, start_dt.month, start_dt.day)
         end_date = date(end_dt.year, end_dt.month, end_dt.day)
         if start_date == end_date:
@@ -32,7 +37,7 @@ class AgendaEvent(Event, grok.Adapter):
                 self['DTEND'] = vDatetime(end_dt)
         else:
             self['DTSTART'] = vDate(start_date)
-            self['DTEND'] = vDate(end_date)
+            self['DTEND'] = vDate(end_date + relativedelta(days=+1))
 
 #        self['RRULE']
 
@@ -40,8 +45,10 @@ class AgendaEvent(Event, grok.Adapter):
         if context.location:
             self['LOCATION'] = vText(context.location())
         self['SUMMARY'] = vText(context.get_title())
-        self['URL'] = context.object().absolute_url()
-
+        if viewer is None:
+            self['URL'] = context.object().absolute_url()
+        else:
+            self['URL'] = viewer.url_for(context)
 
 class AgendaCalendar(Calendar, grok.Adapter):
     grok.context(IAgendaViewer)
@@ -55,15 +62,13 @@ class AgendaCalendar(Calendar, grok.Adapter):
             vText('-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN')
         self['VERSION'] = '2.0'
         self['X-WR-CALNAME'] = self.context.get_title()
-        # self['X-WR-CALDESC'] = ''
-        self['CALSCALE'] = 'GREGORIAN'
+        self['X-WR-TIMEZONE'] = self.context.get_timezone_name()
         now = datetime.now(UTC)
         for brain in self.context.get_items_by_date_range(
                 now + relativedelta(years=-1), now + relativedelta(years=+1)):
-            # version = agenda_item.get_viewable()
             agenda_item_version = brain.getObject()
-            agenda_item_version.set_volatile_timezone(self.context.timezone())
-            event = queryAdapter(agenda_item_version, IEvent)
+            event_factory = AgendaFactoryEvent(agenda_item_version)
+            event = event_factory(self.context)
             if event is not None:
                 self.add_component(event)
 

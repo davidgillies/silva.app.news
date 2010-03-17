@@ -15,14 +15,80 @@ from silva.core import conf as silvaconf
 from silva.core.conf.utils import registerService, unregisterService
 from silva.core.services.base import SilvaService
 from Products.Silva.helpers import add_and_edit
+import Products.Silva.SilvaPermissions as SilvaPermissions
 
 #SilvaNews
-import Tree
-from dates import DateTimeFormatter, getMonthAbbreviations
-from interfaces import IServiceNews
+from Products.SilvaNews import Tree
+from Products.SilvaNews.dates import DateTimeFormatter, getMonthAbbreviations
+from Products.SilvaNews.interfaces import IServiceNews
+from Products.SilvaNews.datetimeutils import local_timezone
+
 import pytz
-from datetimeutils import local_timezone
 from datetime import datetime
+
+
+class TimezoneMixin(object):
+
+    security = ClassSecurityInfo()
+    week_days_list = [('Mon',0), ('Tue',1), ('Wed',2),
+        ('Thu',3), ('Fri',4), ('Sat',5), ('Sun',6)]
+
+    def __init__(self):
+        self._timezone = local_timezone
+        self._timezone_name = self._timezone.tzname(datetime.now())
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'default_timezone')
+    def default_timezone(self):
+        return local_timezone
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'default_timezone_name')
+    def default_timezone_name(self):
+        return 'local timezone'
+
+    # ACCESSORS
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_timezone')
+    def get_timezone(self):
+        return getattr(self, '_timezone', self.default_timezone())
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_timezone_name')
+    def get_timezone_name(self):
+        return getattr(self, '_timezone_name',
+            self.default_timezone_name())
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_timezone_name')
+    def set_timezone_name(self, name):
+        self._timezone_name = name
+        self._timezone = pytz.timezone(name)
+
+    security.declareProtected('View',
+                                'timezone_list')
+    def timezone_list(self):
+        zones = pytz.common_timezones
+        default = self.default_timezone()
+        if default not in zones:
+            zones.append(default)
+        return zones
+
+    security.declareProtected('View',
+                                'set_first_weekday')
+    def set_first_weekday(self, weekday):
+        if weekday not in range(0, 7):
+            raise ValueError("weekday should be between 0 and 6")
+        self._first_weekday = weekday
+
+    security.declareProtected('View',
+                                'get_first_weekday')
+    def get_first_weekday(self):
+        return getattr(self, '_first_weekday', 0)
+
+
+InitializeClass(TimezoneMixin)
+
 
 class CategoryMixin(object):
     """Code that can be shared between category users for the
@@ -78,7 +144,7 @@ class CategoryMixin(object):
             self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
 InitializeClass(CategoryMixin)
 
-class ServiceNews(SilvaService, CategoryMixin):
+class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
     grok.implements(IServiceNews)
@@ -394,14 +460,21 @@ class ServiceNews(SilvaService, CategoryMixin):
             
             used for displaying public date/times
         """
-        if not REQUEST.has_key('locale'):
-            return self.edit_tab(
-                manage_tabs_message="No locale provided!")
-        if not REQUEST.has_key('date_format'):
-            return self.edit_tab(
-                manage_tabs_message="No date format provided!")
+        field_errors = {
+            'locale': "No locale provided!",
+            'date_format': "No date format provided!",
+            'timezone_name': "No timezone provided!",
+            'first_weekday': "No first weekday provided!"
+        }
+        for field, error in field_errors.iteritems():
+            if not REQUEST.has_key(field):
+                return self.edit_tab(
+                    manage_tabs_message=error)
+
         self._locale = REQUEST['locale']
         self._date_format = REQUEST['date_format']
+        self.set_timezone_name(REQUEST['timezone_name'])
+        self.set_first_weekday(int(REQUEST['first_weekday']))
 
     security.declareProtected('View',
                                 'format_date')
@@ -421,24 +494,6 @@ class ServiceNews(SilvaService, CategoryMixin):
         """returns a list of localized abbreviated month names"""
         return getMonthAbbreviations(self._locale)
 
-    security.declareProtected('View',
-                                'timezone_list')
-    def timezone_list(self):
-        zones = pytz.common_timezones
-        default = self.default_timezone()
-        if default not in zones:
-            zones.append(default)
-        return zones
-
-    security.declareProtected('View',
-                                'default_timezone')
-    def default_timezone(self):
-        return local_timezone.tzname(datetime.now())
-
-    security.declareProtected('View',
-                                'first_weekday')
-    def first_weekday(self):
-        return getattr(self, '_first_weekday', 0)
 
 InitializeClass(ServiceNews)
 

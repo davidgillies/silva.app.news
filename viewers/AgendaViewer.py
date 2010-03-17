@@ -31,6 +31,7 @@ from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaNews.dates import DateTimeFormatter
+from zope.app.intid.interfaces import IIntIds
 
 class AgendaViewer(NewsViewer):
     """
@@ -55,14 +56,6 @@ class AgendaViewer(NewsViewer):
         AgendaViewer.inheritedAttribute('__init__')(self, id)
         self._days_to_show = 31
         self._number_is_days = True
-        self._first_weeday = 0
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'first_weekday')
-    def first_weekday(self):
-        """Returns number of the first day of the week (0 => Monday)
-        """
-        return getattr(self, '_first_weeday', 0)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'days_to_show')
@@ -88,7 +81,7 @@ class AgendaViewer(NewsViewer):
         """Gets the items from the filters
         """
         func = lambda x: x.get_agenda_items_by_date(month,year,
-            timezone=self.timezone())
+            timezone=self.get_timezone())
         sortattr = None
         if len(self._filters) > 1:
             sortattr = 'start_datetime'
@@ -128,12 +121,6 @@ class AgendaViewer(NewsViewer):
         """
         self._days_to_show = number
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_first_weekday')
-    def set_first_weekday(self, number):
-        """Sets the number of days to show in the agenda
-        """
-        self._first_weeday = number
 
 InitializeClass(AgendaViewer)
 
@@ -144,7 +131,8 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         filename='../templates/AgendaViewer/month_calendar.pt')
 
     def update(self):
-        now = datetime.now(self.context.timezone())
+        self.request.timezone = self.context.get_timezone()
+        now = datetime.now(self.context.get_timezone())
         self.month = int(self.request.get('month', now.month))
         self.year = int(self.request.get('year', now.year))
         (first_weekday, lastday,) = calendar.monthrange(
@@ -154,23 +142,26 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             tzinfo=local_timezone)
 
         self.start = datetime(self.year, self.month, 1,
-            tzinfo=self.context.timezone())
+            tzinfo=self.context.get_timezone())
         self.end = datetime(self.year, self.month, lastday,
-            tzinfo=self.context.timezone())
+            tzinfo=self.context.get_timezone())
 
         self._month_events = self.context.get_items_by_date(self.month,
             self.year)
         self._day_events = self._selected_day_events()
         self._events_index = {}
 
-        self.calendar = HTMLCalendar(self.context.first_weekday(),
+        self.calendar = HTMLCalendar(self.context.get_first_weekday(),
             today=now, current_day=self.day_datetime)
 
         for event_brain in self._month_events:
-            sdt = event_brain.start_datetime.astimezone(self.context.timezone())
-            edt = event_brain.end_datetime.astimezone(self.context.timezone())
+            sdt = event_brain.start_datetime.astimezone(
+                self.context.get_timezone())
+            edt = event_brain.end_datetime.astimezone(
+                self.context.get_timezone())
 
-            for day_datetime in DayWalk(sdt, edt):
+            for day_datetime in DayWalk(sdt,
+                    end_of_day(edt), tz=self.context.get_timezone()):
                 key = "%d%02d%02d" % (
                     day_datetime.year, day_datetime.month, day_datetime.day,)
                 events = self._events_index.get(key, list())
@@ -227,8 +218,9 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         # key = "%d%02d%02d" % (year, month, day,)
         # events = self._events_index[key]
         html = ""
-        return '<a href="?day=%s">%s</a><div class="events">%s</div>' % \
-            (day, day, html,)
+        return '<a href="?day=%s&amp;month=%s&amp;year=%s">%s</a>' \
+               '<div class="events">%s</div>' % \
+               (day, month, year, day, html,)
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \
@@ -245,6 +237,7 @@ class AgendarViewerCalendar(grok.View):
     grok.name('calendar.ics')
 
     def update(self):
+        self.request.timezone = self.context.get_timezone()
         self.request.response.setHeader('Content-Type', 'text/calendar')
         self.calendar = getAdapter(self.context, ICalendar)
 
@@ -258,6 +251,9 @@ class AgendaViewerSubscribeView(silvaviews.Page):
     grok.name('subscribe.html')
     template = grok.PageTemplate(
         filename="../templates/AgendaViewer/subscribe.pt")
+
+    def update(self):
+        self.request.timezone = self.context.get_timezone()
 
     def calendar_url(self):
         return "%s/calendar.ics" % self.context.absolute_url()

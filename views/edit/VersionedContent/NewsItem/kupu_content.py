@@ -101,11 +101,11 @@ metas = [
 
 if hasattr(version, 'start_datetime'):
     metas.append(meta_template % 
-            ('start_datetime', version.start_datetime() or ''))
+            ('start_datetime', version.start_datetime(context.service_news.get_timezone()) or ''))
 
 if hasattr(version, 'end_datetime'):
     metas.append(meta_template % 
-            ('end_datetime', version.end_datetime() or ''))
+            ('end_datetime', version.end_datetime(context.service_news.get_timezone()) or ''))
 
 if hasattr(version, 'location'):
     metas.append(meta_template % ('location', version.location()))

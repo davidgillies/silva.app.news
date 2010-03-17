@@ -25,8 +25,8 @@
    <tal:comment tal:omit-tag=""><!-- if the object is an agenda item --></tal:comment>
    <p class="p eventdates"
      tal:define="
-       startdate context/start_datetime;
-       enddate context/end_datetime"
+       startdate python: context.start_datetime(tz=request.timezone);
+       enddate python: context.end_datetime(tz=request.timezone)"
      tal:condition="python: startdate or enddate">
     <tal:if condition="startdate">
      <span tal:omit-tag="" i18n:translate="">Start:</span>

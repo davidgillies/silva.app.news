@@ -131,6 +131,35 @@ Version of this file: $Revision: 1.10 $
         </td>
       </tr>
       <tr>
+        <td class="form-text">Time zone<br/>
+          <span tal:replace="context/get_timezone_name" />
+          <select name="timezone_name">
+            <tal:block tal:repeat="tz context/timezone_list">
+              <option
+                tal:attributes="value tz;
+                  selected python: tz == context.get_timezone_name() and 'selected' or None"
+                tal:content="tz" />
+            </tal:block>
+          </select>
+        </td>
+        <td class="form-text">
+        </td>
+      </tr>
+      <tr>
+        <td class="form-text">First week day<br/>
+          <select name="first_weekday">
+            <tal:block tal:repeat="wday context/week_days_list">
+              <option
+                tal:attributes="value python: str(wday[1]);
+                  selected python:str(wday[1]) == str(context.get_first_weekday()) and 'selected' or None"
+                tal:content="python: str(wday[0])" />
+            </tal:block>
+          </select>
+        </td>
+        <td class="form-text">
+        </td>
+      </tr>
+      <tr>
         <td class="form-text">
           <input type="submit" name="manage_set_locale:method" value="set locale" />
         </td>
