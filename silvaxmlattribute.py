@@ -18,7 +18,6 @@ from Products.ParsedXML.ParsedXML import ParsedXML
 from Products.Silva import SilvaPermissions
 from Products.Silva.adapters.renderable import getRenderableAdapter
 from Products.Silva.helpers import translateCdata
-from Products.Silva.i18n import translate as _
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
 from silva.translations import translate as _

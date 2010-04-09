@@ -234,6 +234,8 @@ class SilvaNewsInstaller(DefaultInstaller):
     def configure_xml_widgets(self, root):
         """Configure XMLWidgets registries, editor, etc'
         """
+        #there are no more xml widgets
+        return
         # create the services for XMLWidgets
         for name in ['service_news_sub_viewer']:
             if not hasattr(root, name):
