@@ -27,9 +27,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         self.configure_addables(root)
         self.configure_metadata(root)
         
-        # allowed_addables_in_publication
-        self.configure_xml_widgets(root)
-
         if not hasattr(root.aq_explicit,'service_news'):
             manage_addServiceNews(root, 'service_news', 'Silva News Network Service')
         
@@ -230,23 +227,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         for perm in add_permissions:
             if perm in p_perms:
                 root.manage_permission(perm, AUTHOR_ROLES)
-                
-    def configure_xml_widgets(self, root):
-        """Configure XMLWidgets registries, editor, etc'
-        """
-        # create the services for XMLWidgets
-        for name in ['service_news_sub_viewer']:
-            if not hasattr(root, name):
-                root.manage_addProduct['XMLWidgets'].manage_addWidgetRegistry(name)
-    
-        if IInvisibleService is not None:
-                interface.directlyProvides(
-                    root['service_news_sub_viewer'],
-                    IInvisibleService,
-                    *interface.directlyProvidedBy(root['service_news_sub_viewer']))
-    
-        # now register all widgets
-        self.registerNewsSubViewer(root)
 
     def unconfigure_xml_widgets(self,root):
         if hasattr(root.aq_explicit, 'service_news_sub_viewer'):
