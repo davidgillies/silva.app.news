@@ -16,7 +16,6 @@ from App.class_init import InitializeClass
 
 # Silva
 from silva.core import conf as silvaconf
-from silva.core.smi.interfaces import IFormsEditorSupport
 from silva.core.services.interfaces import ICataloging
 from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
@@ -77,7 +76,7 @@ class NewsItem(Document):
 
     #remove the formed editor support interface, as news items
     # don't support the forms-based editor
-    implementsOnly(INewsItem, [ i for i in implementedBy(Document) if i != IFormsEditorSupport ])
+    implementsOnly(INewsItem)
     silvaconf.baseclass()
 
     # MANIPULATORS
