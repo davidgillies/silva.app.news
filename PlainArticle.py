@@ -8,14 +8,13 @@ from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from DateTime import DateTime
 from App.class_init import InitializeClass
+from five import grok
 
 # Silva
 from silva.core import conf as silvaconf
 from silva.core.views import views as silvaviews
 
 from Products.Silva import SilvaPermissions
-from Products.Silva.transform.rendererreg import getRendererRegistry
-from Products.Silva.transform.renderer.xsltrendererbase import XSLTRendererBase
 
 # Silva
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
@@ -54,19 +53,3 @@ class PlainArticle(NewsItem):
 InitializeClass(PlainArticle)
 
 
-class ArticleRenderer(XSLTRendererBase):
-    silvaconf.context(PlainArticle)
-    silvaconf.title('Basic XSLT Renderer')
-    silvaconf.XSLT('article.xslt')
-
-
-class ArticleView(silvaviews.View):
-    """ View on a News Item (either Article / Agenda ) """
-
-    silvaconf.context(PlainArticle)
-
-    def render(self):
-        registry = getRendererRegistry()
-        renderers = registry.getRenderersForMetaType('Silva Article')
-        renderer = renderers['Basic XSLT Renderer']
-        return renderer.render(self.context)

@@ -18,31 +18,14 @@
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" />
 
   <xsl:template match="/">
-    <div class="newsitem">
       <xsl:apply-templates />
-    </div>
   </xsl:template>
 
   <xsl:template match="doc:doc">
-    <div class="newsitemcontent">
       <xsl:apply-templates />
-    </div>
   </xsl:template>
 
-  <xsl:template match="silva:metadata">
-    <h2 class="heading newsitemheading">
-      <xsl:value-of select="silva:set[@id='silva-content']/silva-content:maintitle" />
-    </h2>
-    <div class="newsiteminfo">
-      <p class="p publicationdate">
-        Publication date:
-        <span class="datetime">
-          <xsl:value-of select="../../silva:workflow/silva:version/silva:publication_datetime"/>
-        </span>
-      </p>
-    </div>
-  </xsl:template>
-
+  <xsl:template match="silva:metadata" />
   <xsl:template match="silva:workflow" />
 
 </xsl:stylesheet>

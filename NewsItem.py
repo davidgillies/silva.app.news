@@ -24,6 +24,7 @@ from Products.Silva.Image import havePIL
 from Products.Silva.VersionedContent import VersionedContent
 from silva.core.interfaces import IRoot
 from Products.Silva.SilvaObject import NoViewError
+from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
 
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
@@ -372,10 +373,29 @@ class NewsItemVersionIndexableAdapter(IndexableAdapter):
         return []
 
 
+
+ContentHTML = XSLTTransformer('newsitem.xslt', __file__)
+
+
+class NewsItemView(silvaviews.View):
+    """ View on a News Item (either Article / Agenda )
+    """
+    grok.context(INewsItem)
+    template = grok.PageTemplate(filename='templates/NewsItem/index.pt')
+
+    def update(self):
+        self.article_date = self.content.display_datetime()
+        if not self.article_date:
+            self.article_date = self.content.publication_time()
+        if self.article_date:
+            self.article_date = self.context.service_news.format_date(
+                self.article_date)
+        self.article = ContentHTML.transform(self.content)
+
+
 class NewsItemListItemView(grok.View):
     """ Render as a list items (search results)
     """
-
     grok.context(INewsItemVersion)
     grok.name('search_result')
     template = grok.PageTemplate(
