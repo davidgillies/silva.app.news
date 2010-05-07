@@ -27,10 +27,11 @@ from Products.Silva.SilvaObject import NoViewError
 
 from Products.SilvaDocument.transform.Transformer import EditorTransformer
 from Products.SilvaDocument.transform.base import Context
-from Products.SilvaDocument.Document import Document,DocumentVersion
+from Products.SilvaDocument.Document import Document, DocumentVersion
 
-from silvaxmlattribute import SilvaXMLAttribute
-from interfaces import INewsItem, INewsItemVersion, INewsPublication
+#from silvaxmlattribute import SilvaXMLAttribute
+from Products.SilvaNews.interfaces import (
+    INewsItem, INewsItemVersion, INewsPublication)
 
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
@@ -107,47 +108,6 @@ class NewsItem(Document):
         version = getattr(self, id, None)
         version.set_display_datetime(dt)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'implements_newsitem')
-    def implements_newsitem(self):
-        return True
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'PUT')
-    def PUT(self, REQUEST=None, RESPONSE=None):
-        """PUT support"""
-        # XXX we may want to make this more modular/pluggable at some point
-        # to allow more content-types (+ transformations)
-        if REQUEST is None:
-            REQUEST = self.REQUEST
-        if RESPONSE is None:
-            RESPONSE = REQUEST.RESPONSE
-        content = REQUEST['BODYFILE'].read()
-        self.save_title_and_metadata(content)
-        self.get_editable().content.saveEditorHTML(content)
-        self.sec_update_last_author_info()
-
-    def save_title_and_metadata(self, html):
-        handler = MetaDataSaveHandler()
-        parseString(html, handler)
-
-        version = self.get_editable()
-        version.set_subjects(handler.metadata['subjects'])
-        version.set_target_audiences(handler.metadata['target_audiences'])
-        # a bit nasty, should perhaps happen in AgendaItem only?
-        if hasattr(version, 'start_datetime'):
-            version.set_start_datetime(
-                DateTime(handler.metadata['start_datetime'][0]))
-        if hasattr(version, 'end_datetime'):
-            end_datetime = handler.metadata['end_datetime'][0]
-            if not end_datetime:
-                end_datetime = None
-            else:
-                end_datetime = DateTime(end_datetime)
-            version.set_end_datetime(end_datetime)
-        if hasattr(version, 'location'):
-            version.set_location(handler.metadata['location'][0])
-        version.set_title(handler.title)
 
 InitializeClass(NewsItem)
 
@@ -163,15 +123,30 @@ class NewsItemVersion(DocumentVersion):
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
-        self.content = SilvaXMLAttribute('content')
 
 
-    def _get_document_element(self):
-        """returns the document element of this
-           version's ParsedXML object.
-           for News Items, this is inside a
-           silvaxmlattribute"""
-        return self.content.get_content().documentElement
+    def set_document_xml_from(self, data, format='kupu', request=None):
+        handler = MetaDataSaveHandler()
+        parseString(data, handler)
+
+        self.set_subjects(handler.metadata.get('subjects', []))
+        self.set_target_audiences(handler.metadata.get('target_audiences', []))
+        # a bit nasty, should perhaps happen in AgendaItem only?
+        if hasattr(self, 'start_datetime'):
+            self.set_start_datetime(
+                DateTime(handler.metadata['start_datetime'][0]))
+        if hasattr(self, 'end_datetime'):
+            end_datetime = handler.metadata['end_datetime'][0]
+            if not end_datetime:
+                end_datetime = None
+            else:
+                end_datetime = DateTime(end_datetime)
+            self.set_end_datetime(end_datetime)
+        if hasattr(self, 'location'):
+            self.set_location(handler.metadata['location'][0])
+        self.set_title(handler.title)
+        return super(NewsItemVersion, self).set_document_xml_from(
+            data, format=format, request=request)
 
     # XXX I would rather have this get called automatically on setting
     # the publication datetime, but that would have meant some nasty monkey-
