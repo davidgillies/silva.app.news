@@ -66,18 +66,17 @@ class CalendarDateRepresentation(object):
         utc_start_datetime = utc_datetime(start_datetime)
         utc_end_datetime = end_datetime and \
             utc_datetime(end_datetime, end=True)
+        if not utc_end_datetime:
+            if all_day:
+                utc_end_datetime = \
+                    utc_datetime(end_of_day(start_datetime))
+            else:
+                utc_end_datetime = \
+                    utc_start_datetime + self.default_duration
 
+        self.start_datetime = utc_start_datetime
+        self.end_datetime = utc_end_datetime
         self.all_day = all_day
-
-        if self.all_day:
-            self.start_datetime = start_of_day(start_datetime)
-            if end_datetime is None:
-                self.end_datetime = end_of_day(self.start_datetime)
-            self.end_datetime = utc_end_datetime and \
-                end_of_day(end_datetime)
-        else:
-            self.start_datetime = utc_start_datetime
-            self.end_datetime = utc_end_datetime
 
         self.validate()
         if recurrence is not None:
@@ -90,12 +89,10 @@ class CalendarDateRepresentation(object):
 
     def set_start_datetime(self, value):
         self.start_datetime = utc_datetime(value)
-        self.validate()
         return self.start_datetime
 
     def set_end_datetime(self, value):
         self.end_datetime = utc_datetime(value)
-        self.validate()
         return self.end_datetime
 
     def validate(self):

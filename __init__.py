@@ -10,7 +10,7 @@ def initialize(context):
     from Products.SilvaNews.silvaxml import xmlexport, xmlimport
     xmlexport.initializeXMLExportRegistry()
     xmlimport.initializeXMLImportRegistry()
-    
+
     from Products.SilvaNews import indexing
     context.registerClass(
         indexing.IntegerRangesIndex,

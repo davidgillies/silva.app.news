@@ -7,6 +7,7 @@
     >
 
   <include package="five.grok" />
+  <include package="Products.Silva" />
   <include package=".browser" />
 
   <!-- Grok Silva News -->

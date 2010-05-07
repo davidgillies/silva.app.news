@@ -2,42 +2,59 @@
 # See also LICENSE.txt
 # $Id$
 
-from Testing.ZopeTestCase import installProduct
-installProduct('SilvaNews')
-
-from Products.Silva.tests import SilvaTestCase
+from Products.Silva.testing import SilvaLayer
 from DateTime import DateTime
+import transaction
+import Products.SilvaNews
+import unittest
 
-class SilvaNewsTestCase(SilvaTestCase.SilvaTestCase):
-    def afterSetUp(self):
-        self.installExtension('SilvaNews')
+
+class SilvaNewsLayer(SilvaLayer):
+
+    def _install_application(self, app):
+        super(SilvaNewsLayer, self)._install_application(app)
+        app.root.service_extensions.install('SilvaNews')
+        transaction.commit()
+
+
+class SilvaNewsTestCase(unittest.TestCase):
+
+    layer = SilvaNewsLayer(Products.SilvaNews, zcml_file='configure.zcml')
+
+    def setUp(self):
+        self.root = self.layer.get_application()
+        self.service_news = self.root.service_news
+        self.catalog = self.root.service_catalog
 
     def add_news_publication(self, object, id, title, **kw):
-        self.addObject(object, 'NewsPublication', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addNewsPublication(id, title, **kw)
         return getattr(object, id)
 
     def add_plain_article(self, object, id, title, **kw):
-        self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
-        return getattr(object, id)
-
-    def add_plain_article(self, object, id, title, **kw):
-        self.addObject(object, 'PlainArticle', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addPlainArticle(id, title, **kw)
         return getattr(object, id)
 
     def add_news_viewer(self, object, id, title, **kw):
-        self.addObject(object, 'NewsViewer', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addNewsViewer(id, title, **kw)
         return getattr(object, id)
 
     def add_news_filter(self, object, id, title, **kw):
-        self.addObject(object, 'NewsFilter', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addNewsFilter(id, title, **kw)
         return getattr(object, id)
 
     def add_agenda_filter(self, object, id, title, **kw):
-        self.addObject(object, 'AgendaFilter', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addAgendaFilter(id, title, **kw)
         return getattr(object, id)
 
     def add_published_agenda_item(self, object, id, title, sdt, edt, **kw):
-        obj = self.addObject(object, 'PlainAgendaItem', id, title=title, product='SilvaNews', **kw)
+        factory = object.manage_addProduct['SilvaNews']
+        factory.manage_addPlainAgendaItem(id, title, **kw)
+        obj = getattr(object, id)
         ver = obj.get_editable()
         ver.set_start_datetime(sdt)
         ver.set_end_datetime(edt)
@@ -50,8 +67,8 @@ class SilvaNewsTestCase(SilvaTestCase.SilvaTestCase):
         return getattr(object, id)
 
 class NewsBaseTestCase(SilvaNewsTestCase):
-    def afterSetUp(self):
-        super(NewsBaseTestCase, self).afterSetUp()
+    def setUp(self):
+        super(NewsBaseTestCase, self).setUp()
         self.sm = self.root.service_metadata
         service_news = self.service_news = self.root.service_news
         service_news.add_subject('sub', 'Subject')
@@ -80,7 +97,9 @@ class NewsBaseTestCase(SilvaNewsTestCase):
         binding = self.sm.getMetadata(self.source2)
         binding.setValues('snn-np-settings',{'is_private':'yes'},reindex=1)
 
-        self.folder = self.add_folder(self.root, 'somefolder', 'Some Folder')
+        factory = self.root.manage_addProduct['Silva']
+        factory.manage_addFolder('somefolder', 'Some Folder')
+        self.folder = getattr(self.root, 'somefolder')
         self.source3 = self.add_news_publication(self.folder, 'source3', 'Folder ')
         binding = self.sm.getMetadata(self.source3)
         binding.setValues('snn-np-settings',{'is_private':'yes'},reindex=1)
