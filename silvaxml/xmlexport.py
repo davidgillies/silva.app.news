@@ -17,7 +17,7 @@ def initializeXMLExportRegistry():
     from Products.SilvaNews.NewsPublication import NewsPublication
     from Products.SilvaNews.PlainArticle import PlainArticle, PlainArticleVersion
     from Products.SilvaNews.PlainAgendaItem import PlainAgendaItem, PlainAgendaItemVersion
-    
+
     exporter = theXMLExporter
     exporter.registerNamespace('silvanews', NS_SILVANEWS)
     exporter.registerProducer(NewsViewer, NewsViewerProducer)
@@ -31,6 +31,7 @@ def initializeXMLExportRegistry():
     exporter.registerProducer(PlainArticleVersion, PlainArticleVersionProducer)
     exporter.registerProducer(PlainAgendaItem, PlainAgendaItemProducer)
     exporter.registerProducer(PlainAgendaItemVersion, PlainAgendaItemVersionProducer)
+
 
 class NewsPublicationProducer(SilvaBaseProducer):
     """Export a News Publication object to XML.
@@ -58,70 +59,89 @@ class NewsPublicationProducer(SilvaBaseProducer):
         self.endElement('content')
         self.endElementNS(NS_SILVANEWS,'newspublication')
 
+
 class RSSAggregatorProducer(SilvaBaseProducer):
-     """Export a RSSAggregator object to XML."""
+     """Export a RSSAggregator object to XML.
+     """
+
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'rssaggregator',
-                           {'id': self.context.id,
-                            'feed_urls': ','.join(self.context.get_feeds())
-                           })
+         self.startElementNS(
+             NS_SILVANEWS,
+             'rssaggregator',
+             {'id': self.context.id,
+              'feed_urls': ','.join(self.context.get_feeds())
+              })
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'rssaggregator')
+
 
 class CategoryFilterProducer(SilvaBaseProducer):
      """Export a CategoryFilter object to XML."""
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'categoryfilter',
-                           {'id': self.context.id,
-                            'target_audiences': ','.join(self.context.target_audiences()),
-                            'subjects': ','.join(self.context.subjects()),
-                           })
+         self.startElementNS(
+             NS_SILVANEWS,
+             'categoryfilter',
+             {'id': self.context.id,
+              'target_audiences': ','.join(self.context.target_audiences()),
+              'subjects': ','.join(self.context.subjects()),
+              })
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'categoryfilter')
 
+
 class NewsFilterProducer(SilvaBaseProducer):
-     """Export a NewsFilter object to XML."""
+     """Export a NewsFilter object to XML.
+     """
+
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'newsfilter',
-                           {'id': self.context.id,
-                            'target_audiences': ','.join(self.context.target_audiences()),
-                            'subjects': ','.join(self.context.subjects()),
-                            'show_agenda_items': str(self.context.show_agenda_items()),
-                            'keep_to_path': str(self.context.keep_to_path()),
-                            'excluded_items': ','.join(self.context.excluded_items()),
-                            'sources': ','.join(self.context.sources())})
+         self.startElementNS(
+             NS_SILVANEWS,
+             'newsfilter',
+             {'id': self.context.id,
+              'target_audiences': ','.join(self.context.target_audiences()),
+              'subjects': ','.join(self.context.subjects()),
+              'show_agenda_items': str(self.context.show_agenda_items()),
+              'keep_to_path': str(self.context.keep_to_path()),
+              'excluded_items': ','.join(self.context.excluded_items()),
+              'sources': ','.join(self.context.sources())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'newsfilter')
 
+
 class AgendaFilterProducer(SilvaBaseProducer):
-     """Export a AgendaFilter object to XML."""
+     """Export a AgendaFilter object to XML.
+     """
+
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'agendafilter',
-                           {'id': self.context.id,
-                            'target_audiences': ','.join(self.context.target_audiences()),
-                            'subjects': ','.join(self.context.subjects()),
-                            'keep_to_path': str(self.context.keep_to_path()),
-                            'excluded_items': ','.join(self.context.excluded_items()),
-                            'sources': ','.join(self.context.sources())})
+         self.startElementNS(
+             NS_SILVANEWS,
+             'agendafilter',
+             {'id': self.context.id,
+              'target_audiences': ','.join(self.context.target_audiences()),
+              'subjects': ','.join(self.context.subjects()),
+              'keep_to_path': str(self.context.keep_to_path()),
+              'excluded_items': ','.join(self.context.excluded_items()),
+              'sources': ','.join(self.context.sources())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'agendafilter')
 
+
 class NewsViewerProducer(SilvaBaseProducer):
-     """Export a NewsViewer object to XML."""
+     """Export a NewsViewer object to XML.
+     """
+
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'newsviewer',
-                           {'id': self.context.id,
-                            'number_to_show': str(self.context.number_to_show()),
-                            'number_to_show_archive': str(self.context.number_to_show_archive()),
-                            'number_is_days': str(self.context.number_is_days()),
-                            'filters': ','.join(self.context.filters())})
+         self.startElementNS(
+             NS_SILVANEWS,
+             'newsviewer',
+             {'id': self.context.id,
+              'number_to_show': str(self.context.number_to_show()),
+              'number_to_show_archive': str(self.context.number_to_show_archive()),
+              'number_is_days': str(self.context.number_is_days()),
+              'filters': ','.join(self.context.filters())})
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'newsviewer')
+
 
 class AgendaViewerProducer(SilvaBaseProducer):
      """Export a AgendaViewer object to XML."""
@@ -135,6 +155,7 @@ class AgendaViewerProducer(SilvaBaseProducer):
          self.metadata()
          self.endElementNS(NS_SILVANEWS,'agendaviewer')
 
+
 class PlainArticleProducer(VersionedContentProducer):
     """Export a PlainArticle object to XML.
     """
@@ -147,22 +168,28 @@ class PlainArticleProducer(VersionedContentProducer):
         self.versions()
         self.endElementNS(NS_SILVANEWS,'plainarticle')
 
+
 class PlainArticleVersionProducer(DocumentVersionProducer):
     """Export a version of a PlainArticle object to XML.
     """
+
     def sax(self):
         """sax"""
-        self.startElement('content', {'version_id': self.context.id,
-                                      'subjects': ','.join(self.context.subjects()),
-                                      'target_audiences': ','.join(self.context.target_audiences())})
+        self.startElement(
+            'content',
+            {'version_id': self.context.id,
+             'subjects': ','.join(self.context.subjects()),
+             'target_audiences': ','.join(self.context.target_audiences())})
         self.metadata()
-        node = self.context.content._content.documentElement.getDOMObj()
+        node = self.context.content.documentElement.getDOMObj()
         self.sax_node(node)
         self.endElement('content')
+
 
 class PlainAgendaItemProducer(VersionedContentProducer):
     """Export an AgendaItem object to XML.
     """
+
     def sax(self):
         """sax"""
         self.startElementNS(NS_SILVANEWS,
@@ -172,22 +199,25 @@ class PlainAgendaItemProducer(VersionedContentProducer):
         self.versions()
         self.endElementNS(NS_SILVANEWS,'agendaitem')
 
+
 class PlainAgendaItemVersionProducer(DocumentVersionProducer):
     """Export a version of an AgendaItem object to XML.
     """
+
     def sax(self):
         """sax"""
         edt = self.context.end_datetime()
-        if edt: edt = edt.HTML4()
-        self.startElement('content', {'version_id': self.context.id,
-                                      'subjects': ','.join(self.context.subjects()),
-                                      'target_audiences': ','.join(self.context.target_audiences()),
-                                      'start_datetime':self.context.start_datetime().HTML4(),
-                                      'end_datetime':edt,
-                                      'location':self.context.location()})
-
+        if edt:
+            edt = edt.HTML4()
+        self.startElement(
+            'content',
+            {'version_id': self.context.id,
+             'subjects': ','.join(self.context.subjects()),
+             'target_audiences': ','.join(self.context.target_audiences()),
+             'start_datetime':self.context.start_datetime().HTML4(),
+             'end_datetime':edt,
+             'location':self.context.location()})
         self.metadata()
-        # needed to add _content to the line below to access the parsedXML - jon
-        node = self.context.content._content.documentElement.getDOMObj()
+        node = self.context.content.documentElement.getDOMObj()
         self.sax_node(node)
         self.endElement('content')

@@ -372,17 +372,6 @@ class NewsItemVersionIndexableAdapter(IndexableAdapter):
         return []
 
 
-class NewsItemView(silvaviews.View):
-    """ View on a News Item (either Article / Agenda ) """
-
-    grok.context(INewsItem)
-    template = grok.PageTemplate(filename='templates/NewsItem/index.pt')
-
-    def update(self):
-        self.request['model'] = self.content
-        self.document_body = self.content.content.render()
-
-
 class NewsItemListItemView(grok.View):
     """ Render as a list items (search results)
     """

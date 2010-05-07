@@ -6,11 +6,12 @@ silvaconf.extensionName("SilvaNews")
 silvaconf.extensionTitle("Silva News Network")
 silvaconf.extensionDepends(["SilvaDocument","SilvaExternalSources"])
 
-def initialize(context):
-    from Products.SilvaNews.silvaxml import xmlexport, xmlimport
-    xmlexport.initializeXMLExportRegistry()
-    xmlimport.initializeXMLImportRegistry()
+from Products.SilvaNews.silvaxml import xmlexport, xmlimport
+xmlexport.initializeXMLExportRegistry()
+xmlimport.initializeXMLImportRegistry()
 
+
+def initialize(context):
     from Products.SilvaNews import indexing
     context.registerClass(
         indexing.IntegerRangesIndex,

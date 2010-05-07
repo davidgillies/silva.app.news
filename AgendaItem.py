@@ -22,13 +22,15 @@ from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
-from Products.Silva import SilvaPermissions
 from silva.core.interfaces import IVersionedContent
-from Products.Silva.helpers import add_and_edit
 from silva.core.services.interfaces import ICataloging
+from silva.core.views import views as silvaviews
+
+from Products.Silva import SilvaPermissions
+from Products.Silva.helpers import add_and_edit
 
 # SilvaNews
-from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion, NewsItemView
+from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.datetimeutils import (utc_datetime,
     CalendarDateRepresentation, local_timezone)
 from datetime import datetime
@@ -155,13 +157,15 @@ class AgendaItemVersion(NewsItemVersion):
 InitializeClass(AgendaItemVersion)
 
 
-class AgendaItemView(NewsItemView):
+class AgendaItemView(silvaviews.View):
     grok.context(IAgendaItem)
-    template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
+    #template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
 
     def event_url(self):
         return "%s/event.ics" % self.context.absolute_url()
 
+    def render(self):
+        return 'ta gueule'
 
 class AgendaListItemView(grok.View):
     """ Render as a list items (search results)
