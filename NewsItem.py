@@ -72,13 +72,11 @@ class MetaDataSaveHandler(ContentHandler):
 class NewsItem(Document):
     """Base class for all kinds of news items.
     """
+
+    grok.baseclass()
+    grok.implements(INewsItem)
+
     security = ClassSecurityInfo()
-
-    #remove the formed editor support interface, as news items
-    # don't support the forms-based editor
-    implementsOnly(INewsItem)
-    silvaconf.baseclass()
-
     # MANIPULATORS
 
     security.declareProtected(SilvaPermissions.ApproveSilvaContent,
@@ -167,11 +165,6 @@ class NewsItemVersion(DocumentVersion):
         self._display_datetime = None
         self.content = SilvaXMLAttribute('content')
 
-    def clearEditorCache(self):
-        """ override this method in DocumentVersion.  There is no
-            editor cache for news/agenda items, as they don't use
-            the forms-based editor """
-        pass
 
     def _get_document_element(self):
         """returns the document element of this
@@ -233,6 +226,9 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
+        # XXX To rebuild properly with less madness
+        return u''
+
         # something in here needs 'model', so make sure it's available...
         model = self.REQUEST.get('model',None)
         self.REQUEST['model'] = self
@@ -275,7 +271,7 @@ class NewsItemVersion(DocumentVersion):
 
             returns '' if no image is available
         """
-        images = self.content._content.documentElement.getElementsByTagName('image')
+        images = self._get_document_element().getElementsByTagName('image')
         if not images:
             return ''
         #check to see if Pil is installed
@@ -371,13 +367,12 @@ class NewsItemVersion(DocumentVersion):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        s = StringIO()
-        self.content.toXML(s)
-        content = self._flattenxml(s.getvalue())
-        return "%s %s %s %s" % (self.get_title(),
-                                      " ".join(self._subjects),
-                                      " ".join(self._target_audiences),
-                                      content)
+        return " ".join((super(NewsItemVersion, self).fulltext()))
+        # XXX Add back subjects and target_audiences but they are not
+        # what they claim to be (surprising).
+
+        #" ".join(self._subjects),
+        #" ".join(self._target_audiences)))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'publication_time')

@@ -8,8 +8,7 @@ from silva.core.conf.installer import DefaultInstaller
 from silva.core.interfaces import IInvisibleService
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
-from interfaces import ISilvaNewsExtension
-from ServiceNews import manage_addServiceNews
+from Products.SilvaNews.interfaces import ISilvaNewsExtension
 
 
 class SilvaNewsInstaller(DefaultInstaller):
@@ -17,23 +16,19 @@ class SilvaNewsInstaller(DefaultInstaller):
     
     def install(self, root):
         DefaultInstaller.install(self, root)
-        # and add a service_news to the Silva root
-        #if not hasattr(root, 'service_news'):
-        #    root.manage_addProduct['SilvaNews'].manage_addServiceNews(
-        #        'service_news', 'Silva News Network Service')
         self.setup_catalog(root)
         self.configure_security(root)
         self.register_views(root.service_view_registry)
         self.configure_addables(root)
         self.configure_metadata(root)
-        
+
         if not hasattr(root.aq_explicit,'service_news'):
-            manage_addServiceNews(root, 'service_news', 'Silva News Network Service')
-        
+            factory = root.manage_addProduct['SilvaNews']
+            factory.manage_addServiceNews('service_news')
+
     def uninstall(self, root):
         DefaultInstaller.uninstall(self, root)
         self.unregister_views(root.service_view_registry)
-        self.unconfigure_xml_widgets(root)
         self.unconfigure_metadata(root)
         
     def unconfigure_metadata(self, root):
@@ -169,13 +164,7 @@ class SilvaNewsInstaller(DefaultInstaller):
         """Sets the ZCatalog up"""
         catalog = root.service_catalog
     
-        #object_path is the Content Object path (parent)
-        #of Version objects (e.g. PlainNewsArticleVersion).
         columns = ['object_path','end_datetime','start_datetime','location','get_title', 'display_datetime','get_intro']
-        #will need to add: external_link, link_method
-        #                  subjects, target_audiences, teaser
-        # , formatEventSummary (need to determine how to integrate "my"
-        #     event intro and get_intro
     
         indexes = [
             ('object_path', 'FieldIndex'),
@@ -208,7 +197,7 @@ class SilvaNewsInstaller(DefaultInstaller):
                 catalog.addIndex(field_name, field_type, extra)
             else:
                 catalog.addIndex(field_name, field_type)
-    
+
     def configure_security(self, root):
         add_permissions = [
             'Add Silva Agenda Filters',
@@ -227,24 +216,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         for perm in add_permissions:
             if perm in p_perms:
                 root.manage_permission(perm, AUTHOR_ROLES)
-
-    def unconfigure_xml_widgets(self,root):
-        if hasattr(root.aq_explicit, 'service_news_sub_viewer'):
-            root.manage_delObjects(['service_news_sub_viewer'])
-        if hasattr(root.aq_explicit, 'service_news_sub_editor'):
-            root.manage_delObjects(['service_news_sub_editor'])
-
-    def registerNewsSubViewer(self,root):
-        wr = root.service_news_sub_viewer
-        wr.clearWidgets()
-    
-        wr.addWidget('doc', ('service_widgets', 'top', 'field', 'mode_view'))
-    
-        for name in ['p', 'list', 'heading', 'pre', 'toc', 'image',
-                     'nlist', 'table', 'dlist', 'source', 'cite']:
-            wr.addWidget(
-                name,
-                ('service_widgets', 'element', 'doc_elements', name, 'mode_view'))
 
 
 install = SilvaNewsInstaller("SilvaNews", ISilvaNewsExtension)

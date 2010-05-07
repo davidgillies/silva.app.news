@@ -6,15 +6,12 @@ from five import grok
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
-from OFS.interfaces import IObjectWillBeRemovedEvent
 from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 #Silva
 from silva.core import conf as silvaconf
-from silva.core.conf.utils import registerService, unregisterService
 from silva.core.services.base import SilvaService
-from Products.Silva.helpers import add_and_edit
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 #SilvaNews
@@ -127,7 +124,7 @@ class CategoryMixin(object):
         """see subject_form_tree"""
         tree = self.target_audience_tree(audject)
         return self._form_tree_helper(tree)
-        
+
     def _form_tree_helper(self, tree):
         ret = []
         for el in tree:
@@ -152,7 +149,6 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     meta_type = 'Silva News Service'
 
     silvaconf.icon('www/newsservice.gif')
-    silvaconf.factory('manage_addServiceNews')
 
     manage_options = (
                       {'label': 'Edit', 'action': 'manage_main'},
@@ -165,8 +161,8 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                                             globals(), 
                                             __name__='manage_rename_view')
 
-    def __init__(self, id, title):
-        SilvaService.__init__(self, id, title)
+    def __init__(self, id):
+        SilvaService.__init__(self, id)
         self._subjects = Tree.Root()
         self._target_audiences = Tree.Root()
         self._locale = 'en'
@@ -238,7 +234,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                                 'target_audiences')
     def target_audiences(self):
         """returns a list of (id, title) tuples"""
-        return [(x.id(), x.title()) for x in 
+        return [(x.id(), x.title()) for x in
                 self._target_audiences.getElements()]
 
     security.declareProtected('View',
@@ -271,7 +267,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         node.parent().removeChild(node)
         self._p_changed = 1
 
-            
+
     security.declareProtected('View',
                                 'locale')
     def locale(self):
@@ -283,7 +279,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     def date_format(self):
         """returns the current date format
 
-            Z3's locale package has a nunber of different date formats to 
+            Z3's locale package has a nunber of different date formats to
             choose from per locale, managers can set what format to use
             on this service (since there's no better place atm)
         """
@@ -293,7 +289,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                               'manage_add_subject')
     def manage_add_subject(self, REQUEST):
         """Add a subject"""
-        if (not REQUEST.has_key('subject') or not 
+        if (not REQUEST.has_key('subject') or not
                 REQUEST.has_key('parent') or REQUEST['subject'] == ''
                 or not REQUEST.has_key('title') or REQUEST['title'] == ''):
             return self.edit_tab(
@@ -301,7 +297,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
         if REQUEST['parent']:
             try:
-                self.add_subject(unicode(REQUEST['subject'], 'UTF-8'), 
+                self.add_subject(unicode(REQUEST['subject'], 'UTF-8'),
                                     unicode(REQUEST['title'], 'UTF-8'),
                                     unicode(REQUEST['parent'], 'UTF-8'))
             except Tree.DuplicateIdError, e:
@@ -314,7 +310,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(
-                    manage_tabs_message='Subject %s added' % 
+                    manage_tabs_message='Subject %s added' %
                         unicode(REQUEST['subject'], 'UTF-8'))
 
     security.declareProtected('Setup ServiceNews',
@@ -333,15 +329,15 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
         return self.edit_tab(
                 manage_tabs_message='Subjects %s removed' % ', '.join(subs))
-        
+
     security.declareProtected('Setup ServiceNews',
                               'manage_add_target_audience')
     def manage_add_target_audience(self, REQUEST):
         """Add a target_audience"""
         if (not REQUEST.has_key('target_audience') or
-                not REQUEST.has_key('parent') or 
+                not REQUEST.has_key('parent') or
                 REQUEST['target_audience'] == '' or
-                not REQUEST.has_key('title') or 
+                not REQUEST.has_key('title') or
                 REQUEST['title'] == ''):
             return self.edit_tab(
                 manage_tabs_message='Missing id or title')
@@ -349,7 +345,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         if REQUEST['parent']:
             try:
                 self.add_target_audience(
-                            unicode(REQUEST['target_audience'], 'UTF-8'), 
+                            unicode(REQUEST['target_audience'], 'UTF-8'),
                             unicode(REQUEST['title'], 'UTF-8'),
                             unicode(REQUEST['parent'], 'UTF-8'))
             except Tree.DuplicateIdError, e:
@@ -363,7 +359,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(
-                    manage_tabs_message='Target audience %s added' % 
+                    manage_tabs_message='Target audience %s added' %
                         unicode(REQUEST['target_audience'], 'UTF-8'))
 
     security.declareProtected('Setup ServiceNews',
@@ -382,20 +378,20 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(
-                    manage_tabs_message='Target audiences %s removed' % 
+                    manage_tabs_message='Target audiences %s removed' %
                         ', '.join(tas))
 
     security.declareProtected('Setup ServiceNews',
                               'manage_rename_start')
     def manage_rename_start(self, REQUEST):
         """Rename one or more items"""
-        if (not REQUEST.has_key('subjects') and not 
+        if (not REQUEST.has_key('subjects') and not
                 REQUEST.has_key('target_audiences')):
             return self.edit_tab(
                 manage_tabs_message='No items selected to rename')
         return self.manage_rename_view()
 
-    security.declareProtected('Setup ServiceNews', 
+    security.declareProtected('Setup ServiceNews',
                               'manage_rename_subjects')
     def manage_rename_subjects(self, REQUEST):
         """Rename subjects"""
@@ -418,12 +414,12 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         if illegal:
             return self.edit_tab(
                 manage_tabs_message=
-                    'Items %s could not be renamed (name already in use).' % 
+                    'Items %s could not be renamed (name already in use).' %
                         ', '.join(illegal))
         else:
             return self.edit_tab(manage_tabs_message='Items renamed')
 
-    security.declareProtected('Setup ServiceNews', 
+    security.declareProtected('Setup ServiceNews',
                               'manage_rename_target_audiences')
     def manage_rename_target_audiences(self, REQUEST):
         """Rename target audiences"""
@@ -446,7 +442,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         if illegal:
             return self.edit_tab(
                 manage_tabs_message=
-                    'Items %s could not be renamed (name already in use).' % 
+                    'Items %s could not be renamed (name already in use).' %
                         ', '.join(illegal))
         else:
             return self.edit_tab(manage_tabs_message='Items renamed')
@@ -457,7 +453,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                                 'manage_set_locale')
     def manage_set_locale(self, REQUEST):
         """set the locale and date format
-            
+
             used for displaying public date/times
         """
         field_errors = {
@@ -496,17 +492,3 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
 
 InitializeClass(ServiceNews)
-
-def manage_addServiceNews(self, id, title='', REQUEST=None):
-    """Add service to folder
-    """
-    # add actual object
-    service = ServiceNews(id, title)
-    registerService(self, id, service, IServiceNews)
-    # respond to the add_and_edit button if necessary
-    add_and_edit(self, id, REQUEST)
-    return ''
-
-@silvaconf.subscribe(IServiceNews, IObjectWillBeRemovedEvent)
-def unregisterNewsService(service, event):
-    unregisterService(service, IServiceNews)
