@@ -28,28 +28,29 @@ def __allow_access_to_unprotected_subobjects__(name, value=None):
 
 
 CLASS_CHANGES = {
-    'Products.SilvaNews.silvaxmlattribute.SilvaXMLAttribute':
-        'Persitence.Persistent',
+        'Products.SilvaNews.silvaxmlattribute SilvaXMLAttribute':
+            'Persitence Persistent',
 
-    # filters
+        # filters
 
-    'Products.SilvaNews.AgendaFilter.AgendaFilter':
-        'Products.SilvaNews.filters.AgendaFilter.AgendaFilter',
-    'Products.SilvaNews.CategoryFilter.CategoryFilter':
-        'Products.SilvaNews.filters.CategoryFilter.CategoryFilter',
-    'Products.SilvaNews.Filter.Filter':
-        'Products.SilvaNews.filters.Filter.Filter',
-    'Products.SilvaNews.NewsFilter.NewsFilter':
-        'Products.SilvaNews.filters.NewsFilter.NewsFilter',
-    'Products.SilvaNews.NewsItemFilter.NewsItemFilter':
-        'Products.SilvaNews.filters.NewsItemFilter.NewsItemFilter',
+        'Products.SilvaNews.AgendaFilter AgendaFilter':
+            'Products.SilvaNews.filters.AgendaFilter AgendaFilter',
+        'Products.SilvaNews.CategoryFilter CategoryFilter':
+            'Products.SilvaNews.filters.CategoryFilter CategoryFilter',
+        'Products.SilvaNews.Filter Filter':
+            'Products.SilvaNews.filters.Filter Filter',
+        'Products.SilvaNews.NewsFilter NewsFilter':
+            'Products.SilvaNews.filters.NewsFilter NewsFilter',
+        'Products.SilvaNews.NewsItemFilter NewsItemFilter':
+            'Products.SilvaNews.filters.NewsItemFilter NewsItemFilter',
 
-    # viewers
+        # viewers
 
-    'Products.SilvaNews.AgendaViewer.AgendaViewer':
-        'Products.SilvaNews.viewers..AgendaViewer.AgendaViewer',
-    'Products.SilvaNews.InlineViewer.InlineViewer':
-        'Products.SilvaNews.viewers.InlineViewer.InlineViewer',
-    'Products.SilvaNews.NewsViewer.NewsViewer':
-        'Products.SilvaNews.viewers.NewsViewer.NewsViewer',
-}
+        'Products.SilvaNews.AgendaViewer AgendaViewer':
+            'Products.SilvaNews.viewers.AgendaViewer AgendaViewer',
+        'Products.SilvaNews.InlineViewer InlineViewer':
+            'Products.SilvaNews.viewers.InlineViewer InlineViewer',
+        'Products.SilvaNews.NewsViewer NewsViewer':
+            'Products.SilvaNews.viewers.NewsViewer NewsViewer',
+    }
+
