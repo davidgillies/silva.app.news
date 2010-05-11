@@ -2,37 +2,34 @@
 # See also LICENSE.txt
 # $Revision: 1.35 $
 
-from zope.interface import implements, implementsOnly, implementedBy
 from five import grok
+from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
 # Python
-from StringIO import StringIO
 from xml.sax import parseString
 from xml.sax.handler import ContentHandler
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from DateTime import DateTime
 from App.class_init import InitializeClass
+from DateTime import DateTime
 
 # Silva
-from silva.core import conf as silvaconf
+from silva.core.interfaces import IRoot
+from silva.core.references.interfaces import IReferenceService
 from silva.core.services.interfaces import ICataloging
 from silva.core.views import views as silvaviews
+
 from Products.Silva import SilvaPermissions
-from Products.Silva.helpers import add_and_edit
-from Products.Silva.Image import havePIL
-from Products.Silva.VersionedContent import VersionedContent
-from silva.core.interfaces import IRoot
-from Products.Silva.SilvaObject import NoViewError
 from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
-
-from Products.SilvaDocument.transform.Transformer import EditorTransformer
-from Products.SilvaDocument.transform.base import Context
 from Products.SilvaDocument.Document import Document, DocumentVersion
+from Products.SilvaNews.interfaces import (INewsItem,
+    INewsItemVersion, INewsPublication)
+from Products.Silva.Versioning import VersioningError, empty_version
 
-#from silvaxmlattribute import SilvaXMLAttribute
-from Products.SilvaNews.interfaces import (
-    INewsItem, INewsItemVersion, INewsPublication)
+
+_ = MessageFactory('silva_news')
+
 
 class MetaDataSaveHandler(ContentHandler):
     def startDocument(self):
@@ -116,8 +113,8 @@ class NewsItemVersion(DocumentVersion):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
-    silvaconf.baseclass()
-    implements(INewsItemVersion)
+    grok.baseclass()
+    grok.implements(INewsItemVersion)
 
     def __init__(self, id):
         NewsItemVersion.inheritedAttribute('__init__')(self, id)
@@ -203,42 +200,8 @@ class NewsItemVersion(DocumentVersion):
             to minimally 1 element
         """
         # XXX To rebuild properly with less madness
-        return u''
+        return IntroHTML.transform(self)
 
-        # something in here needs 'model', so make sure it's available...
-        model = self.REQUEST.get('model',None)
-        self.REQUEST['model'] = self
-        content = self.content._content
-        ret = []
-        length = 0
-        se = self.service_editor
-        for child in content.childNodes[0].childNodes:
-            if child.nodeName in ('image','source'):
-                continue
-            # XXX the viewer is set every iteration because the renderView
-            # calls of certain elements will set it to something else
-            se.setViewer('service_news_sub_viewer')
-            add = se.renderView(child)
-            if type(add) != unicode:
-                add = unicode(add, 'UTF-8')
-            if len(add) + length > max_size:
-                ret.append(add)
-                break
-            length += len(add)
-            ret.append(add)
-            # break after the first <p> node
-            #if child.nodeName == 'p':
-            #    break
-        if model: #restore or remove model
-            self.REQUEST['model'] = model
-        else:
-            try: #for some reason this doesn't always work ???
-                #it seems that saving from kupu is broken if this isn't
-                #escaped
-                del self.REQUEST['model']
-            except AttributeError:
-                pass
-        return '\n'.join(ret)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_thumbnail')
@@ -247,21 +210,17 @@ class NewsItemVersion(DocumentVersion):
 
             returns '' if no image is available
         """
-        images = self._get_document_element().getElementsByTagName('image')
+        images = self.content.documentElement.getElementsByTagName('image')
         if not images:
             return ''
-        #check to see if Pil is installed
-        if not havePIL:
-            return ''
-        imgpath = images[0].getAttribute('path').split('/')
-        try:
-            img = self.restrictedTraverse(imgpath)
-        except KeyError:
-            return '[broken image]'
-        if not img:
-            return '[broken image]'
+        reference_name = images[0].getAttribute('reference')
+        service = getUtility(IReferenceService)
+        reference = service.get_reference(
+            self.context, name=reference_name)
+        image = reference.target
+
         tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
-                    (self.object().absolute_url(), img.tag(thumbnail=1)))
+                    (self.object().absolute_url(), image.tag(thumbnail=1)))
         if divclass:
             tag = '<div class="%s">%s</div>' % (divclass, tag)
         return tag
@@ -365,7 +324,7 @@ from Products.Silva.adapters.indexable import IndexableAdapter
 
 class NewsItemVersionIndexableAdapter(IndexableAdapter):
 
-    silvaconf.context(INewsItemVersion)
+    grok.context(INewsItemVersion)
 
     def getIndexes(self):
         # Override for news items is it change the content attribute
@@ -375,7 +334,7 @@ class NewsItemVersionIndexableAdapter(IndexableAdapter):
 
 
 ContentHTML = XSLTTransformer('newsitem.xslt', __file__)
-
+IntroHTML = XSLTTransformer('newsitem_intro.xslt', __file__)
 
 class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda )

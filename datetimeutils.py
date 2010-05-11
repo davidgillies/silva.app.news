@@ -1,5 +1,3 @@
-import icalendar
-import calendar
 from datetime import date, datetime
 from dateutil.rrule import rrule, rruleset, rrulestr
 from dateutil.relativedelta import relativedelta
@@ -85,7 +83,7 @@ class CalendarDateRepresentation(object):
     def get_duration(self):
         if self.end_datetime:
             return relativedelta(self.end_datetime, self.start_datetime)
-        return default_duration
+        return self.default_duration
 
     def set_start_datetime(self, value):
         self.start_datetime = utc_datetime(value)
