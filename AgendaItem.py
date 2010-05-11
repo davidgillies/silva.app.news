@@ -156,16 +156,20 @@ class AgendaItemVersion(NewsItemVersion):
 
 InitializeClass(AgendaItemVersion)
 
+from Products.SilvaNews.NewsItem import NewsItemView
 
-class AgendaItemView(silvaviews.View):
+
+class AgendaItemView(NewsItemView):
     grok.context(IAgendaItem)
-    #template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
+    template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
+
+    def event_img_url(self):
+        return '%s/++resource++Products.SilvaNews.browser/date.png' % \
+            self.context.absolute_url()
 
     def event_url(self):
         return "%s/event.ics" % self.context.absolute_url()
 
-    def render(self):
-        return 'ta gueule'
 
 class AgendaListItemView(grok.View):
     """ Render as a list items (search results)

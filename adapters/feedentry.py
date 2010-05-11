@@ -34,8 +34,8 @@ class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
         return self.version.location()
 
     def start_datetime(self):
-        return self.version.start_datetime().HTML4()
+        return self.version.start_datetime().isoformat()
 
     def end_datetime(self):
         edt = self.version.end_datetime()
-        return (edt and edt.HTML4()) or edt
+        return (edt and edt.isoformat()) or edt

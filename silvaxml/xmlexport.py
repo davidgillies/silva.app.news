@@ -208,13 +208,13 @@ class PlainAgendaItemVersionProducer(DocumentVersionProducer):
         """sax"""
         edt = self.context.end_datetime()
         if edt:
-            edt = edt.HTML4()
+            edt = edt.isoformat()
         self.startElement(
             'content',
             {'version_id': self.context.id,
              'subjects': ','.join(self.context.subjects()),
              'target_audiences': ','.join(self.context.target_audiences()),
-             'start_datetime':self.context.start_datetime().HTML4(),
+             'start_datetime':self.context.start_datetime().isoformat(),
              'end_datetime':edt,
              'location':self.context.location()})
         self.metadata()
