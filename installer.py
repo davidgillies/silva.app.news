@@ -1,11 +1,8 @@
 from os import path
 
-from zope import interface
-from zope.interface import Interface
 from App.Common import package_home
 
 from silva.core.conf.installer import DefaultInstaller
-from silva.core.interfaces import IInvisibleService
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
 from Products.SilvaNews.interfaces import ISilvaNewsExtension

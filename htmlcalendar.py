@@ -1,8 +1,4 @@
-import sys
-import datetime
-import locale as _locale
-
-from calendar import day_abbr, month_name, Calendar
+from calendar import day_abbr, month_name, Calendar, January
 
 class HTMLCalendar(Calendar):
     """

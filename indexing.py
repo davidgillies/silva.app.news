@@ -2,7 +2,7 @@ from zope.interface import implements
 from Products.PluginIndexes.interfaces import IPluggableIndex
 from Products.PluginIndexes.common.util import parseIndexRequest
 from Products.PluginIndexes.common import safe_callable
-from BTrees.IIBTree import (IIBTree, IISet, multiunion, difference,
+from BTrees.IIBTree import (IISet, multiunion, difference,
     intersection, union)
 from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
