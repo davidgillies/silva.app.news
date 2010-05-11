@@ -29,7 +29,7 @@ def __allow_access_to_unprotected_subobjects__(name, value=None):
 
 CLASS_CHANGES = {
         'Products.SilvaNews.silvaxmlattribute SilvaXMLAttribute':
-            'Persitence Persistent',
+            'OFS.SimpleItem SimpleItem',
 
         # filters
 
