@@ -23,7 +23,7 @@ class PlainAgendaItemVersion(AgendaItemVersion):
 InitializeClass(PlainAgendaItemVersion)
 
 
-class PlainAgendaItem (AgendaItem):
+class PlainAgendaItem(AgendaItem):
     """A News item for events. Includes date and location
        metadata, as well settings for subjects and audiences.
     """

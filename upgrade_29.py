@@ -1,15 +1,5 @@
 from silva.core.upgrade.upgrade import BaseUpgrader
+from silva.core.upgrade.upgrader.upgrade_230 import DocumentUpgrader
+import logging
 
-VERSION = '2.3a1'
 
-class DocumentUpgrader(BaseUpgrader):
-
-    def upgrade(self, obj):
-        parsed_xml = obj.content._content
-        obj.content = parsed_xml
-        return obj
-
-document_upgrader_agenda = \
-    DocumentUpgrader(VERSION, 'Silva Agenda Item Version', 100)
-document_upgrader_article = \
-    DocumentUpgrader(VERSION, 'Silva Article Version', 100)
