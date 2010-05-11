@@ -8,31 +8,22 @@ from five import grok
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
-from DateTime import DateTime
-
 from App.class_init import InitializeClass # Zope 2.12
 
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
-from Products.SilvaNews.interfaces import (INewsItem, INewsItemVersion,
-    INewsViewer)
+from Products.SilvaNews.interfaces import INewsViewer
 from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
-from silva.core.interfaces import IVersionedContent
 from silva.core.services.interfaces import ICataloging
-from silva.core.views import views as silvaviews
-
 from Products.Silva import SilvaPermissions
-from Products.Silva.helpers import add_and_edit
 
 # SilvaNews
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.datetimeutils import (utc_datetime,
-    CalendarDateRepresentation, local_timezone)
+    CalendarDateRepresentation)
 from datetime import datetime
 from icalendar.interfaces import IEvent
 from icalendar import Calendar
