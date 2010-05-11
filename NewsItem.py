@@ -199,9 +199,7 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        # XXX To rebuild properly with less madness
         return IntroHTML.transform(self)
-
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_thumbnail')
@@ -215,8 +213,7 @@ class NewsItemVersion(DocumentVersion):
             return ''
         reference_name = images[0].getAttribute('reference')
         service = getUtility(IReferenceService)
-        reference = service.get_reference(
-            self.context, name=reference_name)
+        reference = service.get_reference(self, name=reference_name)
         image = reference.target
 
         tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %

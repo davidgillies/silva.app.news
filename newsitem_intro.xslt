@@ -17,14 +17,10 @@
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
     doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" />
 
-  <xsl:template match="/">
-    <xsl:for-each select="//p[1]">
+  <xsl:template match="doc:doc">
+    <xsl:for-each select="//doc:p[1]">
       <xsl:apply-templates />
     </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template match="doc:doc">
-      <xsl:apply-templates />
   </xsl:template>
 
   <xsl:template match="silva:metadata" />
