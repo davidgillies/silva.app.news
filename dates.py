@@ -5,27 +5,9 @@
 
 DEFAULT_LOCALE_STRING = 'en'
 
-# I'm going to stick to plain class and functions here, no 'fancy'
-try:
-    from AccessControl import ModuleSecurityInfo
-except ImportError:
-    # no Zope
-    class ModuleSecurityInfo:
-        """Dummy module security info class"""
-        def __init__(self, modulename):
-            pass
-        def declareProtected(self, permission, attr):
-            pass
-        def declarePublic(self, attr):
-            pass
+from AccessControl import ModuleSecurityInfo
 
-try:
-    from Products import z3locales
-    import localdatetime
-except ImportError:
-    # put the Z3Locale/src dir in your PYTHONPATH to test this stand-alone
-    import localdatetime
-
+import localdatetime
 from datetime import datetime
 from DateTime import DateTime
 
