@@ -2,36 +2,26 @@
 # See also LICENSE.txt
 # $Revision: 1.18 $
 
-from zope.interface import implements
-
 # Zope
 from AccessControl import ClassSecurityInfo
-from DateTime import DateTime
 from App.class_init import InitializeClass
-from five import grok
 
 # Silva
 from silva.core import conf as silvaconf
-from silva.core.views import views as silvaviews
-
-from Products.Silva import SilvaPermissions
 
 # Silva
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
-from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 
 
 class PlainArticleVersion(NewsItemVersion):
     """Silva News PlainArticle version.
     """
     security = ClassSecurityInfo()
-
     meta_type = "Silva Article Version"
-
-    implements(INewsItemVersion)
 
     def __init__(self, id):
         PlainArticleVersion.inheritedAttribute('__init__')(self, id)
+
 
 InitializeClass(PlainArticleVersion)
 
@@ -49,6 +39,7 @@ class PlainArticle(NewsItem):
     silvaconf.icon("www/news_item.png")
     silvaconf.priority(3.7)
     silvaconf.versionClass(PlainArticleVersion)
+
 
 InitializeClass(PlainArticle)
 

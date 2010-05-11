@@ -8,14 +8,11 @@ from silva.core import conf as silvaconf
 from silva.core.conf import component
 
 from App.class_init import InitializeClass
-from AccessControl import ClassSecurityInfo
 from DateTime import DateTime
 
-from Products.Silva import SilvaPermissions
-from Products.Silva.adapters import adapter
-
 from Products.SilvaNews.adapters import interfaces
-from Products.SilvaNews.interfaces import INewsViewer, IAggregator, IAgendaViewer, INewsItem
+from Products.SilvaNews.interfaces import INewsViewer, IAggregator
+
 
 class NewsViewerNewsProvider(component.Adapter):
     """Works for BOTH News and Agenda Viewers!"""
@@ -33,6 +30,7 @@ class NewsViewerNewsProvider(component.Adapter):
             ref = NewsItemReference(obj, self.context)
             ret.append(ref)
         return ret
+
 
 class NewsItemReference(object):
     """a temporary object to wrap a newsitem"""
@@ -87,7 +85,9 @@ class NewsItemReference(object):
     def get_news_item(self):
         return self._item
 
+
 InitializeClass(NewsItemReference)
+
 
 class RSSItemReference(object):
     """a temporary object to wrap a newsitem"""
@@ -151,6 +151,7 @@ class RSSItemReference(object):
     def get_news_item(self):
         return self._item
 
+
 class RSSAggregatorNewsProvider(component.Adapter):
     
     implements(interfaces.INewsProvider)
@@ -168,8 +169,9 @@ class RSSAggregatorNewsProvider(component.Adapter):
             ret.append(RSSItemReference(item, self.context))
         return ret[:number]
 
+
 def getNewsProviderAdapter(context):
     """use zope3 adapter lookup mechanism to get the correct adapter"""
     """This function is here in case we need to lookup the adapter from
     untrusted code"""
-    return INewsProvider(context)
+    return interfaces.INewsProvider(context)

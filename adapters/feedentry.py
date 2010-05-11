@@ -5,8 +5,6 @@
 from zope.interface import implements
 
 from silva.core import conf as silvaconf
-from silva.core.conf import component
-
 from silva.core.interfaces.adapters import IFeedEntry
 from Products.SilvaDocument.adapters import feedentry
 

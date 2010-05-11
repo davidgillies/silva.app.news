@@ -2,14 +2,16 @@ from os import path
 
 from App.Common import package_home
 
+from silva.core.services.catalog import RecordStyle
 from silva.core.conf.installer import DefaultInstaller
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
 from Products.SilvaNews.interfaces import ISilvaNewsExtension
 
+
 class SilvaNewsInstaller(DefaultInstaller):
     """Installer for the Silva News Service"""
-    
+
     def install(self, root):
         DefaultInstaller.install(self, root)
         self.setup_catalog(root)
