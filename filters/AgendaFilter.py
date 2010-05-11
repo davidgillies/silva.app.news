@@ -9,9 +9,10 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass # Zope 2.12
 
 from DateTime import DateTime
+from datetime import datetime
 
 # Silva/News interfaces
-from Products.SilvaNews.interfaces import IAgendaFilter
+from Products.SilvaNews.interfaces import IAgendaFilter, IAgendaItem
 
 # Silva/News
 from silva.core import conf as silvaconf

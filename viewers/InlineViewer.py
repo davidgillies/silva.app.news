@@ -13,7 +13,6 @@ from App.Common import package_home
 from AccessControl import ClassSecurityInfo
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PageTemplates.ZopePageTemplate import ZopePageTemplate
-from zExceptions import NotFound
 
 from OFS.Image import Image
 
@@ -29,7 +28,7 @@ from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
 from Products.SilvaNews.interfaces import IViewer, IInlineViewer
 from Products.SilvaNews.adapters.interfaces import INewsProvider
-from Products.SilvaNews.adapters.newsprovider import getNewsProviderAdapter
+
 
 def ustr(x):
     if type(x) == unicode:
@@ -37,6 +36,7 @@ def ustr(x):
     elif type(x) == str:
         return unicode(x, 'UTF-8')
     return str(x)
+
 
 class InlineViewer(CodeSource):
     """A news viewer object to display news items within a Silva document
@@ -181,6 +181,7 @@ class InlineViewer(CodeSource):
         # XXX disabled for now since it's rather scary to just do
         # string manipulations on HTML...
         return intro
+
 
 InitializeClass(InlineViewer)
 

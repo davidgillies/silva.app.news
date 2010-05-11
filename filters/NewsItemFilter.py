@@ -292,7 +292,7 @@ class NewsItemFilter(Filter):
 
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
-            return result
+            return results
 
         lastnight = (DateTime()-1).latestTime()
         endate = (lastnight + numdays).latestTime()
@@ -374,7 +374,7 @@ class NewsItemFilter(Filter):
             return []
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
-            return result
+            return []
 
         result = []
         month = int(month)

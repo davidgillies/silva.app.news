@@ -25,10 +25,8 @@ from Products.Silva.Content import Content
 
 # SilvaNews
 from Products.SilvaNews.interfaces import INewsViewer, INewsItemVersion
-from Products.SilvaNews.datetimeutils import local_timezone
 from Products.SilvaNews.ServiceNews import TimezoneMixin
-from datetime import datetime
-import pytz
+
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
@@ -367,9 +365,11 @@ class NewsViewerArchivesView(silvaviews.Page):
     def update(self):
         self.request.timezone = self.context.get_timezone()
 
+    @property
     def currentmonth(self):
         return DateTime().month()
 
+    @property
     def currentyear(self):
         return DateTime().year()
 
@@ -378,11 +378,13 @@ class NewsViewerArchivesView(silvaviews.Page):
 
     def previous_url(self):
         url_mask = '/archives?&amp;month=%s&amp;year=%s&amp;offset=%s'
-        return url_mask % (currentmonth, currentyear, (offset - batch_size))
+        return url_mask % (self.currentmonth, self.currentyear,
+            (self.offset - self.batch_size))
 
     def next_url(self):
         url_mask = '/archives?&amp;month=%s&amp;year=%s&amp;offset=%s'
-        return url_mask % (currentmonth, currentyear, (offset + batch_size))
+        return url_mask % (self.currentmonth, self.currentyear,
+            (self.offset + self.batch_size))
 
     def get_user_role(self):
         user = self.request.AUTHENTICATED_USER

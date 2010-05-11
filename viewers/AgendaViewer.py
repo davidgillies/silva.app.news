@@ -10,7 +10,6 @@ import Products
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-from dateutil import relativedelta
 from icalendar.interfaces import ICalendar
 
 # Silva
@@ -19,19 +18,18 @@ from silva.core.views import views as silvaviews
 from five import grok
 import calendar
 from datetime import datetime
-from datetime import date
 
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
-    local_timezone, start_of_day, end_of_day, DayWalk)
+from Products.SilvaNews.datetimeutils import (local_timezone, 
+    start_of_day, end_of_day, DayWalk)
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaNews.dates import DateTimeFormatter
-from zope.app.intid.interfaces import IIntIds
+
 
 class AgendaViewer(NewsViewer):
     """

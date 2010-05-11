@@ -1,13 +1,11 @@
 from Products.Five import BrowserView
-from silva.core.interfaces.adapters import IFeedEntry
 
 from DateTime import DateTime
 
 from zope.interface import implements
 
 from silva.core.interfaces.adapters import IFeedEntry
-from Products.SilvaNews.interfaces import INewsItem
-from Products.SilvaDocument.adapters import feedentry
+
 
 class ViewerFeedView(BrowserView):
     """Base class for feed representation."""
@@ -53,6 +51,7 @@ class ViewerFeedView(BrowserView):
             'entries': entries
             }
 
+
 class AggregatorFeedEntry(object):
     implements(IFeedEntry)
 
@@ -93,7 +92,7 @@ class AggregatorFeedEntry(object):
     def subject(self):
         return None
 
-    
+
 class AggregatorFeedView(ViewerFeedView):
     def __call__(self):
         self.request.RESPONSE.setHeader(

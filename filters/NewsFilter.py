@@ -8,8 +8,6 @@ from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass # Zope 2.12
 
-from DateTime import DateTime
-
 # Silva/News Interfaces
 from Products.SilvaNews.interfaces import INewsFilter
 
