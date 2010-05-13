@@ -14,15 +14,6 @@ from Products.Silva.silvaxml.xmlexport import (
 NS_SILVA_NEWS = 'http://infrae.com/namespace/silva-news-network'
 theXMLExporter.registerNamespace('silvanews', NS_SILVA_NEWS)
 
-def initializeXMLExportRegistry():
-    from Products.SilvaNews.PlainArticle import PlainArticle, PlainArticleVersion
-    from Products.SilvaNews.PlainAgendaItem import PlainAgendaItem, PlainAgendaItemVersion
-
-    exporter.registerProducer(PlainArticle, PlainArticleProducer)
-    exporter.registerProducer(PlainArticleVersion, PlainArticleVersionProducer)
-    exporter.registerProducer(PlainAgendaItem, PlainAgendaItemProducer)
-    exporter.registerProducer(PlainAgendaItemVersion, PlainAgendaItemVersionProducer)
-
 
 class NewsPublicationProducer(SilvaBaseProducer):
     """Export a News Publication object to XML.
