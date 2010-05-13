@@ -6,9 +6,9 @@ silvaconf.extensionName("SilvaNews")
 silvaconf.extensionTitle("Silva News Network")
 silvaconf.extensionDepends(["SilvaDocument","SilvaExternalSources"])
 
-from Products.SilvaNews.silvaxml import xmlexport, xmlimport
-xmlexport.initializeXMLExportRegistry()
-xmlimport.initializeXMLImportRegistry()
+#from Products.SilvaNews.silvaxml import xmlexport, xmlimport
+#xmlexport.initializeXMLExportRegistry()
+#xmlimport.initializeXMLImportRegistry()
 
 
 def initialize(context):
