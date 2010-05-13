@@ -1,14 +1,14 @@
-from installer import install
+# Copyright (c) 2004-2010 Infrae. All rights reserved.
+# See also LICENSE.txt
+# $Id$
+
+from Products.SilvaNews.installer import install
 
 from silva.core import conf as silvaconf
 
 silvaconf.extensionName("SilvaNews")
 silvaconf.extensionTitle("Silva News Network")
-silvaconf.extensionDepends(["SilvaDocument","SilvaExternalSources"])
-
-#from Products.SilvaNews.silvaxml import xmlexport, xmlimport
-#xmlexport.initializeXMLExportRegistry()
-#xmlimport.initializeXMLImportRegistry()
+silvaconf.extensionDepends(["SilvaDocument", "SilvaExternalSources"])
 
 
 def initialize(context):
@@ -18,8 +18,7 @@ def initialize(context):
         permission = 'Add Pluggable Index',
         constructors = (indexing.manage_addIntegerRangesIndexForm,
                         indexing.manage_addIntegerRangesIndex),
-        visibility=None
-        )
+        visibility=None)
 
 
 import dates

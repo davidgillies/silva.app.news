@@ -21,6 +21,7 @@ from silva.core.services.interfaces import ICataloging
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
+from Products.SilvaNews.NewsItem import NewsItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.datetimeutils import (utc_datetime,
     CalendarDateRepresentation)
@@ -146,8 +147,6 @@ class AgendaItemVersion(NewsItemVersion):
         return "%s %s" % (parenttext, self._location)
 
 InitializeClass(AgendaItemVersion)
-
-from Products.SilvaNews.NewsItem import NewsItemView
 
 
 class AgendaItemView(NewsItemView):

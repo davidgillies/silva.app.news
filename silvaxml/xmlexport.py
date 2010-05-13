@@ -1,35 +1,23 @@
 # Copyright (c) 2002-2007 Infrae. All rights reserved.
 # See also LICENSE.txt
 
-from Products.Silva.silvaxml.xmlexport import theXMLExporter, VersionedContentProducer, SilvaBaseProducer
-
 from silva.core.interfaces import IPublication
 from five import grok
+from zope.interface import Interface
 
+from Products.SilvaNews import interfaces
 from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
+from Products.Silva.silvaxml.xmlexport import (
+    theXMLExporter, VersionedContentProducer, SilvaBaseProducer)
 
-NS_SILVANEWS = 'http://infrae.com/namespace/silva-news-network'
+
+NS_SILVA_NEWS = 'http://infrae.com/namespace/silva-news-network'
+theXMLExporter.registerNamespace('silvanews', NS_SILVA_NEWS)
 
 def initializeXMLExportRegistry():
-    from Products.SilvaNews.viewers.NewsViewer import NewsViewer
-    from Products.SilvaNews.viewers.AgendaViewer import AgendaViewer
-    from Products.SilvaNews.filters.NewsFilter import NewsFilter
-    from Products.SilvaNews.filters.AgendaFilter import AgendaFilter
-    from Products.SilvaNews.filters.CategoryFilter import CategoryFilter
-    from Products.SilvaNews.RSSAggregator import RSSAggregator
-    from Products.SilvaNews.NewsPublication import NewsPublication
     from Products.SilvaNews.PlainArticle import PlainArticle, PlainArticleVersion
     from Products.SilvaNews.PlainAgendaItem import PlainAgendaItem, PlainAgendaItemVersion
 
-    exporter = theXMLExporter
-    exporter.registerNamespace('silvanews', NS_SILVANEWS)
-    exporter.registerProducer(NewsViewer, NewsViewerProducer)
-    exporter.registerProducer(AgendaViewer, AgendaViewerProducer)
-    exporter.registerProducer(NewsFilter, NewsFilterProducer)
-    exporter.registerProducer(AgendaFilter, AgendaFilterProducer)
-    exporter.registerProducer(CategoryFilter, CategoryFilterProducer)
-    exporter.registerProducer(RSSAggregator, RSSAggregatorProducer)
-    exporter.registerProducer(NewsPublication, NewsPublicationProducer)
     exporter.registerProducer(PlainArticle, PlainArticleProducer)
     exporter.registerProducer(PlainArticleVersion, PlainArticleVersionProducer)
     exporter.registerProducer(PlainAgendaItem, PlainAgendaItemProducer)
@@ -39,10 +27,10 @@ def initializeXMLExportRegistry():
 class NewsPublicationProducer(SilvaBaseProducer):
     """Export a News Publication object to XML.
     """
-    grok.baseclass()
+    grok.adapts(interfaces.INewsPublication, Interface)
 
     def sax(self):
-        self.startElementNS(NS_SILVANEWS,
+        self.startElementNS(NS_SILVA_NEWS,
                             'newspublication', {'id': self.context.id})
         self.metadata()
         self.startElement('content')
@@ -62,49 +50,49 @@ class NewsPublicationProducer(SilvaBaseProducer):
             for object in self.context.get_other_content():
                 self.subsax(object)
         self.endElement('content')
-        self.endElementNS(NS_SILVANEWS,'newspublication')
+        self.endElementNS(NS_SILVA_NEWS,'newspublication')
 
 
 class RSSAggregatorProducer(SilvaBaseProducer):
      """Export a RSSAggregator object to XML.
      """
-     grok.baseclass()
+     grok.adapts(interfaces.IAggregator, Interface)
 
      def sax(self):
          self.startElementNS(
-             NS_SILVANEWS,
+             NS_SILVA_NEWS,
              'rssaggregator',
              {'id': self.context.id,
               'feed_urls': ','.join(self.context.get_feeds())
               })
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'rssaggregator')
+         self.endElementNS(NS_SILVA_NEWS,'rssaggregator')
 
 
 class CategoryFilterProducer(SilvaBaseProducer):
      """Export a CategoryFilter object to XML."""
-     grok.baseclass()
+     grok.adapts(interfaces.ICategoryFilter, Interface)
 
      def sax(self):
          self.startElementNS(
-             NS_SILVANEWS,
+             NS_SILVA_NEWS,
              'categoryfilter',
              {'id': self.context.id,
               'target_audiences': ','.join(self.context.target_audiences()),
               'subjects': ','.join(self.context.subjects()),
               })
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'categoryfilter')
+         self.endElementNS(NS_SILVA_NEWS,'categoryfilter')
 
 
 class NewsFilterProducer(SilvaBaseProducer):
      """Export a NewsFilter object to XML.
      """
-     grok.baseclass()
+     grok.adapts(interfaces.INewsFilter, Interface)
 
      def sax(self):
          self.startElementNS(
-             NS_SILVANEWS,
+             NS_SILVA_NEWS,
              'newsfilter',
              {'id': self.context.id,
               'target_audiences': ','.join(self.context.target_audiences()),
@@ -114,17 +102,17 @@ class NewsFilterProducer(SilvaBaseProducer):
               'excluded_items': ','.join(self.context.excluded_items()),
               'sources': ','.join(self.context.sources())})
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'newsfilter')
+         self.endElementNS(NS_SILVA_NEWS,'newsfilter')
 
 
 class AgendaFilterProducer(SilvaBaseProducer):
      """Export a AgendaFilter object to XML.
      """
-     grok.baseclass()
+     grok.adapts(interfaces.IAgendaFilter, Interface)
 
      def sax(self):
          self.startElementNS(
-             NS_SILVANEWS,
+             NS_SILVA_NEWS,
              'agendafilter',
              {'id': self.context.id,
               'target_audiences': ','.join(self.context.target_audiences()),
@@ -133,17 +121,17 @@ class AgendaFilterProducer(SilvaBaseProducer):
               'excluded_items': ','.join(self.context.excluded_items()),
               'sources': ','.join(self.context.sources())})
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'agendafilter')
+         self.endElementNS(NS_SILVA_NEWS,'agendafilter')
 
 
 class NewsViewerProducer(SilvaBaseProducer):
      """Export a NewsViewer object to XML.
      """
-     grok.baseclass()
+     grok.adapts(interfaces.INewsViewer, Interface)
 
      def sax(self):
          self.startElementNS(
-             NS_SILVANEWS,
+             NS_SILVA_NEWS,
              'newsviewer',
              {'id': self.context.id,
               'number_to_show': str(self.context.number_to_show()),
@@ -151,43 +139,44 @@ class NewsViewerProducer(SilvaBaseProducer):
               'number_is_days': str(self.context.number_is_days()),
               'filters': ','.join(self.context.filters())})
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'newsviewer')
+         self.endElementNS(NS_SILVA_NEWS,'newsviewer')
 
 
 class AgendaViewerProducer(SilvaBaseProducer):
      """Export a AgendaViewer object to XML."""
-     grok.baseclass()
+     grok.adapts(interfaces.IAgendaViewer)
 
      def sax(self):
-         self.startElementNS(NS_SILVANEWS,
-                           'agendaviewer',
-                           {'id': self.context.id,
-                            'days_to_show': str(self.context.days_to_show()),
-                            'number_to_show_archive': str(self.context.number_to_show_archive()),
-                            'filters': ','.join(self.context.filters())})
+         self.startElementNS(
+             NS_SILVA_NEWS,
+             'agendaviewer',
+             {'id': self.context.id,
+              'days_to_show': str(self.context.days_to_show()),
+              'number_to_show_archive': str(self.context.number_to_show_archive()),
+              'filters': ','.join(self.context.filters())})
          self.metadata()
-         self.endElementNS(NS_SILVANEWS,'agendaviewer')
+         self.endElementNS(NS_SILVA_NEWS,'agendaviewer')
 
 
 class PlainArticleProducer(VersionedContentProducer):
     """Export a PlainArticle object to XML.
     """
-    grok.baseclass()
+    grok.adapts(interfaces.INewsItem, Interface)
 
     def sax(self):
         """sax"""
-        self.startElementNS(NS_SILVANEWS,
+        self.startElementNS(NS_SILVA_NEWS,
                             'plainarticle',
                             {'id': self.context.id})
         self.workflow()
         self.versions()
-        self.endElementNS(NS_SILVANEWS,'plainarticle')
+        self.endElementNS(NS_SILVA_NEWS,'plainarticle')
 
 
 class PlainArticleVersionProducer(DocumentVersionProducer):
     """Export a version of a PlainArticle object to XML.
     """
-    grok.baseclass()
+    grok.adapts(interfaces.INewsItemVersion)
 
     def sax(self):
         """sax"""
@@ -205,22 +194,22 @@ class PlainArticleVersionProducer(DocumentVersionProducer):
 class PlainAgendaItemProducer(VersionedContentProducer):
     """Export an AgendaItem object to XML.
     """
-    grok.baseclass()
+    grok.adapts(interfaces.IAgendaItem)
 
     def sax(self):
         """sax"""
-        self.startElementNS(NS_SILVANEWS,
+        self.startElementNS(NS_SILVA_NEWS,
                             'agendaitem',
                             {'id': self.context.id})
         self.workflow()
         self.versions()
-        self.endElementNS(NS_SILVANEWS,'agendaitem')
+        self.endElementNS(NS_SILVA_NEWS,'agendaitem')
 
 
 class PlainAgendaItemVersionProducer(DocumentVersionProducer):
     """Export a version of an AgendaItem object to XML.
     """
-    grok.baseclass()
+    grok.adapts(interfaces.IAgendaItemVersion)
 
     def sax(self):
         """sax"""

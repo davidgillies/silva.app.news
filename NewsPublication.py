@@ -18,8 +18,8 @@ from Products.Silva import SilvaPermissions
 from Products.SilvaNews.interfaces import INewsItem, INewsPublication
 
 class NewsPublication(Publication):
-    """A special publication type (a.k.a. News Source) for news 
-    and agenda items. News Filters and Agenda Filters can pick up 
+    """A special publication type (a.k.a. News Source) for news
+    and agenda items. News Filters and Agenda Filters can pick up
     news from these sources anywhere in a Silva site.
     """
     security = ClassSecurityInfo()
@@ -30,8 +30,10 @@ class NewsPublication(Publication):
     silvaconf.priority(3)
 
     def __init__(self, id):
-        NewsPublication.inheritedAttribute('__init__')(self, id)
-        self._addables_allowed_in_container = ['Silva Article', 'Silva Agenda Item', 'Silva Publication', 'Silva Folder']
+        super(NewsPublication, self).__init__(id)
+        self._addables_allowed_in_container = [
+            'Silva Article', 'Silva Agenda Item',
+            'Silva Publication', 'Silva Folder']
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'parent_path')
@@ -39,7 +41,7 @@ class NewsPublication(Publication):
         """Returns the path of the parent of this source
         """
         return '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
-        
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_parent_path')
     idx_parent_path = parent_path

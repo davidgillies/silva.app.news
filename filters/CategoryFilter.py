@@ -1,9 +1,8 @@
 from zope.interface import implements
 
 # Zope
-from App.class_init import InitializeClass # Zope 2.12
-
 from AccessControl import ClassSecurityInfo
+from App.class_init import InitializeClass # Zope 2.12
 
 # Silva
 from silva.core import conf as silvaconf
@@ -12,6 +11,7 @@ from silva.core import conf as silvaconf
 from Products.SilvaNews.interfaces import ICategoryFilter
 from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews.ServiceNews import CategoryMixin
+
 
 class CategoryFilter(Filter,CategoryMixin):
     """A Category Filter is useful in large sites where the news articles have

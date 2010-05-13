@@ -68,10 +68,10 @@ class MetaDataSaveHandler(ContentHandler):
         data = data.replace('&amp;', '&')
         return data
 
+
 class NewsItem(Document):
     """Base class for all kinds of news items.
     """
-
     grok.baseclass()
     grok.implements(INewsItem)
 
@@ -109,6 +109,7 @@ class NewsItem(Document):
 
 InitializeClass(NewsItem)
 
+
 class NewsItemVersion(DocumentVersion):
     """Base class for news item versions.
     """
@@ -121,7 +122,6 @@ class NewsItemVersion(DocumentVersion):
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
-
 
     def set_document_xml_from(self, data, format='kupu', request=None):
         handler = MetaDataSaveHandler()

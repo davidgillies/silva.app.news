@@ -23,7 +23,7 @@ from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.datetimeutils import (local_timezone, 
+from Products.SilvaNews.datetimeutils import (local_timezone,
     start_of_day, end_of_day, DayWalk)
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
