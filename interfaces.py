@@ -384,10 +384,3 @@ class IServiceNews(ISilvaService):
         Each tuple is an (indent, subject) pair.
         """
 
-
-class ISilvaXMLAttribute(Interface):
-    """an interface for SilvaXMLAttribute objects,
-     i.e. an attribute which contains silvaxml
-     A Silva object could have multiple attributes
-     containing silva xml, each of which is a
-     SilvaXMLAttribute"""
