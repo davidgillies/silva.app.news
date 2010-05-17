@@ -1,26 +1,22 @@
-from Products.Silva.silvaxml.xmlimport import theXMLImporter, SilvaBaseHandler, NS_URI, generateUniqueId, updateVersionCount
+# Copyright (c) 2002-2007 Infrae. All rights reserved.
+# See also LICENSE.txt
+
+from Products.Silva.silvaxml.xmlimport import (
+    theXMLImporter, SilvaBaseHandler, NS_URI,
+    generateUniqueId, updateVersionCount)
 from Products.Silva import mangle
+from silva.core import conf as silvaconf
 
-from Products.SilvaDocument.silvaxml.xmlimport import DOC_NS_URI, DocElementHandler
-
+from Products.SilvaDocument.silvaxml.xmlimport import (
+    DOC_NS_URI, DocElementHandler)
 from Products.SilvaNews.silvaxml.xmlexport import NS_SILVA_NEWS
-from Products.SilvaNews.PlainArticle import PlainArticle,PlainArticleVersion
-from Products.SilvaNews.PlainAgendaItem import PlainAgendaItem,PlainAgendaItemVersion
+from Products.SilvaNews.PlainArticle import (
+    PlainArticle, PlainArticleVersion)
+from Products.SilvaNews.PlainAgendaItem import (
+    PlainAgendaItem, PlainAgendaItemVersion)
 
 
-def initializeXMLImportRegistry():
-    """Initialize the global importer object.
-    """
-    importer = theXMLImporter
-    importer.registerHandler((NS_SILVA_NEWS, 'rssaggregator'), RSSAggregatorHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'categoryfilter'), CategoryFilterHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'newsfilter'), NewsFilterHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'agendafilter'), AgendaFilterHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'newsviewer'), NewsViewerHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'agendaviewer'), AgendaViewerHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'newspublication'), NewsPublicationHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'plainarticle'), PlainArticleHandler)
-    importer.registerHandler((NS_SILVA_NEWS, 'plainagendaitem'), PlainAgendaItemHandler)
+silvaconf.namespace(NS_SILVA_NEWS)
 
 
 class SNNHandlerMixin(object):
@@ -67,6 +63,7 @@ class SNNHandlerMixin(object):
 
 
 class NewsItemElementHandler(DocElementHandler):
+    silvaconf.baseclass()
 
     def startElementNS(self, name, qname, attrs):
         if name == (DOC_NS_URI, 'doc'):
@@ -81,10 +78,10 @@ class NewsItemElementHandler(DocElementHandler):
 
 
 class PlainArticleHandler(SilvaBaseHandler):
+    silvaconf.name('plainarticle')
+
     def getOverrides(self):
-        return {
-            (NS_URI, 'content'): PlainArticleContentHandler
-            }
+        return {(NS_URI, 'content'): PlainArticleContentHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS, 'plainarticle'):
@@ -100,10 +97,10 @@ class PlainArticleHandler(SilvaBaseHandler):
 
 
 class PlainAgendaItemHandler(SilvaBaseHandler):
+    silvaconf.name('plainagendaitem')
+
     def getOverrides(self):
-        return {
-            (NS_URI, 'content'): PlainAgendaItemContentHandler
-            }
+        return {(NS_URI, 'content'): PlainAgendaItemContentHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS, 'plainagendaitem'):
@@ -119,11 +116,10 @@ class PlainAgendaItemHandler(SilvaBaseHandler):
 
 
 class PlainAgendaItemContentHandler(SilvaBaseHandler):
+    silvaconf.baseclass()
 
     def getOverrides(self):
-        return{
-            (DOC_NS_URI, 'doc'): NewsItemElementHandler,
-            }
+        return{(DOC_NS_URI, 'doc'): NewsItemElementHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_URI, 'content'):
@@ -151,11 +147,10 @@ class PlainAgendaItemContentHandler(SilvaBaseHandler):
 
 
 class PlainArticleContentHandler(SilvaBaseHandler):
+    silvaconf.baseclass()
 
     def getOverrides(self):
-        return{
-            (DOC_NS_URI, 'doc'): NewsItemElementHandler,
-            }
+        return{(DOC_NS_URI, 'doc'): NewsItemElementHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_URI, 'content'):
@@ -182,6 +177,7 @@ class PlainArticleContentHandler(SilvaBaseHandler):
 
 
 class NewsPublicationHandler(SilvaBaseHandler):
+    silvaconf.name('newspublication')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS, 'newspublication'):
@@ -191,8 +187,8 @@ class NewsPublicationHandler(SilvaBaseHandler):
                 self.setResult(getattr(parent, id))
                 return
             uid = generateUniqueId(id, parent)
-            self.parent().manage_addProduct['SilvaNews'].manage_addNewsPublication(
-                uid, '', create_default=0)
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addNewsPublication(uid, '', create_default=0)
             self.setResult(getattr(parent, uid))
 
     def endElementNS(self, name, qname):
@@ -201,13 +197,17 @@ class NewsPublicationHandler(SilvaBaseHandler):
             self.storeMetadata()
 
 
-class AgendaViewerHandler(SNNHandlerMixin,SilvaBaseHandler):
+class AgendaViewerHandler(SNNHandlerMixin, SilvaBaseHandler):
+    """Import a defined Agenda Viewer.
+    """
+    silvaconf.name('agendaviewer')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'agendaviewer'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addAgendaViewer(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addAgendaViewer(uid,'')
             obj = getattr(self.parent(),uid)
             self.set_attrs(attrs,obj)
             self.setResult(getattr(self.parent(), uid))
@@ -218,13 +218,17 @@ class AgendaViewerHandler(SNNHandlerMixin,SilvaBaseHandler):
             self.storeMetadata()
 
 
-class NewsViewerHandler(SNNHandlerMixin,SilvaBaseHandler):
+class NewsViewerHandler(SNNHandlerMixin, SilvaBaseHandler):
+    """Import a defined News Viewer.
+    """
+    silvaconf.name('newsviewer')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'newsviewer'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addNewsViewer(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addNewsViewer(uid,'')
             obj = getattr(self.parent(),uid)
             self.set_attrs(attrs,obj)
             self.setResult(getattr(self.parent(), uid))
@@ -235,13 +239,17 @@ class NewsViewerHandler(SNNHandlerMixin,SilvaBaseHandler):
             self.storeMetadata()
 
 
-class AgendaFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
+class AgendaFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
+    """Import an Agenda Filter.
+    """
+    silvaconf.name('agendafilter')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'agendafilter'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addAgendaFilter(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addAgendaFilter(uid,'')
             obj = getattr(self.parent(),uid)
             self.set_attrs(attrs,obj)
             self.setResult(getattr(self.parent(), uid))
@@ -252,13 +260,15 @@ class AgendaFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
             self.storeMetadata()
 
 
-class NewsFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
+class NewsFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
+    silvaconf.name('newsfilter')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'newsfilter'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addNewsFilter(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addNewsFilter(uid,'')
             obj = getattr(self.parent(),uid)
             self.set_attrs(attrs,obj)
             self.setResult(getattr(self.parent(), uid))
@@ -269,13 +279,17 @@ class NewsFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
             self.storeMetadata()
 
 
-class CategoryFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
+class CategoryFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
+    """Import a CategoryFilter.
+    """
+    silvaconf.name('categoryfilter')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'categoryfilter'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addCategoryFilter(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addCategoryFilter(uid,'')
             obj = getattr(self.parent(),uid)
             self.set_attrs(attrs,obj)
             self.setResult(getattr(self.parent(), uid))
@@ -287,16 +301,20 @@ class CategoryFilterHandler(SNNHandlerMixin,SilvaBaseHandler):
 
 
 class RSSAggregatorHandler(SilvaBaseHandler):
+    """Import a defined RSS Aggregator.
+    """
+    silvaconf.name('rssaggregator')
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS,'rssaggregator'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            self.parent().manage_addProduct['SilvaNews'].manage_addRSSAggregator(uid,'')
+            factory = self.parent().manage_addProduct['SilvaNews']
+            factory.manage_addRSSAggregator(uid,'')
             obj = getattr(self.parent(),uid)
             if (attrs.get((None, 'feed_urls'),None)):
                 feed_urls = attrs[(None,'feed_urls')]
-                #reformat feed_urls to be in the format set_feeds expects
+                # reformat feed_urls to be in the format set_feeds expects
                 feed_urls = '\n'.join(feed_urls.split(','))
                 obj.set_feeds(feed_urls)
             self.setResult(getattr(self.parent(), uid))
