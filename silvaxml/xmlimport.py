@@ -7,8 +7,8 @@ from Products.Silva.silvaxml.xmlimport import (
 from Products.Silva import mangle
 from silva.core import conf as silvaconf
 
-from Products.SilvaDocument.silvaxml.xmlimport import (
-    DOC_NS_URI, DocElementHandler)
+from Products.SilvaDocument.silvaxml.xmlimport import DocXMLHandler
+from Products.SilvaDocument.silvaxml import NS_SILVA_DOCUMENT
 from Products.SilvaNews.silvaxml.xmlexport import NS_SILVA_NEWS
 from Products.SilvaNews.PlainArticle import (
     PlainArticle, PlainArticleVersion)
@@ -62,21 +62,6 @@ class SNNHandlerMixin(object):
                 obj.set_filter(f,True)
 
 
-class NewsItemElementHandler(DocElementHandler):
-    silvaconf.baseclass()
-
-    def startElementNS(self, name, qname, attrs):
-        if name == (DOC_NS_URI, 'doc'):
-            self._node = self._parent.content._content.documentElement
-            self._tree = self._parent.content._content
-        else:
-            child = self._tree.createElement(name[1])
-            self._node.appendChild(child)
-            self._node = child
-        for ns, attr in attrs.keys():
-            self._node.setAttribute(attr, attrs[(ns, attr)])
-
-
 class PlainArticleHandler(SilvaBaseHandler):
     silvaconf.name('plainarticle')
 
@@ -119,7 +104,7 @@ class PlainAgendaItemContentHandler(SilvaBaseHandler):
     silvaconf.baseclass()
 
     def getOverrides(self):
-        return{(DOC_NS_URI, 'doc'): NewsItemElementHandler}
+        return{(NS_SILVA_DOCUMENT, 'doc'): DocXMLHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_URI, 'content'):
@@ -150,7 +135,7 @@ class PlainArticleContentHandler(SilvaBaseHandler):
     silvaconf.baseclass()
 
     def getOverrides(self):
-        return{(DOC_NS_URI, 'doc'): NewsItemElementHandler}
+        return{(NS_SILVA_DOCUMENT, 'doc'): DocXMLHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_URI, 'content'):
