@@ -35,7 +35,7 @@ if request.has_key('year'):
 
 month = ''
 if request.has_key('month'):
-    year = request['month']
+    month = request['month']
 
 m = _('The filter is updated.')
 msg = unicode(m)
