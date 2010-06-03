@@ -199,7 +199,7 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        return IntroHTML.transform(self)
+        return IntroHTML.transform(self, self.REQUEST)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_thumbnail')
@@ -346,7 +346,7 @@ class NewsItemView(silvaviews.View):
         if self.article_date:
             self.article_date = self.context.service_news.format_date(
                 self.article_date)
-        self.article = ContentHTML.transform(self.content)
+        self.article = ContentHTML.transform(self.content, self.request)
 
 
 class NewsItemListItemView(grok.View):
