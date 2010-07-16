@@ -18,6 +18,8 @@ SilvaNewsNetwork 2.9b1 (2010/07/16)
 
 - Article and agenda views are now rendered using XSLT.
 
+- Compatibility fixes for Zope 2.12 and Python 2.6.
+
 
 SilvaNewsNetwork 2.8b1 (2010-02-01)
 -----------------------------------
