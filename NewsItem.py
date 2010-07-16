@@ -299,12 +299,10 @@ class NewsItemVersion(DocumentVersion):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        return " ".join((super(NewsItemVersion, self).fulltext()))
-        # XXX Add back subjects and target_audiences but they are not
-        # what they claim to be (surprising).
-
-        #" ".join(self._subjects),
-        #" ".join(self._target_audiences)))
+        keywords = self._subjects
+        keywords.extend(self._target_audiences)
+        keywords.extend(super(NewsItemVersion, self).fulltext())
+        return " ".join(keywords)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'publication_time')

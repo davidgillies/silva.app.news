@@ -3,8 +3,7 @@
 # $Id$
 
 from DateTime import DateTime
-
-import SilvaNewsTestCase
+from Products.SilvaNews.tests import SilvaNewsTestCase
 
 class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     """Test the NewsFilter interface.

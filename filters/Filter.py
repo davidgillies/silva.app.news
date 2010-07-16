@@ -25,7 +25,7 @@ class Filter(Asset):
     published NewsItem-objects for the end-users.
     """
     security = ClassSecurityInfo()
-    
+
     implements(IFilter)
     silvaconf.baseclass()
     _allowed_source_types = ['Silva News Publication']
@@ -87,7 +87,7 @@ class Filter(Asset):
             s = subjects[i]
             if  s in service_subjects:
                 new_subs.append(s)
-        
+
         new_tas = []
         for i in range(len(target_audiences)):
             ta = target_audiences[i]
