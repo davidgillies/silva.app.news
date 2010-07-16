@@ -1,6 +1,11 @@
 ChangeLog
 =========
 
+SilvaNewsNetwork 2.9 (unreleased)
+---------------------------------
+
+- ...
+
 SilvaNewsNetwork 2.9b1 (2010/07/16)
 -----------------------------------
 
