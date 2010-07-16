@@ -28,14 +28,14 @@ class SilvaNewsInstaller(DefaultInstaller):
         DefaultInstaller.uninstall(self, root)
         self.unregister_views(root.service_view_registry)
         self.unconfigure_metadata(root)
-        
+
     def unconfigure_metadata(self, root):
         sm = root.service_metadata
         collection = sm.getCollection()
         if 'snn-np-settings' in collection.objectIds():
             collection.manage_delObjects(['snn-np-settings'])
         sm.removeTypeMapping('Silva News Publication',['snn-np-settings'])
-    
+
     def configure_metadata(self, root):
         sm = root.service_metadata
         collection = sm.getCollection()
@@ -46,9 +46,9 @@ class SilvaNewsInstaller(DefaultInstaller):
         collection.importSet(fh)
         sm.addTypeMapping('Silva News Publication', ['snn-np-settings'])
         sm.initializeMetadata()
-        
+
     def configure_addables(self, root):
-        news_non_addables = ['Silva Article', 
+        news_non_addables = ['Silva Article',
                             'Silva Agenda Item',
                             ]
         current_addables = root.get_silva_addables_allowed_in_container()
@@ -57,12 +57,12 @@ class SilvaNewsInstaller(DefaultInstaller):
             if a not in news_non_addables:
                 new_addables.append(a)
         root.set_silva_addables_allowed_in_container(new_addables)
-        
-        
+
+
     def register_views(self, reg):
         """Register core views on registry.
         """
-        ## edit    
+        ## edit
         reg.register('edit',
                      'Silva Agenda Filter', ['edit', 'Asset', 'Filter', 'AgendaFilter'])
         reg.register('edit',
@@ -94,9 +94,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('preview', 'Silva Agenda Filter', ['public', 'AgendaFilter'])
         reg.register('preview', 'Silva News Publication', ['public', 'NewsPublication'])
         reg.register('preview', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
-        reg.register('preview', 'Silva Article Version', ['public', 'PlainArticle'])
-        reg.register('preview', 'Silva Agenda Item Version', ['public', 
-                                                            'PlainAgendaItem'])
 
         # add
         reg.register('add', 'Silva Agenda Filter', ['add', 'AgendaFilter'])
@@ -151,14 +148,14 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.unregister('add', 'Silva Article')
         reg.unregister('add', 'Silva Agenda Item')
         reg.unregister('add', 'Silva News Category Filter')
-    
+
     def setup_catalog(self, root):
         """Sets the ZCatalog up"""
         catalog = root.service_catalog
-    
+
         columns = ['object_path','end_datetime','start_datetime',
             'location','get_title', 'display_datetime','get_intro']
-    
+
         indexes = [
             ('object_path', 'FieldIndex'),
             ('idx_parent_path', 'FieldIndex'),
@@ -169,15 +166,15 @@ class SilvaNewsInstaller(DefaultInstaller):
             ('idx_subjects', 'KeywordIndex'),
             ('idx_target_audiences', 'KeywordIndex'),
             ]
-    
+
         existing_columns = catalog.schema()
         existing_indexes = catalog.indexes()
-    
+
         for column_name in columns:
             if column_name in existing_columns:
                 continue
             catalog.addColumn(column_name)
-    
+
         for field_name, field_type in indexes:
             if field_name in existing_indexes:
                 continue
