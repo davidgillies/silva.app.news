@@ -1,17 +1,23 @@
 ChangeLog
 =========
 
-SilvaNewsNetwork 2.9 (unreleased)
----------------------------------
+SilvaNewsNetwork 2.9b1 (2010/07/16)
+-----------------------------------
 
-- A catalog index able to index multiple ranges for one object in order
-    to store datetime ranges with recurrence
+- Add catalog index able to index multiple ranges for one object in order
+  to store datetime ranges with recurrence.
 
-- Calendar views for agenda viewers
+- Calendar views for agenda viewers.
 
-- Export of agenda viewers and agenda items to the iCalendar format
+- Export of agenda viewers and agenda items to the iCalendar format.
 
-- Agenda viewers know have settings for timezone and first week of the day
+- Agenda viewers know have settings for timezone and first week of the day.
+
+- Reuse Silva Document code instead of reimplemented it (article and
+  agenda edition).
+
+- Article and agenda views are now rendered using XSLT.
+
 
 SilvaNewsNetwork 2.8b1 (2010-02-01)
 -----------------------------------
