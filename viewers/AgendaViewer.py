@@ -18,6 +18,7 @@ from silva.core.views import views as silvaviews
 from five import grok
 import calendar
 from datetime import datetime
+import localdatetime
 
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
@@ -28,7 +29,6 @@ from Products.SilvaNews.datetimeutils import (local_timezone,
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
-from Products.SilvaNews.dates import DateTimeFormatter
 
 
 class AgendaViewer(NewsViewer):
@@ -191,9 +191,11 @@ class AgendaViewerMonthCalendar(silvaviews.View):
                 self.context.absolute_url(), month, year)
 
     def intro(self):
-        dayinfo = u"for %s" % \
-                DateTimeFormatter(self.day_datetime).l_toString(
-                    format="full", display_time=False)
+        # XXX Should not be done with the method of the Service (who
+        # manages settings on how to display the date ?)
+        dayinfo = u"for %s" % localdatetime.get_formatted_date(
+            self.day_datetime, size="full",
+            request=self.request, display_time=False)
         if self._day_events:
             return "Events on %s" % dayinfo
         return u"No events on %s" % dayinfo

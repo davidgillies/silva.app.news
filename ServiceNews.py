@@ -4,6 +4,8 @@
 
 from five import grok
 
+import localdatetime
+
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from OFS.SimpleItem import SimpleItem
@@ -16,7 +18,6 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 
 #SilvaNews
 from Products.SilvaNews import Tree
-from Products.SilvaNews.dates import DateTimeFormatter, getMonthAbbreviations
 from Products.SilvaNews.interfaces import IServiceNews
 from Products.SilvaNews.datetimeutils import local_timezone
 
@@ -449,8 +450,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
     # XXX we probably want to move these elsewhere, for now however this seems
     # the most logical location
-    security.declareProtected('Setup ServiceNews',
-                                'manage_set_locale')
+    security.declareProtected('Setup ServiceNews', 'manage_set_locale')
     def manage_set_locale(self, REQUEST):
         """set the locale and date format
 
@@ -472,23 +472,25 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         self.set_timezone_name(REQUEST['timezone_name'])
         self.set_first_weekday(int(REQUEST['first_weekday']))
 
-    security.declareProtected('View',
-                                'format_date')
-    def format_date(self, datetime, display_time=True):
+    security.declareProtected('View', 'format_date')
+    def format_date(self, dt, display_time=True):
         """returns a formatted datetime string
            takes the service's locale setting into account
         """
-        if not datetime:
+        if not dt:
             return ''
-        formatter = DateTimeFormatter(datetime, self._locale)
-        return formatter.l_toString(self._date_format,
-                                    display_time=display_time)
+        if not isinstance(dt, datetime):
+            dt = dt.asdatetime()
+        return localdatetime.get_formatted_date(
+            dt,
+            size=self._date_format,
+            locale=self._locale,
+            display_time=display_time)
 
-    security.declareProtected('View',
-                                'get_month_abbrs')
+    security.declareProtected('View', 'get_month_abbrs')
     def get_month_abbrs(self):
         """returns a list of localized abbreviated month names"""
-        return getMonthAbbreviations(self._locale)
+        return localdatetime.get_month_abbreviations(locale=self._locale)
 
 
 InitializeClass(ServiceNews)

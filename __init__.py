@@ -21,11 +21,7 @@ def initialize(context):
         visibility=None)
 
 
-import dates
-def __allow_access_to_unprotected_subobjects__(name, value=None):
-    return name in ('dates',)
-
-
+# Specify import path for old classes (for upgrade)
 CLASS_CHANGES = {
         'Products.SilvaNews.silvaxmlattribute SilvaXMLAttribute':
             'OFS.SimpleItem SimpleItem',
