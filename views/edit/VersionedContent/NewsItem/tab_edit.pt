@@ -9,8 +9,8 @@
   tal:define="
     global vein string:editor;
     model request/model;
-    is_editable model/get_unapproved_version;
-    "
+    no_empty_feedback python:True;
+    is_editable model/get_unapproved_version;"
   i18n:domain="silva_news">
 <metal:block use-macro="here/macro_tab_edit/macros/editor">
 

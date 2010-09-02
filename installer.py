@@ -96,7 +96,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('preview', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
 
         # add
-        reg.register('add', 'Silva Article', ['add', 'NewsItem', 'PlainArticle'])
         reg.register('add', 'Silva Agenda Item', ['add', 'NewsItem', 'PlainAgendaItem'])
 
     def unregister_views(self, reg):
@@ -132,7 +131,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.unregister('preview', 'Silva Agenda Item Version')
 
         # add
-        reg.unregister('add', 'Silva Article')
         reg.unregister('add', 'Silva Agenda Item')
 
     def setup_catalog(self, root):

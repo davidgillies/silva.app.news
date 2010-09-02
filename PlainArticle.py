@@ -1,16 +1,26 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.18 $
+# $Id$
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-# Silva
-from silva.core import conf as silvaconf
+# Silva News
+from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from Products.SilvaNews.interfaces import INewsItem
+from Products.SilvaNews.interfaces import (
+    subject_source, target_audiences_source)
 
 # Silva
-from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from five import grok
+from silva.core import conf as silvaconf
+from silva.core.conf.interfaces import ITitledContent
+from zeam.form import silva as silvaforms
+from zope import schema
+from zope.i18nmessageid import MessageFactory
+
+_ = MessageFactory('silva_news')
 
 
 class PlainArticleVersion(NewsItemVersion):
@@ -18,9 +28,6 @@ class PlainArticleVersion(NewsItemVersion):
     """
     security = ClassSecurityInfo()
     meta_type = "Silva Article Version"
-
-    def __init__(self, id):
-        PlainArticleVersion.inheritedAttribute('__init__')(self, id)
 
 
 InitializeClass(PlainArticleVersion)
@@ -42,3 +49,21 @@ class PlainArticle(NewsItem):
 
 
 InitializeClass(PlainArticle)
+
+
+class IArticleSchema(ITitledContent):
+    subjects = schema.List(
+        title=_(u"subjects"),
+        value_type=schema.Choice(source=subject_source),
+        required=True)
+    target_audiences = schema.List(
+        title=_(u"target audiences"),
+        value_type=schema.Choice(source=target_audiences_source),
+        required=True)
+
+
+class ArticleAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsItem)
+    grok.name(u"Silva Article")
+
+    fields = silvaforms.Fields(IArticleSchema)
