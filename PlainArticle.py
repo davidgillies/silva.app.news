@@ -42,5 +42,3 @@ class PlainArticle(NewsItem):
 
 
 InitializeClass(PlainArticle)
-
-

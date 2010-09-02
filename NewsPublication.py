@@ -2,20 +2,19 @@
 # See also LICENSE.txt
 # $Revision: 1.13 $
 
-from zope.interface import implements
-from zope.app.container.interfaces import IObjectAddedEvent
-
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-# Silva
-from silva.core import conf as silvaconf
+from Products.SilvaNews.interfaces import INewsItem, INewsPublication
 from Products.Silva.Publication import Publication
 from Products.Silva import SilvaPermissions
 
-# SilvaNews
-from Products.SilvaNews.interfaces import INewsItem, INewsPublication
+from five import grok
+from silva.core import conf as silvaconf
+from zope.app.container.interfaces import IObjectAddedEvent
+from zeam.form import silva as silvaforms
+
 
 class NewsPublication(Publication):
     """A special publication type (a.k.a. News Source) for news
@@ -24,7 +23,7 @@ class NewsPublication(Publication):
     """
     security = ClassSecurityInfo()
 
-    implements(INewsPublication)
+    grok.implements(INewsPublication)
     meta_type = "Silva News Publication"
     silvaconf.icon("www/news_source.png")
     silvaconf.priority(3)
@@ -100,13 +99,21 @@ class NewsPublication(Publication):
                             fields[key] = '__DO_NOT_FILL_FIELD__'
         return (fields, versionpaths)
 
+
+InitializeClass(NewsPublication)
+
+
 @silvaconf.subscribe(INewsPublication, IObjectAddedEvent)
-def np_added(obj, event):
+def news_publication_added(obj, event):
     """news publications should have their 'hide_from_tocs' set to
-       'hide'.  This can be done after they are added"""
+       'hide'.  This can be done after they are added
+    """
     binding = obj.service_metadata.getMetadata(obj)
     binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
     return
 
-InitializeClass(NewsPublication)
+
+class NewsPublicationAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsPublication)
+    grok.name(u"Silva News Publication")

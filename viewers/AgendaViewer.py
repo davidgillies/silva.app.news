@@ -1,8 +1,13 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
+# $Id$
 
-from zope.interface import implements
+from datetime import datetime
+from icalendar.interfaces import ICalendar
+import calendar
+import localdatetime
+
+from five import grok
 from zope.component import getAdapter
 
 # Zope
@@ -10,18 +15,11 @@ import Products
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-from icalendar.interfaces import ICalendar
-
 # Silva
-
-from silva.core.views import views as silvaviews
-from five import grok
-import calendar
-from datetime import datetime
-import localdatetime
-
-from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
+from silva.core import conf as silvaconf
+from silva.core.views import views as silvaviews
+from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews.datetimeutils import (local_timezone,
@@ -39,14 +37,12 @@ class AgendaViewer(NewsViewer):
     shown. The items will then automatically be retrieved from the
     agendafilter for each request.
     """
-
     security = ClassSecurityInfo()
 
-    implements(IAgendaViewer)
+    meta_type = "Silva Agenda Viewer"
+    grok.implements(IAgendaViewer)
     silvaconf.icon("www/agenda_viewer.png")
     silvaconf.priority(3.3)
-
-    meta_type = "Silva Agenda Viewer"
 
     show_in_tocs = 1
 
@@ -69,7 +65,7 @@ class AgendaViewer(NewsViewer):
         """
         func = lambda x: x.get_next_items(self._days_to_show)
         sortattr = None
-        if len(self._filters) > 1: 
+        if len(self._filters) > 1:
             sortattr = 'start_datetime'
         return self._get_items_helper(func,sortattr)
 
@@ -94,7 +90,7 @@ class AgendaViewer(NewsViewer):
         allowed_meta_types = self.get_allowed_meta_types()
         func = lambda x: x.search_items(keywords,allowed_meta_types)
         sortattr = None
-        if len(self._filters) > 1: 
+        if len(self._filters) > 1:
             sortattr = 'start_datetime'
         results = self._get_items_helper(func,sortattr)
         return results
@@ -122,8 +118,13 @@ class AgendaViewer(NewsViewer):
 
 InitializeClass(AgendaViewer)
 
-class AgendaViewerMonthCalendar(silvaviews.View):
 
+class AgendaViewerAddForm(silvaforms.SMIAddForm):
+    grok.context(IAgendaViewer)
+    grok.name(u"Silva Agenda Viewer")
+
+
+class AgendaViewerMonthCalendar(silvaviews.View):
     grok.context(IAgendaViewer)
     template = grok.PageTemplateFile(
         filename='../templates/AgendaViewer/month_calendar.pt')
@@ -257,5 +258,3 @@ class AgendaViewerSubscribeView(silvaviews.Page):
 
     def calendar_url(self):
         return "%s/calendar.ics" % self.context.absolute_url()
-
-

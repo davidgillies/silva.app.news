@@ -11,26 +11,27 @@ from App.class_init import InitializeClass # Zope 2.12
 from DateTime import DateTime
 from datetime import datetime
 
-# Silva/News interfaces
+# SilvaNews
+from Products.Silva import SilvaPermissions
+from Products.SilvaNews.datetimeutils import UTC, local_timezone
+from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter,brainsorter
 from Products.SilvaNews.interfaces import IAgendaFilter, IAgendaItem
 
-# Silva/News
+from five import grok
 from silva.core import conf as silvaconf
-from Products.Silva import SilvaPermissions
-from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter,brainsorter
-from Products.SilvaNews.datetimeutils import UTC, local_timezone
+from zeam.form import silva as silvaforms
 
 
 class AgendaFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
        are passed from NewsFolder to NewsViewer through filters. On a filter
        you can choose which NewsFolders you want to channel items for and
-       filter the items on several criteria (as well as individually). 
+       filter the items on several criteria (as well as individually).
     """
     security = ClassSecurityInfo()
 
-    implements(IAgendaFilter)
     meta_type = "Silva Agenda Filter"
+    grok.implements(IAgendaFilter)
     silvaconf.icon("www/agenda_filter.png")
     silvaconf.priority(3.4)
 
@@ -150,3 +151,8 @@ class AgendaFilter(NewsItemFilter):
         return self._allowed_meta_types
 
 InitializeClass(AgendaFilter)
+
+
+class AgendaFilterAddForm(silvaforms.SMIAddForm):
+    grok.context(IAgendaFilter)
+    grok.name(u"Silva Agenda Filter")

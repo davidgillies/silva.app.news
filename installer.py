@@ -96,15 +96,8 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('preview', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
 
         # add
-        reg.register('add', 'Silva Agenda Filter', ['add', 'AgendaFilter'])
-        reg.register('add', 'Silva News Filter', ['add', 'NewsFilter'])
-        reg.register('add', 'Silva News Publication', ['add', 'NewsPublication'])
-        reg.register('add', 'Silva News Viewer', ['add', 'NewsViewer'])
-        reg.register('add', 'Silva RSS Aggregator', ['add', 'RSSAggregator'])
-        reg.register('add', 'Silva Agenda Viewer', ['add', 'AgendaViewer'])
         reg.register('add', 'Silva Article', ['add', 'NewsItem', 'PlainArticle'])
         reg.register('add', 'Silva Agenda Item', ['add', 'NewsItem', 'PlainAgendaItem'])
-        reg.register('add', 'Silva News Category Filter', ['add', 'CategoryFilter'])
 
     def unregister_views(self, reg):
         #"""Unregister core views on registry.
@@ -139,15 +132,8 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.unregister('preview', 'Silva Agenda Item Version')
 
         # add
-        reg.unregister('add', 'Silva Agenda Filter')
-        reg.unregister('add', 'Silva News Filter')
-        reg.unregister('add', 'Silva News Publication')
-        reg.unregister('add', 'Silva News Viewer')
-        reg.unregister('add', 'Silva RSS Aggregator')
-        reg.unregister('add', 'Silva Agenda Viewer')
         reg.unregister('add', 'Silva Article')
         reg.unregister('add', 'Silva Agenda Item')
-        reg.unregister('add', 'Silva News Category Filter')
 
     def setup_catalog(self, root):
         """Sets the ZCatalog up"""

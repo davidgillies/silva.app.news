@@ -1,37 +1,41 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.25 $
-
-from zope.interface import implements
+# $Id$
 
 import time
 
+# Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
+from Products.Silva import SilvaPermissions
+from five import grok
 from silva.core import conf as silvaconf
 from silva.core.services.interfaces import ICataloging
-from Products.Silva import SilvaPermissions
+from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.interfaces import IAggregator
-import feedparser
+from Products.SilvaNews import feedparser
+
 
 class RSSAggregator(NewsViewer):
-    """The aggregator is used to display content from RSS feeds, either from Silva
-       or from extenal sites. One or more feeds are merged into a listing for public 
-       presentation. The titles and leads of items in the feeds are displayed 
-       together with a link to the original article."""
-
+    """The aggregator is used to display content from RSS feeds,
+       either from Silva or from extenal sites. One or more feeds are
+       merged into a listing for public presentation. The titles and
+       leads of items in the feeds are displayed together with a link
+       to the original article.
+    """
     security = ClassSecurityInfo()
-    implements(IAggregator)
+
     meta_type = 'Silva RSS Aggregator'
+    grok.implements(IAggregator)
     silvaconf.icon("www/rss_aggregator.png")
     silvaconf.priority(3.5)
 
     def __init__(self, id):
-        RSSAggregator.inheritedAttribute('__init__')(self, id)
+        super(RSSAggregator, self).__init__(id)
         self._rss_feeds = []
         self._last_updated = 0
         self._caching_period = 360 # in seconds
@@ -82,7 +86,7 @@ class RSSAggregator(NewsViewer):
             # deliver cached result
             ret = cache[1]
         return ret
-    
+
     def _read_feeds(self):
         ret = {}
         for feed in self._rss_feeds:
@@ -91,7 +95,7 @@ class RSSAggregator(NewsViewer):
         return ret
 
     security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 
+        SilvaPermissions.AccessContentsInformation,
         'get_merged_feed_contents')
     def get_merged_feed_contents(self):
         feed_data = self.get_feed_contents()
@@ -104,4 +108,10 @@ class RSSAggregator(NewsViewer):
         ret.sort(reverse=True)
         return [ r[1] for r in ret ]
 
+
 InitializeClass(RSSAggregator)
+
+
+class RSSAggregatorAddForm(silvaforms.SMIAddForm):
+    grok.context(IAggregator)
+    grok.name(u'Silva RSS Aggregator')

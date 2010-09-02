@@ -2,19 +2,20 @@
 # See also LICENSE.txt
 # $Revision: 1.36 $
 
-from zope.interface import implements
-
 # Zope
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass # Zope 2.12
+from App.class_init import InitializeClass
 
-# Silva/News Interfaces
+# SilvaNews
 from Products.SilvaNews.interfaces import INewsFilter
-
-# Silva/News
-from silva.core import conf as silvaconf
-from Products.Silva import SilvaPermissions
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
+
+
+from Products.Silva import SilvaPermissions
+from five import grok
+from silva.core import conf as silvaconf
+from zeam.form import silva as silvaforms
+
 
 class NewsFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
@@ -25,16 +26,15 @@ class NewsFilter(NewsItemFilter):
     security = ClassSecurityInfo()
 
     meta_type = "Silva News Filter"
+    grok.implements(INewsFilter)
     silvaconf.icon("www/news_filter.png")
     silvaconf.priority(3.2)
-
-    implements(INewsFilter)
 
     _article_meta_types = ['Silva Article Version']
     _agenda_item_meta_types = ['Silva Agenda Item Version']
 
     def __init__(self, id):
-        NewsFilter.inheritedAttribute('__init__')(self, id)
+        super(NewsFilter, self).__init__(id)
         self._show_agenda_items = 0
 
     # ACCESSORS
@@ -74,4 +74,10 @@ class NewsFilter(NewsItemFilter):
     def set_show_agenda_items(self, value):
         self._show_agenda_items = not not int(value)
 
+
 InitializeClass(NewsFilter)
+
+
+class NewsFilterAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsFilter)
+    grok.name(u'Silva News Filter')

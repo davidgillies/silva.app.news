@@ -3,25 +3,24 @@
 # $Revision: 1.34 $
 
 from logging import getLogger
-from zope.interface import implements
-from zope.component import getUtility
-from zope.app.intid.interfaces import IIntIds
 
 from five import grok
+from zope.intid.interfaces import IIntIds
+from zope.component import getUtility
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from OFS.SimpleItem import SimpleItem
-from App.class_init import InitializeClass # Zope 2.12
-
+from App.class_init import InitializeClass
 from DateTime import DateTime
+from OFS.SimpleItem import SimpleItem
 from zExceptions import NotFound
 
 # Silva
-from silva.core import conf as silvaconf
-from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
+from silva.core import conf as silvaconf
+from silva.core.views import views as silvaviews
+from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews.interfaces import INewsViewer, INewsItemVersion
@@ -41,15 +40,14 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     """
 
     meta_type = 'Silva News Viewer'
+    grok.implements(INewsViewer)
     silvaconf.icon("www/news_viewer.png")
     silvaconf.priority(3.1)
 
     security = ClassSecurityInfo()
 
-    implements(INewsViewer)
-
     def __init__(self, id):
-        NewsViewer.inheritedAttribute('__init__')(self, id)
+        super(NewsViewer, self).__init__(id)
         self._number_to_show = 25
         self._number_to_show_archive = 10
         self._number_is_days = 0
@@ -328,6 +326,11 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 InitializeClass(NewsViewer)
 
 
+class NewsViewerAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsViewer)
+    grok.name('Silva News Viewer')
+
+
 class NewsViewerView(silvaviews.View):
     """ Default view for news viewer
     """
@@ -396,5 +399,3 @@ class NewsViewerArchivesView(silvaviews.Page):
             return 'Reader'
         else:
             return 'Other'
-
-

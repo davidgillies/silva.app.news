@@ -140,7 +140,10 @@ class CategoryMixin(object):
             if not filterby or el.id() in filterby:
                 ret.append((el.id(), el.title(), depth))
             self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
+
+
 InitializeClass(CategoryMixin)
+
 
 class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     """This object provides lists of subjects and target_audiences for Filters

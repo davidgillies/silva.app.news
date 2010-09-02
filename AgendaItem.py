@@ -39,6 +39,7 @@ class AgendaItem(NewsItem):
 
 InitializeClass(AgendaItem)
 
+
 class AgendaItemVersion(NewsItemVersion):
     """Base class for agenda item versions.
     """
@@ -195,5 +196,3 @@ class AgendaItemICS(grok.View):
         cal.add('version', '2.0')
         cal.add_component(self.event_factory(self.viewer))
         return unicode(cal)
-
-

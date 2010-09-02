@@ -1,5 +1,14 @@
+# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# See also LICENSE.txt
+# $Id$
+
+from five import grok
 from zope.interface import Interface
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+
 from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
+
 from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
 
@@ -15,6 +24,26 @@ class ISilvaNewsExtension(Interface):
 class INewsItem(IDocument):
     """Silva News Item interface
     """
+
+
+@grok.provider(IContextSourceBinder)
+def subject_source(context):
+    # XXX use getUtility when it will be a real service
+    service = context.service_news
+    result = []
+    for value, title, _ in service.subject_tree():
+        result.append(SimpleTerm(value=value, token=value, title=title))
+    return SimpleVocabulary(result)
+
+
+@grok.provider(IContextSourceBinder)
+def target_audiences_source(context):
+    # XXX use getUtility when it will be a real service
+    service = context.service_news
+    result = []
+    for value, title, _ in service.target_audience_tree():
+        result.append(SimpleTerm(value=value, token=value, title=title))
+    return SimpleVocabulary(result)
 
 
 class INewsItemVersion(IDocumentVersion):
