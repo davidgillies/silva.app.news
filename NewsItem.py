@@ -5,14 +5,10 @@
 from five import grok
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
-# Python
-from xml.sax import parseString
-from xml.sax.handler import ContentHandler
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from DateTime import DateTime
 
 # Silva
 from silva.core.interfaces import IRoot
@@ -29,44 +25,6 @@ from Products.Silva.Versioning import VersioningError, empty_version
 
 
 _ = MessageFactory('silva_news')
-
-
-class MetaDataSaveHandler(ContentHandler):
-    def startDocument(self):
-        self.title = ''
-        self.inside_title = False
-        self.metadata = {}
-
-    def startElement(self, name, attributes):
-        if name == 'h2' and not self.title:
-            self.inside_title = True
-        elif name == 'meta':
-            if (attributes.get('scheme') ==
-                    'http://infrae.com/namespace/metadata/silva-news-network'
-                    ):
-                name = attributes.get('name', '')
-                content = attributes.get('content', '')
-                self.metadata[name] = self.parse_content(content)
-
-    def endElement(self, name):
-        if name == 'h2':
-            self.inside_title = False
-
-    def characters(self, data):
-        if self.inside_title:
-            self.title += data
-
-    def parse_content(self, content):
-        return [self.deentitize_and_deescape_pipes(x) for
-                    x in content.split('|')]
-
-    def deentitize_and_deescape_pipes(self, data):
-        data = data.replace('&pipe;', '|')
-        data = data.replace('&lt;', '<')
-        data = data.replace('&gt;', '>')
-        data = data.replace('&quot;', '"')
-        data = data.replace('&amp;', '&')
-        return data
 
 
 class NewsItem(Document):
@@ -118,33 +76,10 @@ class NewsItemVersion(DocumentVersion):
     grok.implements(INewsItemVersion)
 
     def __init__(self, id):
-        NewsItemVersion.inheritedAttribute('__init__')(self, id)
+        super(NewsItemVersion, self).__init__(id)
         self._subjects = []
         self._target_audiences = []
         self._display_datetime = None
-
-    def set_document_xml_from(self, data, format='kupu', request=None):
-        handler = MetaDataSaveHandler()
-        parseString(data, handler)
-
-        self.set_subjects(handler.metadata.get('subjects', []))
-        self.set_target_audiences(handler.metadata.get('target_audiences', []))
-        # a bit nasty, should perhaps happen in AgendaItem only?
-        if hasattr(self, 'start_datetime'):
-            self.set_start_datetime(
-                DateTime(handler.metadata['start_datetime'][0]))
-        if hasattr(self, 'end_datetime'):
-            end_datetime = handler.metadata['end_datetime'][0]
-            if not end_datetime:
-                end_datetime = None
-            else:
-                end_datetime = DateTime(end_datetime)
-            self.set_end_datetime(end_datetime)
-        if hasattr(self, 'location'):
-            self.set_location(handler.metadata['location'][0])
-        self.set_title(handler.title)
-        return super(NewsItemVersion, self).set_document_xml_from(
-            data, format=format, request=request)
 
     # XXX I would rather have this get called automatically on setting
     # the publication datetime, but that would have meant some nasty monkey-
@@ -230,7 +165,7 @@ class NewsItemVersion(DocumentVersion):
 
     def _get_source(self):
         c = self.aq_inner.aq_parent
-        while (1):
+        while True:
             if INewsPublication.providedBy(c):
                 return c
             if IRoot.providedBy(c):
@@ -256,7 +191,8 @@ class NewsItemVersion(DocumentVersion):
         source = self._get_source()
         if not source:
             return False
-        return self.service_metadata.getMetadataValue(source,'snn-np-settings','is_private')
+        return self.service_metadata.getMetadataValue(
+            source, 'snn-np-settings', 'is_private')
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_is_private')
@@ -354,5 +290,3 @@ class NewsItemListItemView(grok.View):
     grok.name('search_result')
     template = grok.PageTemplate(
         filename='templates/NewsItem/search_result.pt')
-
-

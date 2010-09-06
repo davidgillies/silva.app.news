@@ -15,7 +15,7 @@ from five import grok
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
-from zope import schema
+from zope import interface, schema
 from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('silva_news')
@@ -45,22 +45,22 @@ class PlainAgendaItem(AgendaItem):
 InitializeClass(PlainAgendaItem)
 
 
-class IAgendaItemSchema(ITitledContent):
-    start_datetime = schema.Datetime(
+class IAgendaItemSchema(interface.Interface):
+    _start_datetime = schema.Datetime(
         title=_(u"start date/time"),
-        required=True)
-    end_datetime = schema.Datetime(
+        required=False) # True
+    _end_datetime = schema.Datetime(
         title=_(u"end date/time"),
         required=False)
-    location = schema.TextLine(
+    _location = schema.TextLine(
         title=_(u"location"),
         description=_(u"The location where the event is taking place."),
         required=False)
-    subjects = schema.List(
+    _subjects = schema.List(
         title=_(u"subjects"),
         value_type=schema.Choice(source=subject_source),
         required=True)
-    target_audiences = schema.List(
+    _target_audiences = schema.List(
         title=_(u"target audiences"),
         value_type=schema.Choice(source=target_audiences_source),
         required=True)
@@ -70,4 +70,12 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
+
+
+class AgendaEditProperties(silvaforms.RESTKupuEditProperties):
+    grok.context(IAgendaItem)
+
+    label = _(u"agenda item properties")
     fields = silvaforms.Fields(IAgendaItemSchema)
+    actions = silvaforms.Actions(silvaforms.EditAction())
