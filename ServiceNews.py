@@ -23,6 +23,7 @@ from Products.SilvaNews.datetimeutils import local_timezone
 
 import pytz
 from datetime import datetime
+from silva.translations import translate as _
 
 
 class TimezoneMixin(object):
@@ -249,7 +250,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
             el = self._target_audiences.getElement(id)
         except KeyError:
             return None
-        return self._target_audiences.getElement(id).title()
+        return el.title()
 
     security.declareProtected('Setup ServiceNews',
                                 'remove_subject')

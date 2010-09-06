@@ -2,11 +2,15 @@
 # See also LICENSE.txt
 # $Id$
 
+import pytz
+
 from five import grok
 from zope.interface import Interface
+from zope import schema
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
+from silva.translations import translate as _
 from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 
 from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
@@ -279,6 +283,121 @@ class IAgendaFilter(INewsItemFilter):
 
 class IViewer(IContent):
     """Base interface for SilvaNews Viewers"""
+
+_number_to_show = [
+    (_(u"number of days"), 1),
+    (_(u"number of items"), 0)
+]
+
+
+@grok.provider(IContextSourceBinder)
+def show_source(context):
+    terms = []
+    for info in _number_to_show:
+        title, value = info
+        terms.append(SimpleTerm(value=value, token=value, title=title))
+    return SimpleVocabulary(terms)
+
+_week_days_list = [
+    (_(u'Monday'),    0),
+    (_(u'Tuesday'),   1),
+    (_(u'Wednesday'), 2),
+    (_(u'Thursday'),  3),
+    (_(u'Friday'),    4),
+    (_(u'Saturday'),  5),
+    (_(u'Sunday'),    6)
+]
+
+@grok.provider(IContextSourceBinder)
+def week_days_source(context):
+    week_days_terms = []
+    for info in _week_days_list:
+        title, value = info
+        week_days_terms.append(
+            SimpleTerm(value=value, token=value, title=title))
+    return SimpleVocabulary(week_days_terms)
+
+@grok.provider(IContextSourceBinder)
+def timezone_source(context):
+    zones = pytz.common_timezones
+    default_name = context.service_news.get_timezone_name()
+    context_tz_name = context.get_timezone_name()
+
+    terms = []
+
+    def tokenize(name):
+        return unicode(name).strip()
+
+    # this redondant code (bad!) is there to deal with local timezone
+    # case where we are enable to get it's pytz name
+    if default_name not in zones:
+        terms.append(SimpleTerm(title=default_name,
+                                value=default_name,
+                                token=default_name))
+    if context_tz_name and context_tz_name not in zones:
+        terms.append(SimpleTerm(title=context_tz_name,
+                                value=context_tz_name,
+                                token=context_tz_name))
+    for zone in zones:
+        terms.append(SimpleTerm(title=zone,
+                                value=zone,
+                                token=zone))
+    return SimpleVocabulary(terms)
+
+@grok.provider(IContextSourceBinder)
+def filters_source(context):
+    terms = []
+    for filter in context.get_all_filters():
+        path = "/".join(filter.getPhysicalPath())
+        terms.append(SimpleTerm(value=path,
+                                title="%s (%s)" % (filter.get_title(), path),
+                                token=path))
+    return SimpleVocabulary(terms)
+
+
+class INewsViewerSchema(Interface):
+    """ Fields description for use in forms only
+    """
+    number_is_days = schema.Choice(
+        source=show_source,
+        title=_(u"show"),
+        description=_(u"Show a specific number of items, or show "
+                      u"items from a range of days in the past."),
+        required=True)
+
+    number_to_show = schema.Int(
+        title=_(u"days / items number"),
+        description=_(u"Number of news items to show per page."),
+        required=True)
+
+    number_to_show_archive = schema.Int(
+        title=_(u"archive number"),
+        description=_(u"Number of archive items to show per page."),
+        required=True)
+
+    year_range = schema.Int(
+        title=_(u"year range"),
+        description=_(u"Allow navigation this number of years ahead "
+                      u"of / behind today."),
+        required=True)
+
+    timezone_name = schema.Choice(
+        source=timezone_source,
+        title=_(u"timezone"),
+        description=_(u"Defines the time zone for the agenda and news "
+                      u"items that will be rendered by this viewer."),
+        required=True)
+
+    first_week_day = schema.Choice(
+        title=_(u"first day of the week"),
+        source=week_days_source,
+        description=_(u"Define first day of the week for calendar display."),
+        required=True)
+
+    filters = schema.Set(
+        value_type=schema.Choice(source=filters_source),
+        title=_(u"filters"),
+        description=_(u"Use predefined filters."))
 
 
 class INewsViewer(IViewer):

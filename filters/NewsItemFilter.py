@@ -8,8 +8,9 @@ from DateTime import DateTime
 from datetime import datetime
 import Products
 
-# Silva
 from five import grok
+
+# Silva
 from silva.core.services.interfaces import ICataloging
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -211,9 +212,9 @@ class NewsItemFilter(Filter):
         query['path'] = self._sources
         query['version_status'] = 'public'
         query['idx_subjects'] = {'query': self._subjects,
-                                'operator': 'or'}
+                                 'operator': 'or'}
         query['idx_target_audiences'] = {'query': self._target_audiences,
-                                        'operator': 'or'}
+                                         'operator': 'or'}
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         query['meta_type'] = meta_types
@@ -236,7 +237,6 @@ class NewsItemFilter(Filter):
                 raise MetaTypeException, "Illegal meta_type: %s" % type
 
     def _allowed_news_meta_types(self):
-        mts = Products.meta_types
         return [addable_dict['name']
                 for addable_dict in Products.meta_types
                 if self._is_news_addable(addable_dict)]
@@ -313,11 +313,13 @@ class NewsItemFilter(Filter):
         query = self._prepare_query(meta_types)
 
         if number_is_days:
-            # the number specified must be used to restrict the on number of days instead of the number of items
+            # the number specified must be used to restrict
+            # the on number of days instead of the number of items
             now = DateTime()
             last_night = now.earliestTime()
-            query['idx_display_datetime'] = {'query': [last_night - number, now],
-                                             'range': 'minmax'}
+            query['idx_display_datetime'] = {
+                'query': [last_night - number, now],
+                'range': 'minmax'}
         result = self._query_items(**query)
         if not number_is_days:
             output = result[:number]
@@ -376,7 +378,6 @@ class NewsItemFilter(Filter):
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
             return []
 
-        result = []
         month = int(month)
         year = int(year)
         startdate = datetime(year, month, 1, tzinfo=timezone)

@@ -219,9 +219,9 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         # key = "%d%02d%02d" % (year, month, day,)
         # events = self._events_index[key]
         html = ""
-        return '<a href="?day=%s&amp;month=%s&amp;year=%s">%s</a>' \
+        return '<a href="?day=%d&amp;month=%d&amp;year=%d">%s</a>' \
                '<div class="events">%s</div>' % \
-               (day, month, year, day, html,)
+               (int(day), int(month), int(year), str(day), html,)
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \

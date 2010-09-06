@@ -21,11 +21,13 @@ from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
+from silva.core.services.interfaces import ICatalogService
+
 
 # SilvaNews
-from Products.SilvaNews.interfaces import INewsViewer, INewsItemVersion
+from Products.SilvaNews.interfaces import (INewsViewer, INewsItemVersion,
+    INewsViewerSchema)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
-
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
@@ -90,6 +92,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
             self._year_range = 2
         return self._year_range
 
+    get_year_range = year_range
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_to_show')
     def number_to_show(self):
@@ -97,11 +101,15 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         return self._number_to_show
 
+    get_number_to_show = number_to_show
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'number_to_show_archive')
     def number_to_show_archive(self):
         """returns the number of items to show per page in the archive"""
         return self._number_to_show_archive
+
+    get_number_to_show_archive = number_to_show_archive
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_published')
@@ -130,6 +138,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         return self._number_is_days
 
+    get_number_is_days = number_is_days
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'filters')
     def filters(self):
@@ -137,6 +147,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         self.verify_filters()
         return self._filters
+
+    get_filters = filters
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'findfilters')
@@ -148,6 +160,17 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         #results = self.service_catalog(query)
         filters = [str(pair[1]) for pair in self.findfilters_pairs()]
         return filters
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_all_filters')
+    def get_all_filters(self):
+        util = getUtility(ICatalogService)
+        query = {}
+        query['meta_type'] = {
+            'operator': 'or',
+            'query': ['Silva News Filter',
+                      'Silva Agenda Filter']}
+        return [brain.getObject() for brain in util(query)]
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'findfilters_pairs')
@@ -309,26 +332,29 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_filter')
-    def set_filter(self, newsfilter, on_or_off):
-        """Adds or removes a filter from the list of filters
+    def set_filters(self, filters):
+        """update filters (path to)
         """
         self.verify_filters()
-        if on_or_off:
-            if not newsfilter in self._filters:
-                self._filters.append(newsfilter)
-                self._p_changed = 1
-        else:
-            if newsfilter in self._filters:
-                self._filters.remove(newsfilter)
-                self._p_changed = 1
+        self._filters = filters
 
 
 InitializeClass(NewsViewer)
 
 
 class NewsViewerAddForm(silvaforms.SMIAddForm):
+    """Add form news viewer
+    """
     grok.context(INewsViewer)
     grok.name('Silva News Viewer')
+
+
+class NewsViewerEditForm(silvaforms.SMIEditForm):
+    """ Edit form for news viewer
+    """
+    grok.context(INewsViewer)
+    fields = silvaforms.Fields(INewsViewerSchema)
+    fields['number_is_days'].mode = u'radio'
 
 
 class NewsViewerView(silvaviews.View):
