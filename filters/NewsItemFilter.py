@@ -1,16 +1,15 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
+# $Revision$
 
-from zope.interface import implements
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from DateTime import DateTime
 from datetime import datetime
 import Products
 
-# Silva 
-from silva.core import conf as silvaconf
+# Silva
+from five import grok
 from silva.core.services.interfaces import ICataloging
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -32,6 +31,7 @@ def brainsorter(a, b):
     btime = b.start_datetime
     return cmp(atime, btime)
 
+
 class NewsItemFilter(Filter):
     """Super-class for news item filters.
 
@@ -42,12 +42,12 @@ class NewsItemFilter(Filter):
     A super-class for the News Filters (NewsFilter, AgendaFilter)
     which contains shared code for both filters"""
 
-    implements(INewsItemFilter)
-    silvaconf.baseclass()
+    grok.implements(INewsItemFilter)
+    grok.baseclass()
     security = ClassSecurityInfo()
 
     def __init__(self, id):
-        NewsItemFilter.inheritedAttribute('__init__')(self, id)
+        super(NewsItemFilter, self).__init__(id)
         self._keep_to_path = 0
         self._excluded_items = []
         self._sources = []

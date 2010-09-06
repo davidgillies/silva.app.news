@@ -1,21 +1,20 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.17 $
-
-from zope.interface import implements
+# $Id$
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass # Zope 2.12
+from App.class_init import InitializeClass
 
 # Silva
-from silva.core import conf as silvaconf
+from five import grok
 from silva.core.services.interfaces import ICataloging
 from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # SilvaNews interfaces
 from Products.SilvaNews.interfaces import IFilter
+
 
 class Filter(Asset):
     """
@@ -26,12 +25,12 @@ class Filter(Asset):
     """
     security = ClassSecurityInfo()
 
-    implements(IFilter)
-    silvaconf.baseclass()
+    grok.implements(IFilter)
+    grok.baseclass()
     _allowed_source_types = ['Silva News Publication']
 
     def __init__(self, id):
-        Filter.inheritedAttribute('__init__')(self, id)
+        super(Filter, self).__init__(id)
         self._subjects = []
         self._target_audiences = []
 
