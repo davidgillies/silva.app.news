@@ -36,7 +36,7 @@ Version of this file: $Revision: 1.10 $
     <tal:repeat repeat="subjecttuple subject_tree">
     <tal:define define="subject python:subjecttuple[0]; title python: subjecttuple[1]; depth python:int(subjecttuple[2])">
     <input type="checkbox" name="subjects:list" tal:attributes="value subject" class="form-element">
-    <span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="subject" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
+    <span tal:replace="structure python: depth * 3 * u'&nbsp'" /><span tal:content="subject" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
     </tal:define>
     </tal:repeat>
     <input type="submit" name="manage_rename_start:method" value="Rename subject(s)" class="form-element">
@@ -52,7 +52,7 @@ Version of this file: $Revision: 1.10 $
     <option value="" class="form-element">Root (top)</option>
     <tal:repeat repeat="subjecttuple subject_tree">
     <tal:define define="subject python:subjecttuple[0]; depth python:int(subjecttuple[2])">
-    <option tal:content="structure python:depth * 2 * '&nbsp;' + subject" tal:attributes="value python:subject" class="form-element"></option>
+    <option tal:content="structure python:depth * 2 * u'&nbsp;' + subject" tal:attributes="value python:subject" class="form-element"></option>
     </tal:define>
     </tal:repeat>
     </select>
@@ -68,7 +68,7 @@ Version of this file: $Revision: 1.10 $
     <tal:repeat repeat="tatuple target_audience_tree">
     <tal:define define="target_audience python:tatuple[0]; title python: tatuple[1]; depth python:int(tatuple[2])">
     <input type="checkbox" name="target_audiences:list" tal:attributes="value target_audience" class="form-element">
-    <span tal:replace="structure python: depth * 3 * '&nbsp;'" /><span tal:content="target_audience" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
+    <span tal:replace="structure python: depth * 3 * u'&nbsp'" /><span tal:content="target_audience" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
     </tal:define>
     </tal:repeat>
     <input type="submit" name="manage_rename_start:method" value="Rename target audience(s)" class="form-element">
@@ -84,7 +84,7 @@ Version of this file: $Revision: 1.10 $
     <option value="" class="form-element">Root (top)</option>
     <tal:repeat repeat="tatuple target_audience_tree">
     <tal:define define="target_audience python:tatuple[0]; depth python:int(tatuple[2])">
-    <option tal:content="structure python:depth * 2 * '&nbsp;' + target_audience" tal:attributes="value python:target_audience" class="form-element"></option>
+    <option tal:content="structure python:depth * 2 * u'&nbsp' + target_audience" tal:attributes="value python:target_audience" class="form-element"></option>
     </tal:define>
     </tal:repeat>
     </select>
