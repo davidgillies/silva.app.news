@@ -112,7 +112,8 @@ class CalendarDateRepresentation(object):
         elif isinstance(rrule_data, str) or isinstance(rrule_data, unicode):
             self.set_recurrence_from_string(rrule_data)
         else:
-            raise TypeError, "don't know how to handle provided recurrence infos"
+            raise TypeError, "don't know how to handle provided "\
+                             "recurrence infos"
         return self.recurrence
 
     def set_recurrence_from_string(self, rrule_data):

@@ -10,11 +10,12 @@ from zope import schema
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-from silva.translations import translate as _
 from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 
 from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('silva_news')
 
 
 class IInlineViewer(IExternalSource):
@@ -324,9 +325,6 @@ def timezone_source(context):
     context_tz_name = context.get_timezone_name()
 
     terms = []
-
-    def tokenize(name):
-        return unicode(name).strip()
 
     # this redondant code (bad!) is there to deal with local timezone
     # case where we are enable to get it's pytz name

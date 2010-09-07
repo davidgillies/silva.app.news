@@ -23,7 +23,6 @@ from Products.SilvaNews.datetimeutils import local_timezone
 
 import pytz
 from datetime import datetime
-from silva.translations import translate as _
 
 
 class TimezoneMixin(object):
@@ -73,7 +72,7 @@ class TimezoneMixin(object):
             zones.append(default)
         return zones
 
-    security.declareProtected('View',
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'set_first_weekday')
     def set_first_weekday(self, weekday):
         if weekday not in range(0, 7):
@@ -160,10 +159,10 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
                       ) + SimpleItem.manage_options
 
     manage_main = edit_tab = PageTemplateFile('www/serviceNewsEditTab',
-                                            globals(), 
+                                            globals(),
                                             __name__='edit_tab')
     manage_rename_view = PageTemplateFile('www/serviceNewsRenameView',
-                                            globals(), 
+                                            globals(),
                                             __name__='manage_rename_view')
 
     def __init__(self, id):
@@ -302,21 +301,21 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
         if REQUEST['parent']:
             try:
-                self.add_subject(unicode(REQUEST['subject'], 'UTF-8'),
-                                    unicode(REQUEST['title'], 'UTF-8'),
-                                    unicode(REQUEST['parent'], 'UTF-8'))
+                self.add_subject(unicode(REQUEST['subject']),
+                                    unicode(REQUEST['title']),
+                                    unicode(REQUEST['parent']))
             except Tree.DuplicateIdError, e:
                 return self.edit_tab(manage_tabs_message=e)
         else:
             try:
-                self.add_subject(unicode(REQUEST['subject'], 'UTF-8'),
-                                    unicode(REQUEST['title'], 'UTF-8'))
+                self.add_subject(unicode(REQUEST['subject']),
+                                    unicode(REQUEST['title']))
             except Tree.DuplicateIdError, e:
                 return self.edit_tab(manage_tabs_message=e)
 
         return self.edit_tab(
                     manage_tabs_message='Subject %s added' %
-                        unicode(REQUEST['subject'], 'UTF-8'))
+                        unicode(REQUEST['subject']))
 
     security.declareProtected('Setup ServiceNews',
                               'manage_remove_subject')
@@ -325,7 +324,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         if not REQUEST.has_key('subjects'):
             return self.edit_tab(manage_tabs_message='No subjects specified')
 
-        subs = [unicode(s, 'UTF-8') for s in REQUEST['subjects']]
+        subs = [unicode(s) for s in REQUEST['subjects']]
         for subject in subs:
             try:
                 self.remove_subject(subject)
@@ -467,7 +466,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
             'first_weekday': "No first weekday provided!"
         }
         for field, error in field_errors.iteritems():
-            if not REQUEST.has_key(field):
+            if not REQUEST.has_key(field) or not REQUEST[field]:
                 return self.edit_tab(
                     manage_tabs_message=error)
 
@@ -475,6 +474,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         self._date_format = REQUEST['date_format']
         self.set_timezone_name(REQUEST['timezone_name'])
         self.set_first_weekday(int(REQUEST['first_weekday']))
+        return self.edit_tab(manage_tabs_message='Locale set')
 
     security.declareProtected('View', 'format_date')
     def format_date(self, dt, display_time=True):

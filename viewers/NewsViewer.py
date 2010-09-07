@@ -7,6 +7,7 @@ from logging import getLogger
 from five import grok
 from zope.intid.interfaces import IIntIds
 from zope.component import getUtility
+from zope.traversing.browser import absoluteURL
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -56,12 +57,12 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._year_range = 2
         self._filters = []
 
-    def url_for(self, obj):
+    def url_for_item(self, obj, request):
         intids = getUtility(IIntIds)
         if INewsItemVersion.providedBy(obj):
             obj = obj.object()
         id = intids.register(obj)
-        return "%s/++items++%d" % (self.absolute_url(), id,)
+        return "%s/++items++%d" % (absoluteURL(self, request), id,)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone')

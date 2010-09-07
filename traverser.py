@@ -7,6 +7,7 @@ from zope.traversing.interfaces import ITraversable
 from Products.SilvaNews.interfaces import INewsViewer, INewsItem
 from Acquisition import aq_base
 
+
 class NewsViewerTraverser(grok.MultiAdapter):
     grok.adapts(INewsViewer, IBrowserRequest)
     grok.implements(ITraversable)

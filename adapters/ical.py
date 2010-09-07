@@ -7,6 +7,8 @@ from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.datetimeutils import UTC
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
+from zope.interface import Interface
+from zope.traversing.browser import absoluteURL
 
 
 class AgendaFactoryEvent(grok.Adapter):
@@ -14,14 +16,14 @@ class AgendaFactoryEvent(grok.Adapter):
     grok.implements(IEvent)
     grok.provides(IEvent)
 
-    def __call__(self, viewer):
-        return AgendaEvent(self.context, viewer)
+    def __call__(self, viewer, request):
+        return AgendaEvent(self.context, request, viewer)
+
 
 class AgendaEvent(Event):
 
-    def __init__(self, context, viewer=None):
+    def __init__(self, context, request, viewer=None):
         super(AgendaEvent, self).__init__()
-        date_rep = context.get_calendar_date_representation()
         intid = getUtility(IIntIds)
         timezone = viewer and viewer.get_timezone() or context.timezone()
         start_dt = context.start_datetime().astimezone(timezone)
@@ -44,18 +46,20 @@ class AgendaEvent(Event):
             self['LOCATION'] = vText(context.location())
         self['SUMMARY'] = vText(context.get_title())
         if viewer is None:
-            self['URL'] = context.object().absolute_url()
+            self['URL'] = absoluteURL(context.object(), request)
         else:
-            self['URL'] = viewer.url_for(context)
+            self['URL'] = viewer.url_for_item(context, request)
 
-class AgendaCalendar(Calendar, grok.Adapter):
-    grok.context(IAgendaViewer)
+
+class AgendaCalendar(Calendar, grok.MultiAdapter):
+    grok.adapts(IAgendaViewer, Interface)
     grok.implements(ICalendar)
     grok.provides(ICalendar)
 
-    def __init__(self, context):
+    def __init__(self, context, request):
         super(AgendaCalendar, self).__init__()
         self.context = context
+        self.request = request
         self['PRODID'] = \
             vText('-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN')
         self['VERSION'] = '2.0'
@@ -66,7 +70,7 @@ class AgendaCalendar(Calendar, grok.Adapter):
                 now + relativedelta(years=-1), now + relativedelta(years=+1)):
             agenda_item_version = brain.getObject()
             event_factory = AgendaFactoryEvent(agenda_item_version)
-            event = event_factory(self.context)
+            event = event_factory(self.context, self.request)
             if event is not None:
                 self.add_component(event)
 

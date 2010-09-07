@@ -8,7 +8,8 @@ import calendar
 import localdatetime
 
 from five import grok
-from zope.component import getAdapter
+from zope.component import getMultiAdapter
+from zope.traversing.browser import absoluteURL
 
 # Zope
 import Products
@@ -129,6 +130,29 @@ class AgendaViewerMonthCalendar(silvaviews.View):
     template = grok.PageTemplateFile(
         filename='../templates/AgendaViewer/month_calendar.pt')
 
+    @property
+    def context_absolute_url(self):
+        if hasattr(self, '__context_absolute_url'):
+            return self.__context_absolute_url
+        self.__context_absolute_url = \
+            absoluteURL(self.context, self.request)
+        return self.__context_absolute_url
+
+    def item_calevent_url(self, newsitem):
+        return self.item_url(newsitem) + '/event.ics'
+
+    def item_url(self, newsitem):
+        return self.context.url_for_item(newsitem, self.request)
+
+    def browser_resource(self, path):
+        return "/".join([self.context_absolute_url,
+                  '++resource++Products.SilvaNews.browser',
+                  path])
+
+    @property
+    def archive_url(self):
+        return self.context_absolute_url + '/archives'
+
     def update(self):
         self.request.timezone = self.context.get_timezone()
         now = datetime.now(self.context.get_timezone())
@@ -180,7 +204,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             month = 1
             year = year + 1
         return "%s?month=%d&amp;year=%d&amp;day=1" % (
-            self.context.absolute_url(), month, year)
+            self.context_absolute_url, month, year)
 
     def prev_month_url(self):
         year = self.start.year
@@ -189,7 +213,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             month = 12
             year = year - 1
         return "%s?month=%d&amp;year=%d&amp;day=1" % (
-                self.context.absolute_url(), month, year)
+                self.context_absolute_url, month, year)
 
     def intro(self):
         # XXX Should not be done with the method of the Service (who
@@ -202,7 +226,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         return u"No events on %s" % dayinfo
 
     def subscribe_url(self):
-        return "%s/subscribe.html" % self.context.absolute_url()
+        return "%s/subscribe.html" % self.context_absolute_url
 
     def day_events(self):
         return self._day_events
@@ -240,7 +264,7 @@ class AgendarViewerCalendar(grok.View):
     def update(self):
         self.request.timezone = self.context.get_timezone()
         self.request.response.setHeader('Content-Type', 'text/calendar')
-        self.calendar = getAdapter(self.context, ICalendar)
+        self.calendar = getMultiAdapter(self.context, self.request, ICalendar)
 
     def render(self):
         return unicode(self.calendar)
@@ -257,4 +281,4 @@ class AgendaViewerSubscribeView(silvaviews.Page):
         self.request.timezone = self.context.get_timezone()
 
     def calendar_url(self):
-        return "%s/calendar.ics" % self.context.absolute_url()
+        return "%s/calendar.ics" % absoluteURL(self.context, self.request)

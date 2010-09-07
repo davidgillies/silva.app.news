@@ -17,7 +17,6 @@ from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
-from silva.core.services.interfaces import ICataloging
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
@@ -80,7 +79,8 @@ class AgendaItemVersion(NewsItemVersion):
         return self._calendar_date_representation
 
     def idx_timestamp_ranges(self):
-        return self.get_calendar_date_representation().get_unixtimestamp_ranges()
+        return self.get_calendar_date_representation().\
+            get_unixtimestamp_ranges()
 
     # MANIPULATORS
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -93,20 +93,17 @@ class AgendaItemVersion(NewsItemVersion):
     def set_start_datetime(self, value):
         cdr = self.get_calendar_date_representation()
         cdr.set_start_datetime(value)
-        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_end_datetime')
     def set_end_datetime(self, value):
         cdr = self.get_calendar_date_representation()
         cdr.set_end_datetime(value)
-        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_location')
     def set_location(self, value):
         self._location = value
-        ICataloging(self).reindex()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -194,5 +191,5 @@ class AgendaItemICS(grok.View):
         cal = Calendar()
         cal.add('prodid', '-//Silva News Calendaring//lonely event//')
         cal.add('version', '2.0')
-        cal.add_component(self.event_factory(self.viewer))
+        cal.add_component(self.event_factory(self.viewer, self.request))
         return unicode(cal)
