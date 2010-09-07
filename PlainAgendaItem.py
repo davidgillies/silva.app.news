@@ -48,7 +48,7 @@ InitializeClass(PlainAgendaItem)
 class IAgendaItemSchema(interface.Interface):
     _start_datetime = schema.Datetime(
         title=_(u"start date/time"),
-        required=False) # True
+        required=True)
     _end_datetime = schema.Datetime(
         title=_(u"end date/time"),
         required=False)

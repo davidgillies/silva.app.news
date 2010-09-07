@@ -9,9 +9,11 @@ from zope.i18nmessageid import MessageFactory
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
+from DateTime import DateTime
 
 # Silva
 from silva.core.interfaces import IRoot
+from silva.core.interfaces.events import IContentPublishedEvent
 from silva.core.references.interfaces import IReferenceService
 from silva.core.services.interfaces import ICataloging
 from silva.core.views import views as silvaviews
@@ -19,9 +21,8 @@ from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
 from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
 from Products.SilvaDocument.Document import Document, DocumentVersion
-from Products.SilvaNews.interfaces import (INewsItem,
-    INewsItemVersion, INewsPublication)
-from Products.Silva.Versioning import VersioningError, empty_version
+from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
+from Products.SilvaNews.interfaces import INewsPublication
 
 
 _ = MessageFactory('silva_news')
@@ -41,14 +42,7 @@ class NewsItem(Document):
     def set_next_version_display_datetime(self, dt):
         """Set display datetime of next version.
         """
-        if self._approved_version[0]:
-            id = self._approved_version[0]
-        elif self._unapproved_version[0]:
-            id = self._unapproved_version[0]
-        else:
-            raise VersioningError,\
-                  _('No next version.')
-        version = getattr(self, id, None)
+        version = getattr(self, self.get_next_version())
         version.set_display_datetime(dt)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
@@ -56,12 +50,7 @@ class NewsItem(Document):
     def set_unapproved_version_display_datetime(self, dt):
         """Set display datetime for unapproved
         """
-        if self._unapproved_version == empty_version:
-            raise VersioningError,\
-                  _('No unapproved version.')
-
-        id = self._unapproved_version[0]
-        version = getattr(self, id, None)
+        version = getattr(self, self.get_unapproved_version())
         version.set_display_datetime(dt)
 
 
@@ -254,7 +243,6 @@ from Products.Silva.adapters.indexable import IndexableAdapter
 
 
 class NewsItemVersionIndexableAdapter(IndexableAdapter):
-
     grok.context(INewsItemVersion)
 
     def getIndexes(self):
@@ -290,3 +278,10 @@ class NewsItemListItemView(grok.View):
     grok.name('search_result')
     template = grok.PageTemplate(
         filename='templates/NewsItem/search_result.pt')
+
+
+@grok.subscribe(INewsItemVersion, IContentPublishedEvent)
+def news_item_published(content, event):
+    if content.display_datetime() is None:
+        now = DateTime()
+        content.set_display_datetime(now)
