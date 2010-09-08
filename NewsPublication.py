@@ -7,12 +7,14 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 from Products.SilvaNews.interfaces import INewsItem, INewsPublication
+from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva import SilvaPermissions
 
 from five import grok
 from silva.core import conf as silvaconf
-from zope.app.container.interfaces import IObjectAddedEvent
+from zope.component import getUtility
+from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 from zeam.form import silva as silvaforms
 
 
@@ -103,15 +105,19 @@ class NewsPublication(Publication):
 InitializeClass(NewsPublication)
 
 
-@silvaconf.subscribe(INewsPublication, IObjectAddedEvent)
-def news_publication_added(obj, event):
+@silvaconf.subscribe(INewsPublication, IObjectCreatedEvent)
+def news_publication_created(publication, event):
     """news publications should have their 'hide_from_tocs' set to
        'hide'.  This can be done after they are added
     """
-    binding = obj.service_metadata.getMetadata(obj)
+    binding = getUtility(IMetadataService).getMetadata(publication)
     binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
-    return
+
+    factory = publication.manage_addProduct['Silva']
+    factory.manage_addAutoTOC(
+        'index', publication.get_title_or_id(),
+        local_types=['Silva Article', 'Silva Agenda Item'])
 
 
 class NewsPublicationAddForm(silvaforms.SMIAddForm):
