@@ -10,7 +10,7 @@ class NewsViewerTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     """
     def test_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])
-        self.newsviewer.set_filter('/root/newsfilter', 0)
+        self.newsviewer.set_filters([])
         self.assert_(self.newsviewer.filters() == [])
 
     def test_findfilters(self):

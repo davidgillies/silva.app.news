@@ -331,7 +331,7 @@ class NewsItemFilter(Filter):
                               'get_items_by_date')
     def get_items_by_date(self, month, year, meta_types=None,
             timezone=local_timezone):
-        """ This does play well with recurrence, this should not be used
+        """ This does not play well with recurrence, this should not be used
         with agenda items
         """
         if not self._sources:

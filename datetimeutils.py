@@ -50,33 +50,25 @@ def start_of_day(dt):
     return dt.replace(hour=0, minute=0, second=0, microsecond=0)
 
 
-class CalendarDateRepresentation(object):
+class CalendarDatetime(object):
     """ This class provides a abstraction over a datetime ranges and it's
-    recurrences
+    recurrences.
     """
     default_duration = relativedelta(hours=+1)
 
     def __init__(self, start_datetime,
-            end_datetime=None, all_day=False, recurrence=None):
+            end_datetime=None, recurrence=None):
 
         self.recurrence = recurrence
 
         utc_start_datetime = utc_datetime(start_datetime)
-        utc_end_datetime = end_datetime and \
-            utc_datetime(end_datetime, end=True)
+        utc_end_datetime = end_datetime and utc_datetime(end_datetime)
         if not utc_end_datetime:
-            if all_day:
-                utc_end_datetime = \
-                    utc_datetime(end_of_day(start_datetime))
-            else:
-                utc_end_datetime = \
-                    utc_start_datetime + self.default_duration
+            utc_end_datetime = utc_start_datetime + self.default_duration
 
         self.start_datetime = utc_start_datetime
         self.end_datetime = utc_end_datetime
-        self.all_day = all_day
 
-        self.validate()
         if recurrence is not None:
             self.set_recurrence(recurrence)
 
@@ -84,6 +76,17 @@ class CalendarDateRepresentation(object):
         if self.end_datetime:
             return relativedelta(self.end_datetime, self.start_datetime)
         return self.default_duration
+
+    def __get_datetime(self, datetime, tz):
+        if tz is None:
+            return datetime
+        return datetime.astimezone(tz)
+
+    def get_start_datetime(self, tz=None):
+        return self.__get_datetime(self.start_datetime, tz)
+
+    def get_end_datetime(self, tz=None):
+        return self.__get_datetime(self.end_datetime, tz)
 
     def set_start_datetime(self, value):
         self.start_datetime = utc_datetime(value)
@@ -130,7 +133,7 @@ class CalendarDateRepresentation(object):
         return self.recurrence
 
     def __repr__(self):
-        return "<CalendarDateInterval sdt=%s, edt=%s>" % \
+        return "<CalendarDatetime sdt=%s, edt=%s>" % \
             (repr(self.start_datetime), repr(self.end_datetime))
 
     def is_all_day(self):

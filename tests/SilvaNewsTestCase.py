@@ -117,4 +117,4 @@ class NewsBaseTestCase(SilvaNewsTestCase):
         self.newsfilter.set_target_audiences(['ta', 'ta2'])
 
         self.newsviewer = self.add_news_viewer(self.root, 'newsviewer', 'NewsViewer')
-        self.newsviewer.set_filter('/root/newsfilter', 1)
+        self.newsviewer.set_filters(['/root/newsfilter'])

@@ -6,7 +6,6 @@ import pytz
 
 from five import grok
 from zope.interface import Interface
-from zope import schema
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
@@ -101,15 +100,15 @@ class IAgendaItem(INewsItem):
 
 
 class IAgendaItemVersion(INewsItemVersion):
-    def start_datetime():
+    def get_start_datetime():
         """Returns start_datetime
         """
 
-    def end_datetime():
+    def get_end_datetime():
         """Returns end_datetime
         """
 
-    def location():
+    def get_location():
         """Returns location
         """
 
@@ -322,7 +321,9 @@ def week_days_source(context):
 def timezone_source(context):
     zones = pytz.common_timezones
     default_name = context.service_news.get_timezone_name()
-    context_tz_name = context.get_timezone_name()
+    context_tz_name = None
+    if hasattr(context, 'get_timezone_name'):
+        context_tz_name = context.get_timezone_name()
 
     terms = []
 
@@ -351,51 +352,6 @@ def filters_source(context):
                                 title="%s (%s)" % (filter.get_title(), path),
                                 token=path))
     return SimpleVocabulary(terms)
-
-
-class INewsViewerSchema(Interface):
-    """ Fields description for use in forms only
-    """
-    number_is_days = schema.Choice(
-        source=show_source,
-        title=_(u"show"),
-        description=_(u"Show a specific number of items, or show "
-                      u"items from a range of days in the past."),
-        required=True)
-
-    number_to_show = schema.Int(
-        title=_(u"days / items number"),
-        description=_(u"Number of news items to show per page."),
-        required=True)
-
-    number_to_show_archive = schema.Int(
-        title=_(u"archive number"),
-        description=_(u"Number of archive items to show per page."),
-        required=True)
-
-    year_range = schema.Int(
-        title=_(u"year range"),
-        description=_(u"Allow navigation this number of years ahead "
-                      u"of / behind today."),
-        required=True)
-
-    timezone_name = schema.Choice(
-        source=timezone_source,
-        title=_(u"timezone"),
-        description=_(u"Defines the time zone for the agenda and news "
-                      u"items that will be rendered by this viewer."),
-        required=True)
-
-    first_week_day = schema.Choice(
-        title=_(u"first day of the week"),
-        source=week_days_source,
-        description=_(u"Define first day of the week for calendar display."),
-        required=True)
-
-    filters = schema.Set(
-        value_type=schema.Choice(source=filters_source),
-        title=_(u"filters"),
-        description=_(u"Use predefined filters."))
 
 
 class INewsViewer(IViewer):

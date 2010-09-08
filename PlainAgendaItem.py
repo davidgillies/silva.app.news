@@ -44,8 +44,14 @@ class PlainAgendaItem(AgendaItem):
 
 InitializeClass(PlainAgendaItem)
 
+from Products.SilvaNews.interfaces import timezone_source
 
 class IAgendaItemSchema(interface.Interface):
+    _timezone_name = schema.Choice(
+        source=timezone_source,
+        title=_(u"timezone"),
+        description=_(u"Defines the time zone for dates"),
+        required=True)
     _start_datetime = schema.Datetime(
         title=_(u"start date/time"),
         required=True)

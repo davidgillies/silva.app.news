@@ -23,7 +23,7 @@ from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
 from Products.SilvaDocument.Document import Document, DocumentVersion
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import INewsPublication
-
+from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
 
 _ = MessageFactory('silva_news')
 
@@ -234,6 +234,11 @@ class NewsItemVersion(DocumentVersion):
     def publication_time(self):
         binding = self.service_metadata.getMetadata(self)
         return binding.get('silva-extra', 'publicationtime')
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'sort_index')
+    def sort_index(self):
+        return datetime_to_unixtimestamp(self.display_datetime())
 
 
 InitializeClass(NewsItemVersion)

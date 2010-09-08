@@ -28,7 +28,6 @@ class TestDateTime(unittest.TestCase):
         the same unix timestamp
         """
         dt = datetime(2010, 2, 1, 10, 20, 03)
-        ldt = datetime_with_timezone(datetime(2010, 2, 1, 10, 20, 03))
         stamp = 1265016003
         nowDT = utc_datetime(DateTime(2010, 2, 1, 10, 20, 03))
         nowdt = utc_datetime(datetime(2010, 2, 1, 10, 20, 03))
@@ -41,7 +40,6 @@ class TestDateTime(unittest.TestCase):
         always be the same
         """
         dt = datetime(2010, 2, 1, 10, 20, 03)
-        timestamp = int(dt.strftime('%s'))
         dt_local = datetime_with_timezone(dt)
         dt_utc = utc_datetime(dt_local)
         u = datetime_to_unixtimestamp
@@ -49,13 +47,13 @@ class TestDateTime(unittest.TestCase):
         self.assertEquals(u(dt_local), u(dt_utc))
 
 
-class TestCalendarDateRep(unittest.TestCase):
+class TestCalendarDatetime(unittest.TestCase):
 
     def test_simple_recurrence(self):
         sdt = datetime(2010, 2, 1, 10, 20, 03, tzinfo=UTC);
         edt = datetime(2010, 2, 1, 11, 20, 03, tzinfo=UTC);
 
-        date_rep = CalendarDateRepresentation(sdt, edt);
+        date_rep = CalendarDatetime(sdt, edt);
         date_rep.set_recurrence_from_string('FREQ=DAILY;INTERVAL=1;COUNT=3');
         occurences = [
             (datetime(2010, 2, 1, 10, 20, 03, tzinfo=UTC),
@@ -71,7 +69,7 @@ class TestCalendarDateRep(unittest.TestCase):
         sdt = datetime(2010, 2, 1, 10, 20, 03, tzinfo=UTC);
         edt = datetime(2010, 2, 1, 11, 20, 03, tzinfo=UTC);
 
-        date_rep = CalendarDateRepresentation(sdt, edt);
+        date_rep = CalendarDatetime(sdt, edt);
         date_rep.set_recurrence_from_string('FREQ=DAILY;INTERVAL=1;COUNT=3');
         u = datetime_to_unixtimestamp
         occurences = [
@@ -88,5 +86,5 @@ class TestCalendarDateRep(unittest.TestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestDateTime))
-    suite.addTest(unittest.makeSuite(TestCalendarDateRep))
+    suite.addTest(unittest.makeSuite(TestCalendarDatetime))
     return suite

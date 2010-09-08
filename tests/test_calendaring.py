@@ -1,9 +1,7 @@
-from icalendar.interfaces import IEvent, ICalendar
-from icalendar import Event
 import SilvaNewsTestCase
 from datetime import datetime, timedelta
-from Products.SilvaNews.datetimeutils import local_timezone, datetime_to_unixtimestamp
-from zope.component import getAdapter
+from Products.SilvaNews.datetimeutils import \
+    local_timezone, datetime_to_unixtimestamp
 
 
 class TestEvent(SilvaNewsTestCase.SilvaNewsTestCase):

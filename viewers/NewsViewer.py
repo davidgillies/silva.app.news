@@ -24,10 +24,12 @@ from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 from silva.core.services.interfaces import ICatalogService
 
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('silva_news')
 
 # SilvaNews
 from Products.SilvaNews.interfaces import (INewsViewer, INewsItemVersion,
-    INewsViewerSchema)
+    show_source, timezone_source, week_days_source, filters_source)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
@@ -156,8 +158,10 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def findfilters(self):
         """Returns a list of paths to all filters
         """
-        # Happened through searching in the catalog, but must happen through aquisition now...
-        #query = {'meta_type': 'Silva NewsFilter', 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
+        # Happened through searching in the catalog,
+        # but must happen through aquisition now...
+        #query = {'meta_type': 'Silva NewsFilter',
+        # 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
         #results = self.service_catalog(query)
         filters = [str(pair[1]) for pair in self.findfilters_pairs()]
         return filters
@@ -216,7 +220,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         results = self._remove_doubles(results)
 
         if sortattr:
-            results = [ (getattr(r,sortattr,None),getattr(r,'object_path',None),r) for r in results ]
+            results = [(getattr(r,sortattr,None),
+                        getattr(r,'object_path',None),r) for r in results ]
             results.sort()
             results = [ r[2] for r in results ]
             results.reverse()
@@ -227,11 +232,12 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def get_items(self):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_last_items(self._number_to_show,self._number_is_days)
+        func = lambda x: x.get_last_items(self._number_to_show,
+                                          self._number_is_days)
         #merge/sort results if > 1 filter
         sortattr = None
         if len(self._filters) > 1:
-            sortattr = 'display_datetime'
+            sortattr = 'sort_index'
         results = self._get_items_helper(func,sortattr)
         if not self._number_is_days:
             return results[:self._number_to_show]
@@ -247,7 +253,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
             timezone=self.get_timezone())
         sortattr = None
         if len(self._filters) > 1:
-            sortattr = 'display_datetime'
+            sortattr = 'sort_index'
         return self._get_items_helper(func,sortattr)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -258,7 +264,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         func = lambda x: x.get_items_by_date_range(start, end)
         sortattr = None
         if len(self._filters) > 1:
-            sortattr = 'start_datetime'
+            sortattr = 'sort_index'
         return self._get_items_helper(func,sortattr)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -269,7 +275,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         func = lambda x: x.search_items(keywords)
         sortattr = None
         if len(self._filters) > 1:
-            sortattr = 'display_datetime'
+            sortattr = 'sort_index'
         return self._get_items_helper(func,sortattr)
 
     def _remove_doubles(self, resultlist):
@@ -341,6 +347,55 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
 
 InitializeClass(NewsViewer)
+
+
+from zope import schema
+from zope.interface import Interface
+
+
+class INewsViewerSchema(Interface):
+    """ Fields description for use in forms only
+    """
+    number_is_days = schema.Choice(
+        source=show_source,
+        title=_(u"show"),
+        description=_(u"Show a specific number of items, or show "
+                      u"items from a range of days in the past."),
+        required=True)
+
+    number_to_show = schema.Int(
+        title=_(u"days / items number"),
+        description=_(u"Number of news items to show per page."),
+        required=True)
+
+    number_to_show_archive = schema.Int(
+        title=_(u"archive number"),
+        description=_(u"Number of archive items to show per page."),
+        required=True)
+
+    year_range = schema.Int(
+        title=_(u"year range"),
+        description=_(u"Allow navigation this number of years ahead "
+                      u"of / behind today."),
+        required=True)
+
+    timezone_name = schema.Choice(
+        source=timezone_source,
+        title=_(u"timezone"),
+        description=_(u"Defines the time zone for the agenda and news "
+                      u"items that will be rendered by this viewer."),
+        required=True)
+
+    first_week_day = schema.Choice(
+        title=_(u"first day of the week"),
+        source=week_days_source,
+        description=_(u"Define first day of the week for calendar display."),
+        required=True)
+
+    filters = schema.Set(
+        value_type=schema.Choice(source=filters_source),
+        title=_(u"filters"),
+        description=_(u"Use predefined filters."))
 
 
 class NewsViewerAddForm(silvaforms.SMIAddForm):

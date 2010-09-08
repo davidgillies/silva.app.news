@@ -25,9 +25,10 @@ class AgendaEvent(Event):
     def __init__(self, context, request, viewer=None):
         super(AgendaEvent, self).__init__()
         intid = getUtility(IIntIds)
-        timezone = viewer and viewer.get_timezone() or context.timezone()
-        start_dt = context.start_datetime().astimezone(timezone)
-        end_dt = context.end_datetime().astimezone(timezone)
+        timezone = (viewer and viewer.get_timezone()) or context.get_timezone()
+        cdate = context.get_calendar_datetime()
+        start_dt = cdate.get_start_datetime(timezone)
+        end_dt = cdate.get_end_datetime(timezone)
         start_date = date(start_dt.year, start_dt.month, start_dt.day)
         end_date = date(end_dt.year, end_dt.month, end_dt.day)
         if start_date == end_date:
@@ -42,8 +43,8 @@ class AgendaEvent(Event):
 #        self['RRULE']
 
         self['UID'] = "%d@silvanews" % intid.register(context.object())
-        if context.location:
-            self['LOCATION'] = vText(context.location())
+        if context.get_location():
+            self['LOCATION'] = vText(context.get_location())
         self['SUMMARY'] = vText(context.get_title())
         if viewer is None:
             self['URL'] = absoluteURL(context.object(), request)
