@@ -28,8 +28,8 @@ class MetaTypeException(Exception):
     pass
 
 def brainsorter(a, b):
-    atime = a.start_datetime
-    btime = b.start_datetime
+    atime = a.get_start_datetime
+    btime = b.get_start_datetime
     return cmp(atime, btime)
 
 

@@ -7,6 +7,8 @@
     >
 
   <include package="five.grok" />
+  <include package="zeam.form.silva" />
+  <include package="silva.core.smi" />
   <include package="silva.core.upgrade" />
   <include package="Products.Silva" />
   <include package=".browser" />

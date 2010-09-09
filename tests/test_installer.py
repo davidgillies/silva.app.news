@@ -6,19 +6,26 @@ from SilvaNewsTestCase import SilvaNewsTestCase
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
 class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
-    
+
     def test_news_service_available(self):
         #make sure the news service is present
         self.assertEquals(True, hasattr(self.root,'service_news'))
-        
+
     def is_installed(self):
         self.assertEquals(True,
-                          self.root.service_extensions.is_installed('SilvaNews'))
+                          self.root.service_extensions.is_installed(
+                'SilvaNews'))
 
     def test_catalog_columns(self):
         #ensure catalog columns are setup
         catalog = self.catalog
-        columns = ['object_path','end_datetime','start_datetime','location','get_title', 'display_datetime','get_intro']
+        columns = ['object_path',
+                   'get_end_datetime',
+                   'get_start_datetime',
+                   'get_location',
+                   'get_title',
+                   'display_datetime',
+                   'get_intro']
         existing_columns = catalog.schema()
         for cn in columns:
             self.assertEquals(True,
@@ -44,7 +51,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
                     break
             self.assertEquals(id, index.id)
             self.assertEquals(index.meta_type,mt)
-            
+
     def test_security(self):
         #ensure addable security is assigned to the
         # appropriate roles
@@ -67,9 +74,10 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         a_roles.sort()
         for perm in add_permissions:
             if perm in possible_permissions:
-                roles = [ r['name'] for r in root.rolesOfPermission(perm) if r['selected'] == 'SELECTED' ]
+                roles = [ r['name'] for r in root.rolesOfPermission(perm)
+                          if r['selected'] == 'SELECTED' ]
                 self.assertEquals(a_roles,roles)
-                
+
     def test_addables(self):
         # make sure the root addables doesn't include
         # news/agenda items
@@ -83,7 +91,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         disallowed_snn_types = ['Silva Article', 'Silva Agenda Item']
         for dis in disallowed_snn_types:
             self.assert_(dis not in addables)
-        
+
 import unittest
 def test_suite():
     suite = unittest.TestSuite()

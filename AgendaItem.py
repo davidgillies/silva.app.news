@@ -114,23 +114,27 @@ class AgendaItemVersion(NewsItemVersion):
         return self._display_time
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'start_datetime')
+                              'get_start_datetime')
     def get_start_datetime(self, tz=None):
         """Returns the start date/time
         """
         cd = self.get_calendar_datetime()
-        cd.get_start_datetime(tz)
+        if cd:
+            return cd.get_start_datetime(tz)
+        return None
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'end_datetime')
+                              'get_end_datetime')
     def get_end_datetime(self, tz=None):
         """Returns the start date/time
         """
         cd = self.get_calendar_datetime()
-        cd.get_end_datetime(tz)
+        if cd:
+            return cd.get_end_datetime(tz)
+        return None
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'location')
+                              'get_location')
     def get_location(self):
         """Returns location manual
         """

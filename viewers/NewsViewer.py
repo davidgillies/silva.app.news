@@ -62,7 +62,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def url_for_item(self, obj, request):
         intids = getUtility(IIntIds)
         if INewsItemVersion.providedBy(obj):
-            obj = obj.object()
+            obj = obj.get_content()
         id = intids.register(obj)
         return "%s/++items++%d" % (absoluteURL(self, request), id,)
 
@@ -193,6 +193,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
                           (item.get_title(), joinedpath, joinedpath),
                           joinedpath))
         return pairs
+
 
     def verify_filters(self):
         allowed_filters = self.findfilters()
@@ -338,7 +339,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._number_is_days = int(onoff)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_filter')
+                              'set_filters')
     def set_filters(self, filters):
         """update filters (path to)
         """
@@ -386,7 +387,7 @@ class INewsViewerSchema(Interface):
                       u"items that will be rendered by this viewer."),
         required=True)
 
-    first_week_day = schema.Choice(
+    first_weekday = schema.Choice(
         title=_(u"first day of the week"),
         source=week_days_source,
         description=_(u"Define first day of the week for calendar display."),

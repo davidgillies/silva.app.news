@@ -47,7 +47,7 @@ class AgendaEvent(Event):
             self['LOCATION'] = vText(context.get_location())
         self['SUMMARY'] = vText(context.get_title())
         if viewer is None:
-            self['URL'] = absoluteURL(context.object(), request)
+            self['URL'] = absoluteURL(context.get_content(), request)
         else:
             self['URL'] = viewer.url_for_item(context, request)
 

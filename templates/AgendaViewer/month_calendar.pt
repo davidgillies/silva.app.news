@@ -83,7 +83,7 @@
       <div class="event_actions">
         <a tal:attributes="href python: view.item_calevent_url(event)"
            title="Add this event to your calendar">
-          <img tal:attributes="src python: view.browser_resource(date.png)" />
+          <img tal:attributes="src python: view.browser_resource('date.png')" />
           Add to my calendar
         </a>
       </div>
@@ -109,8 +109,8 @@
        </tal:comment>
        <p class="p eventdates"
          tal:define="
-           startdate python: event.start_datetime(tz=context.get_timezone());
-           enddate python: event.end_datetime(tz=context.get_timezone())"
+           startdate python:event.get_start_datetime(tz=context.get_timezone());
+           enddate python:event.get_end_datetime(tz=context.get_timezone())"
          tal:condition="python: startdate or enddate">
         <tal:if condition="startdate">
          <span tal:omit-tag="" i18n:translate="">Start:</span>

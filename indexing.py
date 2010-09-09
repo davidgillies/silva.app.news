@@ -27,7 +27,7 @@ def manage_addIntegerRangesIndex(self, id, extra=None, REQUEST=None,
 
 
 class IntegerRangesIndex(SimpleItem):
-    """ Index a set of integer ranges: 
+    """ Index a set of integer ranges:
         [(1,2), (12,23), (12, 22)]
     """
 
@@ -143,7 +143,7 @@ class IntegerRangesIndex(SimpleItem):
                     new_entry):
                 self._length.change(1)
             self.__insert_in_index_set(self._index, new_entry, document_id)
-        
+
         return 1
 
     def unindex_object(self, document_id):

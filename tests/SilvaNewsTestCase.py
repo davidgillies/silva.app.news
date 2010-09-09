@@ -11,15 +11,20 @@ import unittest
 
 class SilvaNewsLayer(SilvaLayer):
 
+    default_products = SilvaLayer.default_products + ['SilvaNews',]
+
     def _install_application(self, app):
         super(SilvaNewsLayer, self)._install_application(app)
         app.root.service_extensions.install('SilvaNews')
         transaction.commit()
 
 
+FunctionalLayer = SilvaNewsLayer(
+    Products.SilvaNews, zcml_file='configure.zcml')
+
 class SilvaNewsTestCase(unittest.TestCase):
 
-    layer = SilvaNewsLayer(Products.SilvaNews, zcml_file='configure.zcml')
+    layer = FunctionalLayer
 
     def setUp(self):
         self.root = self.layer.get_application()

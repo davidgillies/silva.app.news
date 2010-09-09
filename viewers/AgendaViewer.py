@@ -178,16 +178,16 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             today=now, current_day=self.day_datetime)
 
         for event_brain in self._month_events:
-            sdt = event_brain.start_datetime.astimezone(
-                self.context.get_timezone())
-            edt = event_brain.end_datetime.astimezone(
-                self.context.get_timezone())
+            item = event_brain.getObject()
+            cd = item.get_calendar_datetime()
+            sdt = cd.get_start_datetime(self.context.get_timezone())
+            edt = cd.get_end_datetime(self.context.get_timezone())
             for day_datetime in DayWalk(sdt,
                     end_of_day(edt), tz=self.context.get_timezone()):
                 key = "%d%02d%02d" % (
                     day_datetime.year, day_datetime.month, day_datetime.day,)
                 events = self._events_index.get(key, list())
-                events.append(event_brain)
+                events.append(item)
                 self._events_index[key] = events
                 if len(events) == 1:
                     def callback(year, month, day):
@@ -263,7 +263,8 @@ class AgendarViewerCalendar(grok.View):
     def update(self):
         self.request.timezone = self.context.get_timezone()
         self.request.response.setHeader('Content-Type', 'text/calendar')
-        self.calendar = getMultiAdapter(self.context, self.request, ICalendar)
+        self.calendar = getMultiAdapter(
+            (self.context, self.request,), ICalendar)
 
     def render(self):
         return unicode(self.calendar)

@@ -58,8 +58,7 @@ class SNNHandlerMixin(object):
             obj.set_days_to_show(int(days_to_show))
         if attrs.has_key((None,'filters')):
             filters = attrs[(None,'filters')]
-            for f in filters.split(','):
-                obj.set_filter(f,True)
+            obj.set_filters(filters)
 
 
 class PlainArticleHandler(SilvaBaseHandler):

@@ -374,7 +374,7 @@ class INewsViewer(IViewer):
         """If set to True, the number to show will be by days back, not number.
         """
 
-    def set_filter(newsfilter, on_or_off):
+    def set_filters(newsfilters):
         """Adds or removes a filter from the list of filters.
 
         If on_or_off is True, add filter, if False, remove filter.

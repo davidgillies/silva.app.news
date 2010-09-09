@@ -131,8 +131,8 @@ class SilvaNewsInstaller(DefaultInstaller):
         """Sets the ZCatalog up"""
         catalog = root.service_catalog
 
-        columns = ['object_path','end_datetime','start_datetime',
-            'location','get_title', 'display_datetime','get_intro']
+        columns = ['object_path','get_end_datetime','get_start_datetime',
+            'get_location','get_title', 'display_datetime','get_intro']
 
         indexes = [
             ('object_path', 'FieldIndex'),
