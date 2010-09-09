@@ -1,10 +1,16 @@
-import SilvaNewsTestCase
 from datetime import datetime, timedelta
-from Products.SilvaNews.datetimeutils import \
-    local_timezone, datetime_to_unixtimestamp
+from dateutil.relativedelta import relativedelta
+
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
+
+from Products.SilvaNews.tests.SilvaNewsTestCase import (SilvaNewsTestCase,
+    NewsBaseTestCase)
+from Products.SilvaNews.datetimeutils import (local_timezone,
+    datetime_to_unixtimestamp)
 
 
-class TestEvent(SilvaNewsTestCase.SilvaNewsTestCase):
+class TestEvent(SilvaNewsTestCase):
 
     def afterSetUp(self):
         super(TestEvent, self).afterSetUp()
@@ -32,8 +38,67 @@ class TestEvent(SilvaNewsTestCase.SilvaNewsTestCase):
         self.assertFalse(brains)
 
 
+class TestCalendar(NewsBaseTestCase):
+
+    def setUp(self):
+        super(TestCalendar, self).setUp()
+        self.browser = self.layer.get_browser()
+        self.filter = self.add_agenda_filter(
+            self.root, 'afilter', 'Agenda Filter')
+        self.filter.set_subjects(['sub'])
+        self.filter.set_target_audiences(['ta'])
+        self.filter.add_source('/root/source1', 1)
+        self.agenda = self.add_agenda_viewer(self.root, 'agenda', 'Agenda')
+        self.agenda.set_filters(['/root/afilter'])
+        self.agenda.set_timezone_name('Europe/Amsterdam')
+        sdt = datetime(2010, 9, 4, 10, 20, tzinfo=self.agenda.get_timezone())
+        self.event1 = self.add_published_agenda_item(
+            self.source1, 'event', 'Event1',
+            sdt, sdt + relativedelta(hours=+1))
+        version = self.event1.get_viewable()
+        version.set_subjects(['sub'])
+        version.set_target_audiences(['ta'])
+        sdt = datetime(2010, 9, 10, 10, 20, tzinfo=self.agenda.get_timezone())
+        self.event2 = self.add_published_agenda_item(
+            self.source1, 'event2', 'Event2',
+            sdt, sdt + relativedelta(days=+1))
+        version = self.event2.get_viewable()
+        version.set_subjects(['sub'])
+        version.set_target_audiences(['ta'])
+
+    def get_intid(self, obj):
+        return getUtility(IIntIds).getId(obj)
+
+    def test_calendar_view(self):
+        status = self.browser.open('http://localhost/root/agenda')
+        self.assertEquals(200, status)
+
+    def test_calendar_view_for_event(self):
+        status = self.browser.open('http://localhost/root/agenda',
+                                   query={'year' : '2010',
+                                          'month': '9',
+                                          'day'  : '4'})
+        self.assertEquals(200, status)
+
+        xpath = '//div[@id="event_%s"]' % self.get_intid(
+            self.event1.get_viewable())
+        nodes = self.browser.html.xpath(xpath)
+        self.assertTrue(1, len(nodes))
+
+    def test_subscribe_view(self):
+        status = self.browser.open(
+            'http://localhost/root/agenda/subscribe.html')
+        self.assertEquals(200, status)
+
+    def test_ics_view(self):
+        status = self.browser.open(
+            'http://localhost/root/agenda/calendar.ics')
+        self.assertEquals(200, status)
+
+
 import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestEvent))
+    suite.addTest(unittest.makeSuite(TestCalendar))
     return suite

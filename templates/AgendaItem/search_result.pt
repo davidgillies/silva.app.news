@@ -1,4 +1,5 @@
-<div class="agenda_item_search_result news_item_search_result">
+<div class="agenda_item_search_result news_item_search_result"
+     tal:attributes="id view/main_id">
   <div class="event_actions">
     <a tal:attributes="href view/event_url"
        title="Add this event to your calendar">

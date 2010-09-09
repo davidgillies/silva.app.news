@@ -79,7 +79,8 @@
   <h3 class="calendar_intro" tal:content="view/intro" />
 
   <div class="newsitem" tal:repeat="event view/day_events">
-    <div class="agenda_item_search_result news_item_search_result">
+    <div class="agenda_item_search_result news_item_search_result"
+         tal:attributes="id python: view.item_id(event)">
       <div class="event_actions">
         <a tal:attributes="href python: view.item_calevent_url(event)"
            title="Add this event to your calendar">

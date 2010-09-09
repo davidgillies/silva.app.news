@@ -1,8 +1,6 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision: 1.21 $
-import pytz
-
 from zope.interface import implements
 from zope.component import getAdapter
 from zope.traversing.browser import absoluteURL
@@ -28,6 +26,7 @@ from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
     CalendarDatetime, datetime_to_unixtimestamp, get_timezone)
 from icalendar.interfaces import IEvent
 from icalendar import Calendar
+
 
 class AgendaItem(NewsItem):
     """Base class for agenda items.

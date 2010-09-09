@@ -42,7 +42,7 @@ class AgendaEvent(Event):
 
 #        self['RRULE']
 
-        self['UID'] = "%d@silvanews" % intid.register(context.object())
+        self['UID'] = "%d@silvanews" % intid.register(context.get_content())
         if context.get_location():
             self['LOCATION'] = vText(context.get_location())
         self['SUMMARY'] = vText(context.get_title())

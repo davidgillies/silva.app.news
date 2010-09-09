@@ -8,8 +8,9 @@ import calendar
 import localdatetime
 
 from five import grok
-from zope.component import getMultiAdapter
+from zope.component import getMultiAdapter, getUtility
 from zope.traversing.browser import absoluteURL
+from zope.intid.interfaces import IIntIds
 
 # Zope
 import Products
@@ -23,7 +24,7 @@ from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 
 # SilvaNews
-from Products.SilvaNews.datetimeutils import (local_timezone,
+from Products.SilvaNews.datetimeutils import (
     start_of_day, end_of_day, DayWalk)
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
@@ -144,6 +145,10 @@ class AgendaViewerMonthCalendar(silvaviews.View):
     def item_url(self, newsitem):
         return self.context.url_for_item(newsitem, self.request)
 
+    def item_id(self, news_item):
+        util = getUtility(IIntIds)
+        return "event_%s" % util.register(self.context)
+
     def browser_resource(self, path):
         return "/".join([self.context_absolute_url,
                   '++resource++Products.SilvaNews.browser',
@@ -162,7 +167,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             self.year, self.month)
         self.day = int(self.request.get('day', now.day)) or 1
         self.day_datetime = datetime(self.year, self.month, self.day,
-            tzinfo=local_timezone)
+            tzinfo=self.context.get_timezone())
 
         self.start = datetime(self.year, self.month, 1,
             tzinfo=self.context.get_timezone())
