@@ -333,14 +333,18 @@ def timezone_source(context):
         terms.append(SimpleTerm(title=default_name,
                                 value=default_name,
                                 token=default_name))
-    if context_tz_name and context_tz_name not in zones:
+
+    if context_tz_name and context_tz_name != default_name \
+            and context_tz_name not in zones:
         terms.append(SimpleTerm(title=context_tz_name,
                                 value=context_tz_name,
                                 token=context_tz_name))
+
     for zone in zones:
         terms.append(SimpleTerm(title=zone,
                                 value=zone,
                                 token=zone))
+
     return SimpleVocabulary(terms)
 
 @grok.provider(IContextSourceBinder)

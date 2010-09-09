@@ -56,12 +56,12 @@
       <tal:audiences repeat="aid audience_ids"><tal:aid content="python: model.service_news.target_audience_title(aid)" /><br /></tal:audiences>
     </tal:newsarticleaudience>
   </p>
-  <p tal:define="startdate python: mangle.DateTime(model.get_viewable().start_datetime())"
+  <p tal:define="startdate python: mangle.DateTime(model.get_viewable().get_start_datetime())"
     tal:condition="startdate">
     <span i18n:translate="" class="subhead">start</span><br />
     <tal:startdate content="startdate" />
   </p>
-  <p tal:define="enddate python: mangle.DateTime(model.get_viewable().end_datetime())"
+  <p tal:define="enddate python: mangle.DateTime(model.get_viewable().get_end_datetime())"
     tal:condition="enddate">
     <span i18n:translate="" class="subhead">end</span><br />
     <tal:enddate content="enddate" />
@@ -76,7 +76,7 @@
     <span i18n:translate="" class="subhead">display date</span><br />
     <tal:startdate content="displaydate" />
   </p>
-  <p tal:define="location python: model.get_viewable().location()"
+  <p tal:define="location python: model.get_viewable().get_location()"
     tal:condition="location">
     <span i18n:translate="" class="subhead">location</span><br />
     <tal:enddate content="location" />

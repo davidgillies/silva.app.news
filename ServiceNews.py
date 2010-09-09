@@ -19,7 +19,7 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 #SilvaNews
 from Products.SilvaNews import Tree
 from Products.SilvaNews.interfaces import IServiceNews
-from Products.SilvaNews.datetimeutils import local_timezone
+from Products.SilvaNews.datetimeutils import local_timezone, get_timezone
 
 import pytz
 from datetime import datetime
@@ -33,7 +33,7 @@ class TimezoneMixin(object):
 
     def __init__(self):
         self._timezone = local_timezone
-        self._timezone_name = self._timezone.tzname(datetime.now())
+        self._timezone_name = 'local'
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone')
@@ -43,7 +43,7 @@ class TimezoneMixin(object):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone_name')
     def default_timezone_name(self):
-        return 'local timezone'
+        return 'local'
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -60,8 +60,8 @@ class TimezoneMixin(object):
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_timezone_name')
     def set_timezone_name(self, name):
+        self._timezone = get_timezone(name)
         self._timezone_name = name
-        self._timezone = pytz.timezone(name)
 
     security.declareProtected('View',
                                 'timezone_list')

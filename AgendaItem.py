@@ -24,8 +24,8 @@ from Products.Silva import SilvaPermissions
 # SilvaNews
 from Products.SilvaNews.NewsItem import NewsItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
-from Products.SilvaNews.datetimeutils import \
-    datetime_with_timezone, CalendarDatetime, datetime_to_unixtimestamp
+from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
+    CalendarDatetime, datetime_to_unixtimestamp, get_timezone)
 from icalendar.interfaces import IEvent
 from icalendar import Calendar
 
@@ -59,7 +59,7 @@ class AgendaItemVersion(NewsItemVersion):
                               'set_timezone_name')
     def set_timezone_name(self, name):
         self._timezone_name = name
-        self._timezone = pytz.timezone(name)
+        self._timezone = get_timezone(name)
         if self._start_datetime:
             self._start_datetime.replace(tzinfo=self._timezone)
         if self._end_datetime:
@@ -163,20 +163,21 @@ class AgendaItemVersion(NewsItemVersion):
 
 InitializeClass(AgendaItemVersion)
 
+class AgendaViewMixin(object):
+    def event_img_url(self):
+        return '%s/++resource++Products.SilvaNews.browser/date.png' % \
+            absoluteURL(self.context, self.request)
 
-class AgendaItemView(NewsItemView):
+    def event_url(self):
+        return "%s/event.ics" % absoluteURL(self.context, self.request)
+
+
+class AgendaItemView(NewsItemView, AgendaViewMixin):
     grok.context(IAgendaItem)
     template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
 
-    def event_img_url(self):
-        return '%s/++resource++Products.SilvaNews.browser/date.png' % \
-            self.context.absolute_url()
 
-    def event_url(self):
-        return "%s/event.ics" % self.context.absolute_url()
-
-
-class AgendaListItemView(grok.View):
+class AgendaListItemView(grok.View, AgendaViewMixin):
     """ Render as a list items (search results)
     """
 
@@ -184,10 +185,6 @@ class AgendaListItemView(grok.View):
     grok.name('search_result')
     template = grok.PageTemplate(
         filename='templates/AgendaItem/search_result.pt')
-
-    def event_url(self):
-        return "%s/event.ics" % absoluteURL(self.context.get_content(),
-                                            self.request)
 
 
 class AgendaItemICS(grok.View):

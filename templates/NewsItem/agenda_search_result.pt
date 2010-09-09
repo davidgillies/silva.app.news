@@ -1,4 +1,4 @@
-<h3 class="heading newsitemheading" tal:content="structure context/get_title">article title</h3>
+<h3 class="heading newsitemheading" tal:content="structure context/get_title" />
 
 <div class="newsiteminfo">
  <tal:infopublic
@@ -14,11 +14,12 @@
   </p>
  </tal:infopublic>
 
- <tal:comment tal:omit-tag=""><!-- if the object is an agenda item --></tal:comment>
+ <tal:comment tal:omit-tag="">
+   <!-- if the object is an agenda item --></tal:comment>
  <p class="p eventdates"
    tal:define="
-     startdate context/start_datetime;
-     enddate context/end_datetime"
+     startdate context/get_start_datetime(request.timezone);
+     enddate context/get_end_datetime(request.timezone)"
    tal:condition="python: startdate or enddate">
   <tal:if condition="startdate">
    <span tal:omit-tag="" i18n:translate="">Start:</span>

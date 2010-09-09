@@ -2,11 +2,18 @@ from datetime import date, datetime
 from dateutil.rrule import rrule, rruleset, rrulestr
 from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc, tzlocal
+import pytz
 from DateTime import DateTime
 
 system_timezone = tzlocal()
 local_timezone = tzlocal()
 UTC = tzutc()
+
+def get_timezone(name):
+    if name == 'local':
+        return local_timezone
+    else:
+        return pytz.timezone(name)
 
 def utc_datetime(aDateTime_or_datetime, end=False):
     """ build a datetime in the utc timezone from DateTime or datetime object

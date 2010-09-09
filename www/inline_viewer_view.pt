@@ -67,10 +67,10 @@
       </tal:translate>
       <br />
      </tal:block>
-     <tal:block tal:condition="python: item.start_datetime() and options['show_datetime']=='1'">
+     <tal:block tal:condition="python: item.get_start_datetime() and options['show_datetime']=='1'">
       <tal:translate i18n:translate="">Starts:
        <span class="newsitemstartdate" 
-         tal:content="structure python: formatdate(item.start_datetime())" i18n:name="datetime" />
+         tal:content="structure python: formatdate(item.get_start_datetime())" i18n:name="datetime" />
       </tal:translate>
       <br />
      </tal:block>

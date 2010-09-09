@@ -210,11 +210,11 @@ class PlainAgendaItemVersionProducer(DocumentVersionProducer):
         self.startElement(
             'content',
             {'version_id': self.context.id,
-             'subjects': ','.join(self.context.subjects()),
-             'target_audiences': ','.join(self.context.target_audiences()),
-             'start_datetime':self.context.start_datetime().isoformat(),
+             'subjects': ','.join(self.context.get_subjects()),
+             'target_audiences': ','.join(self.context.get_target_audiences()),
+             'start_datetime':self.context.get_start_datetime().isoformat(),
              'end_datetime':edt,
-             'location':self.context.location()})
+             'location':self.context.get_location()})
         self.metadata()
         node = self.context.content.documentElement.getDOMObj()
         self.sax_node(node)

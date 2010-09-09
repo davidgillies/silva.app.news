@@ -182,7 +182,6 @@ class AgendaViewerMonthCalendar(silvaviews.View):
                 self.context.get_timezone())
             edt = event_brain.end_datetime.astimezone(
                 self.context.get_timezone())
-
             for day_datetime in DayWalk(sdt,
                     end_of_day(edt), tz=self.context.get_timezone()):
                 key = "%d%02d%02d" % (

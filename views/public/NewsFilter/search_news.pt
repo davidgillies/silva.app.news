@@ -53,7 +53,7 @@
 <td align="left" valign="top">
 <tal:block content="structure obj/get_intro">Lead</tal:block><br /><br />
 <span i18n:translate="">Startdate/time:</span>
-<span tal:replace="structure python: '<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/start_datetime | nothing">DateTime</span>
+<span tal:replace="structure python: '<br />%s<br /><br />' % mangle.DateTime(obj.start_datetime()).toStrOptionalTime()" tal:condition="obj/get_start_datetime | nothing">DateTime</span>
 <a href="#" tal:attributes="href python: obj.object().absolute_url()" i18n:translate="">view article</a>
 </td>
 </tr>
