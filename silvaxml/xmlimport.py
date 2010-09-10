@@ -299,7 +299,6 @@ class RSSAggregatorHandler(SilvaBaseHandler):
             if (attrs.get((None, 'feed_urls'),None)):
                 feed_urls = attrs[(None,'feed_urls')]
                 # reformat feed_urls to be in the format set_feeds expects
-                feed_urls = '\n'.join(feed_urls.split(','))
                 obj.set_feeds(feed_urls)
             self.setResult(getattr(self.parent(), uid))
 

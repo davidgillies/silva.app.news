@@ -179,6 +179,9 @@ class CalendarDatetime(object):
         return map(get_interval, list(self.recurrence))
 
 
+CalendarDateRepresentation = CalendarDatetime
+
+
 class DayWalk(object):
     """ Iterator that yields each days in an interval of datetimes
     """

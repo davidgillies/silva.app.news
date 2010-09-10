@@ -4,6 +4,11 @@
 
 import time
 
+from zope.interface import Interface
+from zope import schema
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('silva_news')
+
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -45,20 +50,10 @@ class RSSAggregator(NewsViewer):
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_feeds')
-    def set_feeds(self, channels):
-        """splits the channels string argument and stores it"""
-        rss_feeds = []
-        for channel in channels.split('\n'):
-            c = channel.strip()
-            if c:
-                rss_feeds.append(c)
-        rss_feeds.sort()
-        old_feeds = self._rss_feeds[:]
-        old_feeds.sort()
-        if old_feeds != rss_feeds:
-            self._rss_feeds = rss_feeds
-            self._v_cache = None
-            ICataloging(self).reindex()
+    def set_feeds(self, rss_feeds):
+        self._v_cache = None
+        self._rss_feeds = rss_feeds
+        self._rss_feeds.sort()
 
     # ACCESSORS
 
@@ -115,3 +110,19 @@ InitializeClass(RSSAggregator)
 class RSSAggregatorAddForm(silvaforms.SMIAddForm):
     grok.context(IAggregator)
     grok.name(u'Silva RSS Aggregator')
+
+
+class IRSSAggregatorSchema(Interface):
+    feeds = schema.List(
+                value_type=schema.TextLine(),
+                title=_(u'feeds'),
+                description=_(u'List the URLs of RSS feeds (one per line) '
+                              u'to use as sources of news items.'))
+
+
+class RSSAggregatorEditForm(silvaforms.SMIEditForm):
+    """ Edit form for RSS aggregators
+    """
+    grok.context(IAggregator)
+    fields = silvaforms.Fields(IRSSAggregatorSchema)
+
