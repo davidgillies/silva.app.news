@@ -7,7 +7,7 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 from Products.SilvaNews.AgendaItem import AgendaItem, AgendaItemVersion
-from Products.SilvaNews.interfaces import IAgendaItem
+from Products.SilvaNews.interfaces import IAgendaItem, IServiceNews
 from Products.SilvaNews.interfaces import (
     subject_source, target_audiences_source)
 
@@ -16,6 +16,7 @@ from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
 from zope import interface, schema
+from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('silva_news')
@@ -46,8 +47,9 @@ InitializeClass(PlainAgendaItem)
 
 from Products.SilvaNews.interfaces import timezone_source
 
+
 class IAgendaItemSchema(interface.Interface):
-    _timezone_name = schema.Choice(
+    timezone_name = schema.Choice(
         source=timezone_source,
         title=_(u"timezone"),
         description=_(u"Defines the time zone for dates"),
@@ -72,11 +74,17 @@ class IAgendaItemSchema(interface.Interface):
         required=True)
 
 
+def get_service_news_default_tz_name():
+    util = getUtility(IServiceNews)
+    return util.get_timezone_name()
+
+
 class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
     fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
+    fields['timezone_name'].defaultValue = get_service_news_default_tz_name
 
 
 class AgendaEditProperties(silvaforms.RESTKupuEditProperties):

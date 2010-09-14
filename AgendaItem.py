@@ -68,7 +68,7 @@ class AgendaItemVersion(NewsItemVersion):
                               'get_timezone_name')
     def get_timezone_name(self):
         return getattr(self, '_timezone_name',
-                       self.service_news.get_timezone())
+                       self.service_news.get_timezone_name())
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_timezone')
@@ -211,3 +211,4 @@ class AgendaItemICS(grok.View):
         cal.add('version', '2.0')
         cal.add_component(self.event_factory(self.viewer, self.request))
         return unicode(cal)
+

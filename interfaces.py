@@ -35,8 +35,9 @@ def subject_source(context):
     # XXX use getUtility when it will be a real service
     service = context.service_news
     result = []
-    for value, title, _ in service.subject_tree():
-        result.append(SimpleTerm(value=value, token=value, title=title))
+    for value, title, depth in service.subject_tree():
+        result.append(SimpleTerm(
+            value=value, token=value, title="-" * depth + title))
     return SimpleVocabulary(result)
 
 
@@ -45,8 +46,9 @@ def target_audiences_source(context):
     # XXX use getUtility when it will be a real service
     service = context.service_news
     result = []
-    for value, title, _ in service.target_audience_tree():
-        result.append(SimpleTerm(value=value, token=value, title=title))
+    for value, title, depth in service.target_audience_tree():
+        result.append(SimpleTerm(
+            value=value, token=value, title="-" * depth + title))
     return SimpleVocabulary(result)
 
 
@@ -320,26 +322,8 @@ def week_days_source(context):
 @grok.provider(IContextSourceBinder)
 def timezone_source(context):
     zones = pytz.common_timezones
-    default_name = context.service_news.get_timezone_name()
-    context_tz_name = None
-    if hasattr(context, 'get_timezone_name'):
-        context_tz_name = context.get_timezone_name()
-
     terms = []
-
-    # this redondant code (bad!) is there to deal with local timezone
-    # case where we are enable to get it's pytz name
-    if default_name not in zones:
-        terms.append(SimpleTerm(title=default_name,
-                                value=default_name,
-                                token=default_name))
-
-    if context_tz_name and context_tz_name != default_name \
-            and context_tz_name not in zones:
-        terms.append(SimpleTerm(title=context_tz_name,
-                                value=context_tz_name,
-                                token=context_tz_name))
-
+    terms.append(SimpleTerm(title='local', value='local', token='local'))
     for zone in zones:
         terms.append(SimpleTerm(title=zone,
                                 value=zone,

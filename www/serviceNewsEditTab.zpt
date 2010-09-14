@@ -52,7 +52,7 @@ Version of this file: $Revision: 1.10 $
     <option value="" class="form-element">Root (top)</option>
     <tal:repeat repeat="subjecttuple subject_tree">
     <tal:define define="subject python:subjecttuple[0]; depth python:int(subjecttuple[2])">
-    <option tal:content="structure python:depth * 2 * u'&nbsp;' + subject" tal:attributes="value python:subject" class="form-element"></option>
+    <option tal:content="structure python:depth * u'--' + subject" tal:attributes="value python:subject" class="form-element"></option>
     </tal:define>
     </tal:repeat>
     </select>
@@ -84,7 +84,7 @@ Version of this file: $Revision: 1.10 $
     <option value="" class="form-element">Root (top)</option>
     <tal:repeat repeat="tatuple target_audience_tree">
     <tal:define define="target_audience python:tatuple[0]; depth python:int(tatuple[2])">
-    <option tal:content="structure python:depth * 2 * u'&nbsp' + target_audience" tal:attributes="value python:target_audience" class="form-element"></option>
+    <option tal:content="structure python:depth * u'--' + target_audience" tal:attributes="value python:target_audience" class="form-element"></option>
     </tal:define>
     </tal:repeat>
     </select>

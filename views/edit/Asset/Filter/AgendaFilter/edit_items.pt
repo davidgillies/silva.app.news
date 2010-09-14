@@ -115,8 +115,8 @@
       id object/index;
       object_status obj/version_status;
       object_path python: '/'.join(obj.object_path());
-      object_url python: obj.object().absolute_url();
-      meta_type python: obj.object().meta_type;
+      object_url python: obj.get_content().absolute_url();
+      meta_type python: obj.get_content().meta_type;
     ">
     <cycle tal:define="oddrow repeat/object/odd" tal:omit-tag="">
     <tr tal:attributes="class python: test(oddrow, 'odd', 'even')">
@@ -125,7 +125,7 @@
     <td nowrap="1">
       <input type="checkbox" name="cb:list" value="value"
        tal:attributes="value string:cb_${id}; checked object/check_checkbox" />
-      <img tal:replace="structure python:view.render_icon(obj.object())" />
+      <img tal:replace="structure python:view.render_icon(obj.get_content())" />
     </td>
 
     <span tal:replace="nothing"> _______ id cell _______ </span>

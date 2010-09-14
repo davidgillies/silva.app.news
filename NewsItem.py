@@ -141,7 +141,7 @@ class NewsItemVersion(DocumentVersion):
         image = reference.target
 
         tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
-                    (self.object().absolute_url(), image.tag(thumbnail=1)))
+                    (self.get_content().absolute_url(), image.tag(thumbnail=1)))
         if divclass:
             tag = '<div class="%s">%s</div>' % (divclass, tag)
         return tag
