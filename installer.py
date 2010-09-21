@@ -4,39 +4,29 @@ from App.Common import package_home
 
 from silva.core.services.catalog import RecordStyle
 from silva.core.conf.installer import DefaultInstaller
-from Products.Silva.roleinfo import AUTHOR_ROLES
 
 from Products.SilvaNews.interfaces import ISilvaNewsExtension
 
 
 class SilvaNewsInstaller(DefaultInstaller):
-    """Installer for the Silva News Service"""
+    """Installer for the Silva News Service
+    """
+    not_globally_addables = ['Silva Article', 'Silva Agenda Item']
 
-    def install(self, root):
-        DefaultInstaller.install(self, root)
+    def install_custom(self, root):
         self.setup_catalog(root)
-        self.configure_security(root)
         self.register_views(root.service_view_registry)
-        self.configure_addables(root)
-        self.configure_metadata(root)
+        self.configure_extra_metadata(root)
 
         if not hasattr(root.aq_explicit,'service_news'):
             factory = root.manage_addProduct['SilvaNews']
             factory.manage_addServiceNews('service_news')
 
-    def uninstall(self, root):
-        DefaultInstaller.uninstall(self, root)
+    def uninstall_custom(self, root):
         self.unregister_views(root.service_view_registry)
-        self.unconfigure_metadata(root)
+        self.unconfigure_extra_metadata(root)
 
-    def unconfigure_metadata(self, root):
-        sm = root.service_metadata
-        collection = sm.getCollection()
-        if 'snn-np-settings' in collection.objectIds():
-            collection.manage_delObjects(['snn-np-settings'])
-        sm.removeTypeMapping('Silva News Publication',['snn-np-settings'])
-
-    def configure_metadata(self, root):
+    def configure_extra_metadata(self, root):
         sm = root.service_metadata
         collection = sm.getCollection()
         if 'snn-np-settings' in collection.objectIds():
@@ -47,17 +37,12 @@ class SilvaNewsInstaller(DefaultInstaller):
         sm.addTypeMapping('Silva News Publication', ['snn-np-settings'])
         sm.initializeMetadata()
 
-    def configure_addables(self, root):
-        news_non_addables = ['Silva Article',
-                            'Silva Agenda Item',
-                            ]
-        current_addables = root.get_silva_addables_allowed_in_container()
-        new_addables = []
-        for a in current_addables:
-            if a not in news_non_addables:
-                new_addables.append(a)
-        root.set_silva_addables_allowed_in_container(new_addables)
-
+    def unconfigure_extra_metadata(self, root):
+        sm = root.service_metadata
+        collection = sm.getCollection()
+        if 'snn-np-settings' in collection.objectIds():
+            collection.manage_delObjects(['snn-np-settings'])
+        sm.removeTypeMapping('Silva News Publication',['snn-np-settings'])
 
     def register_views(self, reg):
         """Register core views on registry.
@@ -165,25 +150,5 @@ class SilvaNewsInstaller(DefaultInstaller):
                 catalog.addIndex(field_name, field_type, extra)
             else:
                 catalog.addIndex(field_name, field_type)
-
-    def configure_security(self, root):
-        add_permissions = [
-            'Add Silva Agenda Filters',
-            'Add Silva Agenda Item Versions',
-            'Add Silva Agenda Items',
-            'Add Silva Agenda Viewers',
-            'Add Silva Article Versions',
-            'Add Silva Articles',
-            'Add Silva News Filters',
-            'Add Silva News Publications',
-            'Add Silva News Viewers',
-            'Add Silva RSS Aggregators',
-            'Add Silva News Category Filters',
-            ]
-        p_perms = root.possible_permissions()
-        for perm in add_permissions:
-            if perm in p_perms:
-                root.manage_permission(perm, AUTHOR_ROLES)
-
 
 install = SilvaNewsInstaller("SilvaNews", ISilvaNewsExtension)
