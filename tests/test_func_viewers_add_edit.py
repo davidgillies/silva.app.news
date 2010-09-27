@@ -1,5 +1,6 @@
 import unittest
 from Products.SilvaNews.tests.SilvaNewsTestCase import FunctionalLayer
+from Products.Silva.ftesting import smi_settings
 
 
 class BaseTest(unittest.TestCase):
@@ -7,7 +8,7 @@ class BaseTest(unittest.TestCase):
 
     def setUp(self):
         self.root = self.layer.get_application()
-        self.browser = self.layer.get_browser()
+        self.browser = self.layer.get_browser(settings=smi_settings)
         self.browser.login('manager', 'manager')
 
 
@@ -67,6 +68,9 @@ class ViewerEditTestBase(BaseTest):
         super(ViewerEditTestBase, self).setUp()
         factory = self.root.manage_addProduct['SilvaNews']
         getattr(factory, self.build_method)(self.id, 'Viewer')
+        factory.manage_addNewsPublication('newspub', 'News Pub')
+        factory.manage_addNewsFilter('news_filter', 'News Filter')
+        self.root.news_filter.add_source('/root/newspub', 1)
         self.viewer = getattr(self.root, self.id)
 
     def test_change_things(self):
@@ -77,8 +81,11 @@ class ViewerEditTestBase(BaseTest):
         control = form.get_control('editform.field.first_weekday')
         self.assertEquals('0', control.value)
         control.value = '1'
+        form.get_control('editform.field.filters').value = '/root/newspub'
         status = form.get_control('editform.action.save-changes').submit()
         self.assertEquals(200, status)
+        self.assertEquals([], self.browser.inspect.form_errors)
+        self.assertEquals(['Changes saved.'], self.browser.inspect.feedback)
 
         form = self.browser.get_form('editform')
         control = form.get_control('editform.field.timezone_name')
@@ -101,8 +108,11 @@ class ViewerEditTestBase(BaseTest):
         control = form.get_control('editform.field.year_range')
         self.assertEquals('2', control.value)
         control.value = '1'
+        form.get_control('editform.field.filters').value = '/root/newspub'
         status = form.get_control('editform.action.save-changes').submit()
         self.assertEquals(200, status)
+        self.assertEquals([], self.browser.inspect.form_errors)
+        self.assertEquals(['Changes saved.'], self.browser.inspect.feedback)
 
         form = self.browser.get_form('editform')
         control = form.get_control('editform.field.number_is_days')
@@ -114,6 +124,14 @@ class ViewerEditTestBase(BaseTest):
         control = form.get_control('editform.field.year_range')
         self.assertEquals('1', control.value)
         self.assertEquals(1, self.viewer.get_year_range())
+
+    def test_without_any_filter_set(self):
+        form = self.get_edit_form()
+        status = form.get_control('editform.action.save-changes').submit()
+        self.assertEquals(200, status)
+        self.assertEquals(['Missing required value'],
+                          self.browser.inspect.form_errors)
+        self.assertEquals(['There were errors.'], self.browser.inspect.feedback)
 
     def get_edit_form(self):
         status = self.browser.open(
