@@ -129,7 +129,7 @@ class ViewerEditTestBase(BaseTest):
         form = self.get_edit_form()
         status = form.get_control('editform.action.save-changes').submit()
         self.assertEquals(200, status)
-        self.assertEquals(['Missing required value'],
+        self.assertEquals(['Missing required value.'],
                           self.browser.inspect.form_errors)
         self.assertEquals(['There were errors.'], self.browser.inspect.feedback)
 
