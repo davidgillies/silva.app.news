@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 # $Id$
 
-import pytz
-
 from five import grok
 from zope.interface import Interface
 from zope.schema.interfaces import IContextSourceBinder
@@ -13,6 +11,8 @@ from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 
 from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
+from Products.SilvaNews.datetimeutils import zone_names
+
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
 
@@ -321,10 +321,8 @@ def week_days_source(context):
 
 @grok.provider(IContextSourceBinder)
 def timezone_source(context):
-    zones = pytz.common_timezones
     terms = []
-    terms.append(SimpleTerm(title='local', value='local', token='local'))
-    for zone in zones:
+    for zone in zone_names:
         terms.append(SimpleTerm(title=zone,
                                 value=zone,
                                 token=zone))

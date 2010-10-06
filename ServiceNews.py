@@ -19,9 +19,9 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 #SilvaNews
 from Products.SilvaNews import Tree
 from Products.SilvaNews.interfaces import IServiceNews
-from Products.SilvaNews.datetimeutils import local_timezone, get_timezone
+from Products.SilvaNews.datetimeutils import (local_timezone, get_timezone,
+                                              zone_names)
 
-import pytz
 from datetime import datetime
 
 
@@ -66,9 +66,8 @@ class TimezoneMixin(object):
     security.declareProtected('View',
                                 'timezone_list')
     def timezone_list(self):
-        zones = pytz.common_timezones
         default = self.default_timezone()
-        if default not in zones:
+        if default not in zone_names:
             zones.append(default)
         return zones
 

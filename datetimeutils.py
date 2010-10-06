@@ -1,19 +1,45 @@
 from datetime import date, datetime
 from dateutil.rrule import rrule, rruleset, rrulestr
 from dateutil.relativedelta import relativedelta
-from dateutil.tz import tzutc, tzlocal
-import pytz
+from dateutil.tz import tzutc, tzlocal, gettz
+import sys
+import os.path
 from DateTime import DateTime
 
 system_timezone = tzlocal()
 local_timezone = tzlocal()
 UTC = tzutc()
 
+_zonefile = '/usr/share/zoneinfo/zone.tab'
+
+def readline(f):
+    line = f.readline()
+    while line:
+        yield line
+        line = f.readline()
+
+def load_timezone_names():
+    tz_names = ['local']
+    if sys.platform != 'win32':
+        if os.path.exists(_zonefile):
+            with open(_zonefile) as f:
+                for line in readline(f):
+                    if line.startswith("#"):
+                        continue
+                    data = line.rstrip().split("\t", 3)
+                    tz_names.append(data[2])
+
+    tz_names.sort()
+    return tz_names
+
+zone_names = load_timezone_names()
+
+
 def get_timezone(name):
     if name == 'local':
         return local_timezone
     else:
-        return pytz.timezone(name)
+        return gettz(name)
 
 def utc_datetime(aDateTime_or_datetime, end=False):
     """ build a datetime in the utc timezone from DateTime or datetime object

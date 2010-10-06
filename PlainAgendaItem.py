@@ -74,7 +74,7 @@ class IAgendaItemSchema(interface.Interface):
         required=True)
 
 
-def get_service_news_default_tz_name():
+def get_default_tz_name(form):
     util = getUtility(IServiceNews)
     return util.get_timezone_name()
 
@@ -84,7 +84,7 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva Agenda Item")
 
     fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
-    fields['timezone_name'].defaultValue = get_service_news_default_tz_name
+    fields['timezone_name'].defaultValue = get_default_tz_name
 
 
 class AgendaEditProperties(silvaforms.RESTKupuEditProperties):
