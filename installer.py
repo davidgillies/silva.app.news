@@ -55,12 +55,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('edit',
                      'Silva News Publication', ['edit', 'Container', 'Publication', 'NewsPublication'])
         reg.register('edit',
-                     'Silva News Viewer', ['edit', 'Content', 'NewsViewer'])
-        reg.register('edit',
-                     'Silva RSS Aggregator', ['edit', 'Content', 'RSSAggregator'])
-        reg.register('edit',
-                     'Silva Agenda Viewer', ['edit', 'Content', 'AgendaViewer'])
-        reg.register('edit',
                      'Silva Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
         reg.register('edit',
                      'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
