@@ -82,7 +82,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.unregister('edit', 'Silva News Filter')
         reg.unregister('edit', 'Silva News Publication')
         reg.unregister('edit', 'Silva News Viewer')
-        reg.unregister('edit', 'Silva RSS Aggregator')
         reg.unregister('edit', 'Silva Agenda Viewer')
         reg.unregister('edit', 'Silva Article')
         reg.unregister('edit', 'Silva Agenda Item')
@@ -91,9 +90,7 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.unregister('public', 'Silva Agenda Filter')
         reg.unregister('public', 'Silva News Filter')
         reg.unregister('public', 'Silva News Publication')
-        reg.unregister('public', 'Silva News Viewer')
         reg.unregister('public', 'Silva RSS Aggregator')
-        reg.unregister('public', 'Silva Agenda Viewer')
         reg.unregister('public', 'Silva Article Version')
         reg.unregister('public', 'Silva Agenda Item Version')
         ## preview
