@@ -3,8 +3,8 @@
 <div class="newsiteminfo">
  <tal:infopublic
    tal:define="
-     publicationdate context/publication_time;
-     displaydate context/display_datetime;
+     publicationdate content/publication_time;
+     displaydate content/display_datetime;
      formatdate nocall:context/service_news/format_date;"
    tal:condition="publicationdate">
   <p class="p newsiteminfopublicationdate">
@@ -16,16 +16,16 @@
 </div>
 
 <div class="newsintro">
- <img 
+ <img
    tal:define="classname python: 'newsitem-thumbnail-odd'"
-   tal:replace="structure python: context.get_thumbnail(classname)"
+   tal:replace="structure python: content.get_thumbnail(classname)"
   />
 <!--   <tal:insertintro replace="structure r/get_intro" />-->
- <tal:insertintro replace="structure python:context.get_intro(max_size=128)" />
+ <tal:insertintro replace="structure python:content.get_intro(max_size=128)" />
 </div>
 
 <p class="p articlelink">
- <a href="#" tal:attributes="href python:context.get_content().absolute_url()" i18n:translate="">
+ <a href="#" tal:attributes="href context/@@absolute_url" i18n:translate="">
   view article
  </a>
 </p>

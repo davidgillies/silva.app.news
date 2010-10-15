@@ -81,9 +81,9 @@ class AgendaFilter(NewsItemFilter):
         result = [r for r in result]
 
         for item in result_startdt:
-            edt = item.end_datetime
+            edt = item.get_end_datetime
             if (item.object_path not in self._excluded_items and
-                    (not edt or edt.month() != month or edt.year() != year)):
+                    (not edt or edt.month != month or edt.year != year)):
                 result.append(item)
         result.sort(brainsorter)
         return result

@@ -142,9 +142,6 @@ class AgendaViewerMonthCalendar(silvaviews.View):
     def item_calevent_url(self, newsitem):
         return self.item_url(newsitem) + '/event.ics'
 
-    def item_url(self, newsitem):
-        return self.context.url_for_item(newsitem, self.request)
-
     def item_id(self, news_item):
         util = getUtility(IIntIds)
         return "event_%s" % util.register(self.context)

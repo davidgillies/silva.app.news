@@ -5,7 +5,6 @@
 from logging import getLogger
 
 from five import grok
-from zope.intid.interfaces import IIntIds
 from zope.component import getUtility
 from zope.traversing.browser import absoluteURL
 
@@ -28,7 +27,7 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
 
 # SilvaNews
-from Products.SilvaNews.interfaces import (INewsViewer, INewsItemVersion,
+from Products.SilvaNews.interfaces import (INewsViewer,
     show_source, timezone_source, week_days_source, filters_source)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
 
@@ -58,13 +57,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._number_is_days = 0
         self._year_range = 2
         self._filters = []
-
-    def url_for_item(self, obj, request):
-        intids = getUtility(IIntIds)
-        if INewsItemVersion.providedBy(obj):
-            obj = obj.get_content()
-        id = intids.register(obj)
-        return "%s/++items++%d" % (absoluteURL(self, request), id,)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone')
@@ -414,17 +406,34 @@ class NewsViewerEditForm(silvaforms.SMIEditForm):
     fields['number_is_days'].mode = u'radio'
 
 
-class NewsViewerView(silvaviews.View):
+class NewsViewerListView(object):
+
+    def _set_parent(self, item):
+        """ Change the parent of the NewsItem so traversing is made trough
+        the news viewer
+        """
+        version = item.getObject()
+        content = version.get_content()
+        content.__parent__ = self.context
+        return content
+
+
+class NewsViewerView(silvaviews.View, NewsViewerListView):
     """ Default view for news viewer
     """
     grok.context(INewsViewer)
     template = grok.PageTemplate(filename='../templates/NewsViewer/index.pt')
 
+    @property
+    def search_url(self):
+        return self.url('search')
+
     def update(self):
         self.request.timezone = self.context.get_timezone()
+        self.results = map(self._set_parent, self.context.get_items())
 
 
-class NewsViewerSearchView(silvaviews.Page):
+class NewsViewerSearchView(silvaviews.Page, NewsViewerListView):
     """ Search view for news viewer
     """
     grok.context(INewsViewer)
@@ -436,8 +445,10 @@ class NewsViewerSearchView(silvaviews.Page):
         self.query = self.request.get('query', '')
         self.results = []
         try:
-            self.results = self.context.search_items(self.query) or []
-        except: pass
+            self.results = map(self._set_parent,
+                               self.context.search_items(self.query) or [])
+        except:
+            pass
 
 
 class NewsViewerArchivesView(silvaviews.Page):

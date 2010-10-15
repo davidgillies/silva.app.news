@@ -5,13 +5,12 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news"
   tal:define="
-    results context/get_items;
     formatdate nocall:context/service_news/format_date;">
 
   <h2 class="heading" tal:content="context/get_title"
     tal:condition="not:context/suppress_title | context/suppress_title | nothing">View News</h2>
   <div class="searchbox">
-    <form tal:attributes="action python: context.absolute_url() + '/search'"
+    <form tal:attributes="action view/search_url"
       method="get">
       <input type="text" name="query" />
       <input class="button"
@@ -24,12 +23,12 @@
     </form>
   </div>
 
-  <div class="newsitem" tal:repeat="r results">
-    <div tal:define="obj r/getObject" tal:replace="structure obj/search_result" />
+  <div class="newsitem" tal:repeat="r view/results">
+    <div tal:replace="structure r/@@search_result" />
   </div>
 
   <p class="p newsmessage"
-    tal:condition="python: len(results) < 1"
+    tal:condition="python: len(view.results) < 1"
     i18n:translate="">
     There are no articles available.
   </p>

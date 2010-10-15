@@ -16,8 +16,12 @@
   <!-- Grok Silva News -->
   <grok:grok package="." />
 
-
   <!-- i18n -->
   <i18n:registerTranslations directory="i18n" />
 
+  <view for="Products.SilvaNews.interfaces.INewsItem"
+        factory="Products.SilvaNews.traverser.NewsItemAbsoluteURL"
+        type="zope.publisher.interfaces.http.IHTTPRequest"
+        name="absolute_url"
+        permission="zope.Public" />
 </configure>

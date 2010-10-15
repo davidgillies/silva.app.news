@@ -279,10 +279,15 @@ class NewsItemView(silvaviews.View):
 class NewsItemListItemView(grok.View):
     """ Render as a list items (search results)
     """
-    grok.context(INewsItemVersion)
+    grok.context(INewsItem)
     grok.name('search_result')
     template = grok.PageTemplate(
         filename='templates/NewsItem/search_result.pt')
+
+    def default_namespace(self):
+        ns = super(NewsItemListItemView, self).default_namespace()
+        ns['content'] = self.context.get_viewable()
+        return ns
 
 
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)

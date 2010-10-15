@@ -20,7 +20,7 @@ from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.NewsItem import NewsItemView
+from Products.SilvaNews.NewsItem import NewsItemView, NewsItemListItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
     CalendarDatetime, datetime_to_unixtimestamp, get_timezone)
@@ -180,12 +180,11 @@ class AgendaItemView(NewsItemView, AgendaViewMixin):
     template = grok.PageTemplate(filename='templates/AgendaItem/index.pt')
 
 
-class AgendaListItemView(grok.View, AgendaViewMixin):
+class AgendaListItemView(NewsItemListItemView, AgendaViewMixin):
     """ Render as a list items (search results)
     """
 
-    grok.context(IAgendaItemVersion)
-    grok.name('search_result')
+    grok.context(IAgendaItem)
     template = grok.PageTemplate(
         filename='templates/AgendaItem/search_result.pt')
 

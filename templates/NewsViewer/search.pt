@@ -22,7 +22,7 @@
   </div>
 
   <div class="newsitem" tal:repeat="r view/results">
-    <div tal:define="obj r/getObject" tal:replace="structure obj/search_result" />
+    <div tal:replace="structure r/search_result" />
   </div>
 
   <div class="item" tal:condition="python: len(view.results) < 1" i18n:translate="">
