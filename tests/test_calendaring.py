@@ -43,6 +43,7 @@ class TestCalendar(NewsBaseTestCase):
     def setUp(self):
         super(TestCalendar, self).setUp()
         self.browser = self.layer.get_browser()
+        self.browser.options.handle_errors = False
         self.filter = self.add_agenda_filter(
             self.root, 'afilter', 'Agenda Filter')
         self.filter.set_subjects(['sub'])
@@ -94,6 +95,30 @@ class TestCalendar(NewsBaseTestCase):
         status = self.browser.open(
             'http://localhost/root/agenda/calendar.ics')
         self.assertEquals(200, status)
+        intids = getUtility(IIntIds)
+        uids = [intids.getId(self.event1), intids.getId(self.event2)]
+        data = """BEGIN:VCALENDAR
+PRODID:-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN
+VERSION:2.0
+X-WR-CALNAME:Agenda
+X-WR-TIMEZONE:Europe/Amsterdam
+BEGIN:VEVENT
+DTEND:20100904T092000Z
+DTSTART:20100904T082000Z
+SUMMARY:Event1
+UID:%d@silvanews
+URL:http://localhost/root/agenda/++items++%d
+END:VEVENT
+BEGIN:VEVENT
+DTEND;VALUE=DATE:20100912
+DTSTART;VALUE=DATE:20100910
+SUMMARY:Event2
+UID:%d@silvanews
+URL:http://localhost/root/agenda/++items++%d
+END:VEVENT
+END:VCALENDAR
+""".replace("\n", "\r\n") % (uids[0], uids[0], uids[1], uids[1])
+        self.assertEquals(data, self.browser.contents)
 
 
 import unittest

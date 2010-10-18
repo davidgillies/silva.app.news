@@ -136,7 +136,7 @@
 
       <p class="p articlelink">
        <a href="#"
-          tal:attributes="href python:view.item_url(event)"
+          tal:attributes="href event/@@absolute_url"
           i18n:translate="">
         more ...
        </a>

@@ -46,10 +46,7 @@ class AgendaEvent(Event):
         if context.get_location():
             self['LOCATION'] = vText(context.get_location())
         self['SUMMARY'] = vText(context.get_title())
-        if viewer is None:
-            self['URL'] = absoluteURL(context.get_content(), request)
-        else:
-            self['URL'] = viewer.url_for_item(context, request)
+        self['URL'] = absoluteURL(context, request)
 
 
 class AgendaCalendar(Calendar, grok.MultiAdapter):
@@ -70,9 +67,10 @@ class AgendaCalendar(Calendar, grok.MultiAdapter):
         for brain in self.context.get_items_by_date_range(
                 now + relativedelta(years=-1), now + relativedelta(years=+1)):
             agenda_item_version = brain.getObject()
+            content = agenda_item_version.get_content()
+            content.__parent__ = self.context
             event_factory = AgendaFactoryEvent(agenda_item_version)
             event = event_factory(self.context, self.request)
             if event is not None:
                 self.add_component(event)
-
 

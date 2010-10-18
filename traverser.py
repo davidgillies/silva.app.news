@@ -4,7 +4,8 @@ from zope.app.intid.interfaces import IIntIds
 from zope.location.interfaces import LocationError
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.traversing.interfaces import ITraversable
-from Products.SilvaNews.interfaces import INewsViewer, INewsItem
+from Products.SilvaNews.interfaces import (INewsViewer,
+    INewsItem, INewsItemVersion)
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from silva.core.views.absoluteurl import AbsoluteURL
 from Acquisition import aq_base
@@ -36,6 +37,24 @@ class NewsItemAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
         bc = super(NewsItemAbsoluteURL, self).breadcrumbs()
         bc[-1]['url'] = str(self)
         return bc
+
+
+class NewsItemVersionAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
+    grok.adapts(INewsItemVersion, IBrowserRequest)
+    grok.provides(IAbsoluteURL)
+
+    def __init__(self, context, request):
+        super(NewsItemVersionAbsoluteURL, self).__init__(context, request)
+        self.content_url = getMultiAdapter(
+            (self.context.get_content(), self.request), IAbsoluteURL)
+
+    def __str__(self):
+        return str(self.content_url)
+
+    __call__ = __str__
+
+    def breadcrumbs(self):
+        return self.content_url.breadcrumbs()
 
 
 class NewsViewerTraverser(grok.MultiAdapter):

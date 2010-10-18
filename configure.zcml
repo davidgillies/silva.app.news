@@ -24,4 +24,11 @@
         type="zope.publisher.interfaces.http.IHTTPRequest"
         name="absolute_url"
         permission="zope.Public" />
+
+  <view for="Products.SilvaNews.interfaces.INewsItemVersion"
+        factory="Products.SilvaNews.traverser.NewsItemVersionAbsoluteURL"
+        type="zope.publisher.interfaces.http.IHTTPRequest"
+        name="absolute_url"
+        permission="zope.Public" />
+
 </configure>
