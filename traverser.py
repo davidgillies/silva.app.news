@@ -10,6 +10,8 @@ from zope.traversing.browser.interfaces import IAbsoluteURL
 from silva.core.views.absoluteurl import AbsoluteURL
 from Acquisition import aq_base
 
+NAMESPACE = 'newsitems'
+
 
 class NewsItemAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
     grok.adapts(INewsItem, IBrowserRequest)
@@ -18,7 +20,7 @@ class NewsItemAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
     def _get_path(self):
         intids = getUtility(IIntIds)
         id = intids.register(self.context)
-        return '++items++%s' % id
+        return '++%s++%d-%s' % (NAMESPACE, id, self.context.id)
 
     def _get_parent_absolute_url(self):
         return getMultiAdapter(
@@ -60,7 +62,7 @@ class NewsItemVersionAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
 class NewsViewerTraverser(grok.MultiAdapter):
     grok.adapts(INewsViewer, IBrowserRequest)
     grok.implements(ITraversable)
-    grok.name('items')
+    grok.name(NAMESPACE)
 
     def __init__(self, context, request):
         self.context = context
@@ -70,11 +72,11 @@ class NewsViewerTraverser(grok.MultiAdapter):
         self.request.timezone = self.context.get_timezone()
         intids = getUtility(IIntIds)
         try:
-            obj = intids.getObject(int(name))
-        except ValueError:
+            obj = intids.getObject(int(name.split('-', 1)[0]))
+        except (ValueError, IndexError):
             raise LocationError
         if INewsItem.providedBy(obj):
             next = aq_base(obj)
-            next.__name__ = '++items++%s' % name
+            next.__name__ = '++%s++%s' % (NAMESPACE, name)
             return next
         raise LocationError

@@ -5,17 +5,20 @@
 from logging import getLogger
 
 from five import grok
-from zope.component import getUtility
-from zope.traversing.browser import absoluteURL
+from zope.component import getUtility, getMultiAdapter
+from zope.schema.interfaces import IContextSourceBinder
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from megrok.chameleon.components import ChameleonPageTemplate
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from DateTime import DateTime
+from datetime import datetime
 from OFS.SimpleItem import SimpleItem
-from zExceptions import NotFound
 
 # Silva
+from zeam.utils.batch import batch
+from zeam.utils.batch.interfaces import IBatching
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
@@ -27,7 +30,7 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
 
 # SilvaNews
-from Products.SilvaNews.interfaces import (INewsViewer,
+from Products.SilvaNews.interfaces import (INewsViewer, IServiceNews,
     show_source, timezone_source, week_days_source, filters_source)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
 
@@ -186,7 +189,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
                           joinedpath))
         return pairs
 
-
     def verify_filters(self):
         allowed_filters = self.findfilters()
         for newsfilter in self._filters:
@@ -282,24 +284,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
                 paths.append(item.getPath())
                 retval.append(item)
         return retval
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'year_in_range_trigger')
-    def year_in_range_trigger(self, year):
-        """only years within self._year_range are allowed,
-        so raise notfound if the year requested is
-        outside of this range.
-        """
-        if not self.year_in_range(year):
-            raise NotFound()
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'year_in_range')
-    def year_in_range(self, year):
-        """only years within self._year_range are allowed,
-        return true if year is in range
-        """
-        return abs(year - DateTime().year()) < self.year_range()
 
     # MANIPULATORS
 
@@ -451,45 +435,76 @@ class NewsViewerSearchView(silvaviews.Page, NewsViewerListView):
             pass
 
 
-class NewsViewerArchivesView(silvaviews.Page):
+@grok.provider(IContextSourceBinder)
+def monthes(context):
+    month_list = []
+    service_news = getUtility(IServiceNews)
+    for m, month in enumerate(service_news.get_month_abbrs()):
+        month_list.append(
+            SimpleTerm(value=m+1, token=str(m+1), title=month))
+    return SimpleVocabulary(month_list)
+
+@grok.provider(IContextSourceBinder)
+def years(context):
+    year = datetime.now(context.get_timezone()).year
+    year_list = []
+    for y in range(year, year + context.get_year_range() + 1):
+        year_list.append(SimpleTerm(value=y, token=str(y), title=str(y)))
+    return SimpleVocabulary(year_list)
+
+
+class IArchiveForm(Interface):
+    year = schema.Choice(
+        title=_(u"year"),
+        source=years,
+        required=False)
+    month = schema.Choice(
+        title=_(u"month"),
+        source=monthes,
+        required=False)
+
+
+def current_month(form):
+    return datetime.now(form.context.get_timezone()).month
+
+def current_year(form):
+    return datetime.now(form.context.get_timezone()).year
+
+
+class NewsViewerArchivesView(silvaforms.PublicForm, NewsViewerListView):
     """ Archives view
     """
-
     grok.context(INewsViewer)
     grok.name('archives')
-    template = grok.PageTemplate(filename='../templates/NewsViewer/archives.pt')
+
+    template = ChameleonPageTemplate(
+        filename='../templates/NewsViewer/archives.cpt')
+
+    postOnly = False
+    ignoreContent = True
+    ignoreRequest = False
+
+    fields = silvaforms.Fields(IArchiveForm)
+    fields['month'].defaultValue = current_month
+    fields['year'].defaultValue = current_year
+
+    @silvaforms.action(_(u'go'), identifier='update')
+    def go(self):
+        data, errors = self.extractData()
+        if errors:
+            self.results = []
+        else:
+            self.results = self.context.get_items_by_date(
+                data.getWithDefault('month'), data.getWithDefault('year'))
+            self.results = map(self._set_parent, self.results)
+        self.items = batch(
+            self.results,
+            request=self.request,
+            count=self.context.number_to_show_archive())
+        self.batch = getMultiAdapter(
+            (self, self.items, self.request), IBatching)
 
     def update(self):
         self.request.timezone = self.context.get_timezone()
-
-    @property
-    def currentmonth(self):
-        return DateTime().month()
-
-    @property
-    def currentyear(self):
-        return DateTime().year()
-
-    def get_months(self):
-        return self.context.service_news.get_month_abbrs()
-
-    def previous_url(self):
-        url_mask = '/archives?&amp;month=%s&amp;year=%s&amp;offset=%s'
-        return url_mask % (self.currentmonth, self.currentyear,
-            (self.offset - self.batch_size))
-
-    def next_url(self):
-        url_mask = '/archives?&amp;month=%s&amp;year=%s&amp;offset=%s'
-        return url_mask % (self.currentmonth, self.currentyear,
-            (self.offset + self.batch_size))
-
-    def get_user_role(self):
-        user = self.request.AUTHENTICATED_USER
-        if user.has_role(['Editor', 'ChiefEditor', 'Manager'], self.context):
-            return 'Editor'
-        elif user.has_role(['Author'], self.context):
-            return 'Author'
-        elif user.has_role(['Reader'], self.context):
-            return 'Reader'
-        else:
-            return 'Other'
+        # always execute action
+        self.request.form['form.action.update'] = '1'

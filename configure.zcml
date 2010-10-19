@@ -11,6 +11,9 @@
   <include package="silva.core.smi" />
   <include package="silva.core.upgrade" />
   <include package="Products.Silva" />
+  <include package="silva.core.views" />
+  <include package="silva.resourceinclude" />
+
   <include package=".browser" />
 
   <!-- Grok Silva News -->

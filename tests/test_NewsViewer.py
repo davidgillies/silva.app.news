@@ -2,10 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
-import SilvaNewsTestCase
+from Products.SilvaNews.tests.SilvaNewsTestCase import NewsBaseTestCase
 
 
-class NewsViewerTestCase(SilvaNewsTestCase.NewsBaseTestCase):
+class NewsViewerTestCase(NewsBaseTestCase):
     """Test the NewsViewer interface.
     """
     def test_filters(self):
@@ -17,7 +17,10 @@ class NewsViewerTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.assert_(self.newsviewer.findfilters() == ['/root/newsfilter'])
 
     def test_findfilters_pairs(self):
-        self.assert_(self.newsviewer.findfilters_pairs() == [(u'NewsFilter (<a href="/root/newsfilter/edit">/root/newsfilter</a>)', '/root/newsfilter')])
+        self.assert_(self.newsviewer.findfilters_pairs() == [
+                (u'NewsFilter (<a href="/root/newsfilter/edit">'
+                 u'/root/newsfilter</a>)',
+                 '/root/newsfilter')])
 
     def test_verify_filters(self):
         self.assert_(self.newsviewer.filters() == ['/root/newsfilter'])

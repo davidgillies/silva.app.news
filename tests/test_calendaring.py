@@ -12,9 +12,6 @@ from Products.SilvaNews.datetimeutils import (local_timezone,
 
 class TestEvent(SilvaNewsTestCase):
 
-    def afterSetUp(self):
-        super(TestEvent, self).afterSetUp()
-
     def test_event_indexing(self):
         start = datetime.now(local_timezone)
         self.add_published_agenda_item(self.root, 'ai1',
@@ -43,7 +40,6 @@ class TestCalendar(NewsBaseTestCase):
     def setUp(self):
         super(TestCalendar, self).setUp()
         self.browser = self.layer.get_browser()
-        self.browser.options.handle_errors = False
         self.filter = self.add_agenda_filter(
             self.root, 'afilter', 'Agenda Filter')
         self.filter.set_subjects(['sub'])
@@ -107,17 +103,18 @@ DTEND:20100904T092000Z
 DTSTART:20100904T082000Z
 SUMMARY:Event1
 UID:%d@silvanews
-URL:http://localhost/root/agenda/++items++%d
+URL:http://localhost/root/agenda/++newsitems++%d-%s
 END:VEVENT
 BEGIN:VEVENT
 DTEND;VALUE=DATE:20100912
 DTSTART;VALUE=DATE:20100910
 SUMMARY:Event2
 UID:%d@silvanews
-URL:http://localhost/root/agenda/++items++%d
+URL:http://localhost/root/agenda/++newsitems++%d-%s
 END:VEVENT
 END:VCALENDAR
-""".replace("\n", "\r\n") % (uids[0], uids[0], uids[1], uids[1])
+""".replace("\n", "\r\n") % (
+            uids[0], uids[0], self.event1.id, uids[1], uids[1], self.event2.id)
         self.assertEquals(data, self.browser.contents)
 
 
