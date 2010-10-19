@@ -1,6 +1,6 @@
 from five import grok
 from zope.component import getUtility, getMultiAdapter
-from zope.app.intid.interfaces import IIntIds
+from zope.intid.interfaces import IIntIds
 from zope.location.interfaces import LocationError
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.traversing.interfaces import ITraversable

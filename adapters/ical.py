@@ -1,6 +1,6 @@
 from five import grok
 from zope.component import getUtility
-from zope.app.intid.interfaces import IIntIds
+from zope.intid.interfaces import IIntIds
 from icalendar import Calendar, Event, vText, vDatetime, vDate
 from icalendar.interfaces import ICalendar, IEvent
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
