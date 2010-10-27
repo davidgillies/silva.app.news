@@ -1,10 +1,15 @@
 ChangeLog
 =========
 
-SilvaNewsNetwork 2.9 (unreleased)
----------------------------------
+SilvaNewsNetwork 2.9b2 (2010/10/27)
+-----------------------------------
 
-- ...
+- News items are now displayed traversing viewers, this will fix
+  breadcrumbs that used to display items path from there physical location.
+
+- Fix archive view and remove old style view.
+
+- Add timezone support for viewers.
 
 SilvaNewsNetwork 2.9b1 (2010/07/16)
 -----------------------------------
