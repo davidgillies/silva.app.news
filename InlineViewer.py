@@ -40,7 +40,7 @@ def ustr(x):
 
 class InlineViewer(CodeSource):
     """A news viewer object to display news items within a Silva document
-    
+
         Inspired by Marc Petitmermet's Inline News Viewer (some code was
         copied from that product too, thanks Marc!)
     """
@@ -56,13 +56,13 @@ class InlineViewer(CodeSource):
     # they didn't have this attribute yet and we don't want
     # to write an upgrade script because we're lazy :)
     _is_initialized = True
-    
+
     def __init__(self, id):
         InlineViewer.inheritedAttribute('__init__')(self, id)
         self._script_id = 'view'
         self._data_encoding = 'UTF-8'
         self._is_initialized = False
-        
+
     security.declareProtected(SilvaPermissions.ChangeSilvaAccess,
                                 'refresh')
     def refresh(self):
@@ -76,55 +76,28 @@ class InlineViewer(CodeSource):
 
     def _set_form(self):
         self.parameters = ZMIForm('form', 'Properties Form')
-        f = open(os.path.join(
-                package_home(globals()), 
-                'www', 
-                'inline_viewer_form.form'))
-        XMLToForm(f.read(), self.parameters)
-        f.close()
+        filename = os.path.join(
+            package_home(globals()), 'www', 'inline_viewer_form.form')
+        with open(filename, 'r') as fd:
+            XMLToForm(fd.read(), self.parameters)
 
     def _set_views(self):
-        f = open(os.path.join(
-                package_home(globals()),
-                'www',
-                'inline_viewer_view.pt'))
-        self._setObject('view', ZopePageTemplate('view', f.read()))
-        f.close()
+        filename = os.path.join(
+                package_home(globals()), 'www', 'inline_viewer_view.pt')
+        with open(filename, 'r') as fd:
+            self._setObject('view', ZopePageTemplate('view', fd.read()))
 
-        f = open(os.path.join(
-                package_home(globals()),
-                'www',
-                'inline_viewer_footer.pt'))
-        self._setObject('feed_footer', 
-                        ZopePageTemplate('feed_footer', f.read()))
-        f.close()
+        filename = os.path.join(
+                package_home(
+                globals()), 'www', 'inline_viewer_footer.pt')
+        with open(filename, 'r') as fd:
+            self._setObject('feed_footer',
+                            ZopePageTemplate('feed_footer', fd.read()))
 
-        f = open(os.path.join(
-                package_home(globals()),
-                'www',
-                'rss10.gif'), 'rb')
-        self._setObject('rss10.gif', Image('rss10.gif', 'RSS (1.0)', f))
-        f.close()
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'to_html')
-    def to_html(self, *args, **kwargs):
-        """render the news list"""
-        oldmodel = self.REQUEST.other['model']
-        self.REQUEST.other['oldmodel'] = oldmodel
-        self.REQUEST.other['model'] = self
-        try:
-            return ustr(getattr(self, self._script_id)(**kwargs))
-        finally:
-            self.REQUEST.other['model'] = oldmodel
-            del self.REQUEST.other['oldmodel']
-        #except:
-        #    import sys, traceback
-        #    exc, e, tb = sys.exc_info()
-        #    tbs = '\n'.join(traceback.format_tb(tb))
-        #    del tb
-        #    ret =  '%s - %s<br />\n\n%s<br />' % (exc, e, tbs)
-        #    return ret
+        filename = os.path.join(
+                package_home(globals()), 'www', 'rss10.gif')
+        with open(filename, 'r') as fd:
+            self._setObject('rss10.gif', Image('rss10.gif', 'RSS (1.0)', fd))
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'get_viewers')
@@ -144,14 +117,13 @@ class InlineViewer(CodeSource):
             if (mt.has_key('instance') and
                 IViewer.implementedBy(mt['instance'])):
                 viewer_metatypes.append(mt['name'])
-                
+
         #this should get all viewers at this level or higher
         # (to the vhost root), not at the code sources level
         objects = []
         container = self.REQUEST.model.get_container()
-        invcontainer = self.get_container()
         while container != root.aq_parent:
-            objs = [(o.get_title(), o.id) for o in 
+            objs = [(o.get_title(), o.id) for o in
                     container.objectValues(viewer_metatypes)]
             objects.extend(objs)
             container = container.aq_parent
