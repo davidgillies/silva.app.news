@@ -136,7 +136,7 @@ class InlineViewer(CodeSource):
         return INewsProvider(provider).getitems(number)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_viewer_obj')
+                                'get_viewer')
     def get_viewer(self, viewer, model):
         """returns the title of a viewer"""
         return getattr(model, viewer, None)
