@@ -21,10 +21,10 @@ from Products.Formulator.XMLToForm import XMLToForm
 
 from Products.SilvaExternalSources.CodeSource import CodeSource
 
+from silva.core.views.interfaces import IVirtualSite
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
-from Products.Silva.adapters.virtualhosting import getVirtualHostingAdapter
 
 from Products.SilvaNews.interfaces import IViewer, IInlineViewer
 from Products.SilvaNews.adapters.interfaces import INewsProvider
@@ -101,14 +101,11 @@ class InlineViewer(CodeSource):
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'get_viewers')
-    def get_viewers(self):
+    def get_viewers(self, model):
         """returns a list of available viewers
             finds all viewers on this level
         """
-        adapter = getVirtualHostingAdapter(self.REQUEST.model)
-        root = adapter.getVirtualRoot()
-        if root is None:
-            root = self.get_root()
+        root = IVirtualSite(self.request).get_root()
 
         #determine which silva types are IViewers
         viewer_metatypes = []
@@ -121,7 +118,7 @@ class InlineViewer(CodeSource):
         #this should get all viewers at this level or higher
         # (to the vhost root), not at the code sources level
         objects = []
-        container = self.REQUEST.model.get_container()
+        container = model.get_container()
         while container != root.aq_parent:
             objs = [(o.get_title(), o.id) for o in
                     container.objectValues(viewer_metatypes)]
@@ -131,20 +128,18 @@ class InlineViewer(CodeSource):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_items')
-    def get_items(self, number, viewer):
+    def get_items(self, number, viewer, model):
         """returns the items for the selected viewer"""
-        viewerobj = getattr(self.REQUEST.oldmodel, viewer, None)
-        if viewerobj == None:
+        provider = self.get_viewer(viewer, model)
+        if provider is None:
             return []
-        adapter = INewsProvider(viewerobj)
-        return adapter.getitems(number)
+        return INewsProvider(provider).getitems(number)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_viewer_obj')
-    def get_viewer_obj(self, viewer):
+    def get_viewer(self, viewer, model):
         """returns the title of a viewer"""
-        obj = getattr(self.aq_parent, viewer, None)
-        return obj
+        return getattr(model, viewer, None)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'limit_intro')
