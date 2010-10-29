@@ -101,11 +101,13 @@ class InlineViewer(CodeSource):
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'get_viewers')
-    def get_viewers(self, model):
+    def get_viewers(self, model=None, request=None):
         """returns a list of available viewers
             finds all viewers on this level
         """
-        root = IVirtualSite(self.request).get_root()
+        request = request or self.REQUEST
+        model = model or request.get('model')
+        root = IVirtualSite(request).get_root()
 
         #determine which silva types are IViewers
         viewer_metatypes = []
