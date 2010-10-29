@@ -181,8 +181,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
 
         for event_brain in self._month_events:
             item = event_brain.getObject()
-            content = event_brain.__parent__
-            content.__parent__ = self.context
+            item.get_content().__parent__ = self.context
             cd = item.get_calendar_datetime()
             sdt = cd.get_start_datetime(self.context.get_timezone())
             edt = cd.get_end_datetime(self.context.get_timezone())

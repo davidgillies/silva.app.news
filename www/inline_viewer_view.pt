@@ -112,7 +112,7 @@
           </tal:set>
 
           <p class="p articlelink" tal:condition="python:show_link_article=='separate'">
-            <a tal:attributes="href item/link"
+            <a tal:attributes="href python:item.link(request)"
                tal:content="structure options/link_text_article" />
           </p>
 
