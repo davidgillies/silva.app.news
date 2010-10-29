@@ -59,7 +59,6 @@ class AgendaFilter(NewsItemFilter):
         enddate = datetime(year, endmonth, 1, tzinfo=timezone).astimezone(UTC)
 
         result = []
-
         # end_datetime items first
         query = self._prepare_query()
         query['idx_end_datetime'] = {'query':[startdate, enddate],

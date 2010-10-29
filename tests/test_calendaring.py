@@ -7,7 +7,7 @@ from zope.intid.interfaces import IIntIds
 from Products.SilvaNews.tests.SilvaNewsTestCase import (SilvaNewsTestCase,
     NewsBaseTestCase)
 from Products.SilvaNews.datetimeutils import (local_timezone,
-    datetime_to_unixtimestamp)
+    datetime_to_unixtimestamp, get_timezone)
 
 
 class TestEvent(SilvaNewsTestCase):
@@ -33,6 +33,87 @@ class TestEvent(SilvaNewsTestCase):
         brains = self.root.service_catalog(
             {'idx_timestamp_ranges': {'query': [start_index, end_index]}})
         self.assertFalse(brains)
+
+
+class TestAgendaViewerLookup(NewsBaseTestCase):
+    def setUp(self):
+        super(TestAgendaViewerLookup, self).setUp()
+        self.tz = get_timezone('Europe/Amsterdam')
+        root = self.layer.get_application()
+        factory = root.manage_addProduct['SilvaNews']
+        factory.manage_addAgendaFilter('agenda_filter', 'Agenda Filter')
+        factory.manage_addAgendaViewer('agenda_viewer', 'Agenda Viewer')
+        self.root.agenda_viewer.set_timezone_name('Europe/Amsterdam')
+        factory.manage_addNewsPublication(
+            'news_publication', 'News Publication')
+
+        self.root.agenda_filter.add_source('/root/news_publication', 1)
+        self.root.agenda_filter.set_subjects(['sub'])
+        self.root.agenda_filter.set_target_audiences(['ta'])
+
+        self.root.agenda_viewer.set_filters(['/root/agenda_filter'])
+
+        self.news_pub_factory = \
+            self.root.news_publication.manage_addProduct['SilvaNews']
+
+    def test_month_lookup(self):
+        self.add_published_agenda_item(
+            self.root.news_publication,
+            'start_before_month',
+            'This agenda item starts before the month and ends at the'
+            'beginning of the month',
+            datetime(2010, 10, 23, 12, 20, tzinfo=self.tz),
+            datetime(2010, 11, 2, 12, 00, tzinfo=self.tz))
+
+        self.add_published_agenda_item(
+            self.root.news_publication,
+            'end_after_month',
+            'This agenda item ends before after the month ends',
+            datetime(2010, 11, 23, 12, 20, tzinfo=self.tz),
+            datetime(2010, 12, 2, 12, 00, tzinfo=self.tz))
+
+        self.add_published_agenda_item(
+            self.root.news_publication,
+            'out_of_range',
+            'This agenda item is not found it is out of range',
+            datetime(2010, 10, 23, 12, 20, tzinfo=self.tz),
+            datetime(2010, 10, 30, 12, 00, tzinfo=self.tz))
+
+        self.add_published_agenda_item(
+            self.root.news_publication,
+            'over_month',
+            'This agenda item starts before month starts'
+            'and ends after month ends',
+            datetime(2010, 10, 23, 12, 20, tzinfo=self.tz),
+            datetime(2010, 12, 3, 02, 00, tzinfo=self.tz))
+
+        self.add_published_agenda_item(
+            self.root.news_publication,
+            'within_month',
+            'This agenda item starts after month starts'
+            'and ends before month ends',
+            datetime(2010, 11, 23, 12, 20, tzinfo=self.tz),
+            datetime(2010, 11, 23, 22, 00, tzinfo=self.tz))
+
+        versions = set([
+            self.root.news_publication.start_before_month.get_viewable(),
+            self.root.news_publication.end_after_month.get_viewable(),
+            self.root.news_publication.over_month.get_viewable(),
+            self.root.news_publication.within_month.get_viewable(),
+            ])
+
+        agenda = self.root.agenda_viewer
+
+        def normalize(results):
+            return set(map(lambda x: x.getObject(), items))
+
+        items = agenda.get_items_by_date(11, 2010)
+        self.assertEquals(versions, normalize(items))
+
+        items = agenda.get_items_by_date_range(
+            datetime(2010, 11, 1, 00, 00, tzinfo=self.tz),
+            datetime(2010, 11, 30, 23, 59, 59, tzinfo=self.tz))
+        self.assertEquals(versions, normalize(items))
 
 
 class TestCalendar(NewsBaseTestCase):
@@ -123,4 +204,5 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestEvent))
     suite.addTest(unittest.makeSuite(TestCalendar))
+    suite.addTest(unittest.makeSuite(TestAgendaViewerLookup))
     return suite

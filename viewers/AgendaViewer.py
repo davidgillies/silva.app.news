@@ -155,7 +155,14 @@ class AgendaViewerMonthCalendar(silvaviews.View):
     def archive_url(self):
         return self.context_absolute_url + '/archives'
 
+    def _wrap_event_brains(self, list):
+        for brain in list:
+            item = brain.getObject()
+            item.get_content().__parent__ = self.context
+            yield item
+
     def update(self):
+
         self.request.timezone = self.context.get_timezone()
         now = datetime.now(self.context.get_timezone())
         self.month = int(self.request.get('month', now.month))
@@ -164,24 +171,22 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             self.year, self.month)
         self.day = int(self.request.get('day', now.day)) or 1
         self.day_datetime = datetime(self.year, self.month, self.day,
-            tzinfo=self.context.get_timezone())
+                                     tzinfo=self.context.get_timezone())
 
         self.start = datetime(self.year, self.month, 1,
-            tzinfo=self.context.get_timezone())
-        self.end = datetime(self.year, self.month, lastday,
-            tzinfo=self.context.get_timezone())
+                              tzinfo=self.context.get_timezone())
+        self.end = datetime(self.year, self.month, lastday, 23, 59, 59,
+                            tzinfo=self.context.get_timezone())
 
-        self._month_events = self.context.get_items_by_date(self.month,
-            self.year)
+        self._month_events = self._wrap_event_brains(
+            self.context.get_items_by_date(self.month, self.year))
         self._day_events = self._selected_day_events()
         self._events_index = {}
 
         self.calendar = HTMLCalendar(self.context.get_first_weekday(),
             today=now, current_day=self.day_datetime)
 
-        for event_brain in self._month_events:
-            item = event_brain.getObject()
-            item.get_content().__parent__ = self.context
+        for item in self._month_events:
             cd = item.get_calendar_datetime()
             sdt = cd.get_start_datetime(self.context.get_timezone())
             edt = cd.get_end_datetime(self.context.get_timezone())
@@ -237,9 +242,8 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        events = self.context.get_items_by_date_range(
-            start_of_day(self.day_datetime), end_of_day(self.day_datetime))
-        return [event.getObject() for event in events]
+        return self._wrap_event_brains(self.context.get_items_by_date_range(
+            start_of_day(self.day_datetime), end_of_day(self.day_datetime)))
 
     def _render_events(self, year, month, day):
         # key = "%d%02d%02d" % (year, month, day,)

@@ -260,7 +260,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         sortattr = None
         if len(self._filters) > 1:
             sortattr = 'sort_index'
-        return self._get_items_helper(func,sortattr)
+        return self._get_items_helper(func, sortattr)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'search_items')
