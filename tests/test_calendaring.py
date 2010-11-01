@@ -1,3 +1,5 @@
+from difflib import unified_diff
+from os import linesep
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
@@ -196,7 +198,13 @@ END:VEVENT
 END:VCALENDAR
 """.replace("\n", "\r\n") % (
             uids[0], uids[0], self.event1.id, uids[1], uids[1], self.event2.id)
-        self.assertEquals(data, self.browser.contents)
+        self.assert_no_udiff(data, self.browser.contents, term="\r\n")
+
+    def assert_no_udiff(self, s1, s2, term="\n"):
+        diff = list(unified_diff(s1.split(term), s2.split(term)))
+        if len(diff) > 0:
+            raise AssertionError(linesep.join(diff))
+        return True
 
 
 import unittest

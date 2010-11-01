@@ -33,9 +33,9 @@ class AgendaEvent(Event):
         end_date = date(end_dt.year, end_dt.month, end_dt.day)
         if start_date == end_date:
             if start_date:
-                self['DTSTART'] = vDatetime(start_dt)
+                self['DTSTART'] = vDatetime(start_dt.astimezone(UTC))
             if end_date:
-                self['DTEND'] = vDatetime(end_dt)
+                self['DTEND'] = vDatetime(end_dt.astimezone(UTC))
         else:
             self['DTSTART'] = vDate(start_date)
             self['DTEND'] = vDate(end_date + relativedelta(days=+1))
