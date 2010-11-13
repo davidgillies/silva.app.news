@@ -1,8 +1,9 @@
 <metal:def define-macro="footer">
-<p class="p newsviewerfooter">
-  <a title="subscribe to the feed" i18n:attributes="title"
-    tal:attributes="href python:viewerobj.absolute_url() + '/rss.xml'">
-    <img tal:replace="structure here/globals/feed-icon-14x14.png/tag | nothing" /> subscribe
-  </a>
-</p>
+  <p class="footer"
+    tal:condition="python:options['show_footer']=='1'">
+    <a class="image" tal:attributes="href python:viewerobj.absolute_url() + '/rss.xml'"
+      title="Get the source....">
+      <img tal:replace="structure context/rss10.gif | nothing" />
+    </a>
+  </p>
 </metal:def>
