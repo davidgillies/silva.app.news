@@ -57,26 +57,26 @@
           </a>
           <span tal:replace="structure string:</$title_level>" />
 
-          <div class="newsiteminfo" 
+          <div class="newsiteminfo"
                tal:condition="python:int(options['show_creationdate']) or int(options['show_datetime']) or int(options['show_location'])">
             <p class="p eventdates">
               <tal:block tal:condition="python:(int(options['show_creationdate']) and item.creation_datetime())">
-                <tal:translate i18n:translate="">Published:
-                  <span class="newsitemcreationdate" 
+                <tal:translate i18n:translate="">
+                  <span class="newsitemcreationdate"
                         tal:content="structure python: formatdate(item.creation_datetime())" i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
               <tal:block tal:condition="python: item.start_datetime() and options['show_datetime']=='1'">
                 <tal:translate i18n:translate="">Starts:
-                  <span class="newsitemstartdate" 
+                  <span class="newsitemstartdate"
                         tal:content="structure python: formatdate(item.start_datetime())" i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
               <tal:block condition="python: item.end_datetime() and options['show_datetime']=='1'">
                 <tal:translate i18n:translate="">Ends:
-                  <span class="newsitemenddate" 
+                  <span class="newsitemenddate"
                         tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime" />
                 </tal:translate>
                 <br />
@@ -89,7 +89,7 @@
             </p>
           </div>
 
-          <div class="newsimage" 
+          <div class="newsimage"
                tal:define="di options/display_image"
                tal:condition="python:di=='thumbnail'">
             <tal:def define="thumb item/thumbnail">
@@ -99,22 +99,25 @@
           </div>
 
           <tal:set define="maxchars python: int(options['number_of_characters'])">
-            <tal:cond condition="python: options['show_intro']=='intro'">
-              <div class="p newslead" tal:define="intro python:item.intro(maxchars)"
-                   tal:content="structure intro"
-                   tal:condition="intro" />
-            </tal:cond>
-            <tal:cond condition="python: options['show_intro']=='description'">
-              <div class="p newslead" tal:define="desc python:item.description(maxchars)"
-                   tal:content="structure desc"
-                   tal:condition="desc" />
-            </tal:cond>
+            <p class="p newslead">
+              <tal:cond condition="python: options['show_intro']=='intro'">
+                <tal:insert tal:define="intro python:item.intro(maxchars)"
+                  tal:content="structure intro"
+                  tal:condition="intro"
+                />
+              </tal:cond>
+              <tal:cond condition="python: options['show_intro']=='description'">
+                <tal:insert tal:define="desc python:item.description(maxchars)"
+                  tal:content="structure desc"
+                  tal:condition="desc"
+                />
+              </tal:cond>
+              <span class="articlelink" tal:condition="python:show_link_article=='separate'">
+                <a tal:attributes="href python:item.link(request)"
+                  tal:content="structure options/link_text_article" />
+              </span>
+            </p>
           </tal:set>
-
-          <p class="p articlelink" tal:condition="python:show_link_article=='separate'">
-            <a tal:attributes="href python:item.link(request)"
-               tal:content="structure options/link_text_article" />
-          </p>
 
         </div>
       </tal:loop>
