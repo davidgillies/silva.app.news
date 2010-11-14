@@ -61,7 +61,7 @@
                tal:condition="python:int(options['show_creationdate']) or int(options['show_datetime']) or int(options['show_location'])">
             <p class="p eventdates">
               <tal:block tal:condition="python:(int(options['show_creationdate']) and item.creation_datetime())">
-                <tal:translate i18n:translate="">
+                <tal:translate i18n:translate="">Publication date:
                   <span class="newsitemcreationdate"
                         tal:content="structure python: formatdate(item.creation_datetime())" i18n:name="datetime" />
                 </tal:translate>

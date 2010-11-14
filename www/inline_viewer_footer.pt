@@ -2,8 +2,10 @@
   <p class="footer"
     tal:condition="python:options['show_footer']=='1'">
     <a class="image" tal:attributes="href python:viewerobj.absolute_url() + '/rss.xml'"
-      title="Get the source....">
-      <img tal:replace="structure context/rss10.gif | nothing" />
+      title="Get the source...."
+      i18n:attributes="title;value">
+      <img tal:replace="structure context/globals/feed-icon-14x14.png/tag | nothing" />
+      <tal:i18n i18n:translate="">Subscribe to feed</tal:i18n>
     </a>
   </p>
 </metal:def>

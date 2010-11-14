@@ -179,7 +179,7 @@
         <field><id>show_intro</id> <type>ListField</type>
           <values>
             <alternate_name></alternate_name>
-            <css_class></css_class>
+            <css_class>store</css_class>
             <default></default>
             <description>Display intro (first elements of the article), the metadata description, or nothing</description>
             <enabled type="int">1</enabled>
