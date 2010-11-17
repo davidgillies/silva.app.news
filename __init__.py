@@ -6,9 +6,9 @@ from Products.SilvaNews.installer import install
 
 from silva.core import conf as silvaconf
 
-silvaconf.extensionName("SilvaNews")
-silvaconf.extensionTitle("Silva News Network")
-silvaconf.extensionDepends(["SilvaDocument", "SilvaExternalSources"])
+silvaconf.extension_name("SilvaNews")
+silvaconf.extension_title("Silva News Network")
+silvaconf.extension_depends(["SilvaDocument", "SilvaExternalSources"])
 
 
 def initialize(context):
@@ -43,8 +43,6 @@ CLASS_CHANGES = {
 
         'Products.SilvaNews.AgendaViewer AgendaViewer':
             'Products.SilvaNews.viewers.AgendaViewer AgendaViewer',
-        'Products.SilvaNews.InlineViewer InlineViewer':
-            'Products.SilvaNews.viewers.InlineViewer InlineViewer',
         'Products.SilvaNews.NewsViewer NewsViewer':
             'Products.SilvaNews.viewers.NewsViewer NewsViewer',
     }
