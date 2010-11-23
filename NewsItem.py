@@ -224,7 +224,7 @@ class NewsItemVersion(DocumentVersion):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        keywords = self._subjects
+        keywords = list(self._subjects)
         keywords.extend(self._target_audiences)
         keywords.extend(super(NewsItemVersion, self).fulltext())
         return " ".join(keywords)
