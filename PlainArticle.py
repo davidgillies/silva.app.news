@@ -10,7 +10,7 @@ from App.class_init import InitializeClass
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 from Products.SilvaNews.interfaces import INewsItem
 from Products.SilvaNews.interfaces import (
-    subject_source, target_audiences_source)
+    subjects_source, target_audiences_source)
 
 # Silva
 from five import grok
@@ -54,7 +54,7 @@ InitializeClass(PlainArticle)
 class IArticleSchema(interface.Interface):
     _subjects = schema.List(
         title=_(u"subjects"),
-        value_type=schema.Choice(source=subject_source),
+        value_type=schema.Choice(source=subjects_source),
         required=True)
     _target_audiences = schema.List(
         title=_(u"target audiences"),

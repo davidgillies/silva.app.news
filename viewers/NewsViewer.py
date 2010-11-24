@@ -8,7 +8,8 @@ from five import grok
 from zope.component import getUtility, getMultiAdapter
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-from megrok.chameleon.components import ChameleonPageTemplate
+from zope import schema
+from zope.interface import Interface
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -28,6 +29,9 @@ from silva.core.services.interfaces import ICatalogService
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
+
+from silva.core.references.reference import ReferenceSet
+
 
 # SilvaNews
 from Products.SilvaNews.interfaces import (INewsViewer, IServiceNews,
@@ -51,6 +55,12 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     silvaconf.icon("www/news_viewer.png")
     silvaconf.priority(3.1)
 
+    filter_meta_types = ['Silva News Filter',
+                         'Silva Agenda Filter',
+                         'Silva iCalendar Filter']
+
+    _filter_reference_name = u'viewer-filter'
+
     security = ClassSecurityInfo()
 
     def __init__(self, id):
@@ -67,19 +77,22 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """ this is an override of TimezoneMixin to make the service news
         to decide the default timezone
         """
-        return self.service_news.get_timezone()
+        service_news = getUtility(IServiceNews)
+        return service_news.get_timezone()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone_name')
     def default_timezone_name(self):
-        return self.service_news.get_timezone_name()
+        service_news = getUtility(IServiceNews)
+        return service_news.get_timezone_name()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_first_weekday')
     def get_first_weekday(self):
-        return getattr(self,
-            '_first_weekday',
-            self.service_news.get_first_weekday())
+        first_weekday = getattr(self, '_first_weekday', None)
+        if first_weekday is None:
+            return getUtility(IServiceNews).get_first_weekday()
+        return first_weekday
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'year_range')
@@ -90,6 +103,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
             self._year_range = 2
         return self._year_range
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_year_range')
     get_year_range = year_range
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -99,6 +114,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         return self._number_to_show
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_number_to_show')
     get_number_to_show = number_to_show
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -136,30 +153,32 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         return self._number_is_days
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_number_is_days')
     get_number_is_days = number_is_days
 
+    def _get_filters_reference_set(self):
+        if hasattr(self, '_v_filter_reference_set'):
+            refset = getattr(self, '_v_filter_reference_set', None)
+            if refset is not None:
+                return refset
+        self._v_filter_reference_set = ReferenceSet(self, 'filters')
+        return self._v_filter_reference_set
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'filters')
-    def filters(self):
+                              'get_filters')
+    def get_filters(self):
+        """Returns a list of all filters of this object
+        """
+        return list(self._get_filters_reference_set())
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'has_filter')
+    def has_filter(self):
         """Returns a list of (the path to) all filters of this object
         """
-        self.verify_filters()
-        return self._filters
-
-    get_filters = filters
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'findfilters')
-    def findfilters(self):
-        """Returns a list of paths to all filters
-        """
-        # Happened through searching in the catalog,
-        # but must happen through aquisition now...
-        #query = {'meta_type': 'Silva NewsFilter',
-        # 'path': '/'.join(self.aq_inner.aq_parent.getPhysicalPath())}
-        #results = self.service_catalog(query)
-        filters = [str(pair[1]) for pair in self.findfilters_pairs()]
-        return filters
+        gen = list(self._get_filters_reference_set().get_references())
+        return len(gen) > 0
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_filters')
@@ -168,33 +187,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         query = {}
         query['meta_type'] = {
             'operator': 'or',
-            'query': ['Silva News Filter',
-                      'Silva Agenda Filter']}
+            'query': self.filter_meta_types}
         return [brain.getObject() for brain in util(query)]
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'findfilters_pairs')
-    def findfilters_pairs(self):
-        """Returns a list of tuples (title (path), path) for all filters
-        from catalog for rendering formulator-items
-        """
-        # IS THIS THE MOST EFFICIENT WAY?
-        pairs = []
-        obj = self.aq_inner
-        for item in obj.superValues(['Silva News Filter',
-                                  'Silva Agenda Filter']):
-            joinedpath = '/'.join(item.getPhysicalPath())
-            pairs.append(('%s (<a href="%s/edit">%s</a>)' %
-                          (item.get_title(), joinedpath, joinedpath),
-                          joinedpath))
-        return pairs
-
-    def verify_filters(self):
-        allowed_filters = self.findfilters()
-        for newsfilter in self._filters:
-            if newsfilter not in allowed_filters:
-                self._filters.remove(newsfilter)
-                self._p_changed = 1
 
     def _get_items_helper(self, func, sortattr=None):
         #1) helper function for get_items...this was the same
@@ -205,18 +199,16 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         #   i.e. a result item.  It's a catalog metadata column
         #   use it for fast sort / merging of multiple filters
         #   e.g. on display_datetime or start_datetime
-        self.verify_filters()
         results = []
-        for newsfilter in self._filters:
-            obj = self.aq_inner.restrictedTraverse(newsfilter)
-            res = func(obj)
+        for newsfilter in self._get_filters_reference_set():
+            res = func(newsfilter)
             results += res
 
         results = self._remove_doubles(results)
 
         if sortattr:
             results = [(getattr(r,sortattr,None),
-                        getattr(r,'object_path',None),r) for r in results ]
+                       getattr(r,'object_path',None),r) for r in results ]
             results.sort()
             results = [ r[2] for r in results ]
             results.reverse()
@@ -231,7 +223,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
                                           self._number_is_days)
         #merge/sort results if > 1 filter
         sortattr = None
-        if len(self._filters) > 1:
+        if self.has_filter():
             sortattr = 'sort_index'
         results = self._get_items_helper(func,sortattr)
         if not self._number_is_days:
@@ -247,7 +239,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         func = lambda x: x.get_items_by_date(month,year,
             timezone=self.get_timezone())
         sortattr = None
-        if len(self._filters) > 1:
+        if self.has_filter():
             sortattr = 'sort_index'
         return self._get_items_helper(func,sortattr)
 
@@ -258,7 +250,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         func = lambda x: x.get_items_by_date_range(start, end)
         sortattr = None
-        if len(self._filters) > 1:
+        if self.has_filter():
             sortattr = 'sort_index'
         return self._get_items_helper(func, sortattr)
 
@@ -269,7 +261,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         func = lambda x: x.search_items(keywords)
         sortattr = None
-        if len(self._filters) > 1:
+        if self.has_filter():
             sortattr = 'sort_index'
         return self._get_items_helper(func,sortattr)
 
@@ -317,17 +309,20 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_filters')
     def set_filters(self, filters):
-        """update filters (path to)
+        """update filters
         """
-        self.verify_filters()
-        self._filters = filters
+        self._get_filters_reference_set().set(filters)
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'add_filter')
+    def add_filter(self, filter):
+        """add filters
+        """
+        self._get_filters_reference_set().add(filter)
+        return filter
 
 
 InitializeClass(NewsViewer)
-
-
-from zope import schema
-from zope.interface import Interface
 
 
 class INewsViewerSchema(Interface):
@@ -402,11 +397,15 @@ class NewsViewerListView(object):
         return content
 
 
-class NewsViewerView(silvaviews.View, NewsViewerListView):
+class NewsViewerView(silvaviews.Page, NewsViewerListView):
     """ Default view for news viewer
     """
     grok.context(INewsViewer)
-    template = grok.PageTemplate(filename='../templates/NewsViewer/index.pt')
+    grok.name('index.html')
+
+    @property
+    def archive_url(self):
+        return self.url('archives')
 
     @property
     def search_url(self):
@@ -422,7 +421,6 @@ class NewsViewerSearchView(silvaviews.Page, NewsViewerListView):
     """
     grok.context(INewsViewer)
     grok.name('search')
-    template = grok.PageTemplate(filename='../templates/NewsViewer/search.pt')
 
     def update(self):
         self.request.timezone = self.context.get_timezone()
@@ -443,12 +441,11 @@ def monthes(context):
         month_list.append(
             SimpleTerm(value=m+1, token=str(m+1), title=month))
     return SimpleVocabulary(month_list)
-
 @grok.provider(IContextSourceBinder)
 def years(context):
     year = datetime.now(context.get_timezone()).year
     year_list = []
-    for y in range(year, year + context.get_year_range() + 1):
+    for y in range(year - context.get_year_range(), year + 1):
         year_list.append(SimpleTerm(value=y, token=str(y), title=str(y)))
     return SimpleVocabulary(year_list)
 
@@ -477,9 +474,6 @@ class NewsViewerArchivesView(silvaforms.PublicForm, NewsViewerListView):
     grok.context(INewsViewer)
     grok.name('archives')
 
-    template = ChameleonPageTemplate(
-        filename='../templates/NewsViewer/archives.cpt')
-
     postOnly = False
     ignoreContent = True
     ignoreRequest = False
@@ -491,11 +485,12 @@ class NewsViewerArchivesView(silvaforms.PublicForm, NewsViewerListView):
     @silvaforms.action(_(u'go'), identifier='update')
     def go(self):
         data, errors = self.extractData()
-        if errors:
+        if len(errors) > 0:
             self.results = []
         else:
             self.results = self.context.get_items_by_date(
-                data.getWithDefault('month'), data.getWithDefault('year'))
+                data.getWithDefault('month'),
+                data.getWithDefault('year'))
             self.results = map(self._set_parent, self.results)
         self.items = batch(
             self.results,

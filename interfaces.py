@@ -4,8 +4,11 @@
 
 from five import grok
 from zope.interface import Interface
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from zope import schema
 
 from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 
@@ -31,9 +34,8 @@ class INewsItem(IDocument):
 
 
 @grok.provider(IContextSourceBinder)
-def subject_source(context):
-    # XXX use getUtility when it will be a real service
-    service = context.service_news
+def subjects_source(context):
+    service = getUtility(IServiceNews)
     result = []
     for value, title, depth in service.subject_tree():
         result.append(SimpleTerm(
@@ -43,13 +45,28 @@ def subject_source(context):
 
 @grok.provider(IContextSourceBinder)
 def target_audiences_source(context):
-    # XXX use getUtility when it will be a real service
-    service = context.service_news
+    service = getUtility(IServiceNews)
     result = []
     for value, title, depth in service.target_audience_tree():
         result.append(SimpleTerm(
             value=value, token=value, title="-" * depth + title))
     return SimpleVocabulary(result)
+
+
+class ISubjectTASchema(Interface):
+    _subjects = schema.List(
+        title=_(u"subjects"),
+        description=_(
+            u'Select the news subjects to filter on. '
+            u'Only those selected will appear in this area of the site. '
+            u'Select nothing to have all show up.'),
+        value_type=schema.Choice(source=subjects_source),
+        required=False)
+    _target_audiences = schema.List(
+        title=_(u"target audiences"),
+        description=_(u'Select the target audiences to filter on.'),
+        value_type=schema.Choice(source=target_audiences_source),
+        required=False)
 
 
 class INewsItemVersion(IDocumentVersion):
@@ -58,38 +75,38 @@ class INewsItemVersion(IDocumentVersion):
     This contains the real content for a news item.
     """
 
-    def set_subjects(self, subjects):
+    def set_subjects(subjects):
         """Sets the subjects this news item is in."""
 
-    def set_target_audiences(self, target_audiences):
+    def set_target_audiences(target_audiences):
         """Sets the target audiences for this news item."""
 
-    def source_path(self):
+    def source_path():
         """Returns the physical path of the versioned content."""
 
-    def is_private(self):
+    def is_private():
         """Returns true if the item is private.
 
         Private items are picked up only by news filters in the same
         container as the source.
         """
 
-    def subjects(self):
+    def subjects():
         """Returns the subjects this news item is in."""
 
-    def target_audiences(self):
+    def target_audiences():
         """Returns the target audiences for this news item."""
 
-    def fulltext(self):
+    def fulltext():
         """Returns a string containing all the words of all content.
 
         For fulltext ZCatalog search.
         XXX This should really be on an interface in the Silva core"""
 
-    def to_xml(self):
+    def to_xml():
         """Returns an XML representation of the object"""
 
-    def content_xml(self):
+    def content_xml():
         """Returns the document-element of the XML-content.
 
         XXX what does this mean?
@@ -130,19 +147,19 @@ class INewsPublication(IPublication):
 
 class IFilter(IAsset):
 
-    def subjects(self):
+    def subjects():
         """Returns the list of subjects."""
 
-    def target_audiences(self):
+    def target_audiences():
         """Returns the list of target audiences."""
 
-    def set_subject(self, subject, on_or_off):
+    def set_subject(subject, on_or_off):
         """Updates the list of subjects"""
 
-    def set_target_audience(self, target_audience, on_or_off):
+    def set_target_audience(target_audience, on_or_off):
         """Updates the list of target_audiences"""
 
-    def synchronize_with_service(self):
+    def synchronize_with_service():
         """Checks whether the lists of subjects and target_audiences
         only contain items that the service_news-lists contain (to remove
         items from the object's list that are removed in the service)
@@ -163,54 +180,53 @@ class INewsItemFilter(IFilter):
     A super-class for the News Filters (NewsFilter, AgendaFilter)
     which contains shared code for both filters"""
 
-    def find_sources(self):
+    def find_sources():
         """returns all the sources available for querying"""
 
-    def sources(self):
-        """return the sourcelist of this newsitemfilter"""
+    def get_sources():
+        """return the source list of this newsitemfilter"""
 
-    def verify_sources(self):
-        """Verifies the sourcelist against the available sources,
-           removing those sources that no longer exist"""
+    def set_sources(sources_list):
+        """set the source list of this newsitemfilter"""
 
-    def add_source(self, sourcepath, add_or_remove):
-        """add or remove a source from the sourcelist"""
+    def add_source(source):
+        """add a"""
 
-    def keep_to_path(self):
+    def keep_to_path():
         """Returns true if the item should keep to path"""
 
-    def set_keep_to_path(self, value):
+    def set_keep_to_path(value):
         """Removes the filter from the list of filters where the item
         should appear"""
 
-    def number_to_show(self):
+    def number_to_show():
         """Returns amount of items to show."""
 
-    def set_number_to_show(self, number):
+    def set_number_to_show(number):
         """Updates the list of target_audiences"""
 
-    def excluded_items(self):
+    def excluded_items():
         """Returns a list of object-paths of all excluded items
         """
 
-    def set_excluded_items(self, object_path, add_or_remove):
+    def set_excluded_items(object_path, add_or_remove):
         """Adds or removes an item to or from the excluded_items list
         """
 
-    def verity_excluded_items(self):
+    def verity_excluded_items():
         """maintain the list of excluded items in this filter,
         by removing ones that no longer exist (i.e. have been deleted)"""
 
-    def search_items(self, keywords, meta_types=None):
+    def search_items(keywords, meta_types=None):
         """ Returns the items from the catalog that have keywords
         in fulltext"""
 
-    def filtered_subject_form_tree(self):
+    def filtered_subject_form_tree():
         """return a subject_form_tree (for the SMI edit screen)
         that is filtered through a news category filter, or if
         none are found, all subjects from the news service"""
 
-    def filtered_ta_form_tree(self):
+    def filtered_ta_form_tree():
         """return a ta_form_tree (for the SMI edit screen)
         that is filtered through a news category filter, or if
         none are found, all ta's from the news service"""
@@ -218,7 +234,7 @@ class INewsItemFilter(IFilter):
     #functions to aid in compatibility between news and agenda filters
     # and viewers, so the viewers can pull from both types of filters
 
-    def get_agenda_items_by_date(self, month, year, meta_types=None,
+    def get_agenda_items_by_date(month, year, meta_types=None,
             timezone=None):
         """        Returns non-excluded published AGENDA-items for a particular
         month. This method is for exclusive use by AgendaViewers only,
@@ -227,7 +243,7 @@ class INewsItemFilter(IFilter):
         returns all objects instead of only IAgendaItem-
         implementations)"""
 
-    def get_next_items(self, numdays, meta_types=None):
+    def get_next_items(numdays, meta_types=None):
         """ Note: ONLY called by AgendaViewers
         Returns the next <number> AGENDAitems,
         should return items that conform to the
@@ -236,7 +252,7 @@ class INewsItemFilter(IFilter):
         NewsViewers use only get_last_items.
         """
 
-    def get_last_items(self, number, number_id_days=0, meta_types=None):
+    def get_last_items(number, number_id_days=0, meta_types=None):
         """Returns the last (number) published items
            This is _only_ used by News Viewers.
         """
@@ -245,21 +261,21 @@ class INewsItemFilter(IFilter):
 class INewsFilter(INewsItemFilter):
     """A filter for news items"""
 
-    def show_agenda_items(self):
+    def show_agenda_items():
         """should we also show agenda items?"""
 
-    def set_show_agenda_items(self):
+    def set_show_agenda_items():
         """sets whether to show agenda items"""
 
-    def get_allowed_meta_types(self):
+    def get_allowed_meta_types():
         """returns what metatypes are filtered on
         This is different because AgendaFilters search on start/end
         datetime, whereas NewsFilters look at display datetime"""
 
-    def get_all_items(self, meta_types=None):
+    def get_all_items(meta_types=None):
         """Returns all items, only to be used on the back-end"""
 
-    def get_items_by_date(self, month, year, meta_types=None):
+    def get_items_by_date(month, year, meta_types=None):
         """For looking through the archives
         This is different because AgendaFilters search on start/end
         datetime, whereas NewsFilters look at display datetime"""
@@ -268,17 +284,12 @@ class INewsFilter(INewsItemFilter):
 class IAgendaFilter(INewsItemFilter):
     """A filter for agenda items"""
 
-    def get_allowed_meta_types(self):
-        """returns what metatypes are filtered on
-        This is different because AgendaFilters search on start/end
-        datetime, whereas NewsFilters look at display datetime"""
-
-    def get_items_by_date(self, month, year, meta_types=None):
+    def get_items_by_date(month, year, meta_types=None):
         """gets the events for a specific month
         This is different because AgendaFilters search on start/end
         datetime, whereas NewsFilters look at display datetime"""
 
-    def backend_get_items_by_date(self, month, year, meta_types=None):
+    def backend_get_items_by_date(month, year, meta_types=None):
         """Returns all published items for a particular month
            FOR: the SMI 'items' tab"""
 
@@ -326,17 +337,28 @@ def timezone_source(context):
         terms.append(SimpleTerm(title=zone,
                                 value=zone,
                                 token=zone))
-
     return SimpleVocabulary(terms)
 
 @grok.provider(IContextSourceBinder)
 def filters_source(context):
     terms = []
+    intids = getUtility(IIntIds)
     for filter in context.get_all_filters():
         path = "/".join(filter.getPhysicalPath())
-        terms.append(SimpleTerm(value=path,
+        terms.append(SimpleTerm(value=filter,
                                 title="%s (%s)" % (filter.get_title(), path),
-                                token=path))
+                                token=str(intids.register(filter))))
+    return SimpleVocabulary(terms)
+
+@grok.provider(IContextSourceBinder)
+def news_source(context):
+    terms = []
+    intids = getUtility(IIntIds)
+    for source in context.get_all_sources():
+        path = "/".join(source.getPhysicalPath())
+        terms.append(SimpleTerm(value=source,
+                                title="%s (%s)" % (source.get_title(), path),
+                                token=str(intids.register(source))))
     return SimpleVocabulary(terms)
 
 
@@ -356,12 +378,6 @@ class INewsViewer(IViewer):
         """If set to True, the number to show will be by days back, not number.
         """
 
-    def set_filters(newsfilters):
-        """Adds or removes a filter from the list of filters.
-
-        If on_or_off is True, add filter, if False, remove filter.
-        """
-
     # accessors
     def number_to_show():
         """Amount of news items to show.
@@ -376,16 +392,20 @@ class INewsViewer(IViewer):
         days back to show instead of number of items.
         """
 
-    def filters():
-        """Returns a list of the path to all news filters associated.
+    def get_filters():
+        """Returns a list of associated filters.
+        """
+
+    def set_filters(filter_list):
+        """set a list of the filters.
+        """
+
+    def add_filter(filter):
+        """ add a filter.
         """
 
     def findfilters():
         """Returns a list of all paths to all filters.
-        """
-
-    def findfilters_pairs():
-        """Returns a list of tuples (title, path) for all filters.
         """
 
     def get_items():
@@ -429,44 +449,44 @@ class IServiceNews(ISilvaService):
     (first item) and children (the rest of the items) as value.
     """
 
-    def add_subject(self, subject, parent):
+    def add_subject(subject, parent):
         """Adds a subject to the tree of subjects.
 
         Subject is added under parent. If parent is None, the subject
         is added to the root.
         """
 
-    def add_target_audience(self, target_audience, parent):
+    def add_target_audience(target_audience, parent):
         """Adds a target_audience to the tree of target_audiences.
 
         Target audience is added under parent. If parent is None, the
         target_audience is added to the root.
         """
 
-    def remove_subject(self, subject):
+    def remove_subject(subject):
         """Removes the subject from the tree of subjects.
         """
 
-    def remove_target_audience(self, target_audience):
+    def remove_target_audience(target_audience):
         """Removes the target_audience from the tree of target_audiences.
         """
 
     # ACCESSORS
-    def subjects(self):
+    def subjects():
         """Return the tree of subjects.
         """
 
-    def subject_tuples(self):
+    def subject_tuples():
         """Returns subject tree in tuple representation.
 
         Each tuple is an (indent, subject) pair.
         """
 
-    def target_audiences(self):
+    def target_audiences():
         """Return the tree of target_audiences.
         """
 
-    def target_audience_tuples(self):
+    def target_audience_tuples():
         """Returns target audience tree in tuple representation.
 
         Each tuple is an (indent, subject) pair.

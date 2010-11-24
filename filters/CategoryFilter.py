@@ -12,15 +12,12 @@ from five import grok
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
-from zope import schema
 from zope.i18nmessageid import MessageFactory
 
 # SilvaNews
 from Products.SilvaNews.ServiceNews import CategoryMixin
 from Products.SilvaNews.filters.Filter import Filter
-from Products.SilvaNews.interfaces import ICategoryFilter
-from Products.SilvaNews.interfaces import (
-    subject_source, target_audiences_source)
+from Products.SilvaNews.interfaces import (ICategoryFilter)
 
 
 _ = MessageFactory('silva_news')
@@ -45,19 +42,7 @@ InitializeClass(CategoryFilter)
 
 
 class ICategoryFilterSchema(ITitledContent):
-    subjects = schema.List(
-        title=_(u"subjects"),
-        description=_(
-            u'Select the news subjects to filter on. '
-            u'Only those selected will appear in this area of the site. '
-            u'Select nothing to have all show up.'),
-        value_type=schema.Choice(source=subject_source),
-        required=False)
-    target_audiences = schema.List(
-        title=_(u"target audiences"),
-        description=_(u'Select the target audiences to filter on.'),
-        value_type=schema.Choice(source=target_audiences_source),
-        required=False)
+    pass
 
 
 class CategoryFilterAddForm(silvaforms.SMIAddForm):

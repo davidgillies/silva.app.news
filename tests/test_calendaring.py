@@ -49,11 +49,11 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         factory.manage_addNewsPublication(
             'news_publication', 'News Publication')
 
-        self.root.agenda_filter.add_source('/root/news_publication', 1)
+        self.root.agenda_filter.set_sources([self.root.news_publication])
         self.root.agenda_filter.set_subjects(['sub'])
         self.root.agenda_filter.set_target_audiences(['ta'])
 
-        self.root.agenda_viewer.set_filters(['/root/agenda_filter'])
+        self.root.agenda_viewer.set_filters([self.root.agenda_filter])
 
         self.news_pub_factory = \
             self.root.news_publication.manage_addProduct['SilvaNews']
@@ -123,13 +123,14 @@ class TestCalendar(NewsBaseTestCase):
     def setUp(self):
         super(TestCalendar, self).setUp()
         self.browser = self.layer.get_browser()
+        self.browser.options.handle_errors = False
         self.filter = self.add_agenda_filter(
             self.root, 'afilter', 'Agenda Filter')
         self.filter.set_subjects(['sub'])
         self.filter.set_target_audiences(['ta'])
-        self.filter.add_source('/root/source1', 1)
+        self.filter.set_sources([self.source1])
         self.agenda = self.add_agenda_viewer(self.root, 'agenda', 'Agenda')
-        self.agenda.set_filters(['/root/afilter'])
+        self.agenda.set_filters([self.root.afilter])
         self.agenda.set_timezone_name('Europe/Amsterdam')
         sdt = datetime(2010, 9, 4, 10, 20, tzinfo=self.agenda.get_timezone())
         self.event1 = self.add_published_agenda_item(
@@ -165,6 +166,11 @@ class TestCalendar(NewsBaseTestCase):
         nodes = self.browser.html.xpath(xpath)
         self.assertTrue(1, len(nodes))
 
+    def test_external_source_view(self):
+        status = self.browser.open(
+            'http://localhost/root/agenda/external_source')
+        self.assertEquals(200, status)
+
     def test_subscribe_view(self):
         status = self.browser.open(
             'http://localhost/root/agenda/subscribe.html')
@@ -182,22 +188,22 @@ VERSION:2.0
 X-WR-CALNAME:Agenda
 X-WR-TIMEZONE:Europe/Amsterdam
 BEGIN:VEVENT
-DTEND:20100904T092000Z
-DTSTART:20100904T082000Z
-SUMMARY:Event1
-UID:%d@silvanews
-URL:http://localhost/root/agenda/++newsitems++%d-%s
-END:VEVENT
-BEGIN:VEVENT
 DTEND;VALUE=DATE:20100912
 DTSTART;VALUE=DATE:20100910
 SUMMARY:Event2
 UID:%d@silvanews
 URL:http://localhost/root/agenda/++newsitems++%d-%s
 END:VEVENT
+BEGIN:VEVENT
+DTEND:20100904T092000Z
+DTSTART:20100904T082000Z
+SUMMARY:Event1
+UID:%d@silvanews
+URL:http://localhost/root/agenda/++newsitems++%d-%s
+END:VEVENT
 END:VCALENDAR
 """.replace("\n", "\r\n") % (
-            uids[0], uids[0], self.event1.id, uids[1], uids[1], self.event2.id)
+            uids[1], uids[1], self.event2.id, uids[0], uids[0], self.event1.id)
         self.assert_no_udiff(data, self.browser.contents, term="\r\n")
 
     def assert_no_udiff(self, s1, s2, term="\n"):

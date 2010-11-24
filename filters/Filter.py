@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
+from zope.component import getUtility
+
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -9,6 +11,7 @@ from App.class_init import InitializeClass
 # Silva
 from five import grok
 from silva.core.services.interfaces import ICataloging
+from Products.SilvaNews.interfaces import IServiceNews
 from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -27,7 +30,8 @@ class Filter(Asset):
 
     grok.implements(IFilter)
     grok.baseclass()
-    _allowed_source_types = ['Silva News Publication']
+    _allowed_source_types = ['Silva News Publication',
+                             'Silva News ICS Publication']
 
     def __init__(self, id):
         super(Filter, self).__init__(id)
@@ -72,8 +76,9 @@ class Filter(Asset):
         """
         # XXX This isn't called yet from anywhere since the methods it was
         # called from are replaced by metadata functionality
-        service_subjects = [s[0] for s in self.service_news.subjects()]
-        service_target_audiences = [t[0] for t in self.service_news.target_audiences()]
+        service_news = getUtility(IServiceNews)
+        service_subjects = [s[0] for s in service_news.subjects()]
+        service_target_audiences = [t[0] for t in service_news.target_audiences()]
 
         removed_subjects = []
         removed_target_audiences = []

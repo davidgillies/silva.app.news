@@ -28,6 +28,7 @@ class SilvaNewsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.root = self.layer.get_application()
+        self.layer.login('manager')
         self.service_news = self.root.service_news
         self.catalog = self.root.service_catalog
 
@@ -136,4 +137,4 @@ class NewsBaseTestCase(SilvaNewsTestCase):
 
         self.newsviewer = self.add_news_viewer(
             self.root, 'newsviewer', 'NewsViewer')
-        self.newsviewer.set_filters(['/root/newsfilter'])
+        self.newsviewer.set_filters([self.newsfilter])

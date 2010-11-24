@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Revision$
 
+from zope.component import getUtility
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from DateTime import DateTime
@@ -15,10 +16,13 @@ from silva.core.services.interfaces import ICataloging
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # Silva/News interfaces
+from Products.SilvaNews.interfaces import IServiceNews
 from Products.SilvaNews.interfaces import INewsItem,INewsFilter,INewsItemFilter
 from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews.datetimeutils import (utc_datetime, local_timezone,
     datetime_to_unixtimestamp)
+
+from silva.core.references.reference import ReferenceSet
 
 import logging
 logger = logging.getLogger('silvanews.itemfilter')
@@ -47,23 +51,24 @@ class NewsItemFilter(Filter):
     grok.baseclass()
     security = ClassSecurityInfo()
 
+    _source_reference_name = 'filter-source'
+
     def __init__(self, id):
         super(NewsItemFilter, self).__init__(id)
         self._keep_to_path = 0
         self._excluded_items = []
-        self._sources = []
 
     # ACCESSORS
-
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'find_sources')
-    def find_sources(self):
+                              'get_all_sources')
+    def get_all_sources(self):
         """Returns all the sources available for querying
         """
         q = {'meta_type':self._allowed_source_types,
              'snn-np-settingsis_private':'no'}
         results = self._query(**q)
         paths = []
+
         cpp = "/".join(self.aq_inner.aq_parent.getPhysicalPath())
         while cpp:
             paths.append(cpp)
@@ -73,22 +78,23 @@ class NewsItemFilter(Filter):
         q['idx_parent_path'] = paths
         results += self._query(**q)
 
-        # remove doubles
-        res = []
-        urls = []
-        for r in results:
-            if not r.getURL() in urls:
-                res.append(r)
-                urls.append(r.getURL())
-        return res
+        return map(lambda x: x.getObject(), results)
+
+    def _get_sources_reference_set(self):
+        if hasattr(self, '_v_source_reference_set'):
+            refset = getattr(self, '_v_source_reference_set', None)
+            if refset is not None:
+                return refset
+        self._v_source_reference_set = ReferenceSet(self, 'sources')
+        return self._v_source_reference_set
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'sources')
-    def sources(self):
-        """Returns the list of sources
-        """
-        self.verify_sources()
-        return self._sources
+                              'get_sources')
+    def get_sources(self):
+        return list(self._get_sources_reference_set())
+
+    def _get_sources_path(self):
+        return map(lambda s: s.getPhysicalPath(), self.get_sources())
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'keep_to_path')
@@ -100,34 +106,18 @@ class NewsItemFilter(Filter):
     # MANIPULATORS
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'add_source')
-    def add_source(self, sourcepath, add_or_remove):
-        """Add a source
-        """
-        if add_or_remove:
-            if not sourcepath in self._sources:
-                self._p_changed = 1
-                self._sources.append(sourcepath)
-        else:
-            if sourcepath in self._sources:
-                self._p_changed = 1
-                self._sources.remove(sourcepath)
-        ICataloging(self).reindex()
+                              'set_sources')
+    def set_sources(self, sources):
+        refset = self._get_sources_reference_set()
+        refset.set(sources)
+        return sources
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'verify_sources')
-    def verify_sources(self):
-        """Verifies the sourcelist against the available sources
-        """
-        allowedsources = [s.getPath() for s in self.find_sources()]
-        do_reindex = 0
-        for source in self._sources:
-            if not source in allowedsources:
-                self._sources.remove(source)
-                do_reindex = 1
-        if do_reindex:
-            self._p_changed=1
-            ICataloging(self).reindex()
+                              'add_source')
+    def add_source(self, source):
+        refset = self._get_sources_reference_set()
+        refset.add(source)
+        return source
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_excluded_item')
@@ -179,7 +169,6 @@ class NewsItemFilter(Filter):
         """Returns the items from the catalog that have keywords in fulltext.
         """
         keywords = unicode(keywords, 'UTF-8')
-        self.verify_sources()
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         self.verify_excluded_items()
@@ -190,7 +179,7 @@ class NewsItemFilter(Filter):
         result = self._query_items(
             fulltext = keywords.split(' '),
             version_status = 'public',
-            path = self._sources,
+            path = map(lambda p: "/".join(p), self._get_sources_path()),
             subjects = self._subjects,
             target_audiences = self._target_audiences,
             meta_type = meta_types,
@@ -206,10 +195,9 @@ class NewsItemFilter(Filter):
 
         Return: dict holding the query parameters
         """
-        self.verify_sources()
         self.verify_excluded_items()
         query = {}
-        query['path'] = self._sources
+        query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         query['version_status'] = 'public'
         query['idx_subjects'] = {'query': self._subjects,
                                  'operator': 'or'}
@@ -256,7 +244,8 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].subjects()
-        return self.service_news.subject_form_tree(audject)
+        service_news = getUtility(IServiceNews)
+        return service_news.subject_form_tree(audject)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'filtered_ta_form_tree')
@@ -267,7 +256,8 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].target_audiences()
-        return self.service_news.target_audience_form_tree(audject)
+        service_news = getUtility(IServiceNews)
+        return service_news.target_audience_form_tree(audject)
 
 
     # refactorized functions
@@ -284,8 +274,8 @@ class NewsItemFilter(Filter):
         any way because it requres start_datetime to be set.
         NewsViewers use only get_last_items.
         """
-        self.verify_sources()
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
 
         results = []
@@ -306,8 +296,8 @@ class NewsItemFilter(Filter):
         """Returns the last (number) published items
            This is _only_ used by News Viewers.
         """
-        self.verify_sources()
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
 
         query = self._prepare_query(meta_types)
@@ -334,7 +324,8 @@ class NewsItemFilter(Filter):
         """ This does not play well with recurrence, this should not be used
         with agenda items
         """
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
         month = int(month)
         year = int(year)
@@ -371,8 +362,7 @@ class NewsItemFilter(Filter):
         -- This was in both News and Agenda Filters, with slightly
         different code, so refactored into Filter
         """
-        self.verify_sources()
-        if not self._sources:
+        if not self.get_sources():
             return []
         #if this is a new filter that doesn't show agenda items
         if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
@@ -391,8 +381,8 @@ class NewsItemFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date_range')
     def get_items_by_date_range(self, start, end, meta_types=None):
-        self.verify_sources()
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
 
         results = []
@@ -406,9 +396,9 @@ class NewsItemFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_item')
     def get_item(self, path):
-        self.verify_sources()
-        if not self._sources:
-            return None
+        sources = self.get_sources()
+        if not sources:
+            return []
         query = self._prepare_query()
         query['object_path'] = path
         results = self._query_items(**query)

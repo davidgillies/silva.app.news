@@ -40,7 +40,9 @@ class AgendaEvent(Event):
             self['DTSTART'] = vDate(start_date)
             self['DTEND'] = vDate(end_date + relativedelta(days=+1))
 
-#        self['RRULE']
+        rrule_string = context.get_recurrence()
+        if rrule_string is not None:
+            self['RRULE'] = rrule_string
 
         self['UID'] = "%d@silvanews" % intid.register(context.get_content())
         if context.get_location():

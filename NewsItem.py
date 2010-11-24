@@ -22,7 +22,7 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
 from Products.SilvaDocument.Document import Document, DocumentVersion
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
-from Products.SilvaNews.interfaces import INewsPublication
+from Products.SilvaNews.interfaces import INewsPublication, IServiceNews
 from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
 
 _ = MessageFactory('silva_news')
@@ -98,19 +98,19 @@ class NewsItemVersion(DocumentVersion):
                                 'idx_display_datetime')
     idx_display_datetime = display_datetime
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                                'get_display_datetime')
+    get_display_datetime = display_datetime
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
-
     def set_subjects(self, subjects):
-        self._subjects = subjects
-        ICataloging(self).reindex()
+        self._subjects = list(subjects)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_target_audiences')
     def set_target_audiences(self, target_audiences):
-        self._target_audiences = target_audiences
-        ICataloging(self).reindex()
+        self._target_audiences = list(target_audiences)
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -264,14 +264,14 @@ class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda )
     """
     grok.context(INewsItem)
-    template = grok.PageTemplate(filename='templates/NewsItem/index.pt')
 
     def update(self):
+        news_service = getUtility(IServiceNews)
         self.article_date = self.content.display_datetime()
         if not self.article_date:
             self.article_date = self.content.publication_time()
         if self.article_date:
-            self.article_date = self.context.service_news.format_date(
+            self.article_date = news_service.format_date(
                 self.article_date)
         self.article = ContentHTML.transform(self.content, self.request)
 
@@ -281,8 +281,6 @@ class NewsItemListItemView(grok.View):
     """
     grok.context(INewsItem)
     grok.name('search_result')
-    template = grok.PageTemplate(
-        filename='templates/NewsItem/search_result.pt')
 
     def default_namespace(self):
         ns = super(NewsItemListItemView, self).default_namespace()

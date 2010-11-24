@@ -15,7 +15,7 @@ class AgendaFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.af = self.add_agenda_filter(self.root, 'af','af')
         self.af.set_subjects(['sub'])
         self.af.set_target_audiences(['ta'])
-        self.af.add_source('/root/source1',1)
+        self.af.set_sources([self.source1])
 
         now = datetime.now()
         #add an item that ends in the range

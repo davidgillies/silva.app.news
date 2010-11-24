@@ -2,12 +2,15 @@
 # See also LICENSE.txt
 # $Revision$
 
+from zope import schema
+from zope.i18nmessageid import MessageFactory
+
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 # SilvaNews
-from Products.SilvaNews.interfaces import INewsFilter
+from Products.SilvaNews.interfaces import INewsFilter, ISubjectTASchema
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
 
 
@@ -15,6 +18,10 @@ from Products.Silva import SilvaPermissions
 from five import grok
 from silva.core import conf as silvaconf
 from zeam.form import silva as silvaforms
+
+from Products.SilvaNews.interfaces import news_source
+
+_ = MessageFactory('silva_news')
 
 
 class NewsFilter(NewsItemFilter):
@@ -48,7 +55,7 @@ class NewsFilter(NewsItemFilter):
         AccessContentsInformation-security because it does not reveal
         any 'secret' information...
         """
-        if not self._sources:
+        if not self.get_sources():
             return []
         query = self._prepare_query(meta_types)
         results = self._query(**query)
@@ -81,3 +88,22 @@ InitializeClass(NewsFilter)
 class NewsFilterAddForm(silvaforms.SMIAddForm):
     grok.context(INewsFilter)
     grok.name(u'Silva News Filter')
+
+
+class INewsFilterSchema(ISubjectTASchema):
+    _keep_to_path = schema.Bool(
+        title=_(u"stick to path"))
+
+    _show_agenda_items = schema.Bool(
+        title=_(u"show agenda items"))
+
+    sources = schema.Set(
+        value_type=schema.Choice(source=news_source),
+        title=_(u"sources"),
+        description=_(u"Use predefined sources."))
+
+
+class NewsFilterEditForm(silvaforms.SMIEditForm):
+    """ Base form for filters """
+    grok.context(INewsFilter)
+    fields = silvaforms.Fields(INewsFilterSchema)

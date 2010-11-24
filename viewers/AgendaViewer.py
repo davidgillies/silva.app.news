@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-from datetime import datetime
+from datetime import datetime, date
 from icalendar.interfaces import ICalendar
 import calendar
 import localdatetime
@@ -11,6 +11,8 @@ from five import grok
 from zope.component import getMultiAdapter, getUtility
 from zope.traversing.browser import absoluteURL
 from zope.intid.interfaces import IIntIds
+from zope.interface import alsoProvides
+
 
 # Zope
 import Products
@@ -21,17 +23,19 @@ from App.class_init import InitializeClass
 from Products.Silva import SilvaPermissions
 from silva.core import conf as silvaconf
 from silva.core.views import views as silvaviews
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from silva.core.layout.jquery.interfaces import IJQueryResources
 from zeam.form import silva as silvaforms
 
 # SilvaNews
-from Products.SilvaNews.datetimeutils import (
-    start_of_day, end_of_day, DayWalk)
+from Products.SilvaNews import datetimeutils
 from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
+from Products.SilvaExternalSources.ExternalSource import ExternalSource
 
 
-class AgendaViewer(NewsViewer):
+class AgendaViewer(NewsViewer, ExternalSource):
     """
     Used to show agendaitems on a Silva site. When setting up an
     agendaviewer you can choose which agendafilters it should use to
@@ -117,8 +121,21 @@ class AgendaViewer(NewsViewer):
         """
         self._days_to_show = number
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'to_html')
+    def to_html(self, content, request, **parameters):
+        """ External Source rendering """
+        view = getMultiAdapter((self, request), name='external_source')
+        view.document = content.get_content()
+        view.parameters = parameters
+        return view()
+
 
 InitializeClass(AgendaViewer)
+
+
+class ICalendarResources(IDefaultBrowserLayer):
+    silvaconf.resource('calendar.css')
 
 
 class AgendaViewerAddForm(silvaforms.SMIAddForm):
@@ -126,10 +143,135 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva Agenda Viewer")
 
 
-class AgendaViewerMonthCalendar(silvaviews.View):
+def wrap_event_brains(viewer, iterable):
+    for brain in iterable:
+        item = brain.getObject()
+        item.get_content().__parent__ = viewer
+        yield item
+
+
+class CalendarView(object):
+    """Mixin for AgendaViewer view to help building HTML calendars
+
+    The mixin provides a `build_calendar` method that fetches events
+    from `start` to `end` and index them to help the rendering of a particular
+    day in the calendar.
+
+    Each time the calendar try to render a day, it calls `_render_day_callback`
+    that allows to customize the rendering of a particular day. Events for that
+    day are available in the index.
+    """
+
+    _events_index = {}
+
+    @staticmethod
+    def serialize_date(date):
+        return date.strftime('%Y-%m-%d')
+
+    def build_calendar(self, current_day, start, end,
+                       today=None, store_events_in_index=False):
+        """ Build a HTMLCalendar where :
+
+        - `current_day` (date) is the selected day
+        - `today` (date) defaults to today
+        - `start` (datetime) and `end` (datetime)
+           is the range for loading the events
+        - `store_events_in_index` determine if event are stored in index
+        or just the fact that a event is present.
+        """
+        self._store_events_in_index = store_events_in_index
+        today = today or datetime.now(self.context.get_timezone()).date()
+
+        events = wrap_event_brains(
+            self.context,
+            self.context.get_items_by_date_range(start, end))
+        acalendar = HTMLCalendar(
+            self.context.get_first_weekday(),
+            today=today,
+            current_day=current_day or today,
+            day_render_callback=self._render_day_callback)
+        for event in events:
+            self._register_event(acalendar, event, start, end)
+        return acalendar
+
+    def _register_event(self, acalendar, event, start, end):
+        """ index all the days for which the event has an occurrence between
+        start and end.
+        """
+        cd = event.get_calendar_datetime()
+        for datetime_range in cd.get_datetime_ranges(start, end):
+            for occurence in datetimeutils.DayWalk(datetime_range[0],
+                                                   datetime_range[1],
+                                                   self.context.get_timezone()):
+                self._index_event(occurence, event)
+
+    def _index_event(self, adate, event):
+        """ (internal) actual indexing of an event.
+        """
+        serial = self.serialize_date(adate)
+        if self._store_events_in_index:
+            day_events = self._events_index.get(serial, [])
+            day_events.append(event)
+            self._events_index[serial] = day_events
+        else:
+            self._events_index[serial] = True
+
+    def _render_day_callback(self, day, weekday, week, year, month):
+        """Callback for the html calendar to render every day"""
+        try:
+            event_date = date(year, month, day)
+            events = self._events_index.get(self.serialize_date(event_date))
+            if events:
+                return self._render_events(event_date, events)
+        except ValueError:
+            pass
+        return u'', unicode(day)
+
+    def _render_events(self, date, events):
+        """render a day for which there is events in the index"""
+        cal_url = absoluteURL(self.context, self.request)
+        return ('event',
+                '<a href="%s?day=%d&amp;month=%d&amp;year=%d">%d</a>' % \
+            (cal_url, date.day, date.month, date.year, date.day))
+
+
+class AgendaViewerExternalSourceView(silvaviews.View, CalendarView):
+    """
+    Month calendar to be rendered as external source inside a
+    Silva Document
+    """
     grok.context(IAgendaViewer)
-    template = grok.PageTemplateFile(
-        filename='../templates/AgendaViewer/month_calendar.pt')
+    grok.name('external_source')
+
+    document = None
+    parameters = {}
+
+    def update(self):
+        timezone = self.context.get_timezone()
+        today = datetime.now(timezone).date()
+
+        self.year = today.year
+        self.month = today.month
+
+        firstweekday, lastday = calendar.monthrange(
+            self.year, self.month)
+
+        self.start = datetime(self.year, self.month, 1, tzinfo=timezone)
+        self.end = datetime(self.year, self.month, lastday, 23, 59, 59,
+                       tzinfo=timezone)
+
+        self.calendar = self.build_calendar(
+            today, self.start, self.end, today=today)
+
+    def render(self):
+        return self.calendar.formatmonth(self.year, self.month)
+
+
+class AgendaViewerMonthCalendar(silvaviews.Page, CalendarView):
+    """ Page with month calendar and listing of event registered of the
+    selected day"""
+    grok.context(IAgendaViewer)
+    grok.name('index.html')
 
     @property
     def context_absolute_url(self):
@@ -162,8 +304,7 @@ class AgendaViewerMonthCalendar(silvaviews.View):
             yield item
 
     def update(self):
-
-        self.request.timezone = self.context.get_timezone()
+        alsoProvides(self.request, ICalendarResources)
         now = datetime.now(self.context.get_timezone())
         self.month = int(self.request.get('month', now.month))
         self.year = int(self.request.get('year', now.year))
@@ -173,34 +314,12 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         self.day_datetime = datetime(self.year, self.month, self.day,
                                      tzinfo=self.context.get_timezone())
 
-        self.start = datetime(self.year, self.month, 1,
-                              tzinfo=self.context.get_timezone())
-        self.end = datetime(self.year, self.month, lastday, 23, 59, 59,
-                            tzinfo=self.context.get_timezone())
+        self.start = datetimeutils.start_of_month(self.day_datetime)
+        self.end = datetimeutils.end_of_month(self.day_datetime)
 
-        self._month_events = self._wrap_event_brains(
-            self.context.get_items_by_date(self.month, self.year))
         self._day_events = self._selected_day_events()
-        self._events_index = {}
-
-        self.calendar = HTMLCalendar(self.context.get_first_weekday(),
-            today=now, current_day=self.day_datetime)
-
-        for item in self._month_events:
-            cd = item.get_calendar_datetime()
-            sdt = cd.get_start_datetime(self.context.get_timezone())
-            edt = cd.get_end_datetime(self.context.get_timezone())
-            for day_datetime in DayWalk(sdt,
-                    end_of_day(edt), tz=self.context.get_timezone()):
-                key = "%d%02d%02d" % (
-                    day_datetime.year, day_datetime.month, day_datetime.day,)
-                events = self._events_index.get(key, list())
-                events.append(item)
-                self._events_index[key] = events
-                if len(events) == 1:
-                    def callback(year, month, day):
-                        return self._render_events(year, month, day)
-                    self.calendar.register_day_hook(day_datetime, callback)
+        self.calendar = self.build_calendar(
+            self.day_datetime.date(), self.start, self.end, now.date())
 
         self._set_calendar_nav()
 
@@ -242,16 +361,11 @@ class AgendaViewerMonthCalendar(silvaviews.View):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        return self._wrap_event_brains(self.context.get_items_by_date_range(
-            start_of_day(self.day_datetime), end_of_day(self.day_datetime)))
-
-    def _render_events(self, year, month, day):
-        # key = "%d%02d%02d" % (year, month, day,)
-        # events = self._events_index[key]
-        html = ""
-        return '<a href="?day=%d&amp;month=%d&amp;year=%d">%s</a>' \
-               '<div class="events">%s</div>' % \
-               (int(day), int(month), int(year), str(day), html,)
+        return wrap_event_brains(
+            self.context,
+            self.context.get_items_by_date_range(
+                datetimeutils.start_of_day(self.day_datetime),
+                datetimeutils.end_of_day(self.day_datetime)))
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \
@@ -262,8 +376,49 @@ class AgendaViewerMonthCalendar(silvaviews.View):
                 self.next_month_url()
 
 
-class AgendarViewerCalendar(grok.View):
+class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
+    """ Year Calendar representation
+    """
+    grok.context(IAgendaViewer)
+    grok.name('year.html')
 
+    def update(self):
+        alsoProvides(self.request, ICalendarResources)
+        timezone = self.context.get_timezone()
+        now = datetime.now()
+        self.year = int(self.request.get('year', now.year))
+        self.start = datetime(self.year, 1, 1, tzinfo=timezone)
+        self.end = datetimeutils.end_of_year(self.start)
+        self.calendar = self.build_calendar(
+            self.start.date(), self.start, self.end, now.date())
+
+    def render(self):
+        return self.calendar.formatyear(self.year)
+
+
+class IViewResources(IJQueryResources):
+    silvaconf.resource('fullcalendar/fullcalendar.js')
+    silvaconf.resource('calendar.js')
+    silvaconf.resource('qtip.js')
+    silvaconf.resource('fullcalendar/fullcalendar.css')
+    silvaconf.resource('qtip.css')
+
+
+class AgendaViewerJSCalendar(silvaviews.Page):
+    """ Agenda view advanced javascript calendar """
+    grok.context(IAgendaViewer)
+    grok.name('fullcalendar')
+
+    def update(self):
+        alsoProvides(self.request, IViewResources)
+
+    @property
+    def events_json_url(self):
+        return absoluteURL(self.context, self.request) + '/++rest++events'
+
+
+class AgendaViewerICSCalendar(grok.View):
+    """ Agenda viewer ics format """
     grok.context(IAgendaViewer)
     grok.name('calendar.ics')
 
@@ -278,11 +433,9 @@ class AgendarViewerCalendar(grok.View):
 
 
 class AgendaViewerSubscribeView(silvaviews.Page):
-
+    """ View that display the Subcribe url to the calendar """
     grok.context(IAgendaViewer)
     grok.name('subscribe.html')
-    template = grok.PageTemplate(
-        filename="../templates/AgendaViewer/subscribe.pt")
 
     def update(self):
         self.request.timezone = self.context.get_timezone()

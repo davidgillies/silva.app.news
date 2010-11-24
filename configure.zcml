@@ -1,25 +1,42 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:grok="http://namespaces.zope.org/grok"
-    xmlns:five="http://namespaces.zope.org/five"
-    i18n_domain="silva_news"
-    >
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   xmlns:grok="http://namespaces.zope.org/grok"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="silva_news"
+   >
 
   <include package="five.grok" />
+  <include package="Products.Silva" />
   <include package="zeam.form.silva" />
   <include package="silva.core.smi" />
-  <include package="Products.Silva" />
+  <include package="infrae.rest" />
+  <include package="silva.core.views" />
+  <include package="silva.resourceinclude" />
+
   <include package="silva.core.views" />
   <include package="silva.resourceinclude" />
 
   <include package=".browser" />
+
+  <five:registerPackage package="." />
 
   <!-- Grok Silva News -->
   <grok:grok package="." />
 
   <!-- i18n -->
   <i18n:registerTranslations directory="i18n" />
+
+  <browser:resourceInclude
+     layer="silva.core.smi.interfaces.ISMILayer"
+     include="ui-recurrence.js"
+     base="Products.SilvaNews.widgets" />
+
+  <browser:resourceInclude
+     layer="silva.core.smi.interfaces.ISMILayer"
+     include="ui-recurrence.css"
+     base="Products.SilvaNews.widgets" />
 
   <view for="Products.SilvaNews.interfaces.INewsItem"
         factory="Products.SilvaNews.traverser.NewsItemAbsoluteURL"

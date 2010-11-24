@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from dateutil.tz import tzutc, tzlocal, gettz
 import sys
 import os.path
+import calendar
 from DateTime import DateTime
 
 system_timezone = tzlocal()
@@ -33,6 +34,27 @@ def load_timezone_names():
     return tz_names
 
 zone_names = load_timezone_names()
+
+
+class RRuleData(dict):
+
+    def __init__(self, recurrence):
+        if recurrence.endswith(';'):
+            recurrence = recurrence[:-1]
+
+        parts = recurrence.split(';')
+        for part in parts:
+            key, value = part.split('=', 2)
+            self[key.upper()] = value
+
+    def __str__(self):
+        return ";".join(["%s=%s" % x for x in self.items()])
+
+    def __unicode__(self):
+        return unicode(str(self))
+
+    def __repr__(self):
+        return "<RRuleData %s>" % str(self)
 
 
 def get_timezone(name):
@@ -77,10 +99,23 @@ def datetime_to_unixtimestamp(dt):
         strftime("%s"))
 
 def end_of_day(dt):
-    return dt.replace(hour=23, minute=59, second=59, microsecond=99999)
+    return dt.replace(hour=23, minute=59, second=59)
 
 def start_of_day(dt):
     return dt.replace(hour=0, minute=0, second=0, microsecond=0)
+
+def start_of_month(dt):
+    return dt.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+def end_of_month(dt):
+    ignore, ndays = calendar.monthrange(dt.year, dt.month)
+    return dt.replace(day=ndays, hour=23, minute=59, second=59)
+
+def start_of_year(dt):
+    return dt.replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
+
+def end_of_year(dt):
+    return dt.replace(month=12, hour=23, minute=59, second=59)
 
 
 class CalendarDatetime(object):
@@ -90,10 +125,12 @@ class CalendarDatetime(object):
     default_duration = relativedelta(hours=+1)
 
     def __init__(self, start_datetime,
-            end_datetime=None, recurrence=None):
-
-        self.recurrence = recurrence
-
+            end_datetime=None, recurrence=None, all_day=False):
+        self._recurrence = None
+        self._all_day = all_day
+        if all_day:
+            start_datetime = start_of_day(start_datetime)
+            end_datetime = end_of_day(end_datetime)
         utc_start_datetime = utc_datetime(start_datetime)
         utc_end_datetime = end_datetime and utc_datetime(end_datetime)
         if not utc_end_datetime:
@@ -141,16 +178,16 @@ class CalendarDatetime(object):
         reprensenting one or several rrule in iCalendar format
         """
         if isinstance(rrule_data, rruleset):
-            self.recurrence = rrule_data
+            self._recurrence = rrule_data
         elif isinstance(rrule_data, rrule):
-            self.recurrence = rruleset()
-            self.recurrence.rrule(rrule)
+            self._recurrence = rruleset()
+            self._recurrence.rrule(rrule_data)
         elif isinstance(rrule_data, str) or isinstance(rrule_data, unicode):
             self.set_recurrence_from_string(rrule_data)
         else:
             raise TypeError, "don't know how to handle provided "\
                              "recurrence infos"
-        return self.recurrence
+        return self._recurrence
 
     def set_recurrence_from_string(self, rrule_data):
         """ rrule_data is a string representing one or several rule in
@@ -159,18 +196,18 @@ class CalendarDatetime(object):
         rrule_temp = rrulestr(rrule_data, forceset=True,
             dtstart=self.start_datetime)
         if isinstance(rrule_temp, rruleset):
-            self.recurrence = rrule_temp
+            self._recurrence = rrule_temp
         else: # rrule
-            self.recurrence = rruleset()
-            self.recurrence.rrule(rrule_temp)
-        return self.recurrence
+            self._recurrence = rruleset()
+            self._recurrence.rrule(rrule_temp)
+        return self._recurrence
+
+    def  get_recurrence(self):
+        return self._recurrence
 
     def __repr__(self):
         return "<CalendarDatetime sdt=%s, edt=%s>" % \
             (repr(self.start_datetime), repr(self.end_datetime))
-
-    def is_all_day(self):
-        self.all_day
 
     def get_unixtimestamp_range(self):
         """ return the interval boundaries as unix timestamps tuple
@@ -178,38 +215,44 @@ class CalendarDatetime(object):
         return (datetime_to_unixtimestamp(self.start_datetime),
             datetime_to_unixtimestamp(self.end_datetime))
 
-    def get_unixtimestamp_ranges(self):
+    def get_unixtimestamp_ranges(self, after=None, before=None):
         """ return a collection of ranges of all occurrences of
         the event date as unix timestamps tuples
         """
-        if self.recurrence is None:
+        if self._recurrence is None:
             return [self.get_unixtimestamp_range()]
         duration = self.get_duration()
         def get_interval(datetime):
             return (datetime_to_unixtimestamp(datetime),
                 datetime_to_unixtimestamp(datetime + duration),)
-        return map(get_interval, list(self.recurrence))
+        event_list = None
+        if after and before:
+            event_list = self._recurrence.between(after, before, inc=True)
+        else:
+            event_list = list(self._recurrence)
+        return map(get_interval, event_list)
 
     def get_datetime_range(self):
         return (self.start_datetime, self.end_datetime)
 
-    def get_datetime_ranges(self):
+    def get_datetime_ranges(self, after=None, before=None):
         """ return a collection of ranges of all occurrences of
         the event date as unix datetime tuples
         """
-        if self.recurrence is None:
+        if self._recurrence is None:
             return [self.get_datetime_range()]
         duration = self.get_duration()
         def get_interval(datetime):
             return (datetime, (datetime + duration),)
-        return map(get_interval, list(self.recurrence))
-
-
-CalendarDateRepresentation = CalendarDatetime
+        if after and before:
+            event_list = self._recurrence.between(after, before, inc=True)
+        else:
+            event_list = list(self._recurrence)
+        return map(get_interval, event_list)
 
 
 class DayWalk(object):
-    """ Iterator that yields each days in an interval of datetimes
+    """ Iterator that yields each days within an interval of datetimes
     """
     def __init__(self, start_datetime, end_datetime, tz=local_timezone):
         if end_datetime < start_datetime:

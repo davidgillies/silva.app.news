@@ -1,6 +1,18 @@
-2010-02-10 :
-    - fix ordering of items with catalog queries
+[ADD] add upgraders
+  - references in filters and viewers
+  - agenda items / recurrence ...
+  - INewsService register as local utility if needed
+[ADD] tests for forms
+[ADD] tests for calendar views
+[ADD] Upgraders
+      - add ICS News publication to allowed source for filters
+[REFACTOR] remove all zope style DateTime
+[FIX] fix the interfaces so they reflect the changes in the API
+[FIX] xml import/export which is likely broken because of references
+[FIX] translations
+[FIX] move RSSAggregator to viewers, since it is a viewer
 
-- Add nav link on calendar
-- Display no events for <data> when no event
-- timezone and first day of the week settings
+
+[REFACTOR] excluded items storage and filtering : use intids
+[REFACTOR] remove remaining old forms (e.g excluded items,...)
+[REFACTOR] get items story

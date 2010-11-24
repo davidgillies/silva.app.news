@@ -1,4 +1,29 @@
-from calendar import day_abbr, month_name, Calendar, January
+from calendar import Calendar, January
+from datetime import date
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory('silva_news')
+
+month_name = [_('January'),
+              _('February'),
+              _('March'),
+              _('April'),
+              _('May'),
+              _('June'),
+              _('July'),
+              _('August'),
+              _('September'),
+              _('October'),
+              _('November'),
+              _('December')]
+
+day_abbr = [_('Mon'),
+            _('Tue'),
+            _('Wed'),
+            _('Thu'),
+            _('Fri'),
+            _('Sat'),
+            _('Sun')]
+
 
 class HTMLCalendar(Calendar):
     """
@@ -6,48 +31,26 @@ class HTMLCalendar(Calendar):
     """
 
     # CSS classes for the day <td>s
-    cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-    serial_format = '%d%02d%02d'
+    cssclasses = ["mon", "tue", "wed", "thu", "fri", "sat we", "sun we"]
 
     def __init__(self, first_weekday=0, prev_link=None, next_link=None,
-            current_day=None, today=None):
+            current_day=None, today=None, day_render_callback=None):
         super(HTMLCalendar, self).__init__(first_weekday)
         self.prev_link = prev_link
         self.next_link = next_link
         self.current_day = current_day
         self.today = today
-        self.__hooks = {}
-        self.__set_serial()
-
-    def __set_serial(self):
-        self.current_day_serial = self.current_day and \
-            self.__get_serial(self.current_day.year,
-                self.current_day.month, self.current_day.day) or None
-        self.today_serial = self.today and self.__get_serial(self.today.year,
-            self.today.month, self.today.day) or None
-
-    def register_day_hook(self, formatable_date, hook):
-        key = formatable_date.strftime('%Y%m%d')
-        hooks = self.__hooks.get(key, list())
-        hooks.append(hook)
-        self.__hooks[key] = hooks
-
-    def __get_hooks(self, year, month, day):
-        hooks = self.__hooks.get(self.__get_serial(year, month, day), list())
-        global_hook = self.__hooks.get('*', None)
-        if global_hook:
-            hooks.append(global_hook)
-        return hooks
-
-    def __get_serial(self, year, month, day):
-        return self.serial_format % (year, month, day,)
+        self.day_render_callback = day_render_callback
 
     def __get_classes(self, year, month, day):
         classes = []
-        serial = self.__get_serial(year, month, day)
-        if serial == self.current_day_serial:
+        try:
+            current = date(year, month, day)
+        except ValueError:
+            return []
+        if current == self.current_day:
             classes.append('calendar_current')
-        if serial == self.today_serial:
+        if current == self.today:
             classes.append('calendar_today')
         return " ".join(classes)
 
@@ -59,21 +62,17 @@ class HTMLCalendar(Calendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>' # day outside month
         else:
-            hooks = self.__get_hooks(year, month, day)
-            if hooks:
-                hook_rendering = ""
-                for hook in hooks:
-                    hook_rendering += hook(year, month, day)
-                return '<td class="%s %s event">%s</td>' % \
-                    (self.cssclasses[weekday], classes, hook_rendering,)
-            return '<td class="%s %s">%d</td>' % (
-                self.cssclasses[weekday], classes, day,)
+            extra_classes, content = self.day_render_callback(
+                day, weekday, week, year, month)
+            return '<td class="%s %s event">%s</td>' % \
+                (self.cssclasses[weekday], classes, content,)
 
     def formatweek(self, week, year, month):
         """
         Return a complete week as a table row.
         """
-        s = ''.join(self.formatday(d, wd, week, year, month) for (d, wd) in week)
+        s = ''.join(
+            self.formatday(d, wd, week, year, month) for (d, wd) in week)
         return '<tr>%s</tr>' % s
 
     def formatweekday(self, day):
@@ -98,7 +97,8 @@ class HTMLCalendar(Calendar):
         else:
             s = '%s' % month_name[themonth]
         return '<tr><th>%s</th><th colspan="5" class="month">%s</th>' \
-            '<th>%s</th></tr>' % (self.prev_link or "", s, self.next_link or "",)
+            '<th>%s</th></tr>' % (
+            self.prev_link or "", s, self.next_link or "",)
 
     def formatmonth(self, theyear, themonth, withyear=True):
         """

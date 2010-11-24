@@ -2,6 +2,9 @@
 # See also LICENSE.txt
 # $Id$
 
+from zope import schema
+from zope.i18nmessageid import MessageFactory
+
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass # Zope 2.12
@@ -13,12 +16,14 @@ from datetime import datetime
 from Products.Silva import SilvaPermissions
 from Products.SilvaNews.datetimeutils import UTC, local_timezone
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter,brainsorter
-from Products.SilvaNews.interfaces import IAgendaFilter, IAgendaItem
+from Products.SilvaNews.interfaces import (IAgendaFilter, IAgendaItem,
+    ISubjectTASchema, news_source)
 
 from five import grok
 from silva.core import conf as silvaconf
 from zeam.form import silva as silvaforms
 
+_ = MessageFactory('silva_news')
 
 class AgendaFilter(NewsItemFilter):
     """To enable editors to channel newsitems on a site, all items
@@ -43,12 +48,10 @@ class AgendaFilter(NewsItemFilter):
         Returns non-excluded published items for a particular
         publication month
         """
-        self.verify_sources()
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
+
         month = int(month)
         year = int(year)
         startdate = datetime(year, month, 1, tzinfo=timezone).astimezone(UTC)
@@ -57,35 +60,7 @@ class AgendaFilter(NewsItemFilter):
             endmonth = 1
             year = year + 1
         enddate = datetime(year, endmonth, 1, tzinfo=timezone).astimezone(UTC)
-
-        result = []
-        # end_datetime items first
-        query = self._prepare_query()
-        query['idx_end_datetime'] = {'query':[startdate, enddate],
-                                     'range':'minmax'}
-        query['sort_on'] = 'idx_end_datetime'
-        query['sort_order'] = 'ascending'
-        result_enddt = self._query(**query)
-
-        for item in result_enddt:
-            if item.object_path not in self._excluded_items:
-                result.append(item)
-
-        del query['idx_end_datetime']
-        query['idx_start_datetime'] = {'query': [startdate, enddate],
-                                                'range': 'minmax'}
-        query['sort_on'] = 'idx_start_datetime'
-        result_startdt = self._query(**query)
-
-        result = [r for r in result]
-
-        for item in result_startdt:
-            edt = item.get_end_datetime
-            if (item.object_path not in self._excluded_items and
-                    (not edt or edt.month != month or edt.year != year)):
-                result.append(item)
-        result.sort(brainsorter)
-        return result
+        return self.get_items_by_date_range(startdate, enddate)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'backend_get_items_by_date')
@@ -150,3 +125,19 @@ InitializeClass(AgendaFilter)
 class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaFilter)
     grok.name(u"Silva Agenda Filter")
+
+
+class IAgendaFilterSchema(ISubjectTASchema):
+    _keep_to_path = schema.Bool(
+        title=_(u"stick to path"))
+
+    sources = schema.Set(
+        value_type=schema.Choice(source=news_source),
+        title=_(u"sources"),
+        description=_(u"Use predefined sources."))
+
+
+class AgendaFilterEditForm(silvaforms.SMIEditForm):
+    """ Base form for filters """
+    grok.context(IAgendaFilter)
+    fields = silvaforms.Fields(IAgendaFilterSchema)

@@ -67,6 +67,7 @@ class TimezoneMixin(object):
                                 'timezone_list')
     def timezone_list(self):
         default = self.default_timezone()
+        zones = zone_names.copy()
         if default not in zone_names:
             zones.append(default)
         return zones

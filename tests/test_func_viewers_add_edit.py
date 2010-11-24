@@ -70,7 +70,7 @@ class ViewerEditTestBase(BaseTest):
         getattr(factory, self.build_method)(self.id, 'Viewer')
         factory.manage_addNewsPublication('newspub', 'News Pub')
         factory.manage_addNewsFilter('news_filter', 'News Filter')
-        self.root.news_filter.add_source('/root/newspub', 1)
+        self.root.news_filter.set_sources([self.root.newspub])
         self.viewer = getattr(self.root, self.id)
 
     def test_change_things(self):
