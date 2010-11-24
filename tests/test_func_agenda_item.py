@@ -26,11 +26,11 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
         form.get_control('addform.field.id').value = 'event'
         form.get_control('addform.field.title').value = 'Event'
         form.get_control('addform.field.timezone_name').value = 'Europe/Paris'
-        form.get_control('addform.field._start_datetime.day').value = '01'
-        form.get_control('addform.field._start_datetime.month').value = '09'
-        form.get_control('addform.field._start_datetime.year').value = '2010'
-        form.get_control('addform.field._start_datetime.hour').value = '10'
-        form.get_control('addform.field._start_datetime.min').value = '20'
+        form.get_control('addform.field.start_datetime.day').value = '01'
+        form.get_control('addform.field.start_datetime.month').value = '09'
+        form.get_control('addform.field.start_datetime.year').value = '2010'
+        form.get_control('addform.field.start_datetime.hour').value = '10'
+        form.get_control('addform.field.start_datetime.min').value = '20'
         form.get_control('addform.field._subjects').value = ['generic']
         form.get_control('addform.field._target_audiences').value = ['all']
 

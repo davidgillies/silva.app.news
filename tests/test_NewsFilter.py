@@ -61,8 +61,8 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
                   for i in self.newsfilter.search_items('sub')]
         self.assertTrue('art1' in resids)
         self.assertTrue('art2' not in resids)
-        self.assertTrue('art3' not in resids)
-        self.assertEquals(1, len(resids))
+        self.assertTrue('art3' in resids)
+        self.assertEquals(2, len(resids))
 
     def test_display_datetime(self):
         self.newsfilter.set_subjects(['sub', 'sub2'])
