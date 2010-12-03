@@ -3,7 +3,8 @@ from datetime import date
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
 
-month_name = [_('January'),
+month_name = [None,
+              _('January'),
               _('February'),
               _('March'),
               _('April'),
