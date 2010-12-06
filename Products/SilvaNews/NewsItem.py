@@ -115,7 +115,7 @@ class NewsItemVersion(DocumentVersion):
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_intro')
-    def get_intro(self, max_size=128):
+    def get_intro(self, max_size=128, request=None):
         """Returns first bit of the news item's content
 
             this returns all elements up to and including the first
@@ -123,7 +123,7 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        return IntroHTML.transform(self, self.REQUEST)
+        return IntroHTML.transform(self, request or self.REQUEST)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_thumbnail')

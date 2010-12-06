@@ -48,19 +48,16 @@ class AgendaItemVersion(NewsItemVersion):
 
     security = ClassSecurityInfo()
 
+    _start_datetime = None
+    _end_datetime = None
+    _display_time = True
+    _location = ''
+    _recurrence = None
+    _all_day = False
+    _timezone_name = None
+
     implements(IAgendaItemVersion)
     silvaconf.baseclass()
-
-    def __init__(self, id):
-        AgendaItemVersion.inheritedAttribute('__init__')(self, id)
-        self._start_datetime = None
-        self._end_datetime = None
-        self._display_time = True
-        self._location = ''
-        # added
-        self._recurrence = None
-        self._all_day = False
-        self._timezone_name = None
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_timezone_name')
