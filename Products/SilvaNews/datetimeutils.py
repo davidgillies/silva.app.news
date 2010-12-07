@@ -95,7 +95,7 @@ def datetime_to_unixtimestamp(dt):
     """ Workaround a bug in python : unix time is wrong if not in the system
     timezone
     """
-    return int(datetime_with_timezone(dt).astimezone(system_timezone).\
+    return int(utc_datetime(dt).astimezone(system_timezone).\
         strftime("%s"))
 
 def end_of_day(dt):

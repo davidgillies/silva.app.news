@@ -66,8 +66,8 @@ class TimezoneMixin(object):
     security.declareProtected('View',
                                 'timezone_list')
     def timezone_list(self):
-        default = self.default_timezone()
-        zones = zone_names.copy()
+        default = self.default_timezone_name()
+        zones = list(zone_names)
         if default not in zone_names:
             zones.append(default)
         return zones

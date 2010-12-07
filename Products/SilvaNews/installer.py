@@ -110,7 +110,7 @@ class SilvaNewsInstaller(DefaultInstaller):
         catalog = root.service_catalog
 
         columns = ['object_path','get_end_datetime','get_start_datetime',
-            'get_location','get_title', 'display_datetime','get_intro']
+            'get_location','get_title', 'display_datetime','get_intro', 'sort_index']
 
         indexes = [
             ('object_path', 'FieldIndex'),

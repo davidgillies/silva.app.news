@@ -310,6 +310,7 @@ class NewsItemFilter(Filter):
             query['idx_display_datetime'] = {
                 'query': [last_night - number, now],
                 'range': 'minmax'}
+
         result = self._query_items(**query)
         if not number_is_days:
             output = result[:number]
