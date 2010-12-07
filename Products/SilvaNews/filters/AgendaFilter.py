@@ -68,8 +68,8 @@ class AgendaFilter(NewsItemFilter):
             timezone=local_timezone):
         """Returns all published items for a particular month
         """
-        self.verify_sources()
-        if not self._sources:
+        sources = self.get_sources()
+        if not sources:
             return []
 
         month = int(month)

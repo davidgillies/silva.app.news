@@ -238,7 +238,10 @@ class NewsItemVersion(DocumentVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'sort_index')
     def sort_index(self):
-        return datetime_to_unixtimestamp(self.display_datetime())
+        dt = self.display_datetime()
+        if dt:
+            return datetime_to_unixtimestamp(dt)
+        return None
 
 
 InitializeClass(NewsItemVersion)

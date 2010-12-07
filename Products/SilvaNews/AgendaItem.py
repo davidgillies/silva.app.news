@@ -198,7 +198,10 @@ class AgendaItemVersion(NewsItemVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'sort_index')
     def sort_index(self):
-        return datetime_to_unixtimestamp(self.get_start_datetime())
+        dt = self.get_start_datetime()
+        if dt:
+            return datetime_to_unixtimestamp(dt)
+        return None
 
     # indexes
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
