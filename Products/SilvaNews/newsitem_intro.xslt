@@ -19,7 +19,7 @@
 
   <xsl:template match="doc:doc">
     <xsl:for-each select="//doc:p[1]">
-      <xsl:apply-templates />
+      <xsl:apply-templates mode="text-content" />
     </xsl:for-each>
   </xsl:template>
 
