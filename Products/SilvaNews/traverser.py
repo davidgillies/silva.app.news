@@ -8,11 +8,17 @@ from Products.SilvaNews.interfaces import (INewsViewer,
     INewsItem, INewsItemVersion)
 from zope.traversing.browser.interfaces import IAbsoluteURL
 from silva.core.views.absoluteurl import AbsoluteURL
+from silva.core.interfaces import IVersion
 from Acquisition import aq_base
 
 NAMESPACE = 'newsitems'
 
+
 def set_parent(viewer, item):
+    if IVersion.providedBy(item):
+        content = item.get_content()
+        content = aq_base(content).__of__(viewer)
+        return aq_base(item).__of__(content)
     return aq_base(item).__of__(viewer)
 
 

@@ -27,7 +27,7 @@ class Events(rest.REST):
         brains = self.context.get_items_by_date_range(start, end)
         for brain in brains:
             event = brain.getObject()
-            set_parent(self.context, event.get_content())
+            event = set_parent(self.context, event)
             yield event
 
     def get_events_occurrences(self, start, end):

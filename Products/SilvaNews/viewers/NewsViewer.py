@@ -394,8 +394,7 @@ class NewsViewerListView(object):
         """
         version = item.getObject()
         content = version.get_content()
-        set_parent(self.context, content)
-        return content
+        return set_parent(self.context, content)
 
 
 class NewsViewerView(silvaviews.Page, NewsViewerListView):

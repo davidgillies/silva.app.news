@@ -144,6 +144,7 @@ class TestCalendar(NewsBaseTestCase):
             self.source1, 'event2', 'Event2',
             sdt, sdt + relativedelta(days=+1))
         version = self.event2.get_viewable()
+        version.set_all_day(True)
         version.set_subjects(['sub'])
         version.set_target_audiences(['ta'])
 
@@ -188,7 +189,7 @@ VERSION:2.0
 X-WR-CALNAME:Agenda
 X-WR-TIMEZONE:Europe/Amsterdam
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20100912
+DTEND;VALUE=DATE:20100911
 DTSTART;VALUE=DATE:20100910
 SUMMARY:Event2
 UID:%d@silvanews

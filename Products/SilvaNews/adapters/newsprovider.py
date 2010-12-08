@@ -28,9 +28,8 @@ class NewsViewerNewsProvider(component.Adapter):
         if len(results) < number:
             number = len(results)
         for item in results[:number]:
-            obj = item.getObject()
-            set_parent(self.context, obj.get_content())
-            ref = NewsItemReference(obj, self.context)
+            newsitem = set_parent(self.context, item.getObject())
+            ref = NewsItemReference(newsitem, self.context)
             ret.append(ref)
         return ret
 

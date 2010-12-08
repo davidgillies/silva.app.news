@@ -29,16 +29,15 @@ class AgendaEvent(Event):
         cdate = context.get_calendar_datetime()
         start_dt = cdate.get_start_datetime(timezone)
         end_dt = cdate.get_end_datetime(timezone)
-        start_date = date(start_dt.year, start_dt.month, start_dt.day)
-        end_date = date(end_dt.year, end_dt.month, end_dt.day)
-        if start_date == end_date:
-            if start_date:
-                self['DTSTART'] = vDatetime(start_dt.astimezone(UTC))
-            if end_date:
-                self['DTEND'] = vDatetime(end_dt.astimezone(UTC))
-        else:
+        if context.is_all_day():
+            start_date = date(start_dt.year, start_dt.month, start_dt.day)
+            end_date = date(end_dt.year, end_dt.month, end_dt.day)
             self['DTSTART'] = vDate(start_date)
-            self['DTEND'] = vDate(end_date + relativedelta(days=+1))
+            if end_date != start_date:
+                self['DTEND'] = vDate(end_date)
+        else:
+            self['DTSTART'] = vDatetime(start_dt.astimezone(UTC))
+            self['DTEND'] = vDatetime(end_dt.astimezone(UTC))
 
         rrule_string = context.get_recurrence()
         if rrule_string is not None:

@@ -147,8 +147,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
 def wrap_event_brains(viewer, iterable):
     for brain in iterable:
         item = brain.getObject()
-        set_parent(viewer, item.get_content())
-        yield item
+        yield set_parent(viewer, item)
 
 
 class CalendarView(object):
@@ -297,12 +296,6 @@ class AgendaViewerMonthCalendar(silvaviews.Page, CalendarView):
     @property
     def archive_url(self):
         return self.context_absolute_url + '/archives'
-
-    def _wrap_event_brains(self, list):
-        for brain in list:
-            item = brain.getObject()
-            set_parent(self.context, item.get_content())
-            yield item
 
     def update(self):
         alsoProvides(self.request, ICalendarResources)
