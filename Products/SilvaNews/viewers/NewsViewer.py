@@ -37,6 +37,7 @@ from silva.core.references.reference import ReferenceSet
 from Products.SilvaNews.interfaces import (INewsViewer, IServiceNews,
     show_source, timezone_source, week_days_source, filters_source)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
+from Products.SilvaNews.traverser import set_parent
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
@@ -393,7 +394,7 @@ class NewsViewerListView(object):
         """
         version = item.getObject()
         content = version.get_content()
-        content.__parent__ = self.context
+        set_parent(self.context, content)
         return content
 
 

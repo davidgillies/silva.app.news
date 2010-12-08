@@ -12,6 +12,9 @@ from Acquisition import aq_base
 
 NAMESPACE = 'newsitems'
 
+def set_parent(viewer, item):
+    return aq_base(item).__of__(viewer)
+
 
 class NewsItemAbsoluteURL(AbsoluteURL, grok.MultiAdapter):
     grok.adapts(INewsItem, IBrowserRequest)

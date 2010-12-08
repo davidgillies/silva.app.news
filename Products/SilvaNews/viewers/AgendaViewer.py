@@ -33,6 +33,7 @@ from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
+from Products.SilvaNews.traverser import set_parent
 
 
 class AgendaViewer(NewsViewer, ExternalSource):
@@ -146,7 +147,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
 def wrap_event_brains(viewer, iterable):
     for brain in iterable:
         item = brain.getObject()
-        item.get_content().__parent__ = viewer
+        set_parent(viewer, item.get_content())
         yield item
 
 
@@ -300,7 +301,7 @@ class AgendaViewerMonthCalendar(silvaviews.Page, CalendarView):
     def _wrap_event_brains(self, list):
         for brain in list:
             item = brain.getObject()
-            item.get_content().__parent__ = self.context
+            set_parent(self.context, item.get_content())
             yield item
 
     def update(self):
