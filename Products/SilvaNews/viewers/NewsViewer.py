@@ -397,11 +397,10 @@ class NewsViewerListView(object):
         return set_parent(self.context, content)
 
 
-class NewsViewerView(silvaviews.Page, NewsViewerListView):
+class NewsViewerView(silvaviews.View, NewsViewerListView):
     """ Default view for news viewer
     """
     grok.context(INewsViewer)
-    grok.name('index.html')
 
     @property
     def archive_url(self):

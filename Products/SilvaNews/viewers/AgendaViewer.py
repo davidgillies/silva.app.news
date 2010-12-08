@@ -267,11 +267,10 @@ class AgendaViewerExternalSourceView(silvaviews.View, CalendarView):
         return self.calendar.formatmonth(self.year, self.month)
 
 
-class AgendaViewerMonthCalendar(silvaviews.Page, CalendarView):
-    """ Page with month calendar and listing of event registered of the
+class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
+    """ View with month calendar and listing of event registered of the
     selected day"""
     grok.context(IAgendaViewer)
-    grok.name('index.html')
 
     @property
     def context_absolute_url(self):
