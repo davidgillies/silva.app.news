@@ -101,7 +101,7 @@
       debug: false,
       firstDay: 3,
       dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      mainDivId: 'ui-weeklyrecurrence-main',
+      mainDivId: 'ui-weeklyrecurrence-main'
     },
 
     destroy: function() {
