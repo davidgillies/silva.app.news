@@ -266,7 +266,7 @@
       firstDay: 0,
       weekEndDay: 6,
       dayNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-      mainDivId: 'ui-monthlyrecurrence-main',
+      mainDivId: 'ui-monthlyrecurrence-main'
     },
 
     destroy: function() {
@@ -796,7 +796,7 @@
       'SU': 'Sunday',
       'day': 'day',
       'weekendday': 'weekend day',
-      'weekday': 'week day',
+      'weekday': 'week day'
     },
 
     DAILY: ['each day', 'every %s day'],
@@ -811,7 +811,7 @@
       '2': 'on the second',
       '3': 'on the third',
       '4': 'on the fourth',
-      '-1': 'on last',
+      '-1': 'on last'
     },
     BYMONTH: 'in %s',
     listterm: 'and',
