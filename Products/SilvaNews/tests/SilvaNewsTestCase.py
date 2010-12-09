@@ -30,52 +30,67 @@ class SilvaNewsTestCase(unittest.TestCase):
         self.root = self.layer.get_application()
         self.layer.login('manager')
         self.service_news = self.root.service_news
+        self.service_news.add_subject('sub', 'Subject')
+        self.service_news.add_target_audience('ta', 'TA')
         self.catalog = self.root.service_catalog
 
-    def add_news_publication(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_news_publication(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addNewsPublication(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_plain_article(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_plain_article(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addPlainArticle(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_news_viewer(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_news_viewer(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addNewsViewer(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_agenda_viewer(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_agenda_viewer(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addAgendaViewer(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_news_filter(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_news_filter(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addNewsFilter(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_agenda_filter(self, object, id, title, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_agenda_filter(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addAgendaFilter(id, title, **kw)
-        return getattr(object, id)
+        return getattr(parent, id)
 
-    def add_published_agenda_item(self, object, id, title, sdt, edt, **kw):
-        factory = object.manage_addProduct['SilvaNews']
+    def add_published_news_item(self, parent, id, title, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
+        factory.manage_addPlainArticle(id, title, **kw)
+        item = getattr(parent, id)
+        version = item.get_editable()
+        version.set_subjects(['sub'])
+        version.set_target_audiences(['ta'])
+        version.set_display_datetime(DateTime())
+        item.set_next_version_publication_datetime(DateTime())
+        item.approve_version()
+        item._update_publication_status()
+        return item
+
+    def add_published_agenda_item(self, parent, id, title, sdt, edt, **kw):
+        factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addPlainAgendaItem(id, title, **kw)
-        obj = getattr(object, id)
-        ver = obj.get_editable()
+        item = getattr(parent, id)
+        ver = item.get_editable()
         ver.set_start_datetime(sdt)
         ver.set_end_datetime(edt)
         ver.set_subjects(['sub'])
         ver.set_target_audiences(['ta'])
-        obj.set_next_version_publication_datetime(DateTime())
-        obj.approve_version()
-        obj._update_publication_status()
+        item.set_next_version_publication_datetime(DateTime())
+        item.approve_version()
+        item._update_publication_status()
         ver.set_display_datetime(DateTime())
-        return getattr(object, id)
+        return getattr(parent, id)
 
 
 class NewsBaseTestCase(SilvaNewsTestCase):

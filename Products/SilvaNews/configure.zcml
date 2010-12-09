@@ -18,8 +18,6 @@
   <include package="silva.core.views" />
   <include package="silva.resourceinclude" />
 
-  <include package=".browser" />
-
   <five:registerPackage package="." />
 
   <!-- Grok Silva News -->

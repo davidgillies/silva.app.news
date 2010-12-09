@@ -220,7 +220,7 @@ InitializeClass(AgendaItemVersion)
 
 class AgendaViewMixin(object):
     def event_img_url(self):
-        return '%s/++resource++Products.SilvaNews.browser/date.png' % \
+        return '%s/++resource++Products.SilvaNews/date.png' % \
             absoluteURL(self.context, self.request)
 
     def event_url(self):

@@ -289,7 +289,7 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
 
     def browser_resource(self, path):
         return "/".join([self.context_absolute_url,
-                  '++resource++Products.SilvaNews.browser',
+                  '++resource++Products.SilvaNews',
                   path])
 
     @property

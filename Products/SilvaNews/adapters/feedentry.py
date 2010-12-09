@@ -2,38 +2,32 @@
 # See also LICENSE.txt
 # $Id$
 
-from zope.interface import implements
-
-from silva.core import conf as silvaconf
-from silva.core.interfaces.adapters import IFeedEntry
+from five import grok
 from Products.SilvaDocument.adapters import feedentry
-
 from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
+
 
 class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
     """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
     representation."""
-
-    implements(IFeedEntry)
-    silvaconf.context(INewsItem)
+    grok.context(INewsItem)
 
     def html_description(self):
         return self.version.get_intro()
 
     def date_updated(self):
         return self.version.display_datetime()
-    
+
+
 class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
-    
-    implements(IFeedEntry)
-    silvaconf.context(IAgendaItem)
+    grok.context(IAgendaItem)
 
     def location(self):
-        return self.version.location()
+        return self.version.get_location()
 
     def start_datetime(self):
-        return self.version.start_datetime().isoformat()
+        return self.version.get_start_datetime().isoformat()
 
     def end_datetime(self):
-        edt = self.version.end_datetime()
+        edt = self.version.get_end_datetime()
         return (edt and edt.isoformat()) or edt

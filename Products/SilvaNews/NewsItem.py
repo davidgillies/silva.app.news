@@ -296,3 +296,5 @@ def news_item_published(content, event):
     if content.display_datetime() is None:
         now = DateTime()
         content.set_display_datetime(now)
+
+

@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
-  tal:define="data view/get_data">
-  <id tal:content="data/id" />
+  tal:define="data view/data">
+  <id tal:content="data/url" />
   <title type="text" tal:content="data/title"/>
   <subtitle tal:content="data/description" />
   <link rel="self" tal:attributes="href string:${data/url}/atom.xml" />

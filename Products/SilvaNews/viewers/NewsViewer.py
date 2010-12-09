@@ -18,14 +18,16 @@ from datetime import datetime
 from OFS.SimpleItem import SimpleItem
 
 # Silva
-from zeam.utils.batch import batch
-from zeam.utils.batch.interfaces import IBatching
 from Products.Silva import SilvaPermissions
+from Products.Silva.browser import feed
 from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
+from silva.core.interfaces import IFeedEntryProvider, IFeedEntry
+from silva.core.services.interfaces import ICatalogService
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
-from silva.core.services.interfaces import ICatalogService
+from zeam.utils.batch import batch
+from zeam.utils.batch.interfaces import IBatching
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
@@ -38,6 +40,7 @@ from Products.SilvaNews.interfaces import (INewsViewer, IServiceNews,
     show_source, timezone_source, week_days_source, filters_source)
 from Products.SilvaNews.ServiceNews import TimezoneMixin
 from Products.SilvaNews.traverser import set_parent
+
 
 logger = getLogger('Products.SilvaNews.NewsViewer')
 
@@ -322,6 +325,11 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._get_filters_reference_set().add(filter)
         return filter
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'allow_feeds')
+    def allow_feeds(self):
+        return True
+
 
 InitializeClass(NewsViewer)
 
@@ -502,3 +510,5 @@ class NewsViewerArchivesView(silvaforms.PublicForm, NewsViewerListView):
         self.request.timezone = self.context.get_timezone()
         # always execute action
         self.request.form['form.action.update'] = '1'
+
+
