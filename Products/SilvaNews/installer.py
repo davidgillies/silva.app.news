@@ -68,13 +68,11 @@ class SilvaNewsInstaller(DefaultInstaller):
         reg.register('public',
                      'Silva News Filter', ['public', 'NewsFilter'])
         reg.register('public', 'Silva News Publication', ['public', 'NewsPublication'])
-        reg.register('public', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
 
         ## preview - required for e.g. the compare versions feature
         reg.register('preview', 'Silva News Filter', ['public', 'NewsFilter'])
         reg.register('preview', 'Silva Agenda Filter', ['public', 'AgendaFilter'])
         reg.register('preview', 'Silva News Publication', ['public', 'NewsPublication'])
-        reg.register('preview', 'Silva RSS Aggregator', ['public', 'RSSAggregator'])
 
     def unregister_views(self, reg):
         #"""Unregister core views on registry.

@@ -16,7 +16,7 @@ from App.class_init import InitializeClass
 from Products.Silva import SilvaPermissions
 from five import grok
 from silva.core import conf as silvaconf
-from silva.core.services.interfaces import ICataloging
+from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 
 # SilvaNews
@@ -125,4 +125,12 @@ class RSSAggregatorEditForm(silvaforms.SMIEditForm):
     """
     grok.context(IAggregator)
     fields = silvaforms.Fields(IRSSAggregatorSchema)
+
+
+class RSSAggregatorView(silvaviews.View):
+    grok.context(IAggregator)
+
+    def update(self):
+        self.items = self.context.get_merged_feed_contents()
+
 

@@ -45,5 +45,7 @@ CLASS_CHANGES = {
             'Products.SilvaNews.viewers.AgendaViewer AgendaViewer',
         'Products.SilvaNews.NewsViewer NewsViewer':
             'Products.SilvaNews.viewers.NewsViewer NewsViewer',
+        'Products.SilvaNews.RSSAggregator RSSAggregator':
+            'Products.SilvaNews.viewers.RSSAggregator RSSAggregator',
     }
 

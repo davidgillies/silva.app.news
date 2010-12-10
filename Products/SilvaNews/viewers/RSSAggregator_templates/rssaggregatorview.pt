@@ -1,22 +1,13 @@
-<div tal:omit-tag="" 
-  xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="silva_news"
-  tal:define="
-   view here;
-   model view/REQUEST/model;
-   result python:model.get_merged_feed_contents();
-">
-<h2 tal:define="title model/get_title | nothing"
+<div
+  i18n:domain="silva_news">
+<h2 tal:define="title context/get_title | nothing"
     tal:condition="title"
     tal:content="title">
   view news
 </h2>
 
 <tal:feed
-    tal:repeat="item result">
+    tal:repeat="item view/items">
 <h4 class="feed"
     tal:define="title item/title | nothing"
     tal:condition="title" 
@@ -32,7 +23,8 @@
     tal:define="link item/link"
     tal:condition="link" 
     tal:attributes="href link"
-    i18n:translate="">view article</a><span class="feelinkdivider"> | </span><a class="feeduri"
+    i18n:translate="">view article</a><span class="feelinkdivider"> | </span>
+    <a class="feeduri"
       tal:define="p item/parent_channel;link p/link;title p/title"
       tal:condition="title"
       tal:omit-tag="not:link"
