@@ -32,6 +32,7 @@ class SilvaNewsTestCase(unittest.TestCase):
         self.service_news = self.root.service_news
         self.service_news.add_subject('sub', 'Subject')
         self.service_news.add_target_audience('ta', 'TA')
+        self.catalog = self.root.service_catalog
 
     def add_news_publication(self, parent, id, title, **kw):
         factory = parent.manage_addProduct['SilvaNews']
