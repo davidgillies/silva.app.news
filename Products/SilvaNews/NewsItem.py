@@ -5,6 +5,7 @@
 from five import grok
 from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
+from zope.cachedescriptors.property import CachedProperty
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -246,20 +247,6 @@ class NewsItemVersion(DocumentVersion):
 
 InitializeClass(NewsItemVersion)
 
-
-from Products.Silva.adapters.indexable import IndexableAdapter
-
-
-class NewsItemVersionIndexableAdapter(IndexableAdapter):
-    grok.context(INewsItemVersion)
-
-    def getIndexes(self):
-        # Override for news items is it change the content attribute
-        # of a document version, the default adapter break.
-        return []
-
-
-
 ContentHTML = XSLTTransformer('newsitem.xslt', __file__)
 IntroHTML = XSLTTransformer('newsitem_intro.xslt', __file__)
 
@@ -268,27 +255,31 @@ class NewsItemView(silvaviews.View):
     """
     grok.context(INewsItem)
 
-    def update(self):
-        news_service = getUtility(IServiceNews)
-        self.article_date = self.content.display_datetime()
-        if not self.article_date:
-            self.article_date = self.content.publication_time()
-        if self.article_date:
-            self.article_date = news_service.format_date(
-                self.article_date)
-        self.article = ContentHTML.transform(self.content, self.request)
+    @CachedProperty
+    def article_date(self):
+        article_date = self.content.display_datetime()
+        if not article_date:
+            article_date = self.content.publication_time()
+        if article_date:
+            news_service = getUtility(IServiceNews)
+            return news_service.format_date(
+                article_date)
+        return u''
+
+    @CachedProperty
+    def article(self):
+        return ContentHTML.transform(self.content, self.request)
 
 
-class NewsItemListItemView(grok.View):
+class NewsItemListItemView(NewsItemView):
     """ Render as a list items (search results)
     """
     grok.context(INewsItem)
     grok.name('search_result')
 
-    def default_namespace(self):
-        ns = super(NewsItemListItemView, self).default_namespace()
-        ns['content'] = self.context.get_viewable()
-        return ns
+    @CachedProperty
+    def article(self):
+        return IntroHTML.transform(self.content, self.request)
 
 
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)

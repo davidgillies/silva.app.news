@@ -1,27 +1,22 @@
-<h3 class="heading newsitemheading" tal:content="structure context/get_title">article title</h3>
-
+<div class="newsitemlistitem">
+<h3 class="heading newsitemheading" tal:content="structure context/get_title"/>
 <div class="newsiteminfo">
  <tal:infopublic
-   tal:define="
-     publicationdate content/publication_time;
-     displaydate content/display_datetime;
-     formatdate nocall:context/service_news/format_date;"
-   tal:condition="publicationdate">
+   tal:condition="view/article_date">
   <p class="p newsiteminfopublicationdate">
    <tal:translate i18n:translate="">Publication: </tal:translate>
    <span class="newsitempublicationdate"
-       tal:content="python: formatdate(displaydate or publicationdate)" />
+       tal:content="view/article_date" />
   </p>
  </tal:infopublic>
 </div>
 
 <div class="newsintro">
  <img
-   tal:define="classname python: 'newsitem-thumbnail-odd'"
+   tal:define="classname string:newsitem-thumbnail"
    tal:replace="structure python: content.get_thumbnail(classname)"
   />
-<!--   <tal:insertintro replace="structure r/get_intro" />-->
- <tal:insertintro replace="structure python:content.get_intro(max_size=128)" />
+ <tal:insertintro replace="structure view/article" />
 </div>
 
 <p class="p articlelink">
@@ -29,3 +24,4 @@
   view article
  </a>
 </p>
+</div>

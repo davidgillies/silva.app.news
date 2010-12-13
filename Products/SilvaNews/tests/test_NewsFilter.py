@@ -17,8 +17,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.assertEquals(2, len(res))
 
     def test_sources(self):
-        self.assertTrue(self.newsfilter.get_sources() == [])
-        self.newsfilter.set_sources([self.source1])
+        self.assertTrue(self.newsfilter.get_sources() == [self.source1])
         self.assert_(self.newsfilter.get_sources() == [self.source1])
         self.newsfilter.set_sources([self.source1, self.source2])
         self.assertTrue(self.source1 in self.newsfilter.get_sources())

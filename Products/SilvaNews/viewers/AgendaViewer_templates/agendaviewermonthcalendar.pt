@@ -18,68 +18,8 @@
   <h3 class="calendar_intro" tal:content="view/intro" />
 
   <div class="newsitem" tal:repeat="event view/day_events">
-    <div class="agenda_item_search_result news_item_search_result"
-         tal:attributes="id python: view.item_id(event)">
-      <div class="event_actions">
-        <a tal:attributes="href python: view.item_calevent_url(event)"
-           title="Add this event to your calendar">
-          <img tal:attributes="src python: view.browser_resource('date.png')" />
-          Add to my calendar
-        </a>
-      </div>
-      <h3 class="heading newsitemheading"
-          tal:content="structure event/get_title">article title</h3>
-
-      <div class="newsiteminfo"
-        tal:define="
-          publicationdate event/publication_time;
-          displaydate event/display_datetime;
-          formatdate nocall:event/service_news/format_date;">
-       <tal:infopublic
-         tal:condition="publicationdate">
-        <p class="p newsiteminfopublicationdate">
-         <tal:translate i18n:translate="">Publication: </tal:translate>
-         <span class="newsitempublicationdate"
-             tal:content="python: formatdate(displaydate or publicationdate)" />
-        </p>
-       </tal:infopublic>
-
-       <tal:comment tal:omit-tag="">
-         <!-- if the object is an agenda item -->
-       </tal:comment>
-       <p class="p eventdates"
-         tal:define="
-           startdate python:event.get_start_datetime(tz=context.get_timezone());
-           enddate python:event.get_end_datetime(tz=context.get_timezone())"
-         tal:condition="python: startdate or enddate">
-        <tal:if condition="startdate">
-         <span tal:omit-tag="" i18n:translate="">Start:</span>
-         <tal:startdate replace="python: formatdate(startdate, True)" />
-        </tal:if>
-        <tal:if condition="enddate"><br />
-         <span tal:omit-tag="" i18n:translate="">End:</span>
-         <tal:enddate replace="python: formatdate(enddate, True)" />
-        </tal:if>
-       </p>
-      </div>
-
-      <div class="newsintro">
-       <img
-         tal:define="classname python: 'newsitem-thumbnail-odd'"
-         tal:replace="structure python: event.get_thumbnail(classname)"
-        />
-      <!--   <tal:insertintro replace="structure r/get_intro" />-->
-       <tal:insertintro
-          replace="structure python:event.get_intro(max_size=128)" />
-      </div>
-
-      <p class="p articlelink">
-       <a href="#"
-          tal:attributes="href event/@@absolute_url"
-          i18n:translate="">
-        more ...
-       </a>
-      </p>
+    <div tal:attributes="class python:repeat['event'].odd and 'odd' or 'even'">
+      <div tal:replace="structure event/@@search_result" />
     </div>
   </div>
 

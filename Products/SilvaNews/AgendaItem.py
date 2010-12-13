@@ -5,6 +5,7 @@ from icalendar import vDatetime, Calendar
 from zope.interface import implements
 from zope.component import getAdapter, getUtility
 from zope.traversing.browser import absoluteURL
+from zope.cachedescriptors.property import CachedProperty
 from five import grok
 
 # Zope
@@ -18,6 +19,7 @@ from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
+from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
@@ -30,6 +32,8 @@ from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
     CalendarDatetime, datetime_to_unixtimestamp, get_timezone, RRuleData, UTC)
 from icalendar.interfaces import IEvent
 from dateutil.rrule import rrulestr
+
+_marker = object()
 
 
 class AgendaItem(NewsItem):
@@ -137,9 +141,11 @@ class AgendaItemVersion(NewsItemVersion):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_start_datetime')
-    def get_start_datetime(self, tz=None):
+    def get_start_datetime(self, tz=_marker):
         """Returns the start date/time
         """
+        if tz is _marker:
+            tz = self.get_timezone()
         cd = self.get_calendar_datetime()
         if cd:
             return cd.get_start_datetime(tz)
@@ -147,9 +153,11 @@ class AgendaItemVersion(NewsItemVersion):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_end_datetime')
-    def get_end_datetime(self, tz=None):
+    def get_end_datetime(self, tz=_marker):
         """Returns the start date/time
         """
+        if tz is _marker:
+            tz = self.get_timezone()
         cd = self.get_calendar_datetime()
         if cd:
             return cd.get_end_datetime(tz)
@@ -184,8 +192,7 @@ class AgendaItemVersion(NewsItemVersion):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_all_day')
-    def get_all_day(self):
-        return self._all_day
+    get_all_day = is_all_day
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
@@ -231,15 +238,36 @@ class AgendaItemView(NewsItemView, AgendaViewMixin):
     """ Index view for agenda items """
     grok.context(IAgendaItem)
 
+    def update(self):
+        super(AgendaItemView, self).update()
+        self.service_news = getUtility(IServiceNews)
+        self.timezone = getattr(self.request, 'timezone', None)
+        if not self.timezone:
+            self.timezone = self.service_news.get_timezone()
 
-class AgendaItemInlineView(NewsItemView):
-    """ Inline redering for calendar event tooltip """
+    @CachedProperty
+    def formatted_start_date(self):
+        dt = self.content.get_start_datetime(self.timezone)
+        if dt:
+            return self.service_news.format_date(dt, self.context.is_all_day())
+
+    @CachedProperty
+    def formatted_end_date(self):
+        dt = self.content.get_start_datetime(self.timezone)
+        if dt:
+            return self.service_news.format_date(dt, self.context.is_all_day())
+
+
+class AgendaItemInlineView(silvaviews.View):
+    """ Inline rendering for calendar event tooltip """
     grok.context(IAgendaItem)
     grok.name('tooltip.html')
 
     def update(self):
-        self.intro = IntroHTML.transform(self.context.get_viewable(),
-                                         self.request)
+        self.intro = IntroHTML.transform(self.content, self.request)
+
+    def render(self):
+        return u'<div>' + self.intro + u"</div>"
 
 
 class AgendaListItemView(NewsItemListItemView, AgendaViewMixin):
@@ -252,6 +280,7 @@ class AgendaItemICS(grok.View):
     """ render an ics event
     """
     grok.context(IAgendaItem)
+    grok.require('zope.View')
     grok.name('event.ics')
 
     def update(self):

@@ -136,8 +136,7 @@ def process_data(data):
     # set timezone on datetime fields
     for name in date_fields:
         if data.has_key(name) and data[name] is not silvaforms.NO_VALUE:
-            data[name] = \
-                data[name].replace(tzinfo=timezone)
+            data[name] = data[name].replace(tzinfo=timezone)
 
     # copy data from end recurrence datetime to the recurrence field
     if data.has_key('recurrence') and \

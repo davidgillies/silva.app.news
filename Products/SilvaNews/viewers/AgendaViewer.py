@@ -12,7 +12,7 @@ from zope.component import getMultiAdapter, getUtility
 from zope.traversing.browser import absoluteURL
 from zope.intid.interfaces import IIntIds
 from zope.interface import alsoProvides
-
+from zope.cachedescriptors.property import CachedProperty
 
 # Zope
 import Products
@@ -272,13 +272,9 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     selected day"""
     grok.context(IAgendaViewer)
 
-    @property
+    @CachedProperty
     def context_absolute_url(self):
-        if hasattr(self, '__context_absolute_url'):
-            return self.__context_absolute_url
-        self.__context_absolute_url = \
-            absoluteURL(self.context, self.request)
-        return self.__context_absolute_url
+        return absoluteURL(self.context, self.request)
 
     def item_calevent_url(self, newsitem):
         return str(absoluteURL(newsitem, self.request)) + '/event.ics'
@@ -354,11 +350,11 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        return wrap_event_brains(
-            self.context,
-            self.context.get_items_by_date_range(
-                datetimeutils.start_of_day(self.day_datetime),
-                datetimeutils.end_of_day(self.day_datetime)))
+        items = self.context.get_items_by_date_range(
+                    datetimeutils.start_of_day(self.day_datetime),
+                    datetimeutils.end_of_day(self.day_datetime))
+        return map(lambda x: x.get_content(),
+                    wrap_event_brains(self.context, items))
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \
@@ -373,7 +369,7 @@ class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
     """ Year Calendar representation
     """
     grok.context(IAgendaViewer)
-    grok.name('year.html')
+    grok.name('year')
 
     def update(self):
         alsoProvides(self.request, ICalendarResources)

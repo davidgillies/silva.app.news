@@ -32,7 +32,6 @@ class SilvaNewsTestCase(unittest.TestCase):
         self.service_news = self.root.service_news
         self.service_news.add_subject('sub', 'Subject')
         self.service_news.add_target_audience('ta', 'TA')
-        self.catalog = self.root.service_catalog
 
     def add_news_publication(self, parent, id, title, **kw):
         factory = parent.manage_addProduct['SilvaNews']
@@ -77,19 +76,20 @@ class SilvaNewsTestCase(unittest.TestCase):
         item._update_publication_status()
         return item
 
-    def add_published_agenda_item(self, parent, id, title, sdt, edt, **kw):
+    def add_published_agenda_item(self, parent, id, title, sdt, edt=None, **kw):
         factory = parent.manage_addProduct['SilvaNews']
         factory.manage_addPlainAgendaItem(id, title, **kw)
         item = getattr(parent, id)
         ver = item.get_editable()
         ver.set_start_datetime(sdt)
-        ver.set_end_datetime(edt)
+        if edt:
+            ver.set_end_datetime(edt)
         ver.set_subjects(['sub'])
         ver.set_target_audiences(['ta'])
+        ver.set_display_datetime(DateTime())
         item.set_next_version_publication_datetime(DateTime())
         item.approve_version()
         item._update_publication_status()
-        ver.set_display_datetime(DateTime())
         return getattr(parent, id)
 
 
@@ -147,7 +147,8 @@ class NewsBaseTestCase(SilvaNewsTestCase):
             self.root, 'newsfilter', 'NewsFilter')
         self.newsfilter.set_subjects(['sub', 'sub2'])
         self.newsfilter.set_target_audiences(['ta', 'ta2'])
+        self.newsfilter.add_source(self.source1)
 
         self.newsviewer = self.add_news_viewer(
             self.root, 'newsviewer', 'NewsViewer')
-        self.newsviewer.set_filters([self.newsfilter])
+        self.newsviewer.add_filter(self.newsfilter)

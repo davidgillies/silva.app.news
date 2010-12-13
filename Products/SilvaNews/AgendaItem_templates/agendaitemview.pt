@@ -1,9 +1,8 @@
-<div class="newsitem"
+<div class="newsitemlistview"
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news">
-
   <h2 class="heading newsitemheading"
     tal:content="structure content/get_title" />
   <div class="event_actions">
@@ -28,5 +27,4 @@
        tal:content="structure view/article">
     Article
   </div>
-
 </div>

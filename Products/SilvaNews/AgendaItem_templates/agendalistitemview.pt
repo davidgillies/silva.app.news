@@ -1,4 +1,4 @@
-<div class="agenda_item_search_result news_item_search_result">
+<div class="agenda_item_search_result newsitemlistitem">
   <div class="event_actions">
     <a tal:attributes="href view/event_url"
        title="Add this event to your calendar">
@@ -7,50 +7,40 @@
     </a>
   </div>
   <h3 class="heading newsitemheading"
-      tal:content="structure content/get_title">article title</h3>
-
-  <div class="newsiteminfo"
-    tal:define="
-      publicationdate content/publication_time;
-      displaydate content/display_datetime;
-      formatdate nocall:content/service_news/format_date;">
+      tal:content="structure content/get_title" />
+  <div class="newsiteminfo">
    <tal:infopublic
-     tal:condition="publicationdate">
+     tal:condition="view/article_date">
     <p class="p newsiteminfopublicationdate">
      <tal:translate i18n:translate="">Publication: </tal:translate>
      <span class="newsitempublicationdate"
-         tal:content="python: formatdate(displaydate or publicationdate)" />
+         tal:content="view/article_date" />
     </p>
    </tal:infopublic>
 
-   <tal:comment tal:omit-tag="">
-     <!-- if the object is an agenda item --></tal:comment>
    <p class="p eventdates"
      tal:define="
-       startdate python: content.get_start_datetime(request.timezone);
-       enddate python: content.get_end_datetime(request.timezone)"
+       startdate view/formatted_start_date | nothing;
+       enddate view/formatted_end_date | nothing"
      tal:condition="python: startdate or enddate">
     <tal:if condition="startdate">
      <span tal:omit-tag="" i18n:translate="">Start:</span>
-     <tal:startdate
-        replace="python: formatdate(startdate, content.is_all_day())" />
+     <tal:startdate replace="startdate" />
     </tal:if>
     <tal:if condition="enddate"><br />
      <span tal:omit-tag="" i18n:translate="">End:</span>
-     <tal:enddate
-        replace="python: formatdate(enddate, content.is_all_day())" />
+     <tal:enddate replace="enddate" />
     </tal:if>
    </p>
   </div>
 
   <div class="newsintro">
    <img
-     tal:define="classname python: 'newsitem-thumbnail-odd'"
+     tal:define="classname string:newsitem-thumbnail"
      tal:replace="structure python: content.get_thumbnail(classname)"
     />
-  <!--   <tal:insertintro replace="structure r/get_intro" />-->
    <tal:insertintro
-      replace="structure python:content.get_intro(max_size=128)" />
+      replace="structure view/article" />
   </div>
 
   <p class="p articlelink">

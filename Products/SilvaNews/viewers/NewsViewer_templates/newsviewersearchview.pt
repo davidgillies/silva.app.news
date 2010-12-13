@@ -14,7 +14,7 @@
   <tal:comment condition="nothing">Begin items</tal:comment>
 
   <div class="searchbox">
-    <form tal:attributes="action python:context.absolute_url() + '/search'" method="get">
+    <form tal:attributes="action python:view.url('search')" method="get">
       <input type="text" name="query" tal:attributes="value view/query" />
       <input type="submit" class="button" value="Search" title="Do a full text search: alt-s"
               accesskey="s" i18n:attributes="title;value" />
@@ -31,10 +31,11 @@
 
   <div class="viewlinks">
     <div class="viewlink">
-      <a href="#" tal:attributes="href context/@@absolute_url" i18n:translate="">view news</a>
+      <a href="#" tal:attributes="href view/url" i18n:translate="">view news</a>
     </div>
     <div class="viewlink">
-      <a href="#" tal:attributes="href python:context.absolute_url() + '/archives'" i18n:translate="">view archive</a>
+      <a href="#"
+        tal:attributes="href view.url('archives')" i18n:translate="" />
     </div>
   </div>
 

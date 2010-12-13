@@ -66,5 +66,7 @@ setup(name='Products.SilvaNews',
       entry_points = """
       [zodbupdate]
       renames = Products.SilvaNews:CLASS_CHANGES
+      [zeam.form.components]
+      recurrence = Products.SilvaNews.widgets.recurrence:register
       """
       )
