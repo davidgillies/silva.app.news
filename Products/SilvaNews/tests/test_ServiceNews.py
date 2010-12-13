@@ -1,20 +1,22 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2010 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.10 $
-import os, sys
- 
-#import SilvaTestCase
-from Products.SilvaNews.Tree import DuplicateIdError
-import SilvaNewsTestCase
+import unittest
 
-class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
+from Products.SilvaNews.Tree import DuplicateIdError
+from Products.SilvaNews.tests.SilvaNewsTestCase import FunctionalLayer
+
+
+class ServiceNewsTestCase(unittest.TestCase):
     """Test the ServiceNews interface.
     """
 
-    def afterSetUp(self):
-        super(ServiceNewsTestCase, self).afterSetUp()
+    layer = FunctionalLayer
+
+    def setUp(self):
+        super(ServiceNewsTestCase, self).setUp()
+        self.root = self.layer.get_application()
         self.service_news = self.root.service_news
-        
+
     # We're not going to test specific units here but just make a small general test of each datamember,
     # since the methods are very simple data-manipulating things, not really suited to test in units, also
     # the chance of anything going wrong here is minimal. Still it's nice to know that they work :)
@@ -49,7 +51,6 @@ class ServiceNewsTestCase(SilvaNewsTestCase.SilvaNewsTestCase):
         self.assert_(self.service_news.target_audience_tree() == [('test1', 'Test 1', 0)])
 
 
-import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ServiceNewsTestCase))

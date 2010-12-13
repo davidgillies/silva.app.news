@@ -98,9 +98,7 @@ class NewsBaseTestCase(SilvaNewsTestCase):
         super(NewsBaseTestCase, self).setUp()
         self.sm = self.root.service_metadata
         service_news = self.service_news = self.root.service_news
-        service_news.add_subject('sub', 'Subject')
         service_news.add_subject('sub2', 'Subject 2')
-        service_news.add_target_audience('ta', 'TA')
         service_news.add_target_audience('ta2', 'TA 2')
 
         self.source1 = self.add_news_publication(

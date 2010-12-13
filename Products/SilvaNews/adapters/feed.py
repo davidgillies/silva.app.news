@@ -1,3 +1,4 @@
+from cgi import escape
 from five import grok
 from DateTime import DateTime
 
@@ -45,7 +46,7 @@ class AggregatorFeedEntry(object):
         self.item = item
 
     def id(self):
-        return quote_xml(self.item['link'])
+        return escape(self.item['link'], quote=True)
 
     def title(self):
         titl = self.item['title']
@@ -90,14 +91,3 @@ class AggregatorFeedView(grok.Adapter):
             entry = AggregatorFeedEntry(item)
             yield entry
 
-
-def quote_xml ( data ):
-    """Quote string for XML usage.
-    """
-    if not data:
-        return data
-    data = data.replace('&', '&amp;')
-    data = data.replace('"', '&quot;')
-    data = data.replace('<', '&lt;')
-    data = data.replace('>', '&gt;')
-    return data
