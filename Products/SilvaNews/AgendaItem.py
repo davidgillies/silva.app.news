@@ -280,7 +280,7 @@ class AgendaItemICS(grok.View):
     """ render an ics event
     """
     grok.context(IAgendaItem)
-    grok.require('zope.View')
+    grok.require('zope2.View')
     grok.name('event.ics')
 
     def update(self):
