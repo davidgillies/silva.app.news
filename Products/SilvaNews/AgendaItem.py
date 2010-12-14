@@ -226,6 +226,7 @@ InitializeClass(AgendaItemVersion)
 
 
 class AgendaViewMixin(object):
+
     def event_img_url(self):
         return '%s/++resource++Products.SilvaNews/date.png' % \
             absoluteURL(self.context, self.request)
@@ -233,29 +234,31 @@ class AgendaViewMixin(object):
     def event_url(self):
         return "%s/event.ics" % absoluteURL(self.context, self.request)
 
-
-class AgendaItemView(NewsItemView, AgendaViewMixin):
-    """ Index view for agenda items """
-    grok.context(IAgendaItem)
-
-    def update(self):
-        super(AgendaItemView, self).update()
-        self.service_news = getUtility(IServiceNews)
-        self.timezone = getattr(self.request, 'timezone', None)
-        if not self.timezone:
-            self.timezone = self.service_news.get_timezone()
+    @CachedProperty
+    def timezone(self):
+        timezone = getattr(self.request, 'timezone', None)
+        if not timezone:
+            timezone = self.content.get_timezone()
+        return timezone
 
     @CachedProperty
     def formatted_start_date(self):
         dt = self.content.get_start_datetime(self.timezone)
         if dt:
-            return self.service_news.format_date(dt, self.context.is_all_day())
+            service_news = getUtility(IServiceNews)
+            return service_news.format_date(dt, self.content.is_all_day())
 
     @CachedProperty
     def formatted_end_date(self):
-        dt = self.content.get_start_datetime(self.timezone)
+        dt = self.content.get_end_datetime(self.timezone)
         if dt:
-            return self.service_news.format_date(dt, self.context.is_all_day())
+            service_news = getUtility(IServiceNews)
+            return service_news.format_date(dt, self.content.is_all_day())
+
+
+class AgendaItemView(NewsItemView, AgendaViewMixin):
+    """ Index view for agenda items """
+    grok.context(IAgendaItem)
 
 
 class AgendaItemInlineView(silvaviews.View):
@@ -270,7 +273,7 @@ class AgendaItemInlineView(silvaviews.View):
         return u'<div>' + self.intro + u"</div>"
 
 
-class AgendaListItemView(NewsItemListItemView, AgendaViewMixin):
+class AgendaItemListItemView(NewsItemListItemView, AgendaViewMixin):
     """ Render as a list items (search results)
     """
     grok.context(IAgendaItem)
