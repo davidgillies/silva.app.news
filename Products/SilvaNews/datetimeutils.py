@@ -260,7 +260,7 @@ class DayWalk(object):
         self.start_datetime = start_datetime.astimezone(tz)
         self.end_datetime = end_datetime.astimezone(tz)
         # copy
-        self.cursor = start_datetime.replace()
+        self.cursor = start_datetime.astimezone(tz)
 
     def __iter__(self):
         return self

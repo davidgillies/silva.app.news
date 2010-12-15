@@ -245,14 +245,14 @@ class AgendaViewMixin(object):
         dt = self.content.get_start_datetime(self.timezone)
         if dt:
             service_news = getUtility(IServiceNews)
-            return service_news.format_date(dt, self.content.is_all_day())
+            return service_news.format_date(dt, not self.content.is_all_day())
 
     @CachedProperty
     def formatted_end_date(self):
         dt = self.content.get_end_datetime(self.timezone)
         if dt:
             service_news = getUtility(IServiceNews)
-            return service_news.format_date(dt, self.content.is_all_day())
+            return service_news.format_date(dt, not self.content.is_all_day())
 
 
 class AgendaItemView(NewsItemView, AgendaViewMixin):
