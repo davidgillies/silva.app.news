@@ -420,10 +420,9 @@ class INewsViewer(IViewer):
         """Search the items in the filters.
         """
 
-    def rss():
-        """Represent this viewer as an RSS feed. (RSS 1.0)
+    def set_proxy(item, force=False):
+        """ Set the news viewer as parent of the item if proxy mode enabled.
         """
-
 
 class IAggregator(INewsViewer):
     """interface for RSSAggregator"""

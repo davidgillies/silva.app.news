@@ -1,25 +1,25 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id$
-
+from five import grok
 from zope.component import getUtility
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
+from OFS import SimpleItem
 
 # Silva
-from five import grok
+from Products.Silva.Publishable import NonPublishable
 from silva.core.services.interfaces import ICataloging
 from Products.SilvaNews.interfaces import IServiceNews
-from Products.Silva.Asset import Asset
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
 # SilvaNews interfaces
 from Products.SilvaNews.interfaces import IFilter
 
 
-class Filter(Asset):
+class Filter(NonPublishable, SimpleItem.SimpleItem):
     """
     Filter object, a small object that shows a couple of different
     screens to different users, a filter for all NewsItem-objects to
@@ -30,8 +30,7 @@ class Filter(Asset):
 
     grok.implements(IFilter)
     grok.baseclass()
-    _allowed_source_types = ['Silva News Publication',
-                             'Silva News ICS Publication']
+    _allowed_source_types = ['Silva News Publication']
 
     def __init__(self, id):
         super(Filter, self).__init__(id)

@@ -33,7 +33,6 @@ from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
-from Products.SilvaNews.traverser import set_parent
 
 
 class AgendaViewer(NewsViewer, ExternalSource):
@@ -72,7 +71,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         """
         func = lambda x: x.get_next_items(self._days_to_show)
         sortattr = None
-        if len(self._filters) > 1:
+        if len(self.get_filters()) > 1:
             sortattr = 'start_datetime'
         return self._get_items_helper(func,sortattr)
 
@@ -84,7 +83,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         func = lambda x: x.get_agenda_items_by_date(month,year,
             timezone=self.get_timezone())
         sortattr = None
-        if len(self._filters) > 1:
+        if len(self.get_filters()) > 1:
             sortattr = 'start_datetime'
         results = self._get_items_helper(func,sortattr)
         return results
@@ -97,7 +96,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         allowed_meta_types = self.get_allowed_meta_types()
         func = lambda x: x.search_items(keywords,allowed_meta_types)
         sortattr = None
-        if len(self._filters) > 1:
+        if len(self.get_filters()) > 1:
             sortattr = 'start_datetime'
         results = self._get_items_helper(func,sortattr)
         return results
@@ -147,7 +146,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
 def wrap_event_brains(viewer, iterable):
     for brain in iterable:
         item = brain.getObject()
-        yield set_parent(viewer, item)
+        yield viewer.set_proxy(item)
 
 
 class CalendarView(object):

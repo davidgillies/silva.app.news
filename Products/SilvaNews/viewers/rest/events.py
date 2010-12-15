@@ -8,7 +8,7 @@ from zope.traversing.browser import absoluteURL
 
 from Products.SilvaNews.interfaces import IAgendaViewer
 from Products.SilvaNews.datetimeutils import UTC
-from Products.SilvaNews.traverser import set_parent
+
 
 class Events(rest.REST):
     """ JSON interface to agenda events
@@ -27,7 +27,7 @@ class Events(rest.REST):
         brains = self.context.get_items_by_date_range(start, end)
         for brain in brains:
             event = brain.getObject()
-            event = set_parent(self.context, event)
+            event = self.context.set_proxy(event)
             yield event
 
     def get_events_occurrences(self, start, end):

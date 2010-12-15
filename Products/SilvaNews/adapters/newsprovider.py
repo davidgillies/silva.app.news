@@ -13,7 +13,6 @@ from DateTime import DateTime
 
 from Products.SilvaNews.adapters import interfaces
 from Products.SilvaNews.interfaces import INewsViewer, IAggregator
-from Products.SilvaNews.traverser import set_parent
 
 
 class NewsViewerNewsProvider(component.Adapter):
@@ -28,7 +27,7 @@ class NewsViewerNewsProvider(component.Adapter):
         if len(results) < number:
             number = len(results)
         for item in results[:number]:
-            newsitem = set_parent(self.context, item.getObject())
+            newsitem = self.context.set_proxy(item.getObject())
             ref = NewsItemReference(newsitem, self.context)
             ret.append(ref)
         return ret

@@ -15,7 +15,6 @@ from App.class_init import InitializeClass # Zope 2.12
 # Silva interfaces
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
 from Products.SilvaNews.interfaces import INewsViewer
-from Acquisition import aq_parent
 
 # Silva
 from silva.core import conf as silvaconf
@@ -287,10 +286,7 @@ class AgendaItemICS(grok.View):
     grok.name('event.ics')
 
     def update(self):
-        self.viewer = None
-        parent = aq_parent(self.context)
-        if INewsViewer.providedBy(parent):
-            self.viewer = parent
+        self.viewer = INewsViewer(self.context, None)
         self.request.response.setHeader('Content-Type', 'text/calendar')
         self.content = self.context.get_viewable()
         self.event_factory = getAdapter(self.content, IEvent)

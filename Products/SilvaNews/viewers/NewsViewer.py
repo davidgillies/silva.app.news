@@ -19,10 +19,8 @@ from OFS.SimpleItem import SimpleItem
 
 # Silva
 from Products.Silva import SilvaPermissions
-from Products.Silva.browser import feed
 from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
-from silva.core.interfaces import IFeedEntryProvider, IFeedEntry
 from silva.core.services.interfaces import ICatalogService
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
@@ -65,15 +63,15 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     _filter_reference_name = u'viewer-filter'
 
-    security = ClassSecurityInfo()
+    _number_to_show = 25
+    _number_to_show_archive = 10
+    _number_is_days = 0
+    _year_range = 2
 
-    def __init__(self, id):
-        super(NewsViewer, self).__init__(id)
-        self._number_to_show = 25
-        self._number_to_show_archive = 10
-        self._number_is_days = 0
-        self._year_range = 2
-        self._filters = []
+    # define wether the items are displayed sub elements of the viewer
+    _proxy = False
+
+    security = ClassSecurityInfo()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'default_timezone')
@@ -330,6 +328,16 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def allow_feeds(self):
         return True
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'allow_feeds')
+    def set_proxy(self, item, force=False):
+        """ Set the viewer as parent of the item if it is configured to or
+        is force flag is set.
+        """
+        if force or self._proxy:
+            return set_parent(item)
+        return item
+
 
 InitializeClass(NewsViewer)
 
@@ -367,6 +375,13 @@ class INewsViewerSchema(Interface):
                       u"items that will be rendered by this viewer."),
         required=True)
 
+    _proxy = schema.Bool(
+        title=_(u"Proxy mode"),
+        description=_(u"When proxy mode is enabled items of the viewers are "
+                      u"displayed as children of the viewer"),
+        required=False,
+        default=False)
+
     first_weekday = schema.Choice(
         title=_(u"first day of the week"),
         source=week_days_source,
@@ -402,7 +417,7 @@ class NewsViewerListView(object):
         """
         version = item.getObject()
         content = version.get_content()
-        return set_parent(self.context, content)
+        return self.context.set_proxy(content)
 
 
 class NewsViewerView(silvaviews.View, NewsViewerListView):
@@ -448,6 +463,7 @@ def monthes(context):
         month_list.append(
             SimpleTerm(value=m+1, token=str(m+1), title=month))
     return SimpleVocabulary(month_list)
+
 @grok.provider(IContextSourceBinder)
 def years(context):
     year = datetime.now(context.get_timezone()).year

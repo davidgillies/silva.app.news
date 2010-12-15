@@ -67,23 +67,23 @@
                 </tal:translate>
                 <br />
               </tal:block>
-              <tal:block tal:condition="python: item.get_start_datetime() and options['show_datetime']=='1'">
+              <tal:block tal:condition="python: item.start_datetime() and options['show_datetime']=='1'">
                 <tal:translate i18n:translate="">Starts:
                   <span class="newsitemstartdate"
-                        tal:content="structure python: formatdate(item.get_start_datetime())" i18n:name="datetime" />
+                        tal:content="structure python: formatdate(item.start_datetime())" i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
-              <tal:block condition="python: item.get_end_datetime() and options['show_datetime']=='1'">
+              <tal:block condition="python: item.end_datetime() and options['show_datetime']=='1'">
                 <tal:translate i18n:translate="">Ends:
                   <span class="newsitemenddate"
-                        tal:content="structure python: formatdate(item.get_end_datetime())" i18n:name="datetime" />
+                        tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
-              <tal:block condition="python: (int(options['show_location']) and item.get_location())">
+              <tal:block condition="python: (int(options['show_location']) and item.location())">
                 <tal:translate i18n:translate="">Location:
-                  <span class="newsitemlocation" tal:content="item/get_location" i18n:name="" />
+                  <span class="newsitemlocation" tal:content="item/location" i18n:name="" />
                 </tal:translate>
               </tal:block>
             </p>

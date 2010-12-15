@@ -4,7 +4,6 @@ from DateTime import DateTime
 
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
 from Products.Silva.browser import feed
-from Products.SilvaNews.traverser import set_parent
 from Products.SilvaNews.interfaces import INewsViewer, IAggregator
 
 
@@ -16,11 +15,10 @@ class NewsViewerFeedEntryProvider(grok.Adapter):
         items = self.context.get_items()
 
         for item in items:
-            i = item.getObject().get_content()
-            if i.get_viewable() is None:
+            content = self.context.set_proxy(item.getObject().get_content())
+            if content.get_viewable() is None:
                 continue
-            i = set_parent(self.context, i)
-            entry = IFeedEntry(i, None)
+            entry = IFeedEntry(content, None)
             if not entry is None:
                 yield entry
 

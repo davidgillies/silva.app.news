@@ -23,7 +23,8 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
 from Products.SilvaDocument.Document import Document, DocumentVersion
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
-from Products.SilvaNews.interfaces import INewsPublication, IServiceNews
+from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
+    INewsViewer)
 from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
 
 _ = MessageFactory('silva_news')
@@ -289,3 +290,19 @@ def news_item_published(content, event):
         content.set_display_datetime(now)
 
 
+@grok.adapter(INewsItem)
+@grok.implementer(INewsViewer)
+def get_default_viewer(context):
+    """Adapter factory to get the contextual news viewer for a news item
+    """
+    parents = context.aq_chain[1:]
+    for parent in parents:
+        if IRoot.providedBy(parent):
+            return None
+        if INewsViewer.providedBy(parent):
+            return parent
+        if INewsPublication.providedBy(parent):
+            default = parent.get_default()
+            if INewsViewer.providedBy(default):
+                return default
+    return None
