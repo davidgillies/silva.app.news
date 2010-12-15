@@ -335,7 +335,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         is force flag is set.
         """
         if force or self._proxy:
-            return set_parent(item)
+            return set_parent(self, item)
         return item
 
 
