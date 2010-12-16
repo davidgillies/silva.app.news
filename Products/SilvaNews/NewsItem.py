@@ -190,26 +190,34 @@ class NewsItemVersion(DocumentVersion):
     idx_is_private = is_private
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subjects')
-    def subjects(self):
+                              'get_subjects')
+    def get_subjects(self):
         """Returns the subjects
         """
-        return self._subjects
+        return list(self._subjects or [])
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'subjects')
+    subjects = get_subjects
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_subjects')
-    idx_subjects = subjects
+    idx_subjects = get_subjects
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_target_audiences')
+    def get_target_audiences(self):
+        """Returns the target audiences
+        """
+        return list(self._target_audiences or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'target_audiences')
-    def target_audiences(self):
-        """Returns the target audiences
-        """
-        return self._target_audiences
+    target_audiences = get_target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'idx_target_audiences')
-    idx_target_audiences = target_audiences
+    idx_target_audiences = get_target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'last_author_fullname')

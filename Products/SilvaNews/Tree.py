@@ -68,6 +68,22 @@ class Node:
             ret += el.getElements()
         return ret
 
+    def find(self, id):
+        if self._id == id:
+            return self
+        for child in self._children:
+            match = child.find(id)
+            if match:
+                return match
+        return None
+
+    def get_subtree_ids(self):
+        results = [self._id]
+        for el in self._children:
+            results.extend(el.get_subtree_ids())
+        return results
+
+
 class Root(Node):
     def __init__(self):
         Node.__init__(self, 'root', 'root')

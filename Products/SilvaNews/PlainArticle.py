@@ -52,11 +52,11 @@ InitializeClass(PlainArticle)
 
 
 class IArticleSchema(interface.Interface):
-    _subjects = schema.List(
+    subjects = schema.List(
         title=_(u"subjects"),
         value_type=schema.Choice(source=subjects_source),
         required=True)
-    _target_audiences = schema.List(
+    target_audiences = schema.List(
         title=_(u"target audiences"),
         value_type=schema.Choice(source=target_audiences_source),
         required=True)

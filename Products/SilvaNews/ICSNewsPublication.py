@@ -31,12 +31,13 @@ _ = MessageFactory('silva_news')
 
 logger = logging.getLogger('silva_news')
 
-
+# XXX Move this to interfaces
 class IICSNewsPublication(INewsPublication):
     pass
 
 
 class ICSCalendarPublication(NewsPublication):
+    grok.baseclass() # disable for now
     grok.implements(IICSNewsPublication)
     security = ClassSecurityInfo()
     meta_type = "Silva News ICS Publication"
@@ -165,6 +166,7 @@ class IICSNewsPublicationSchema(Interface):
 class ICSNewsPublicationAddForm(silvaforms.SMIAddForm):
     """ SMI add form
     """
+    grok.baseclass() # disabled
     grok.context(IICSNewsPublication)
     grok.name("Silva News ICS Publication")
 
@@ -181,6 +183,7 @@ class SyncAction(silvaforms.Action):
 class ICSNewsPublicationEditForm(silvaforms.SMIEditForm):
     """ SMI edit form for ICS News Publication
     """
+    grok.baseclass() # disabled
     grok.context(IICSNewsPublication)
     fields = silvaforms.Fields(IICSNewsPublicationSchema)
     actions = silvaforms.SMIEditForm.actions.copy()

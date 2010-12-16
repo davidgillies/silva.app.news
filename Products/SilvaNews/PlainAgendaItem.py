@@ -76,11 +76,11 @@ class IAgendaItemSchema(interface.Interface):
         title=_(u"location"),
         description=_(u"The location where the event is taking place."),
         required=False)
-    _subjects = schema.List(
+    subjects = schema.List(
         title=_(u"subjects"),
         value_type=schema.Choice(source=subjects_source),
         required=True)
-    _target_audiences = schema.List(
+    target_audiences = schema.List(
         title=_(u"target audiences"),
         value_type=schema.Choice(source=target_audiences_source),
         required=True)

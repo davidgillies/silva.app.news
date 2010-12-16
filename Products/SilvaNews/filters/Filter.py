@@ -11,7 +11,6 @@ from OFS import SimpleItem
 
 # Silva
 from Products.Silva.Publishable import NonPublishable
-from silva.core.services.interfaces import ICataloging
 from Products.SilvaNews.interfaces import IServiceNews
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
@@ -40,18 +39,27 @@ class Filter(NonPublishable, SimpleItem.SimpleItem):
     # ACCESSORS
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subjects')
-    def subjects(self):
+                              'get_subjects')
+    def get_subjects(self):
         """Returns a list of subjects
         """
-        return self._subjects
+        return list(self._subjects or [])
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'subjects')
+    subjects = get_subjects
+
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_target_audiences')
+    def get_target_audiences(self):
+        """Returns a list of target audiences
+        """
+        return list(self._target_audiences or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'target_audiences')
-    def target_audiences(self):
-        """Returns a list of target audiences
-        """
-        return self._target_audiences
+    target_audiences = get_target_audiences
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
@@ -73,11 +81,9 @@ class Filter(NonPublishable, SimpleItem.SimpleItem):
         only contain items that the service_news-lists contain (to remove
         items from the object's list that are removed in the service)
         """
-        # XXX This isn't called yet from anywhere since the methods it was
-        # called from are replaced by metadata functionality
         service_news = getUtility(IServiceNews)
-        service_subjects = [s[0] for s in service_news.subjects()]
-        service_target_audiences = [t[0] for t in service_news.target_audiences()]
+        service_subjects = [s[0] for s in service_news.get_subjects()]
+        service_target_audiences = [t[0] for t in service_news.get_target_audiences()]
 
         removed_subjects = []
         removed_target_audiences = []
@@ -100,7 +106,6 @@ class Filter(NonPublishable, SimpleItem.SimpleItem):
         self._subjects = new_subs
         self._target_audiences = new_tas
 
-        ICataloging(self).reindex()
         return removed_subjects + removed_target_audiences
 
 InitializeClass(Filter)

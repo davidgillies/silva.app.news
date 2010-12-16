@@ -190,6 +190,22 @@ class NewsItemFilter(Filter):
 
     # HELPERS
 
+    def _collect_subjects(self, service):
+        result = set()
+        for sub in self._subjects:
+            node = service._subjects.find(sub)
+            if node is not None:
+                result = result.union(set(node.get_subtree_ids()))
+        return list(result)
+
+    def _collect_target_audiences(self, service):
+        result = set()
+        for sub in self._target_audiences:
+            node = service._target_audiences.find(sub)
+            if node is not None:
+                result = result.union(set(node.get_subtree_ids()))
+        return list(result)
+
     def _prepare_query ( self, meta_types=None ):
         """private method preparing the common fields for a catalog query.
 
@@ -199,10 +215,13 @@ class NewsItemFilter(Filter):
         query = {}
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         query['version_status'] = 'public'
-        query['idx_subjects'] = {'query': self._subjects,
-                                 'operator': 'or'}
-        query['idx_target_audiences'] = {'query': self._target_audiences,
-                                         'operator': 'or'}
+        service = getUtility(IServiceNews)
+        query['idx_subjects'] = {
+            'query': self._collect_subjects(service),
+            'operator': 'or'}
+        query['idx_target_audiences'] = {
+            'query': self._collect_target_audiences(service),
+            'operator': 'or'}
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         query['meta_type'] = meta_types

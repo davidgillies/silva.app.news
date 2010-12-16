@@ -196,11 +196,13 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         parentnode.addChild(node)
         self._p_changed = 1
 
-    security.declareProtected('View',
-                                'subjects')
-    def subjects(self):
+    security.declareProtected('View', 'get_subjects')
+    def get_subjects(self):
         """returns a list of (id, title) tuples"""
         return [(x.id(), x.title()) for x in  self._subjects.getElements()]
+
+    security.declareProtected('View', 'subjects')
+    subjects = get_subjects
 
     security.declareProtected('View',
                                 'subject_title')
@@ -234,12 +236,14 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
             audject = audject[0].target_audiences()
         return self.target_audience_form_tree(audject)
 
-    security.declareProtected('View',
-                                'target_audiences')
-    def target_audiences(self):
+    security.declareProtected('View', 'get_target_audiences')
+    def get_target_audiences(self):
         """returns a list of (id, title) tuples"""
         return [(x.id(), x.title()) for x in
                 self._target_audiences.getElements()]
+
+    security.declareProtected('View', 'target_audiences')
+    target_audiences = get_target_audiences
 
     security.declareProtected('View',
                                 'target_audience_title')

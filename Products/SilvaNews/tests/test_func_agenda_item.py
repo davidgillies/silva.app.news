@@ -31,8 +31,8 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
         form.get_control('addform.field.start_datetime.year').value = '2010'
         form.get_control('addform.field.start_datetime.hour').value = '10'
         form.get_control('addform.field.start_datetime.min').value = '20'
-        form.get_control('addform.field._subjects').value = ['generic']
-        form.get_control('addform.field._target_audiences').value = ['all']
+        form.get_control('addform.field.subjects').value = ['generic']
+        form.get_control('addform.field.target_audiences').value = ['all']
 
         status = form.get_control('addform.action.save_edit').submit()
         self.assertEquals(200, status)

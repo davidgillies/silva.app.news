@@ -54,7 +54,7 @@ def target_audiences_source(context):
 
 
 class ISubjectTASchema(Interface):
-    _subjects = schema.List(
+    subjects = schema.List(
         title=_(u"subjects"),
         description=_(
             u'Select the news subjects to filter on. '
@@ -62,7 +62,7 @@ class ISubjectTASchema(Interface):
             u'Select nothing to have all show up.'),
         value_type=schema.Choice(source=subjects_source),
         required=False)
-    _target_audiences = schema.List(
+    target_audiences = schema.List(
         title=_(u"target audiences"),
         description=_(u'Select the target audiences to filter on.'),
         value_type=schema.Choice(source=target_audiences_source),
@@ -91,10 +91,10 @@ class INewsItemVersion(IDocumentVersion):
         container as the source.
         """
 
-    def subjects():
+    def get_subjects():
         """Returns the subjects this news item is in."""
 
-    def target_audiences():
+    def get_target_audiences():
         """Returns the target audiences for this news item."""
 
     def fulltext():
@@ -147,16 +147,16 @@ class INewsPublication(IPublication):
 
 class IFilter(IAsset):
 
-    def subjects():
+    def get_subjects():
         """Returns the list of subjects."""
 
-    def target_audiences():
+    def get_target_audiences():
         """Returns the list of target audiences."""
 
-    def set_subject(subject, on_or_off):
+    def set_subject(subjects):
         """Updates the list of subjects"""
 
-    def set_target_audience(target_audience, on_or_off):
+    def set_target_audience(target_audiences):
         """Updates the list of target_audiences"""
 
     def synchronize_with_service():

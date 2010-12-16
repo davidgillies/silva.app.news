@@ -4,7 +4,19 @@ from DateTime import DateTime
 
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
 from Products.Silva.browser import feed
-from Products.SilvaNews.interfaces import INewsViewer, IAggregator
+from Products.SilvaNews.interfaces import (INewsViewer,
+    IAggregator, INewsPublication)
+from Products.Silva.browser.feed import ContainerFeedProvider
+
+
+class NewsPublicationFeedEntryProvider(ContainerFeedProvider):
+    grok.context(INewsPublication)
+
+    def entries(self):
+        default = self.context.get_default()
+        if INewsViewer.providedBy(default):
+            return IFeedEntryProvider(default).entries()
+        return super(self.__class__, self).entries()
 
 
 class NewsViewerFeedEntryProvider(grok.Adapter):
@@ -78,7 +90,7 @@ class AggregatorFeedEntry(object):
         return None
 
 
-class AggregatorFeedView(grok.Adapter):
+class AggregatorFeedProvider(grok.Adapter):
     grok.context(IAggregator)
     grok.implements(IFeedEntryProvider)
 
