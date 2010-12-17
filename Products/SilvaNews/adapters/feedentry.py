@@ -15,7 +15,9 @@ class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
     def html_description(self):
         return self.version.get_intro()
 
-    def date_updated(self):
+    def date_published(self):
+        """ This field is used for ordering.
+        """
         return self.version.display_datetime()
 
 
