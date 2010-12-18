@@ -31,7 +31,9 @@ class AgendaEvent(Event):
         end_dt = cdate.get_end_datetime(timezone)
         if context.is_all_day():
             start_date = date(start_dt.year, start_dt.month, start_dt.day)
-            end_date = date(end_dt.year, end_dt.month, end_dt.day)
+            # end date is exclusive
+            end_date = date(end_dt.year, end_dt.month, end_dt.day) + \
+                relativedelta(days=+1)
             self['DTSTART'] = vDate(start_date)
             if end_date != start_date:
                 self['DTEND'] = vDate(end_date)
