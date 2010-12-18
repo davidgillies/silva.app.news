@@ -311,6 +311,6 @@ def get_default_viewer(context):
             return parent
         if INewsPublication.providedBy(parent):
             default = parent.get_default()
-            if INewsViewer.providedBy(default):
+            if default and INewsViewer.providedBy(default):
                 return default
     return None

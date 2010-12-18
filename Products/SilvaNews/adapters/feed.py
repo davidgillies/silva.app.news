@@ -14,7 +14,7 @@ class NewsPublicationFeedEntryProvider(ContainerFeedProvider):
 
     def entries(self):
         default = self.context.get_default()
-        if INewsViewer.providedBy(default):
+        if default and INewsViewer.providedBy(default):
             return IFeedEntryProvider(default).entries()
         return super(self.__class__, self).entries()
 
