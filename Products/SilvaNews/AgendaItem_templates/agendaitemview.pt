@@ -5,7 +5,7 @@
   i18n:domain="silva_news">
   <h2 class="heading newsitemheading"
     tal:content="structure content/get_title" />
-  <div class="event_actions">
+  <p class="eventactions">
     <a i18n:translate=""
        i18n:attributes="title"
        tal:attributes="href view/event_url"
@@ -13,24 +13,24 @@
       <img tal:attributes="src view/event_img_url" />
       Add this event to my calendar
     </a>
-  </div>
+  </p>
   <div class="newsiteminfo">
-    <div class="publicationdate" tal:condition="view/article_date">
+    <p class="publicationdate" tal:condition="view/article_date">
       <span class="label" i18n:translate="">Publication date: </span>
       <span class="value" tal:content="view/article_date" />
-    </div>
-    <div class="location" tal:condition="content/get_location">
+    </p>
+    <p class="location" tal:condition="content/get_location">
       <span class="label" i18n:translate="">Location: </span>
       <span class="value" tal:content="content/get_location" />
-    </div>
-    <div class="startdate" tal:condition="view/formatted_start_date">
+    </p>
+    <p class="startdate" tal:condition="view/formatted_start_date">
       <span class="label" i18n:translate="">Start: </span>
       <span class="value" tal:content="view/formatted_start_date" />
-    </div>
-    <div class="enddate" tal:condition="view/formatted_end_date">
+    </p>
+    <p class="enddate" tal:condition="view/formatted_end_date">
       <span class="label" i18n:translate="">End: </span>
       <span class="value" tal:content="view/formatted_end_date" />
-    </div>
+    </p>
   </div>
   <div class="newsitemcontent" tal:content="structure view/article" />
 </div>
