@@ -1,8 +1,8 @@
 ChangeLog
 =========
 
-SilvaNewsNetwork 2.10 (2010/12/20)
-----------------------------------
+SilvaNewsNetwork 2.9 (2010/12/20)
+---------------------------------
 
 - Add ajax calendar view with json rest web service.
 
@@ -11,7 +11,7 @@ SilvaNewsNetwork 2.10 (2010/12/20)
 - Fix rss and atom feeds to use Silva API.
 
 - Refactor source / filter / viewer relations to use references. Now they
-can be moved around without loosing relashionships.
+  can be moved around without loosing relashionships.
 
 - Fixes timezone support.
 
