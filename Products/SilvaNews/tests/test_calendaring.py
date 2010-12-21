@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from difflib import unified_diff
 from os import linesep
 from datetime import datetime, timedelta
@@ -134,14 +136,14 @@ class TestCalendar(NewsBaseTestCase):
         self.agenda.set_timezone_name('Europe/Amsterdam')
         sdt = datetime(2010, 9, 4, 10, 20, tzinfo=self.agenda.get_timezone())
         self.event1 = self.add_published_agenda_item(
-            self.source1, 'event', 'Event1',
+            self.source1, 'event', u'Event héhé“π”',
             sdt, sdt + relativedelta(hours=+1))
         version = self.event1.get_viewable()
         version.set_subjects(['sub'])
         version.set_target_audiences(['ta'])
         sdt = datetime(2010, 9, 10, 10, 20, tzinfo=self.agenda.get_timezone())
         self.event2 = self.add_published_agenda_item(
-            self.source1, 'event2', 'Event2',
+            self.source1, 'event2', u'Event2',
             sdt, sdt + relativedelta(days=+1))
         version = self.event2.get_viewable()
         version.set_all_day(True)
@@ -198,7 +200,7 @@ END:VEVENT
 BEGIN:VEVENT
 DTEND:20100904T092000Z
 DTSTART:20100904T082000Z
-SUMMARY:Event1
+SUMMARY:Event héhé“π”
 UID:%d@silvanews
 URL:http://localhost/root/agenda/++newsitems++%d-%s
 END:VEVENT

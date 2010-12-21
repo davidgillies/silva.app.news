@@ -278,7 +278,7 @@ class AgendaItemListItemView(NewsItemListItemView, AgendaViewMixin):
     grok.context(IAgendaItem)
 
 
-class AgendaItemICS(grok.View):
+class AgendaItemICS(silvaviews.View):
     """ render an ics event
     """
     grok.context(IAgendaItem)
@@ -296,5 +296,5 @@ class AgendaItemICS(grok.View):
         cal.add('prodid', '-//Silva News Calendaring//lonely event//')
         cal.add('version', '2.0')
         cal.add_component(self.event_factory(self.viewer, self.request))
-        return unicode(cal)
+        return cal.as_string()
 

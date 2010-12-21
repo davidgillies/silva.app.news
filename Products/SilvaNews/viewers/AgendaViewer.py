@@ -405,7 +405,7 @@ class AgendaViewerJSCalendar(silvaviews.Page):
         return absoluteURL(self.context, self.request) + '/++rest++events'
 
 
-class AgendaViewerICSCalendar(grok.View):
+class AgendaViewerICSCalendar(silvaviews.View):
     """ Agenda viewer ics format """
     grok.context(IAgendaViewer)
     grok.name('calendar.ics')
@@ -417,7 +417,7 @@ class AgendaViewerICSCalendar(grok.View):
             (self.context, self.request,), ICalendar)
 
     def render(self):
-        return unicode(self.calendar)
+        return self.calendar.as_string()
 
 
 class AgendaViewerSubscribeView(silvaviews.Page):

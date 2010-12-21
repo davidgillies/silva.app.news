@@ -16,7 +16,6 @@ from DateTime import DateTime
 from silva.core.interfaces import IRoot
 from silva.core.interfaces.events import IContentPublishedEvent
 from silva.core.references.interfaces import IReferenceService
-from silva.core.services.interfaces import ICataloging
 from silva.core.views import views as silvaviews
 
 from Products.Silva import SilvaPermissions
@@ -85,7 +84,6 @@ class NewsItemVersion(DocumentVersion):
             are shown
         """
         self._display_datetime = ddt
-        ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'display_datetime')
