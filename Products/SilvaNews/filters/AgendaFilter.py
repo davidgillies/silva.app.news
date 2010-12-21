@@ -60,7 +60,6 @@ class AgendaFilter(NewsItemFilter):
             endmonth = 1
             year = year + 1
         enddate = datetime(year, endmonth, 1, tzinfo=timezone).astimezone(UTC)
-        import pdb; pdb.set_trace()
         return self.get_items_by_date_range(startdate, enddate)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
