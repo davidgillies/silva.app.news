@@ -71,13 +71,15 @@ class TestAgendaViewerPublicViews(SilvaNewsTestCase):
     def test_archives(self):
         status = self.browser.open(
             'http://localhost/root/agenda_viewer/archives',
-            query={'year': '2010', 'month': '12'})
+            query={'form.field.year': '2010', 'form.field.month': '12'})
         self.assertEquals(200, status)
         self.assertEquals(len(self.browser.inspect.news_items), 2)
 
     def test_year(self):
         status = self.browser.open(
             'http://localhost/root/agenda_viewer/year', query={'year': '2010'})
+        self.assertEquals(200, status)
+
 
 def test_suite():
     suite = unittest.TestSuite()

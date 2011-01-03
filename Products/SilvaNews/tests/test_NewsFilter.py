@@ -77,7 +77,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.item1_2.get_viewable().set_display_datetime(DateTime() + 1)
         items = self.newsfilter.get_last_items(2)
         itemids = [item.object_path[-1] for item in items]
-        self.assertEquals(itemids, ['art2', 'art1'])
+        self.assertEquals(set(itemids), set(['art2', 'art1']))
 
 import unittest
 def test_suite():
