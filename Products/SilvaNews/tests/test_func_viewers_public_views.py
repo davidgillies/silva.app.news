@@ -30,6 +30,13 @@ class TestViewerPublicViews(NewsBaseTestCase):
         self.assertEquals(200, status)
         self.assertEquals(len(self.browser.inspect.news_items), 2)
 
+    def test_search(self):
+        status = self.browser.open(
+            'http://localhost/root/newsviewer/search',
+            query={'query': 'Article'})
+        self.assertEquals(200, status)
+        self.assertEquals(len(self.browser.inspect.news_items), 2)
+
 
 class TestAgendaViewerPublicViews(SilvaNewsTestCase):
 

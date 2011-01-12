@@ -35,7 +35,7 @@
     </div>
     <div class="viewlink">
       <a href="#"
-        tal:attributes="href view.url('archives')" i18n:translate="" />
+        tal:attributes="href python:view.url('archives')" i18n:translate="" />
     </div>
   </div>
 
