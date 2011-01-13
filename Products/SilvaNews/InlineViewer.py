@@ -3,7 +3,7 @@
 # $Revision: 1.25 $
 
 from zope.interface import implements
-from zope.app.container.interfaces import IObjectMovedEvent
+from zope.lifecycleevent.interfaces import IObjectMovedEvent
 import os
 
 import Products
