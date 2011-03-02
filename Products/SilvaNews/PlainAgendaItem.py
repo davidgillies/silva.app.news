@@ -169,7 +169,7 @@ class EditAction(silvaforms.EditAction):
         return super(EditAction, self).applyData(form, content, data)
 
 
-class AgendaEditProperties(silvaforms.RESTKupuEditProperties):
+class AgendaEditProperties(silvaforms.SMIForm):
     grok.context(IAgendaItem)
 
     label = _(u"agenda item properties")

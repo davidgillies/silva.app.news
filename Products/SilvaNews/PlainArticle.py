@@ -69,7 +69,7 @@ class ArticleAddForm(silvaforms.SMIAddForm):
     fields = silvaforms.Fields(ITitledContent, IArticleSchema)
 
 
-class ArticleEditProperties(silvaforms.RESTKupuEditProperties):
+class ArticleEditProperties(silvaforms.SMIForm):
     grok.context(INewsItem)
 
     label = _(u"article properties")
