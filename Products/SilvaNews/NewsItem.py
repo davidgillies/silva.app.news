@@ -19,7 +19,7 @@ from silva.core.references.interfaces import IReferenceService
 from silva.core.views import views as silvaviews
 
 from Products.Silva import SilvaPermissions
-from Products.Silva.transform.renderer.xsltrendererbase import XSLTTransformer
+from Products.SilvaDocument.rendering.xsltrendererbase import XSLTTransformer
 from Products.SilvaDocument.Document import Document, DocumentVersion
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
