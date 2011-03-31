@@ -23,6 +23,7 @@ from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
     INewsViewer)
 from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
+from Products.Silva.cataloging import CatalogingAttributesVersion
 
 _ = MessageFactory('silva_news')
 
@@ -315,3 +316,13 @@ def get_default_viewer(context):
             if default and INewsViewer.providedBy(default):
                 return default
     return None
+
+
+class CatalogingAttributesNewsItemVersion(CatalogingAttributesVersion):
+    grok.context(INewsItemVersion)
+
+    @property
+    def object_path(self):
+        return self.get_content().aq_inner.getPhysicalPath()
+
+

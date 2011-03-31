@@ -90,8 +90,7 @@ class TestAgendaViewerPublicViews(SilvaNewsTestCase):
 
 def test_suite():
     suite = unittest.TestSuite()
-    # XXX disabled
-    # suite.addTest(unittest.makeSuite(TestViewerPublicViews))
-    # suite.addTest(unittest.makeSuite(TestAgendaViewerPublicViews))
+    suite.addTest(unittest.makeSuite(TestViewerPublicViews))
+    suite.addTest(unittest.makeSuite(TestAgendaViewerPublicViews))
     return suite
 
