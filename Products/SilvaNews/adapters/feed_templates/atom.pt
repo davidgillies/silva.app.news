@@ -31,7 +31,7 @@
        tal:attributes="term keyword" />
     </tal:repeat>
     <summary type="xhtml">
-      <div tal:content="structure item/html_description" />
+      <div tal:content="structure item/html_description" xmlns="http://www.w3.org/1999/xhtml" />
     </summary>
     <silvanews:location tal:condition="item/location|nothing" tal:content="item/location" />
     <silvanews:start_datetime tal:condition="item/start_datetime|nothing" 
