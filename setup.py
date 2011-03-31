@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '2.9.1'
+version = '3.0dev'
 
 def product_readme(filename):
     return  open(os.path.join('Products', 'SilvaNews', filename)).read()
@@ -36,12 +36,12 @@ setup(name='Products.SilvaNews',
         'Products.Formulator',
         'Products.ParsedXML',
         'Products.Silva',
-        'Products.SilvaDocument',
         'five.grok',
         'icalendar',
         'megrok.chameleon',
         'python-dateutil',
         'setuptools',
+        'silva.app.document',
         'silva.core.conf',
         'silva.core.interfaces',
         'silva.core.references',

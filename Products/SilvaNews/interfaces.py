@@ -12,7 +12,7 @@ from zope import schema
 
 from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 
-from Products.SilvaDocument.interfaces import IDocument, IDocumentVersion
+from silva.app.document.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
 from Products.SilvaNews.datetimeutils import zone_names
 

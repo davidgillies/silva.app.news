@@ -23,6 +23,8 @@ from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
 
 
+# XXX remove those classes and implement content type on NewsItem
+
 class PlainArticleVersion(NewsItemVersion):
     """Silva News PlainArticle version.
     """

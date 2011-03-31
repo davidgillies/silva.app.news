@@ -23,8 +23,7 @@ from Products.Silva import SilvaPermissions
 
 # SilvaNews
 from Products.SilvaNews.interfaces import IServiceNews
-from Products.SilvaNews.NewsItem import (NewsItemView, NewsItemListItemView,
-    IntroHTML)
+from Products.SilvaNews.NewsItem import NewsItemView, NewsItemListItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 
 from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
@@ -266,7 +265,8 @@ class AgendaItemInlineView(silvaviews.View):
     grok.name('tooltip.html')
 
     def update(self):
-        self.intro = IntroHTML.transform(self.content, self.request)
+        # XXX fix intro
+        self.intro = u''
 
     def render(self):
         return u'<div>' + self.intro + u"</div>"

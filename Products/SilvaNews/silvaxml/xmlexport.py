@@ -12,7 +12,7 @@ from silva.core.references.reference import canonical_path
 
 from Products.SilvaNews import interfaces
 from Products.SilvaNews.datetimeutils import utc_datetime
-from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
+# from Products.SilvaDocument.silvaxml.xmlexport import DocumentVersionProducer
 from Products.Silva.silvaxml.xmlexport import (ExternalReferenceError,
     theXMLExporter, VersionedContentProducer, SilvaBaseProducer)
 
@@ -220,25 +220,26 @@ class PlainArticleProducer(VersionedContentProducer):
         self.versions()
         self.endElementNS(NS_SILVA_NEWS,'plainarticle')
 
+# XXX no more SilvaDocument
 
-class PlainArticleVersionProducer(DocumentVersionProducer):
-    """Export a version of a PlainArticle object to XML.
-    """
-    grok.adapts(interfaces.INewsItemVersion, Interface)
-
-    def sax(self):
-        """sax"""
-        self.startElement(
-            'content',
-            {'version_id': self.context.id,
-             'subjects': ','.join(self.context.subjects()),
-             'target_audiences': ','.join(self.context.target_audiences()),
-             'display_datetime': iso_datetime(
-                self.context.display_datetime())})
-        self.metadata()
-        node = self.context.content.documentElement.getDOMObj()
-        self.sax_node(node)
-        self.endElement('content')
+# class PlainArticleVersionProducer(DocumentVersionProducer):
+#     """Export a version of a PlainArticle object to XML.
+#     """
+#     grok.adapts(interfaces.INewsItemVersion, Interface)
+# 
+#     def sax(self):
+#         """sax"""
+#         self.startElement(
+#             'content',
+#             {'version_id': self.context.id,
+#              'subjects': ','.join(self.context.subjects()),
+#              'target_audiences': ','.join(self.context.target_audiences()),
+#              'display_datetime': iso_datetime(
+#                 self.context.display_datetime())})
+#         self.metadata()
+#         node = self.context.content.documentElement.getDOMObj()
+#         self.sax_node(node)
+#         self.endElement('content')
 
 
 class PlainAgendaItemProducer(VersionedContentProducer):
@@ -256,29 +257,31 @@ class PlainAgendaItemProducer(VersionedContentProducer):
         self.endElementNS(NS_SILVA_NEWS,'plainagendaitem')
 
 
-class PlainAgendaItemVersionProducer(DocumentVersionProducer):
-    """Export a version of an AgendaItem object to XML.
-    """
-    grok.adapts(interfaces.IAgendaItemVersion, Interface)
+# XXX no more SilvaDocument
 
-    def sax(self):
-        """sax"""
-        self.startElement(
-            'content',
-            {'version_id': self.context.id,
-             'subjects': ','.join(self.context.subjects()),
-             'target_audiences': ','.join(self.context.target_audiences()),
-             'start_datetime': iso_datetime(self.context.get_start_datetime()),
-             'end_datetime': iso_datetime(self.context.get_end_datetime()),
-             'location': self.context.get_location(),
-             'recurrence': self.context.get_recurrence() or '',
-             'all_day': str(self.context.is_all_day()),
-             'timezone_name': self.context.get_timezone_name(),
-             'display_datetime': iso_datetime(
-                self.context.display_datetime())})
-        self.metadata()
-        node = self.context.content.documentElement.getDOMObj()
-        self.sax_node(node)
-        self.endElement('content')
+# class PlainAgendaItemVersionProducer(DocumentVersionProducer):
+#     """Export a version of an AgendaItem object to XML.
+#     """
+#     grok.adapts(interfaces.IAgendaItemVersion, Interface)
+# 
+#     def sax(self):
+#         """sax"""
+#         self.startElement(
+#             'content',
+#             {'version_id': self.context.id,
+#              'subjects': ','.join(self.context.subjects()),
+#              'target_audiences': ','.join(self.context.target_audiences()),
+#              'start_datetime': iso_datetime(self.context.get_start_datetime()),
+#              'end_datetime': iso_datetime(self.context.get_end_datetime()),
+#              'location': self.context.get_location(),
+#              'recurrence': self.context.get_recurrence() or '',
+#              'all_day': str(self.context.is_all_day()),
+#              'timezone_name': self.context.get_timezone_name(),
+#              'display_datetime': iso_datetime(
+#                 self.context.display_datetime())})
+#         self.metadata()
+#         node = self.context.content.documentElement.getDOMObj()
+#         self.sax_node(node)
+#         self.endElement('content')
 
 

@@ -12,6 +12,7 @@
   <include package="silva.core.smi" />
   <include package="infrae.rest" />
   <include package="silva.core.views" />
+  <include package="silva.app.document" />
 
   <five:registerPackage package="." />
 

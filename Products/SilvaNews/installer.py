@@ -15,7 +15,8 @@ class SilvaNewsInstaller(DefaultInstaller):
 
     def install_custom(self, root):
         self.setup_catalog(root)
-        self.register_views(root.service_view_registry)
+        # XXX fix me remove all! old views
+        # self.register_views(root.service_view_registry)
         self.configure_extra_metadata(root)
 
         if not hasattr(root.aq_explicit,'service_news'):
@@ -23,7 +24,7 @@ class SilvaNewsInstaller(DefaultInstaller):
             factory.manage_addServiceNews('service_news')
 
     def uninstall_custom(self, root):
-        self.unregister_views(root.service_view_registry)
+        # self.unregister_views(root.service_view_registry)
         self.unconfigure_extra_metadata(root)
 
     def configure_extra_metadata(self, root):

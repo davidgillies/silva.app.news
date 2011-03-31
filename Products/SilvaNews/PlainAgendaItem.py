@@ -26,6 +26,7 @@ from Products.SilvaNews.widgets.recurrence import Recurrence
 
 _ = MessageFactory('silva_news')
 
+# XXX remove those classes and implement content type in NewsItem / AgendaItem
 
 class PlainAgendaItemVersion(AgendaItemVersion):
     """Silva News PlainAgendaItemVersion

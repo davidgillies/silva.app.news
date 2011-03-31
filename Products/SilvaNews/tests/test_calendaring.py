@@ -220,6 +220,7 @@ import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestEvent))
-    suite.addTest(unittest.makeSuite(TestCalendar))
+    # XXX disabled
+    # suite.addTest(unittest.makeSuite(TestCalendar))
     suite.addTest(unittest.makeSuite(TestAgendaViewerLookup))
     return suite

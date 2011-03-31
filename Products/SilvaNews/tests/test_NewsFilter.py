@@ -1,9 +1,10 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id$
-
+import unittest
 from DateTime import DateTime
 from Products.SilvaNews.tests import SilvaNewsTestCase
+
 
 class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     """Test the NewsFilter interface.
@@ -79,7 +80,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         itemids = [item.object_path[-1] for item in items]
         self.assertEquals(set(itemids), set(['art2', 'art1']))
 
-import unittest
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NewsFilterTestCase))

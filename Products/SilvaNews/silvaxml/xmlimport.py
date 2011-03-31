@@ -8,9 +8,9 @@ from Products.Silva.silvaxml.xmlimport import (
 from Products.Silva import mangle
 from silva.core import conf as silvaconf
 
-from Products.SilvaDocument.silvaxml.xmlimport import (
-    DocXMLHandler, resolve_path)
-from Products.SilvaDocument.silvaxml import NS_SILVA_DOCUMENT
+# from Products.SilvaDocument.silvaxml.xmlimport import (
+#     DocXMLHandler, resolve_path)
+# from Products.SilvaDocument.silvaxml import NS_SILVA_DOCUMENT
 from Products.SilvaNews.silvaxml.xmlexport import NS_SILVA_NEWS
 from Products.SilvaNews.silvaxml.helpers import *
 from Products.SilvaNews.PlainArticle import (

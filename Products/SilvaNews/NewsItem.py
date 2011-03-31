@@ -15,12 +15,10 @@ from DateTime import DateTime
 # Silva
 from silva.core.interfaces import IRoot
 from silva.core.interfaces.events import IContentPublishedEvent
-from silva.core.references.interfaces import IReferenceService
 from silva.core.views import views as silvaviews
 
 from Products.Silva import SilvaPermissions
-from Products.SilvaDocument.rendering.xsltrendererbase import XSLTTransformer
-from Products.SilvaDocument.Document import Document, DocumentVersion
+from silva.app.document import document
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
     INewsViewer)
@@ -29,7 +27,7 @@ from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
 _ = MessageFactory('silva_news')
 
 
-class NewsItem(Document):
+class NewsItem(document.Document):
     """Base class for all kinds of news items.
     """
     grok.baseclass()
@@ -58,7 +56,7 @@ class NewsItem(Document):
 InitializeClass(NewsItem)
 
 
-class NewsItemVersion(DocumentVersion):
+class NewsItemVersion(document.DocumentVersion):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
@@ -123,7 +121,9 @@ class NewsItemVersion(DocumentVersion):
             characters in the data returned it will truncate (per element)
             to minimally 1 element
         """
-        return IntroHTML.transform(self, request or self.REQUEST)
+        # XXX fix intro, remove this function.
+        #IntroHTML.transform(self, request or self.REQUEST)
+        return u""
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_thumbnail')
@@ -132,19 +132,22 @@ class NewsItemVersion(DocumentVersion):
 
             returns '' if no image is available
         """
-        images = self.content.documentElement.getElementsByTagName('image')
-        if not images:
-            return ''
-        reference_name = images[0].getAttribute('reference')
-        service = getUtility(IReferenceService)
-        reference = service.get_reference(self, name=reference_name)
-        image = reference.target
+        # XXX fix get thumbnail
 
-        tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
-                    (self.get_content().absolute_url(), image.tag(thumbnail=1)))
-        if divclass:
-            tag = '<div class="%s">%s</div>' % (divclass, tag)
-        return tag
+        # images = self.content.documentElement.getElementsByTagName('image')
+        # if not images:
+        #     return ''
+        # reference_name = images[0].getAttribute('reference')
+        # service = getUtility(IReferenceService)
+        # reference = service.get_reference(self, name=reference_name)
+        # image = reference.target
+        # 
+        # tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
+        #             (self.get_content().absolute_url(), image.tag(thumbnail=1)))
+        # if divclass:
+        #     tag = '<div class="%s">%s</div>' % (divclass, tag)
+        # return tag
+        return u''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
@@ -254,8 +257,6 @@ class NewsItemVersion(DocumentVersion):
 
 InitializeClass(NewsItemVersion)
 
-ContentHTML = XSLTTransformer('newsitem.xslt', __file__)
-IntroHTML = XSLTTransformer('newsitem_intro.xslt', __file__)
 
 class NewsItemView(silvaviews.View):
     """ View on a News Item (either Article / Agenda )
@@ -275,7 +276,7 @@ class NewsItemView(silvaviews.View):
 
     @CachedProperty
     def article(self):
-        return ContentHTML.transform(self.content, self.request)
+        return self.context.body.render(self.context, self.request)
 
 
 class NewsItemListItemView(NewsItemView):
@@ -286,7 +287,9 @@ class NewsItemListItemView(NewsItemView):
 
     @CachedProperty
     def article(self):
-        return IntroHTML.transform(self.content, self.request)
+        # XXX fix intro
+        # return IntroHTML.transform(self.content, self.request)
+        return u''
 
 
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)
