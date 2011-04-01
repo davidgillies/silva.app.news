@@ -316,13 +316,3 @@ def get_default_viewer(context):
             if default and INewsViewer.providedBy(default):
                 return default
     return None
-
-
-class CatalogingAttributesNewsItemVersion(CatalogingAttributesVersion):
-    grok.context(INewsItemVersion)
-
-    @property
-    def object_path(self):
-        return self.get_content().aq_inner.getPhysicalPath()
-
-

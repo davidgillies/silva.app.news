@@ -67,12 +67,13 @@ class AgendaCalendar(Calendar, grok.MultiAdapter):
         self['X-WR-CALNAME'] = self.context.get_title()
         self['X-WR-TIMEZONE'] = self.context.get_timezone_name()
         now = datetime.now(UTC)
-        for brain in self.context.get_items_by_date_range(
+        for content in self.context.get_items_by_date_range(
                 now + relativedelta(years=-1), now + relativedelta(years=+1)):
-            agenda_item_version = brain.getObject()
-            content = agenda_item_version.get_content()
+            version = content.get_viewable()
+            if version is None:
+                continue
             content.__parent__ = self.context
-            event_factory = AgendaFactoryEvent(agenda_item_version)
+            event_factory = AgendaFactoryEvent(version)
             event = event_factory(self.context, self.request)
             if event is not None:
                 self.add_component(event)

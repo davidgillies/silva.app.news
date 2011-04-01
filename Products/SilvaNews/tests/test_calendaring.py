@@ -109,7 +109,7 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         agenda = self.root.agenda_viewer
 
         def normalize(results):
-            return set(map(lambda x: x.getObject(), items))
+            return set(map(lambda x: x.get_viewable(), items))
 
         items = agenda.get_items_by_date(11, 2010)
         self.assertEquals(versions, normalize(items))

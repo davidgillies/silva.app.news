@@ -108,11 +108,10 @@ class SilvaNewsInstaller(DefaultInstaller):
         """Sets the ZCatalog up"""
         catalog = root.service_catalog
 
-        columns = ['object_path','get_end_datetime','get_start_datetime',
+        columns = ['get_end_datetime','get_start_datetime',
             'get_location','get_title', 'display_datetime','get_intro', 'sort_index']
 
         indexes = [
-            ('object_path', 'FieldIndex'),
             ('idx_parent_path', 'FieldIndex'),
             ('idx_start_datetime', 'DateIndex'),
             ('idx_end_datetime', 'DateIndex'),

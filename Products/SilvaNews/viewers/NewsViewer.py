@@ -9,6 +9,7 @@ from zope.component import getUtility, getMultiAdapter
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope import schema
+from zope.intid.interfaces import IIntIds
 from zope.interface import Interface
 
 # Zope
@@ -209,10 +210,9 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         results = self._remove_doubles(results)
 
         if sortattr:
-            results = [(getattr(r,sortattr,None),
-                       getattr(r,'object_path',None),r) for r in results ]
+            results = [(getattr(r,sortattr,None),r) for r in results ]
             results.sort()
-            results = [ r[2] for r in results ]
+            results = [ r[1] for r in results ]
             results.reverse()
         return results
 
@@ -271,11 +271,13 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """Removes double items from a resultset from a ZCatalog-query
         (useful when the resultset is built out of more than 1 query)
         """
+        intids = getUtility(IIntIds)
+        ids = set()
         retval = []
-        paths = []
         for item in resultlist:
-            if not item.getPath() in paths:
-                paths.append(item.getPath())
+            id = intids.register(item)
+            if not id in ids:
+                ids.add(id)
                 retval.append(item)
         return retval
 
@@ -415,9 +417,7 @@ class NewsViewerListView(object):
         """ Change the parent of the NewsItem so traversing is made trough
         the news viewer
         """
-        version = item.getObject()
-        content = version.get_content()
-        return self.context.set_proxy(content)
+        return self.context.set_proxy(item)
 
 
 class NewsViewerView(silvaviews.View, NewsViewerListView):

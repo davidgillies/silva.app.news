@@ -3,10 +3,13 @@
 # $Revision$
 
 from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from DateTime import DateTime
 from datetime import datetime
+from itertools import imap, ifilter
+
 import Products
 
 from five import grok
@@ -19,8 +22,7 @@ import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.SilvaNews.interfaces import IServiceNews
 from Products.SilvaNews.interfaces import INewsItem,INewsFilter,INewsItemFilter
 from Products.SilvaNews.filters.Filter import Filter
-from Products.SilvaNews.datetimeutils import (utc_datetime, local_timezone,
-    datetime_to_unixtimestamp)
+from Products.SilvaNews import datetimeutils
 
 from silva.core.references.reference import ReferenceSet
 
@@ -36,6 +38,7 @@ def brainsorter(a, b):
     btime = b.get_start_datetime
     return cmp(atime, btime)
 
+# XXX upgrade _excluded_items move to a set of intids
 
 class NewsItemFilter(Filter):
     """Super-class for news item filters.
@@ -56,7 +59,7 @@ class NewsItemFilter(Filter):
     def __init__(self, id):
         super(NewsItemFilter, self).__init__(id)
         self._keep_to_path = 0
-        self._excluded_items = []
+        self._excluded_items = set()
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -121,36 +124,38 @@ class NewsItemFilter(Filter):
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_excluded_item')
-    def set_excluded_item(self, objectpath, add_or_remove):
+    def add_excluded_item(self, target):
         """Adds or removes an item to or from the excluded_items list
         """
-        if add_or_remove:
-            if not objectpath in self._excluded_items:
-                self._p_changed = 1
-                self._excluded_items.append(objectpath)
-        else:
-            if objectpath in self._excluded_items:
-                self._p_changed = 1
-                self._excluded_items.remove(objectpath)
+        intid = target
+        if not isinstance(intid, int):
+            intid = getUtility(IIntIds).register(target)
+        self._p_changed = 1
+        self._excluded_items.add(intid)
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_excluded_item')
+    def remove_excluded_item(self, target):
+        intid = target
+        if not isinstance(intid, int):
+            intid = getUtility(IIntIds).register(target)
+        self._p_changed = 1
+        self._excluded_items.remove(intid)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'excluded_items')
-    def excluded_items(self):
+                              'is_excluded_item')
+    def is_exclude_item(self, target):
+        intid = target
+        if not isinstance(intid, int):
+            intid = getUtility(IIntIds).register(target)
+        return intid in self._excluded_items
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_excluded_items')
+    def get_excluded_items(self):
         """Returns a list of object-paths of all excluded items
         """
-        self.verify_excluded_items()
         return self._excluded_items
-
-    def verify_excluded_items(self):
-        do_reindex = 0
-        for item in self._excluded_items:
-            result = self._query(object_path=[item])
-            if not str(item) in [str(i.object_path) for i in result]:
-                self._excluded_items.remove(item)
-                do_reindex = 1
-        if do_reindex:
-            self._p_changed = 1
-            ICataloging(self).reindex()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_keep_to_path')
@@ -171,7 +176,6 @@ class NewsItemFilter(Filter):
         keywords = unicode(keywords, 'UTF-8')
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
-        self.verify_excluded_items()
 
         # replace +'es with spaces so the effect is the same...
         keywords = keywords.replace('+', ' ')
@@ -211,7 +215,6 @@ class NewsItemFilter(Filter):
 
         Return: dict holding the query parameters
         """
-        self.verify_excluded_items()
         query = {}
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         query['version_status'] = 'public'
@@ -236,7 +239,10 @@ class NewsItemFilter(Filter):
 
     def _query_items(self, **kw):
         brains = self._query(**kw)
-        return self.__filter_excluded_items(brains)
+        results = imap(
+            lambda x: x.getObject().get_content(),
+            brains)
+        return self.__filter_excluded_items(results)
 
     def _check_meta_types(self, meta_types):
         for type in meta_types:
@@ -307,7 +313,9 @@ class NewsItemFilter(Filter):
         endate = (lastnight + numdays).latestTime()
 
         return self.get_items_by_date_range(
-            utc_datetime(lastnight), utc_datetime(endate), meta_types)
+            datetimeutils.utc_datetime(lastnight),
+            datetimeutils.utc_datetime(endate),
+            meta_types)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_last_items')
@@ -332,7 +340,7 @@ class NewsItemFilter(Filter):
 
         result = self._query_items(**query)
         if not number_is_days:
-            output = result[:number]
+            output = list(result)[:number]
         else:
             output = result
         return output
@@ -340,7 +348,7 @@ class NewsItemFilter(Filter):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
     def get_items_by_date(self, month, year, meta_types=None,
-            timezone=local_timezone):
+            timezone=datetimeutils.local_timezone):
         """ This does not play well with recurrence, this should not be used
         with agenda items
         """
@@ -349,54 +357,16 @@ class NewsItemFilter(Filter):
             return []
         month = int(month)
         year = int(year)
-        startdate = DateTime(
-            datetime(year, month, 1, tzinfo=timezone)).earliestTime()
-        endmonth = month + 1
-        if month == 12:
-            endmonth = 1
-            year = year + 1
-        enddate = DateTime(
-            datetime(year, endmonth, 1, tzinfo=timezone)).earliestTime()
+        startdate = datetimeutils.start_of_month(
+            datetime(year, month, 1, tzinfo=timezone))
+        enddate = datetimeutils.end_of_month(startdate)
         query = self._prepare_query(meta_types)
-        query['idx_display_datetime'] = {'query': [startdate, enddate],
-                                         'range': 'minmax'}
-        result = self._query(**query)
 
-        result = [r for r in result if not r.object_path in
-                self._excluded_items]
+        query['idx_timestamp_ranges'] = {
+            'query': [datetimeutils.datetime_to_unixtimestamp(startdate),
+                 datetimeutils.datetime_to_unixtimestamp(enddate)]}
 
-        return result
-
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_agenda_items_by_date')
-    def get_agenda_items_by_date(self, month, year, meta_types=None,
-            timezone=local_timezone):
-        """
-        Returns non-excluded published AGENDA-items for a particular
-        month. This method is for exclusive use by AgendaViewers only,
-        NewsViewers should use get_items_by_date instead (which
-        filters on idx_display_datetime instead of start_datetime and
-        returns all objects instead of only IAgendaItem-
-        implementations)
-        -- This was in both News and Agenda Filters, with slightly
-        different code, so refactored into Filter
-        """
-        if not self.get_sources():
-            return []
-        #if this is a new filter that doesn't show agenda items
-        if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
-            return []
-
-        month = int(month)
-        year = int(year)
-        startdate = datetime(year, month, 1, tzinfo=timezone)
-        endmonth = month + 1
-        if month == 12:
-            endmonth = 1
-            year = year + 1
-        enddate = datetime(year, endmonth, 1, tzinfo=timezone)
-        return self.get_items_by_date_range(startdate, enddate, meta_types)
+        return self._query_items(**query)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date_range')
@@ -405,35 +375,21 @@ class NewsItemFilter(Filter):
         if not sources:
             return []
 
-        results = []
-
         query = self._prepare_query(meta_types)
         self.__filter_on_date_range(query, start, end)
-        results = self._query_items(**query)
-        results.sort(brainsorter)
-        return results
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_item')
-    def get_item(self, path):
-        sources = self.get_sources()
-        if not sources:
-            return []
-        query = self._prepare_query()
-        query['object_path'] = path
-        results = self._query_items(**query)
-        if len(results) > 0:
-            return results[0].getObject()
-        return None
+        return self._query_items(**query)
 
     def __filter_on_date_range(self, query, start, end):
-        startdt = datetime_to_unixtimestamp(start)
-        enddt = datetime_to_unixtimestamp(end)
+        startdt = datetimeutils.datetime_to_unixtimestamp(start)
+        enddt = datetimeutils.datetime_to_unixtimestamp(end)
         query['idx_timestamp_ranges'] = {'query': [startdt, enddt]}
 
     def __filter_excluded_items(self, results):
-        return [r for r in results if not r.object_path in
-                   self._excluded_items]
+        intids = getUtility(IIntIds)
+        def filter_out_exclude_items(item):
+            return not intids.register(item) in self._excluded_items
+
+        return ifilter(filter_out_exclude_items, results)
 
 
 InitializeClass(NewsItemFilter)

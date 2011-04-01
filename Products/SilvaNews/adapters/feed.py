@@ -26,10 +26,9 @@ class NewsViewerFeedEntryProvider(grok.Adapter):
     def entries(self):
         items = self.context.get_items()
         for item in items:
-            content = item.getObject().get_content()
-            if content.get_viewable() is None:
+            if item.get_viewable() is None:
                 continue
-            entry = IFeedEntry(content, None)
+            entry = IFeedEntry(item, None)
             if not entry is None:
                 yield entry
 

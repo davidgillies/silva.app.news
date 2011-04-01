@@ -80,10 +80,10 @@ class AgendaViewer(NewsViewer, ExternalSource):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_agenda_items_by_date(month,year,
-            timezone=self.get_timezone())
+        func = lambda x: x.get_items_by_date(month,year,
+            timezone=self.get_timezone(), meta_types="Silva Agenda Item Version")
         sortattr = None
-        if len(self.get_filters()) > 1:
+        if self.has_filter():
             sortattr = 'start_datetime'
         results = self._get_items_helper(func,sortattr)
         return results
@@ -143,12 +143,6 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva Agenda Viewer")
 
 
-def wrap_event_brains(viewer, iterable):
-    for brain in iterable:
-        item = brain.getObject()
-        yield viewer.set_proxy(item)
-
-
 class CalendarView(object):
     """Mixin for AgendaViewer view to help building HTML calendars
 
@@ -181,9 +175,7 @@ class CalendarView(object):
         self._store_events_in_index = store_events_in_index
         today = today or datetime.now(self.context.get_timezone()).date()
 
-        events = wrap_event_brains(
-            self.context,
-            self.context.get_items_by_date_range(start, end))
+        events = self.context.get_items_by_date_range(start, end)
         acalendar = HTMLCalendar(
             self.context.get_first_weekday(),
             today=today,
@@ -197,11 +189,12 @@ class CalendarView(object):
         """ index all the days for which the event has an occurrence between
         start and end.
         """
-        cd = event.get_calendar_datetime()
+        version = event.get_viewable()
+        cd = version.get_calendar_datetime()
         for datetime_range in cd.get_datetime_ranges(start, end):
             for occurence in datetimeutils.DayWalk(datetime_range[0],
                                                    datetime_range[1],
-                                                   self.context.get_timezone()):
+                                                   version.get_timezone()):
                 self._index_event(occurence, event)
 
     def _index_event(self, adate, event):
@@ -349,11 +342,9 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        items = self.context.get_items_by_date_range(
+        return self.context.get_items_by_date_range(
                     datetimeutils.start_of_day(self.day_datetime),
                     datetimeutils.end_of_day(self.day_datetime))
-        return map(lambda x: x.get_content(),
-                    wrap_event_brains(self.context, items))
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \

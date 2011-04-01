@@ -209,13 +209,13 @@ class INewsItemFilter(IFilter):
         """Returns a list of object-paths of all excluded items
         """
 
-    def set_excluded_items(object_path, add_or_remove):
-        """Adds or removes an item to or from the excluded_items list
+    def add_excluded_item(object):
+        """Add an item to or from the excluded_items list
         """
 
-    def verity_excluded_items():
-        """maintain the list of excluded items in this filter,
-        by removing ones that no longer exist (i.e. have been deleted)"""
+    def remove_exclude_item(object):
+        """ remove an item in excluded items
+        """
 
     def search_items(keywords, meta_types=None):
         """ Returns the items from the catalog that have keywords

@@ -34,16 +34,14 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.newsfilter.set_target_audiences(['ta'])
         self.newsfilter.set_sources([self.source1])
         res = self.newsfilter.get_all_items()
-        pps = ['/'.join(i.object_path) for i in res]
+        pps = ['/'.join(i.getPhysicalPath()) for i in res]
         self.assertTrue('/root/source1/art1' in pps)
         self.assertTrue(not '/root/source1/art2' in pps)
         self.assertTrue(not '/root/source1/somefolder/art3' in pps)
         self.assertEquals(1, len(pps))
-        self.newsfilter.set_excluded_item(('', 'root', 'source1', 'art1'), 1)
-        self.assertEquals([('', 'root', 'source1', 'art1')],
-                          self.newsfilter.excluded_items())
-        self.assertEquals([],
-            [i.object_path for i in self.newsfilter.get_last_items(10)])
+        self.newsfilter.add_excluded_item(self.item1_1)
+        self.assertEquals(1, len(self.newsfilter.get_excluded_items()))
+        self.assertEquals([], self.newsfilter.get_last_items(10))
 
     def test_synchronize_with_service(self):
         self.newsfilter.set_subjects(['sub'])
@@ -57,8 +55,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.newsfilter.set_subjects(['sub'])
         self.newsfilter.set_target_audiences(['ta'])
         self.newsfilter.set_sources([self.source1, self.source2, self.source3])
-        resids = [i.object_path[-1]
-                  for i in self.newsfilter.search_items('sub')]
+        resids = [i.id for i in self.newsfilter.search_items('sub')]
         self.assertTrue('art1' in resids)
         self.assertTrue('art2' not in resids)
         self.assertTrue('art3' in resids)
@@ -69,7 +66,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.newsfilter.set_target_audiences(['ta', 'ta2'])
         self.newsfilter.set_sources([self.source1, self.source3])
         items = self.newsfilter.get_last_items(2)
-        itemids = [item.object_path[-1] for item in items]
+        itemids = [item.id for item in items]
         """first test to see the order of the articles"""
         self.assertEquals(itemids, ['art1', 'art2'])
         """now change the display datetime of the second article
@@ -77,7 +74,7 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
            should change"""
         self.item1_2.get_viewable().set_display_datetime(DateTime() + 1)
         items = self.newsfilter.get_last_items(2)
-        itemids = [item.object_path[-1] for item in items]
+        itemids = [item.id for item in items]
         self.assertEquals(set(itemids), set(['art2', 'art1']))
 
 

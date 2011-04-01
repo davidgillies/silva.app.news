@@ -37,7 +37,7 @@ class AgendaFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
                                        edt=now + relativedelta(5))
         results = self.af.get_next_items(2)
 
-        self.assertEquals(len(results),3)
+        self.assertEquals(len(list(results)),3)
 
 
 import unittest

@@ -7,10 +7,10 @@ except ImportError:
     from Tree import *
 
 class TreeTestCase(unittest.TestCase):
-    
+
     def setUp(self):
         self.root = Root()
-        
+
         self.foo = foo = Node('foo', 'Foo')
         self.root.addChild(foo)
 
@@ -53,7 +53,7 @@ class TreeTestCase(unittest.TestCase):
 
     def test_removeChildren(self):
         self.assertRaises(ValueError, self.root.removeChild, self.baz)
-        
+
         self.assertEquals(len(self.root.children()), 2)
         self.assert_('foo' in self.root.getIds())
         self.root.removeChild(self.foo)
@@ -75,6 +75,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TreeTestCase))
     return suite
-    
+
 if __name__ == '__main__':
     unittest.main()

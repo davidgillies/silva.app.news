@@ -24,11 +24,10 @@ class Events(rest.REST):
         return dt.astimezone(self.timezone)
 
     def get_events(self, start, end):
-        brains = self.context.get_items_by_date_range(start, end)
-        for brain in brains:
-            event = brain.getObject()
-            event = self.context.set_proxy(event)
-            yield event
+        for r in self.context.get_items_by_date_range(start, end):
+            version = r.get_viewable()
+            if version is not None:
+                yield version
 
     def get_events_occurrences(self, start, end):
         intids = component.getUtility(IIntIds)

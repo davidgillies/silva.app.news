@@ -38,7 +38,7 @@ class SNNHandlerMixin(object):
         if attrs.has_key((None,'excluded_items')):
             eis = attrs[(None,'excluded_items')]
             for ei in eis.split(','):
-                obj.set_excluded_item(ei,True)
+                obj.add_excluded_item(ei)
 
 
 class PlainArticleHandler(SilvaBaseHandler):

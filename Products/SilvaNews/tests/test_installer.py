@@ -19,13 +19,11 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
     def test_catalog_columns(self):
         #ensure catalog columns are setup
         catalog = self.catalog
-        columns = ['object_path',
-                   'get_end_datetime',
+        columns = ['get_end_datetime',
                    'get_start_datetime',
                    'get_location',
                    'get_title',
-                   'display_datetime',
-                   'get_intro']
+                   'display_datetime']
         existing_columns = catalog.schema()
         for cn in columns:
             self.assertEquals(True,
@@ -34,7 +32,6 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         #ensure catalog indexes are setup
         catalog = self.catalog
         indexes = [
-            ('object_path', 'FieldIndex'),
             ('idx_parent_path', 'FieldIndex'),
             ('idx_start_datetime', 'DateIndex'),
             ('idx_end_datetime', 'DateIndex'),
