@@ -4,8 +4,9 @@
 
 from five import grok
 from zope.component import getUtility
-from zope.i18nmessageid import MessageFactory
 from zope.cachedescriptors.property import CachedProperty
+from zope import interface, schema
+from zope.i18nmessageid import MessageFactory
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -13,56 +14,31 @@ from App.class_init import InitializeClass
 from DateTime import DateTime
 
 # Silva
+from silva.core import conf as silvaconf
 from silva.core.interfaces import IRoot
 from silva.core.interfaces.events import IContentPublishedEvent
 from silva.core.views import views as silvaviews
-
 from Products.Silva import SilvaPermissions
 from silva.app.document import document
+from silva.core.conf.interfaces import ITitledContent
+from zeam.form import silva as silvaforms
+
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
     INewsViewer)
 from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
-from Products.Silva.cataloging import CatalogingAttributesVersion
+from Products.SilvaNews.interfaces import (
+    subjects_source, target_audiences_source)
 
 _ = MessageFactory('silva_news')
-
-
-class NewsItem(document.Document):
-    """Base class for all kinds of news items.
-    """
-    grok.baseclass()
-    grok.implements(INewsItem)
-
-    security = ClassSecurityInfo()
-    # MANIPULATORS
-
-    security.declareProtected(SilvaPermissions.ApproveSilvaContent,
-                              'set_next_version_display_datetime')
-    def set_next_version_display_datetime(self, dt):
-        """Set display datetime of next version.
-        """
-        version = getattr(self, self.get_next_version())
-        version.set_display_datetime(dt)
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_unapproved_version_display_datetime')
-    def set_unapproved_version_display_datetime(self, dt):
-        """Set display datetime for unapproved
-        """
-        version = getattr(self, self.get_unapproved_version())
-        version.set_display_datetime(dt)
-
-
-InitializeClass(NewsItem)
 
 
 class NewsItemVersion(document.DocumentVersion):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
-    grok.baseclass()
     grok.implements(INewsItemVersion)
+    meta_type = "Silva Article Version"
 
     def __init__(self, id):
         super(NewsItemVersion, self).__init__(id)
@@ -257,6 +233,65 @@ class NewsItemVersion(document.DocumentVersion):
 
 
 InitializeClass(NewsItemVersion)
+
+
+class NewsItem(document.Document):
+    """A News item that appears as an individual page. By adjusting
+       settings the Author can determine which subjects, and
+       for which audiences the Article should be presented.
+    """
+    grok.implements(INewsItem)
+    security = ClassSecurityInfo()
+    meta_type = "Silva Article"
+    silvaconf.icon("www/news_item.png")
+    silvaconf.priority(3.7)
+    silvaconf.versionClass(NewsItemVersion)
+
+    security.declareProtected(SilvaPermissions.ApproveSilvaContent,
+                              'set_next_version_display_datetime')
+    def set_next_version_display_datetime(self, dt):
+        """Set display datetime of next version.
+        """
+        version = getattr(self, self.get_next_version())
+        version.set_display_datetime(dt)
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'set_unapproved_version_display_datetime')
+    def set_unapproved_version_display_datetime(self, dt):
+        """Set display datetime for unapproved
+        """
+        version = getattr(self, self.get_unapproved_version())
+        version.set_display_datetime(dt)
+
+
+InitializeClass(NewsItem)
+
+
+class IArticleSchema(interface.Interface):
+    subjects = schema.List(
+        title=_(u"subjects"),
+        value_type=schema.Choice(source=subjects_source),
+        required=True)
+    target_audiences = schema.List(
+        title=_(u"target audiences"),
+        value_type=schema.Choice(source=target_audiences_source),
+        required=True)
+
+
+class ArticleAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsItem)
+    grok.name(u"Silva Article")
+
+    fields = silvaforms.Fields(ITitledContent, IArticleSchema)
+
+
+class ArticleEditProperties(silvaforms.SMIForm):
+    grok.context(INewsItem)
+
+    label = _(u"article properties")
+    fields = silvaforms.Fields(IArticleSchema)
+    actions = silvaforms.Actions(silvaforms.EditAction())
+
 
 
 class NewsItemView(silvaviews.View):
