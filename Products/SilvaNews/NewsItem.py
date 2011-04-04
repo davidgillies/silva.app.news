@@ -266,15 +266,27 @@ class NewsItem(document.Document):
 
 InitializeClass(NewsItem)
 
+def get_subject_tree(form):
+    service = getUtility(IServiceNews)
+    return service._subjects
+
+def get_target_audiences_tree(form):
+    service = getUtility(IServiceNews)
+    return service._target_audiences
+
+from Products.SilvaNews.widgets.tree import Tree
+
 
 class IArticleSchema(interface.Interface):
-    subjects = schema.List(
+    subjects = Tree(
         title=_(u"subjects"),
         value_type=schema.Choice(source=subjects_source),
+        tree=get_subject_tree,
         required=True)
-    target_audiences = schema.List(
+    target_audiences = Tree(
         title=_(u"target audiences"),
         value_type=schema.Choice(source=target_audiences_source),
+        tree=get_target_audiences_tree,
         required=True)
 
 

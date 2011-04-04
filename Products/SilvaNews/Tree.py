@@ -30,7 +30,7 @@ class Node:
 
     def set_id(self, id):
         if id in self._root.getIds():
-            raise DuplicateIdError, 'id already in use - %s' % id
+            raise DuplicateIdError('id already in use - %s' % id)
         del self._root._references[self._id]
         self._id = id
         self._root._references[id] = self

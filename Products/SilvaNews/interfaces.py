@@ -39,7 +39,7 @@ def subjects_source(context):
     result = []
     for value, title, depth in service.subject_tree():
         result.append(SimpleTerm(
-            value=value, token=value, title="-" * depth + title))
+            value=value, token=value, title=title))
     return SimpleVocabulary(result)
 
 
@@ -49,7 +49,7 @@ def target_audiences_source(context):
     result = []
     for value, title, depth in service.target_audience_tree():
         result.append(SimpleTerm(
-            value=value, token=value, title="-" * depth + title))
+            value=value, token=value, title=title))
     return SimpleVocabulary(result)
 
 
