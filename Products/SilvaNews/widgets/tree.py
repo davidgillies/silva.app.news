@@ -53,6 +53,7 @@ class TreeSchemaField(SchemaField):
     """ zeam schema field
     """
 
+
 NOTCHECKED = 1 << 1
 CHECKED = 1 << 2
 UNDETERMINED = NOTCHECKED | CHECKED
@@ -125,7 +126,6 @@ class TreeWidgetInput(SchemaFieldWidget):
         tree = field.get_tree(self.form)
         vocabulary = field.value_type.vocabulary(self.form.context)
         status, html = build_html_tree(tree, vocabulary, self.inputValue())
-        import pdb; pdb.set_trace()
         return html
 
     def valueToUnicode(self, value):
