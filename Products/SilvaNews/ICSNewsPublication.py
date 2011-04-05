@@ -24,7 +24,8 @@ from Products.SilvaNews.interfaces import INewsPublication
 from Products.SilvaNews.NewsPublication import NewsPublication
 
 from Products.SilvaNews.interfaces import (subjects_source,
-    target_audiences_source)
+    target_audiences_source, get_subjects_tree, get_target_audiences_tree)
+from Products.SilvaNews.widgets.tree import Tree
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
@@ -150,12 +151,14 @@ class IICSNewsPublicationSchema(Interface):
         title=_(u"URL"),
         description=_(u"remote URL of the ics calendar file"),
         required=True)
-    _subjects = schema.List(
+    _subjects = Tree(
+        tree=get_subjects_tree,
         title=_(u"subjects"),
         description=_(u"select the subjects that will be set on events"),
         value_type=schema.Choice(source=subjects_source),
         required=True)
-    _target_audiences = schema.List(
+    _target_audiences = Tree(
+        tree=get_target_audiences_tree,
         title=_(u"target audiences"),
         description=_(u"select the target audiences "
                       u"that will be set on events"),

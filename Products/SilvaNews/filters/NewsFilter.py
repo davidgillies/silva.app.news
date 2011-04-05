@@ -10,7 +10,7 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 # SilvaNews
-from Products.SilvaNews.interfaces import INewsFilter, ISubjectTASchema
+from Products.SilvaNews.interfaces import INewsFilter, INewsQualifiers
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
 
 
@@ -90,7 +90,7 @@ class NewsFilterAddForm(silvaforms.SMIAddForm):
     grok.name(u'Silva News Filter')
 
 
-class INewsFilterSchema(ISubjectTASchema):
+class INewsFilterSchema(INewsQualifiers):
     _keep_to_path = schema.Bool(
         title=_(u"stick to path"))
 

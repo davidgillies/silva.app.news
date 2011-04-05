@@ -14,9 +14,9 @@ from datetime import datetime
 # SilvaNews
 from Products.Silva import SilvaPermissions
 from Products.SilvaNews.datetimeutils import UTC, local_timezone
-from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter,brainsorter
+from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
 from Products.SilvaNews.interfaces import (IAgendaFilter, IAgendaItem,
-    ISubjectTASchema, news_source)
+    INewsQualifiers, news_source)
 from Products.SilvaNews import datetimeutils
 
 from five import grok
@@ -107,7 +107,7 @@ class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva Agenda Filter")
 
 
-class IAgendaFilterSchema(ISubjectTASchema):
+class IAgendaFilterSchema(INewsQualifiers):
     _keep_to_path = schema.Bool(
         title=_(u"stick to path"))
 

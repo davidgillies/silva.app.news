@@ -204,6 +204,14 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     security.declareProtected('View', 'subjects')
     subjects = get_subjects
 
+    security.declareProtected('View', 'get_subjects_tree')
+    def get_subjects_tree(self):
+        return self._subjects
+
+    security.declareProtected('View', 'get_target_audiences_tree')
+    def get_target_audiences_tree(self):
+        return self._target_audiences
+
     security.declareProtected('View',
                                 'subject_title')
     def subject_title(self, id):

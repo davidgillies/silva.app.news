@@ -58,26 +58,22 @@ NOTCHECKED = 1 << 1
 CHECKED = 1 << 2
 UNDETERMINED = NOTCHECKED | CHECKED
 
-def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
 
+def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     status = NOTCHECKED
 
-    id = node.id()
-    if id != 'root':
-        title = node.title()
-    else:
-        title = 'all'
+    if node.id() == 'root':
+        html = ''
+        for child in node.children():
+            child_status, child_html = build_html_tree(
+                child, vocabulary, value, _depth=1)
+            status |= child_status
+            html += child_html
+        return status, html
 
-    if id == 'root':
-        node.title = 'all'
+    item = vocabulary.getTerm(node.id())
 
-    item = None
-    try:
-        item = vocabulary.getTerm(id)
-    except LookupError:
-        pass
-
-    if _force_checked or (item and item.value in value):
+    if _force_checked or item.value in value:
         status = CHECKED
 
     html_children = ""
@@ -99,11 +95,11 @@ def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     else:
         classes.add('jstree-unchecked')
 
-    if (status & CHECKED or _depth <= 0) and node.children():
+    if (UNDETERMINED == status or _depth <= 0) and node.children():
         classes.add('jstree-open')
 
     html = '<li id="%s" class="%s"><a href="#">%s</a>' % (
-        escape(id, True), " ".join(classes), escape(title))
+        escape(node.id(), True), " ".join(classes), escape(node.title()))
     html += html_children
     html += "</li>"
     return status, html
@@ -145,5 +141,10 @@ class TreeWidgetExtractor(WidgetExtractor):
         value, error = super(TreeWidgetExtractor, self).extract()
         if value is NO_VALUE:
             return value, error
-        return set(value.split('|')), error
+        vocabulary = self.component.get_field().value_type.vocabulary(
+            self.form.context)
+        choices = set()
+        for choice in value.split('|'):
+            choices.add(vocabulary.getTerm(choice).value)
+        return choices, error
 

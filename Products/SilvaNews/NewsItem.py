@@ -5,7 +5,6 @@
 from five import grok
 from zope.component import getUtility
 from zope.cachedescriptors.property import CachedProperty
-from zope import interface, schema
 from zope.i18nmessageid import MessageFactory
 
 # Zope
@@ -25,10 +24,8 @@ from zeam.form import silva as silvaforms
 
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
-    INewsViewer)
+    INewsViewer, INewsQualifiers)
 from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
-from Products.SilvaNews.interfaces import (
-    subjects_source, target_audiences_source)
 
 _ = MessageFactory('silva_news')
 
@@ -42,8 +39,8 @@ class NewsItemVersion(document.DocumentVersion):
 
     def __init__(self, id):
         super(NewsItemVersion, self).__init__(id)
-        self._subjects = []
-        self._target_audiences = []
+        self._subjects = set()
+        self._target_audiences = set()
         self._display_datetime = None
 
     # XXX I would rather have this get called automatically on setting
@@ -80,12 +77,12 @@ class NewsItemVersion(document.DocumentVersion):
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
     def set_subjects(self, subjects):
-        self._subjects = list(subjects)
+        self._subjects = set(subjects)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_target_audiences')
     def set_target_audiences(self, target_audiences):
-        self._target_audiences = list(target_audiences)
+        self._target_audiences = set(target_audiences)
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -172,7 +169,7 @@ class NewsItemVersion(document.DocumentVersion):
     def get_subjects(self):
         """Returns the subjects
         """
-        return list(self._subjects or [])
+        return set(self._subjects or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'subjects')
@@ -187,7 +184,7 @@ class NewsItemVersion(document.DocumentVersion):
     def get_target_audiences(self):
         """Returns the target audiences
         """
-        return list(self._target_audiences or [])
+        return set(self._target_audiences or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'target_audiences')
@@ -214,7 +211,7 @@ class NewsItemVersion(document.DocumentVersion):
         """
         keywords = list(self._subjects)
         keywords.extend(self._target_audiences)
-        keywords.extend(super(NewsItemVersion, self).fulltext())
+        keywords.extend(super(NewsItemVersion, self).fulltext().split(' '))
         return " ".join(keywords)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -266,44 +263,20 @@ class NewsItem(document.Document):
 
 InitializeClass(NewsItem)
 
-def get_subject_tree(form):
-    service = getUtility(IServiceNews)
-    return service._subjects
 
-def get_target_audiences_tree(form):
-    service = getUtility(IServiceNews)
-    return service._target_audiences
-
-from Products.SilvaNews.widgets.tree import Tree
-
-
-class IArticleSchema(interface.Interface):
-    subjects = Tree(
-        title=_(u"subjects"),
-        value_type=schema.Choice(source=subjects_source),
-        tree=get_subject_tree,
-        required=True)
-    target_audiences = Tree(
-        title=_(u"target audiences"),
-        value_type=schema.Choice(source=target_audiences_source),
-        tree=get_target_audiences_tree,
-        required=True)
-
-
-class ArticleAddForm(silvaforms.SMIAddForm):
+class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
     grok.name(u"Silva Article")
 
-    fields = silvaforms.Fields(ITitledContent, IArticleSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsQualifiers)
 
 
-class ArticleEditProperties(silvaforms.SMIForm):
+class NewsItemEditProperties(silvaforms.SMIForm):
     grok.context(INewsItem)
 
     label = _(u"article properties")
-    fields = silvaforms.Fields(IArticleSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsQualifiers).omit('id')
     actions = silvaforms.Actions(silvaforms.EditAction())
-
 
 
 class NewsItemView(silvaviews.View):

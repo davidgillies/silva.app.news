@@ -30,14 +30,13 @@ from zeam.form import silva as silvaforms
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.interfaces import IServiceNews
+from Products.SilvaNews.interfaces import IServiceNews, INewsQualifiers
 from Products.SilvaNews.NewsItem import NewsItemView, NewsItemListItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
 
 from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
     CalendarDatetime, datetime_to_unixtimestamp, get_timezone, RRuleData, UTC)
-from Products.SilvaNews.interfaces import (
-    subjects_source, target_audiences_source, timezone_source)
+from Products.SilvaNews.interfaces import timezone_source
 from Products.SilvaNews.widgets.recurrence import Recurrence
 
 
@@ -298,14 +297,6 @@ class IAgendaItemSchema(interface.Interface):
         title=_(u"location"),
         description=_(u"The location where the event is taking place."),
         required=False)
-    subjects = schema.List(
-        title=_(u"subjects"),
-        value_type=schema.Choice(source=subjects_source),
-        required=True)
-    target_audiences = schema.List(
-        title=_(u"target audiences"),
-        value_type=schema.Choice(source=target_audiences_source),
-        required=True)
 
     @interface.invariant
     def enforce_end_recurrence_datetime(content):
@@ -377,7 +368,8 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
-    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema,
+        INewsQualifiers)
     fields['timezone_name'].defaultValue = get_default_tz_name
 
     def _edit(self, parent, content, data):

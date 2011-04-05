@@ -6,7 +6,7 @@
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-from Products.SilvaNews.interfaces import INewsPublication
+from Products.SilvaNews.interfaces import INewsPublication, IServiceNews
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva import SilvaPermissions
@@ -53,6 +53,11 @@ class NewsPublication(Publication):
 InitializeClass(NewsPublication)
 
 
+class NewsPublicationAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsPublication)
+    grok.name(u"Silva News Publication")
+
+
 @silvaconf.subscribe(INewsPublication, IObjectCreatedEvent)
 def news_publication_created(publication, event):
     """news publications should have their 'hide_from_tocs' set to
@@ -62,12 +67,23 @@ def news_publication_created(publication, event):
     binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
 
-    factory = publication.manage_addProduct['Silva']
-    factory.manage_addAutoTOC(
-        'index', publication.get_title_or_id(),
-        local_types=['Silva Article', 'Silva Agenda Item'])
+    factory = publication.manage_addProduct['SilvaNews']
+    factory.manage_addNewsViewer(
+        'index', publication.get_title_or_id())
+    factory.manage_addNewsFilter(
+        'filter', 'Filter for %s' % publication.get_title_or_id())
+
+    service = getUtility(IServiceNews)
+
+    # XXX add test..
+
+    publication.filter.add_source(publication)
+
+    publication.filter.set_subjects(
+        [node.id() for node in service.get_subjects_tree().children()])
+    publication.filter.set_target_audiences(
+        [node.id() for node in service.get_target_audiences_tree().children()])
+
+    publication.index.add_filter(publication.filter)
 
 
-class NewsPublicationAddForm(silvaforms.SMIAddForm):
-    grok.context(INewsPublication)
-    grok.name(u"Silva News Publication")

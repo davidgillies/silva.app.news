@@ -15,6 +15,8 @@ from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
 from silva.app.document.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
 from Products.SilvaNews.datetimeutils import zone_names
+from Products.SilvaNews.widgets.tree import Tree
+
 
 from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
@@ -53,20 +55,27 @@ def target_audiences_source(context):
     return SimpleVocabulary(result)
 
 
-class ISubjectTASchema(Interface):
-    subjects = schema.List(
+def get_subjects_tree(form):
+    service = getUtility(IServiceNews)
+    return service._subjects
+
+
+def get_target_audiences_tree(form):
+    service = getUtility(IServiceNews)
+    return service._target_audiences
+
+
+class INewsQualifiers(Interface):
+    subjects = Tree(
         title=_(u"subjects"),
-        description=_(
-            u'Select the news subjects to filter on. '
-            u'Only those selected will appear in this area of the site. '
-            u'Select nothing to have all show up.'),
         value_type=schema.Choice(source=subjects_source),
-        required=False)
-    target_audiences = schema.List(
+        tree=get_subjects_tree,
+        required=True)
+    target_audiences = Tree(
         title=_(u"target audiences"),
-        description=_(u'Select the target audiences to filter on.'),
         value_type=schema.Choice(source=target_audiences_source),
-        required=False)
+        tree=get_target_audiences_tree,
+        required=True)
 
 
 class INewsItemVersion(IDocumentVersion):
