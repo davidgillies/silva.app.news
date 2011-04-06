@@ -211,8 +211,8 @@ class NewsItemVersion(document.DocumentVersion):
         """
         keywords = list(self._subjects)
         keywords.extend(self._target_audiences)
-        keywords.extend(super(NewsItemVersion, self).fulltext().split(' '))
-        return " ".join(keywords)
+        keywords.extend(super(NewsItemVersion, self).fulltext())
+        return keywords
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'publication_time')
