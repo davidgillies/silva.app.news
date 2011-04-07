@@ -33,12 +33,12 @@ setup(name='Products.SilvaNews',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-        'Products.Formulator',
-        'Products.ParsedXML',
-        'Products.Silva',
         'five.grok',
         'icalendar',
         'megrok.chameleon',
+        'Products.Formulator',
+        'Products.ParsedXML',
+        'Products.Silva',
         'python-dateutil',
         'setuptools',
         'silva.app.document',
@@ -49,6 +49,7 @@ setup(name='Products.SilvaNews',
         'silva.core.smi',
         'silva.core.upgrade',
         'silva.core.views',
+        'silva.ui',
         'z3locales',
         'zeam.form.silva',
         'zeam.utils.batch',
@@ -68,5 +69,6 @@ setup(name='Products.SilvaNews',
       [zeam.form.components]
       recurrence = Products.SilvaNews.widgets.recurrence:register
       tree = Products.SilvaNews.widgets.tree:register
+      path = Products.SilvaNews.widgets.path:register
       """
       )

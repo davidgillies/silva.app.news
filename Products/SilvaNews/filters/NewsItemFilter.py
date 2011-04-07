@@ -1,30 +1,29 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision$
-
-from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
-from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass
 from DateTime import DateTime
 from datetime import datetime
 from itertools import imap, ifilter
 
-import Products
-
+from zope.i18nmessageid import MessageFactory
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
 from five import grok
 
-# Silva
+from AccessControl import ClassSecurityInfo
+from App.class_init import InitializeClass
+
 from silva.core.services.interfaces import ICataloging
+from silva.core.references.reference import ReferenceSet
 import Products.Silva.SilvaPermissions as SilvaPermissions
 
-# Silva/News interfaces
-from Products.SilvaNews.interfaces import IServiceNews
-from Products.SilvaNews.interfaces import INewsItem,INewsFilter,INewsItemFilter
+from Products.SilvaNews import interfaces
 from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews import datetimeutils
 
-from silva.core.references.reference import ReferenceSet
+import Products
+
+_ = MessageFactory('silva_news')
 
 import logging
 logger = logging.getLogger('silvanews.itemfilter')
@@ -50,7 +49,7 @@ class NewsItemFilter(Filter):
     A super-class for the News Filters (NewsFilter, AgendaFilter)
     which contains shared code for both filters"""
 
-    grok.implements(INewsItemFilter)
+    grok.implements(interfaces.INewsItemFilter)
     grok.baseclass()
     security = ClassSecurityInfo()
 
@@ -123,7 +122,7 @@ class NewsItemFilter(Filter):
         return source
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_excluded_item')
+                              'add_excluded_item')
     def add_excluded_item(self, target):
         """Adds or removes an item to or from the excluded_items list
         """
@@ -134,7 +133,7 @@ class NewsItemFilter(Filter):
         self._excluded_items.add(intid)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_excluded_item')
+                              'remove_excluded_item')
     def remove_excluded_item(self, target):
         intid = target
         if not isinstance(intid, int):
@@ -142,9 +141,14 @@ class NewsItemFilter(Filter):
         self._p_changed = 1
         self._excluded_items.remove(intid)
 
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'remove_excluded_item')
+    def set_excluded_item(self, excluded_set):
+        self._excluded_items = set(excluded_set)
+
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_excluded_item')
-    def is_exclude_item(self, target):
+    def is_excluded_item(self, target):
         intid = target
         if not isinstance(intid, int):
             intid = getUtility(IIntIds).register(target)
@@ -218,7 +222,7 @@ class NewsItemFilter(Filter):
         query = {}
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         query['version_status'] = 'public'
-        service = getUtility(IServiceNews)
+        service = getUtility(interfaces.IServiceNews)
         query['idx_subjects'] = {
             'query': self._collect_subjects(service),
             'operator': 'or'}
@@ -257,7 +261,7 @@ class NewsItemFilter(Filter):
     def _is_news_addable(self, addable_dict):
         return (
             addable_dict.has_key('instance') and
-            INewsItem.implementedBy(
+            interfaces.INewsItem.implementedBy(
             addable_dict['instance']))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -269,7 +273,7 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].subjects()
-        service_news = getUtility(IServiceNews)
+        service_news = getUtility(interfaces.IServiceNews)
         return service_news.subject_form_tree(audject)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -281,7 +285,7 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].target_audiences()
-        service_news = getUtility(IServiceNews)
+        service_news = getUtility(interfaces.IServiceNews)
         return service_news.target_audience_form_tree(audject)
 
 
@@ -306,7 +310,8 @@ class NewsItemFilter(Filter):
         results = []
 
         #if this is a new filter that doesn't show agenda items
-        if (INewsFilter.providedBy(self) and not self.show_agenda_items()):
+        if (interfaces.INewsFilter.providedBy(self)
+                and not self.show_agenda_items()):
             return results
 
         lastnight = (DateTime()-1).latestTime()
@@ -393,3 +398,5 @@ class NewsItemFilter(Filter):
 
 
 InitializeClass(NewsItemFilter)
+
+
