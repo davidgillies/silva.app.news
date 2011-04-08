@@ -11,11 +11,10 @@
     </div>
   </div>
   <div class="newsintro">
-   <img
-     tal:define="classname string:newsitem-thumbnail"
-     tal:replace="structure python: content.get_thumbnail(classname)"
-    />
-   <tal:insertintro replace="structure view/article" />
+    <div class="newsitem-thumbnail">
+      <img tal:replace="structure context/@@thumbnail" />
+    </div>
+    <tal:insertintro replace="structure view/article" />
   </div>
   <p class="p articlelink">
    <a href="#" tal:attributes="href context/@@absolute_url" i18n:translate="">

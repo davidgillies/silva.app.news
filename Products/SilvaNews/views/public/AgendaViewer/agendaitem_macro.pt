@@ -16,13 +16,11 @@
    </p>
  </div>
  <div class="newsintro">
-   <img 
-     tal:define="classname python: 'newsitem-thumbnail-%s'%(repeat['r'].odd() and 'odd' or 'even')"
-     tal:replace="structure python: obj.get_thumbnail(classname)"
-    />
+   <div tal:attributes="python: 'newsitem-thumbnail-%s'%(repeat['r'].odd() and 'odd' or 'even')">
+     <img tal:replace="structure context/@@thumbnail" />
+   </div>
   <tal:insert replace="structure r/get_intro" />
  </div>
-
  <p class="p articlelink">
    <a tal:attributes="href python:obj.get_content().absolute_url()" i18n:translate="">
      view article

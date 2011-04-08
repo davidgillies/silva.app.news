@@ -13,10 +13,10 @@ from silva.core import conf as silvaconf
 # from Products.SilvaDocument.silvaxml import NS_SILVA_DOCUMENT
 from Products.SilvaNews.silvaxml.xmlexport import NS_SILVA_NEWS
 from Products.SilvaNews.silvaxml.helpers import *
-from Products.SilvaNews.PlainArticle import (
-    PlainArticle, PlainArticleVersion)
-from Products.SilvaNews.PlainAgendaItem import (
-    PlainAgendaItem, PlainAgendaItemVersion)
+from Products.SilvaNews.NewsItem import (
+    NewsItem, NewsItemVersion)
+from Products.SilvaNews.AgendaItem import (
+    AgendaItem, AgendaItemVersion)
 from Products.SilvaNews.datetimeutils import get_timezone
 
 silvaconf.namespace(NS_SILVA_NEWS)
@@ -51,7 +51,7 @@ class PlainArticleHandler(SilvaBaseHandler):
         if name == (NS_SILVA_NEWS, 'plainarticle'):
             id = attrs[(None, 'id')].encode('utf-8')
             uid = self.generateOrReplaceId(id)
-            object = PlainArticle(uid)
+            object = NewsItem(uid)
             self.parent()._setObject(uid, object)
             self.setResultId(uid)
 
@@ -71,7 +71,7 @@ class PlainArticleContentHandler(SilvaBaseHandler):
             id = attrs[(None, 'version_id')].encode('utf-8')
             if not mangle.Id(self._parent, id).isValid():
                 return
-            version = PlainArticleVersion(id)
+            version = NewsItemVersion(id)
             parent = self.parent()
             parent._setObject(id, version)
             version = version.__of__(parent)

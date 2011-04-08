@@ -165,6 +165,7 @@ class ItemSelection(grok.Adapter):
     def __init__(self, context):
         super(ItemSelection, self).__init__(context)
         self.version = self.context.get_viewable() or \
+            self.context.get_previewable() or \
             self.context.get_editable()
         self.manager = IVersionManager(self.version)
 

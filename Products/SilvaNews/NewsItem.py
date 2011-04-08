@@ -96,32 +96,7 @@ class NewsItemVersion(document.DocumentVersion):
             to minimally 1 element
         """
         # XXX fix intro, remove this function.
-        #IntroHTML.transform(self, request or self.REQUEST)
         return u""
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_thumbnail')
-    def get_thumbnail(self, divclass=None):
-        """returns an image tag for the tumbnail of the first image in the item
-
-            returns '' if no image is available
-        """
-        # XXX fix get thumbnail
-
-        # images = self.content.documentElement.getElementsByTagName('image')
-        # if not images:
-        #     return ''
-        # reference_name = images[0].getAttribute('reference')
-        # service = getUtility(IReferenceService)
-        # reference = service.get_reference(self, name=reference_name)
-        # image = reference.target
-        # 
-        # tag = ('<a class="newsitemthumbnaillink" href="%s">%s</a>' %
-        #             (self.get_content().absolute_url(), image.tag(thumbnail=1)))
-        # if divclass:
-        #     tag = '<div class="%s">%s</div>' % (divclass, tag)
-        # return tag
-        return u''
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
@@ -297,7 +272,9 @@ class NewsItemView(silvaviews.View):
 
     @CachedProperty
     def article(self):
-        return self.context.body.render(self.context, self.request)
+        if self.content is not None:
+            return self.content.body.render(self.content, self.request)
+        return u''
 
 
 class NewsItemListItemView(NewsItemView):
@@ -308,8 +285,10 @@ class NewsItemListItemView(NewsItemView):
 
     @CachedProperty
     def article(self):
-        # XXX fix intro
-        # return IntroHTML.transform(self.content, self.request)
+        if self.content is not None:
+            return self.content.body.render_intro(
+                self.content, self.request,
+                max_length=128)
         return u''
 
 

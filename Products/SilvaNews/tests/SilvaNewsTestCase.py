@@ -41,7 +41,7 @@ class SilvaNewsTestCase(unittest.TestCase):
 
     def add_plain_article(self, parent, id, title, **kw):
         factory = parent.manage_addProduct['SilvaNews']
-        factory.manage_addPlainArticle(id, title, **kw)
+        factory.manage_addNewsItem(id, title, **kw)
         return getattr(parent, id)
 
     def add_news_viewer(self, parent, id, title, **kw):
@@ -66,7 +66,7 @@ class SilvaNewsTestCase(unittest.TestCase):
 
     def add_published_news_item(self, parent, id, title, **kw):
         factory = parent.manage_addProduct['SilvaNews']
-        factory.manage_addPlainArticle(id, title, **kw)
+        factory.manage_addNewsItem(id, title, **kw)
         item = getattr(parent, id)
         version = item.get_editable()
         version.set_subjects(['sub'])
@@ -79,7 +79,7 @@ class SilvaNewsTestCase(unittest.TestCase):
 
     def add_published_agenda_item(self, parent, id, title, sdt, edt=None, **kw):
         factory = parent.manage_addProduct['SilvaNews']
-        factory.manage_addPlainAgendaItem(id, title, **kw)
+        factory.manage_addAgendaItem(id, title, **kw)
         item = getattr(parent, id)
         ver = item.get_editable()
         ver.set_start_datetime(sdt)

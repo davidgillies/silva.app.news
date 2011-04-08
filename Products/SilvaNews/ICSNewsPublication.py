@@ -121,7 +121,7 @@ class ICSCalendarPublication(NewsPublication):
             factory = self.manage_addProduct['SilvaNews']
 
         title = unicode(event['summary'])
-        agenda_item = factory.manage_addPlainAgendaItem(id, title)
+        agenda_item = factory.manage_addAgendaItem(id, title)
         self._create_new_version(agenda_item, event)
 
     def _create_new_version(self, agenda_item, event):

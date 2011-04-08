@@ -102,7 +102,7 @@ class TestAgendaItemRecurrence(unittest.TestCase):
 
     def create_agenda_item(self):
         factory = self.root.manage_addProduct['Products.SilvaNews']
-        factory.manage_addPlainAgendaItem('event', 'Event')
+        factory.manage_addAgendaItem('event', 'Event')
         return self.root.event
 
 

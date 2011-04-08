@@ -67,9 +67,6 @@ class NewsItemReference(object):
     def intro(self, maxchars=1024):
         return self._item.get_intro(maxchars)
 
-    def thumbnail(self):
-        return self._item.get_thumbnail('inv_thumbnail')
-
     def creation_datetime(self):
         pub_dt = self._context.service_metadata.getMetadataValue(
                         self._item, 'silva-extra', 'publicationtime')
@@ -119,9 +116,6 @@ class RSSItemReference(object):
 
     def intro(self, maxchars=1024):
         return self.description(maxchars)
-
-    def thumbnail(self):
-        return None
 
     def creation_datetime(self):
         return (self._toDateTime(self._item.get('created')) or

@@ -92,9 +92,7 @@
           <div class="newsimage"
                tal:define="di options/display_image"
                tal:condition="python:di=='thumbnail'">
-            <tal:def define="thumb item/thumbnail">
-              <img tal:condition="python:di=='thumbnail' and thumb"
-                   tal:replace="structure thumb" />
+              <img tal:replace="structure item/@@thumbnail" />
             </tal:def>
           </div>
 

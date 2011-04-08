@@ -66,7 +66,7 @@ class TestExport(unittest.TestCase):
         factory.manage_addNewsPublication('newspub', 'NewsPublication')
         factory = self.root.export.newspub.manage_addProduct['SilvaNews']
 
-        factory.manage_addPlainArticle('news', 'Some news')
+        factory.manage_addNewsItem('news', 'Some news')
         version = self.root.export.newspub.news.get_editable()
         self.assertTrue(version)
         version.set_subjects(['all'])
@@ -84,7 +84,7 @@ class TestExport(unittest.TestCase):
         factory = self.root.export.manage_addProduct['SilvaNews']
         factory.manage_addNewsPublication('newspub', 'NewsPublication')
         factory = self.root.export.newspub.manage_addProduct['SilvaNews']
-        factory.manage_addPlainAgendaItem('event', 'Some event')
+        factory.manage_addAgendaItem('event', 'Some event')
         version = self.root.export.newspub.event.get_editable()
         self.assertTrue(version)
         version.set_location('Rotterdam')
