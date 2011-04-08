@@ -2,6 +2,9 @@ from cgi import escape
 from five import grok
 from DateTime import DateTime
 
+from zope.interface import Interface
+from zope import component
+
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
 from Products.Silva.browser import feed
 from Products.SilvaNews.interfaces import (INewsViewer,
@@ -10,7 +13,7 @@ from Products.Silva.browser.feed import ContainerFeedProvider
 
 
 class NewsPublicationFeedEntryProvider(ContainerFeedProvider):
-    grok.context(INewsPublication)
+    grok.adapts(INewsPublication, Interface)
 
     def entries(self):
         default = self.context.get_default()
@@ -19,16 +22,21 @@ class NewsPublicationFeedEntryProvider(ContainerFeedProvider):
         return super(self.__class__, self).entries()
 
 
-class NewsViewerFeedEntryProvider(grok.Adapter):
-    grok.context(INewsViewer)
+class NewsViewerFeedEntryProvider(grok.MultiAdapter):
+    grok.adapts(INewsViewer, Interface)
     grok.implements(IFeedEntryProvider)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
 
     def entries(self):
         items = self.context.get_items()
         for item in items:
             if item.get_viewable() is None:
                 continue
-            entry = IFeedEntry(item, None)
+            entry = component.queryMultiAdapter(
+                (item, self.request), IFeedEntry)
             if not entry is None:
                 yield entry
 
@@ -50,7 +58,7 @@ class Atom(feed.Atom):
 class AggregatorFeedEntry(object):
     grok.implements(IFeedEntry)
 
-    def __init__(self, item):
+    def __init__(self, item, request):
         self.item = item
 
     def id(self):
@@ -88,8 +96,8 @@ class AggregatorFeedEntry(object):
         return None
 
 
-class AggregatorFeedProvider(grok.Adapter):
-    grok.context(IAggregator)
+class AggregatorFeedProvider(grok.MultiAdapter):
+    grok.adapts(IAggregator, Interface)
     grok.implements(IFeedEntryProvider)
 
     def entries(self):

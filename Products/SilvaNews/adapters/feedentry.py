@@ -1,36 +1,34 @@
 # Copyright (c) 2002-2009 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Id$
 
-# XXX Need fixes as SilvaDocument is gone
-# from five import grok
-# from Products.SilvaDocument.adapters import feedentry
-# from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
-
-
-# class NewsItemFeedEntryAdapter(feedentry.DocumentFeedEntryAdapter):
-#     """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
-#     representation."""
-#     grok.context(INewsItem)
-
-#     def html_description(self):
-#         return self.version.get_intro()
-
-#     def date_published(self):
-#         """ This field is used for ordering.
-#         """
-#         return self.version.display_datetime()
+from five import grok
+from zope.interface import Interface
+from silva.app.document import feed
+from Products.SilvaNews.interfaces import INewsItem, IAgendaItem
 
 
-# class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
-#     grok.context(IAgendaItem)
+class NewsItemFeedEntryAdapter(feed.DocumentFeedEntry):
+    """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
+    representation."""
+    grok.adapts(INewsItem, Interface)
 
-#     def location(self):
-#         return self.version.get_location()
+    def date_published(self):
+        """ This field is used for ordering.
+        """
+        return self.version.display_datetime()
 
-#     def start_datetime(self):
-#         return self.version.get_start_datetime().isoformat()
 
-#     def end_datetime(self):
-#         edt = self.version.get_end_datetime()
-#         return (edt and edt.isoformat()) or edt
+class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
+    grok.adapts(IAgendaItem, Interface)
+
+    def location(self):
+        return self.version.get_location()
+
+    def start_datetime(self):
+        return self.version.get_start_datetime().isoformat()
+
+    def end_datetime(self):
+        edt = self.version.get_end_datetime()
+        return (edt and edt.isoformat()) or edt
+
+
