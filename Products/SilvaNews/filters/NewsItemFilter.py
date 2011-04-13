@@ -241,12 +241,14 @@ class NewsItemFilter(Filter):
         logger.info('query %s', repr(kw))
         return self.service_catalog(kw)
 
-    def _query_items(self, **kw):
+    def _query_items(self, filter_excluded_items=True, **kw):
         brains = self._query(**kw)
         results = imap(
             lambda x: x.getObject().get_content(),
             brains)
-        return self.__filter_excluded_items(results)
+        if filter_excluded_items:
+            return self.__filter_excluded_items(results)
+        return results
 
     def _check_meta_types(self, meta_types):
         for type in meta_types:

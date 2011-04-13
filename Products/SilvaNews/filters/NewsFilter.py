@@ -2,12 +2,8 @@
 # See also LICENSE.txt
 # $Revision$
 
-from itertools import imap
-
 from zope import schema
 from zope.i18nmessageid import MessageFactory
-from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
 from five import grok
 from zeam.utils.batch import batch
 
@@ -17,9 +13,10 @@ from App.class_init import InitializeClass
 
 from Products.Silva import SilvaPermissions
 from silva.core import conf as silvaconf
+from zeam.form.base.datamanager import BaseDataManager
 from zeam.form import silva as silvaforms
 from zeam.form import table as tableforms
-from zeam.form.table.select import SelectField
+
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IVersionManager
 from silva.ui.menu import MenuItem, ContentMenu
@@ -68,7 +65,7 @@ class NewsFilter(NewsItemFilter):
         if not self.get_sources():
             return []
         query = self._prepare_query(meta_types)
-        results = self._query_items(**query)
+        results = self._query_items(filter_excluded_items=False, **query)
         return results
 
     security.declarePrivate('get_allowed_meta_types')
@@ -139,17 +136,14 @@ class Items(silvaforms.SMIComposedForm):
 
 
 class ExcludeAction(silvaforms.Action):
-    def __call__(self, form, content, line):
-        item = content.context
+    def __call__(self, form, content, selected, deselected, unchanged):
         news_filter = form.context
-        news_filter.add_excluded_item(item)
-
-
-class UnExcludeAction(silvaforms.Action):
-    def __call__(self, form, content, line):
-        item = content.context
-        news_filter = form.context
-        news_filter.remove_excluded_item(item)
+        for line in selected:
+            content = line.getContentData().getContent()
+            news_filter.remove_excluded_item(content)
+        for line in deselected:
+            content = line.getContentData().getContent()
+            news_filter.add_excluded_item(content)
 
 
 class IItemSelection(ITitledContent):
@@ -158,28 +152,37 @@ class IItemSelection(ITitledContent):
     expiration_datetime = schema.Datetime(title=_(u'expiration date'))
 
 
-class ItemSelection(grok.Adapter):
-    grok.context(interfaces.INewsItem)
-    grok.implements(IItemSelection)
+class ItemSelection(BaseDataManager):
 
-    def __init__(self, context):
-        super(ItemSelection, self).__init__(context)
-        self.version = self.context.get_viewable() or \
-            self.context.get_previewable() or \
-            self.context.get_editable()
+    def __init__(self, content, filter):
+        self.filter = filter
+        self.content = content
+        self.version = self.content.get_viewable() or \
+            self.content.get_previewable() or \
+            self.content.get_editable()
         self.manager = IVersionManager(self.version)
+
+    def get(self, identifier):
+        try:
+            return getattr(self, identifier)
+        except AttributeError:
+            raise KeyError(identifier)
+
+    @property
+    def select(self):
+        return not self.filter.is_excluded_item(self.content)
 
     @property
     def path(self):
-        path = self.context.getPhysicalPath()
-        root_path = self.context.get_root().getPhysicalPath()
+        path = self.content.getPhysicalPath()
+        root_path = self.content.get_root().getPhysicalPath()
         if root_path == path[:len(root_path)]:
             return "/".join(path[len(root_path):])
         return "/".join(path)
 
     @property
     def title(self):
-        return self.context.get_title_or_id()
+        return self.content.get_title_or_id()
 
     @property
     def publication_datetime(self):
@@ -194,53 +197,32 @@ class ItemSelection(grok.Adapter):
             return dt.asdatetime()
 
 
-class ItemsForm(silvaforms.SMISubTableForm):
-    grok.baseclass()
+class ItemExcludeForm(silvaforms.SMISubTableForm):
     grok.view(Items)
     grok.context(interfaces.INewsFilter)
+    grok.order(10)
+    count = 15
 
+    label = _('Exclude items')
+    description = _('uncheck items you want to ignore')
     ignoreRequest = True
     ignoreContent = False
 
-    label = _('Available news items')
     mode = silvaforms.DISPLAY
-    tableFields = silvaforms.Fields(IItemSelection).omit('id')
     emptyDescription = _(u"There are no items.")
+    tableFields = silvaforms.Fields(IItemSelection).omit('id')
+    tableActions = tableforms.TableSelectionActions(
+        ExcludeAction(identifier='update', title=_("Update")))
 
-    def selectFieldFactory(self, *args, **kw):
-        selected = SelectField(*args, **kw)
-        selected.ignoreRequest = True
-        return selected
-
-
-class ItemListForm(ItemsForm):
-    grok.order(10)
-    count = 5
-
-    label = _('Active items')
-    tableActions = tableforms.TableActions(
-        ExcludeAction(identifier='ignore'))
+    def prepareSelectedField(self, field):
+        field.ignoreContent = False
+        field.ignoreRequest = True
 
     def getItems(self):
         self.batch = batch(list(self.context.get_all_items()),
             start=self.parent.offset,
             count=self.count)
-        return [IItemSelection(i) for i in self.batch]
-
-
-class IgnoredItems(ItemsForm):
-    grok.order(20)
-
-    label = _('Ignored items')
-    tableActions = tableforms.TableActions(
-        UnExcludeAction(identifier='unignore'))
-
-    def getItems(self):
-        intids = getUtility(IIntIds)
-        def get_item(intid):
-            target = intids.getObject(intid)
-            return IItemSelection(target)
-        return imap(get_item, self.context.get_excluded_items())
+        return [ItemSelection(i, self.context) for i in self.batch]
 
 
 class ItemsMenu(MenuItem):

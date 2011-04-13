@@ -6,11 +6,15 @@ from five import grok
 from zope.component import getUtility
 from zope.cachedescriptors.property import CachedProperty
 from zope.i18nmessageid import MessageFactory
+from zope.interface import Interface
+from zope import schema
+from zeam.form import autofields
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from DateTime import DateTime
+from datetime import datetime
 
 # Silva
 from silva.core import conf as silvaconf
@@ -21,6 +25,8 @@ from Products.Silva import SilvaPermissions
 from silva.app.document import document
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
+from silva.core.smi.content.publish import (IPublicationFields,
+    VersionPublication)
 
 from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
@@ -55,7 +61,7 @@ class NewsItemVersion(document.DocumentVersion):
             in the news viewer, and to determine the order in which the items
             are shown
         """
-        self._display_datetime = ddt
+        self._display_datetime = DateTime(ddt)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'display_datetime')
@@ -235,6 +241,13 @@ class NewsItem(document.Document):
         version = getattr(self, self.get_unapproved_version())
         version.set_display_datetime(dt)
 
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_unapproved_version_display_datetime')
+    def get_unapproved_version_display_datetime(self):
+        """get display datetime for unapproved
+        """
+        version = getattr(self, self.get_unapproved_version())
+        version.get_display_datetime()
 
 InitializeClass(NewsItem)
 
@@ -291,6 +304,31 @@ class NewsItemListItemView(NewsItemView):
                 max_length=128)
         return u''
 
+# Add display datetime on publish smi tab
+
+class INewsItemPublicationFields(Interface):
+    display_datetime = schema.Datetime(title=_("Display datetime"))
+
+
+class NewsItemPublicationFields(autofields.AutoFields):
+    autofields.group(IPublicationFields)
+    autofields.order(20)
+    fields = silvaforms.Fields(INewsItemPublicationFields)
+    fields['display_datetime'].defaultValue = lambda d: datetime.now()
+
+
+class NewsItemPublication(VersionPublication):
+    grok.context(INewsItem)
+    grok.provides(IPublicationFields)
+
+    def set_display_datetime(self, value):
+        self.context.set_unapproved_version_display_datetime(DateTime(value))
+
+    def get_display_datetime(self):
+        return self.context.get_unapproved_version_display_datetime()
+
+    display_datetime = property(get_display_datetime, set_display_datetime)
+
 
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)
 def news_item_published(content, event):
@@ -315,3 +353,5 @@ def get_default_viewer(context):
             if default and INewsViewer.providedBy(default):
                 return default
     return None
+
+

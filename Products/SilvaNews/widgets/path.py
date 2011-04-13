@@ -37,7 +37,7 @@ class PathWidgetDisplay(SchemaFieldWidget):
         return self.component.html_target
 
     def getURL(self):
-        context = self.form.getContent().context
+        context = self.form.getContentData().getContent()
         return str(absoluteURL(context, self.request))
 
     def valueToUnicode(self, value):
