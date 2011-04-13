@@ -70,7 +70,7 @@ class NewsItemReference(object):
     def creation_datetime(self):
         pub_dt = self._context.service_metadata.getMetadataValue(
                         self._item, 'silva-extra', 'publicationtime')
-        display_dt = self._item.display_datetime()
+        display_dt = self._item.get_display_datetime()
         return display_dt or pub_dt
 
     def start_datetime(self):

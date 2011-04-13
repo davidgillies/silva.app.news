@@ -38,7 +38,7 @@ class AgendaFilter(NewsItemFilter):
     silvaconf.icon("www/agenda_filter.png")
     silvaconf.priority(3.4)
 
-    _allowed_meta_types = ['Silva Agenda Item Version']
+    _allowed_meta_types = ['Silva Agenda Item']
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
@@ -81,10 +81,9 @@ class AgendaFilter(NewsItemFilter):
         # end dt first
         query = self._prepare_query()
         query['sort_order'] = 'ascending'
-        query['sort_on'] = 'idx_end_datetime'
-        query['idx_datetime_ranges'] = {}
-        query['idx_timestamp_ranges'] = {'query': [startdate, enddate]}
-        query['sort_on'] = 'idx_start_datetime'
+        query['sort_on'] = 'end_datetime'
+        query['timestamp_ranges'] = {'query': (startdate, enddate)}
+        query['sort_on'] = 'start_datetime'
 
         return self._query_items(**query)
 

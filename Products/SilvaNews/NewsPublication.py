@@ -40,14 +40,10 @@ class NewsPublication(Publication):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'parent_path')
-    def parent_path(self):
+    def get_parent_path(self):
         """Returns the path of the parent of this source
         """
         return '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_parent_path')
-    idx_parent_path = parent_path
 
 
 InitializeClass(NewsPublication)

@@ -13,7 +13,7 @@ class NewsPublicationTestCase(SilvaNewsTestCase.NewsBaseTestCase):
                           'hide')
         tree = [ i[1] for i in self.root.get_public_tree() ]
         self.assert_(self.source1 not in tree)
-        
+
     def test_is_private(self):
         self.assertEquals(self.sm.getMetadataValue(self.source1,'snn-np-settings','is_private'),
                           'no')

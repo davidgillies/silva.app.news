@@ -29,7 +29,7 @@ from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews import datetimeutils
-from Products.SilvaNews.interfaces import IAgendaItemVersion, IAgendaViewer
+from Products.SilvaNews.interfaces import IAgendaItem, IAgendaViewer
 from Products.SilvaNews.viewers.NewsViewer import NewsViewer
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
@@ -81,7 +81,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         """Gets the items from the filters
         """
         func = lambda x: x.get_items_by_date(month,year,
-            timezone=self.get_timezone(), meta_types="Silva Agenda Item Version")
+            timezone=self.get_timezone(), meta_types="Silva Agenda Item")
         sortattr = None
         if self.has_filter():
             sortattr = 'start_datetime'
@@ -110,7 +110,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         mts = Products.meta_types
         for mt in mts:
             if (mt.has_key('instance') and
-                IAgendaItemVersion.implementedBy(mt['instance'])):
+                IAgendaItem.implementedBy(mt['instance'])):
                 allowed.append(mt['name'])
         return allowed
 

@@ -230,7 +230,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         SNN objects"""
         audject = context.superValues('Silva News Category Filter')
         if audject:
-            audject = audject[0].subjects()
+            audject = audject[0].get_subjects()
         return self.subject_form_tree(audject)
 
     def filtered_ta_form_tree(self, context):

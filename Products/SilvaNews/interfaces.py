@@ -248,7 +248,7 @@ class INewsItemFilter(IFilter):
         """        Returns non-excluded published AGENDA-items for a particular
         month. This method is for exclusive use by AgendaViewers only,
         NewsViewers should use get_items_by_date instead (which
-        filters on idx_display_datetime instead of start_datetime and
+        filters on display_datetime instead of start_datetime and
         returns all objects instead of only IAgendaItem-
         implementations)"""
 

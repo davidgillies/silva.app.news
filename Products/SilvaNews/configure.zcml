@@ -14,6 +14,7 @@
   <include package="infrae.rest" />
   <include package="silva.core.views" />
   <include package="silva.app.document" />
+  <include package="silva.core.upgrade" />
 
   <five:registerPackage package="." />
 

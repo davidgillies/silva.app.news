@@ -45,11 +45,11 @@ class TestImport(unittest.TestCase):
         self.assertTrue(hasattr(self.root.export.newspub, 'news'))
         news = self.root.export.newspub.news
         version = news.get_editable()
-        self.assertEquals(['all'], version.subjects())
-        self.assertEquals(['generic'], version.target_audiences())
+        self.assertEquals(['all'], version.get_subjects())
+        self.assertEquals(['generic'], version.get_target_audiences())
         self.assertEquals(
             datetime(2010, 9, 30, 10, 0, 0),
-            version.display_datetime())
+            version.get_display_datetime())
 
     def test_import_agenda_item(self):
         self.import_file('import_agendaitem.xml', globs=globals())
@@ -63,14 +63,14 @@ class TestImport(unittest.TestCase):
             version.get_start_datetime())
         self.assertEquals('Rotterdam', version.get_location())
         self.assertTrue(version.is_all_day())
-        self.assertEquals(['all'], version.subjects())
-        self.assertEquals(['generic'], version.target_audiences())
+        self.assertEquals(['all'], version.get_subjects())
+        self.assertEquals(['generic'], version.get_target_audiences())
         self.assertEquals('FREQ=DAILY;UNTIL=20100910T123212Z',
             version.get_recurrence())
         self.assertEquals('Europe/Amsterdam', version.get_timezone_name())
         self.assertEquals(
             datetime(2010, 9, 30, 10, 0, 0),
-            version.display_datetime())
+            version.get_display_datetime())
 
 
 def test_suite():

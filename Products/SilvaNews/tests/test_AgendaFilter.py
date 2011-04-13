@@ -6,6 +6,7 @@ import SilvaNewsTestCase
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+
 class AgendaFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     """Test the AgendaFilter interfaces
     """

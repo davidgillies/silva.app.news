@@ -23,11 +23,11 @@ class ServiceNewsTestCase(unittest.TestCase):
     def test_subjects(self):
         self.service_news.add_subject('test1', 'Test 1')
         self.service_news.add_subject('test2', 'Test 2', 'test1')
-        self.assert_(('test1', 'Test 1') in self.service_news.subjects())
-        self.assert_(('test2', 'Test 2') in self.service_news.subjects())
+        self.assert_(('test1', 'Test 1') in self.service_news.get_subjects())
+        self.assert_(('test2', 'Test 2') in self.service_news.get_subjects())
         #remove the default subject
         self.service_news.remove_subject('generic')
-        self.assert_(len(self.service_news.subjects()) == 2)
+        self.assert_(len(self.service_news.get_subjects()) == 2)
         self.assert_(self.service_news.subject_tree() == [('test1', 'Test 1', 0), ('test2', 'Test 2', 1)])
         self.assert_(self.service_news.subject_form_tree() == [('Test 1', 'test1'), ('&nbsp;&nbsp;Test 2', 'test2')])
         self.assertRaises(DuplicateIdError, self.service_news.add_subject, 'test1', 'Test 1')

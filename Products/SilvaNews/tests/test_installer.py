@@ -16,28 +16,16 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
                           self.root.service_extensions.is_installed(
                 'SilvaNews'))
 
-    def test_catalog_columns(self):
-        #ensure catalog columns are setup
-        catalog = self.catalog
-        columns = ['get_end_datetime',
-                   'get_start_datetime',
-                   'get_location',
-                   'get_title',
-                   'display_datetime']
-        existing_columns = catalog.schema()
-        for cn in columns:
-            self.assertEquals(True,
-                              cn in existing_columns)
     def test_catalog_indexes(self):
         #ensure catalog indexes are setup
         catalog = self.catalog
         indexes = [
-            ('idx_parent_path', 'FieldIndex'),
-            ('idx_start_datetime', 'DateIndex'),
-            ('idx_end_datetime', 'DateIndex'),
-            ('idx_display_datetime', 'DateIndex'),
-            ('idx_subjects', 'KeywordIndex'),
-            ('idx_target_audiences', 'KeywordIndex'),
+            ('parent_path', 'FieldIndex'),
+            ('start_datetime', 'DateIndex'),
+            ('end_datetime', 'DateIndex'),
+            ('display_datetime', 'DateIndex'),
+            ('subjects', 'KeywordIndex'),
+            ('target_audiences', 'KeywordIndex'),
         ]
         existing_indexes = catalog.getIndexObjects()
         for (id,mt) in indexes:

@@ -77,7 +77,7 @@ class NewsItemFilter(Filter):
             cpp = cpp[:cpp.rfind('/')]
 
         q['snn-np-settingsis_private'] = 'yes'
-        q['idx_parent_path'] = paths
+        q['parent_path'] = paths
         results += self._query(**q)
 
         return map(lambda x: x.getObject(), results)
@@ -183,16 +183,9 @@ class NewsItemFilter(Filter):
 
         # replace +'es with spaces so the effect is the same...
         keywords = keywords.replace('+', ' ')
-
-        result = self._query_items(
-            fulltext = keywords.split(' '),
-            version_status = 'public',
-            path = map(lambda p: "/".join(p), self._get_sources_path()),
-            subjects = self._subjects,
-            target_audiences = self._target_audiences,
-            meta_type = meta_types,
-            sort_on = 'idx_display_datetime',
-            sort_order = 'descending')
+        query = self._prepare_query(meta_types=meta_types)
+        query['fulltext'] = keywords.split(' ')
+        result = self._query_items(**query)
 
         return result
 
@@ -214,26 +207,27 @@ class NewsItemFilter(Filter):
                 result = result.union(set(node.get_subtree_ids()))
         return list(result)
 
-    def _prepare_query ( self, meta_types=None ):
+    def _prepare_query(self, meta_types=None, public_only=True):
         """private method preparing the common fields for a catalog query.
 
         Return: dict holding the query parameters
         """
         query = {}
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
-        query['version_status'] = 'public'
+        if public_only:
+            query['version_status'] = 'public'
         service = getUtility(interfaces.IServiceNews)
-        query['idx_subjects'] = {
+        query['subjects'] = {
             'query': self._collect_subjects(service),
             'operator': 'or'}
-        query['idx_target_audiences'] = {
+        query['target_audiences'] = {
             'query': self._collect_target_audiences(service),
             'operator': 'or'}
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         query['meta_type'] = meta_types
         # Workaround for ProxyIndex bug
-        query['sort_on'] = 'idx_display_datetime'
+        query['sort_on'] = 'display_datetime'
         query['sort_order'] = 'descending'
         return query
 
@@ -244,7 +238,7 @@ class NewsItemFilter(Filter):
     def _query_items(self, filter_excluded_items=True, **kw):
         brains = self._query(**kw)
         results = imap(
-            lambda x: x.getObject().get_content(),
+            lambda x: x.getObject(),
             brains)
         if filter_excluded_items:
             return self.__filter_excluded_items(results)
@@ -274,7 +268,7 @@ class NewsItemFilter(Filter):
         none are found, all subjects from the news service"""
         audject = self.superValues('Silva News Category Filter')
         if audject:
-            audject = audject[0].subjects()
+            audject = audject[0].get_subjects()
         service_news = getUtility(interfaces.IServiceNews)
         return service_news.subject_form_tree(audject)
 
@@ -341,7 +335,7 @@ class NewsItemFilter(Filter):
             # the on number of days instead of the number of items
             now = DateTime()
             last_night = now.earliestTime()
-            query['idx_display_datetime'] = {
+            query['display_datetime'] = {
                 'query': [last_night - number, now],
                 'range': 'minmax'}
 
@@ -369,7 +363,7 @@ class NewsItemFilter(Filter):
         enddate = datetimeutils.end_of_month(startdate)
         query = self._prepare_query(meta_types)
 
-        query['idx_timestamp_ranges'] = {
+        query['timestamp_ranges'] = {
             'query': [datetimeutils.datetime_to_unixtimestamp(startdate),
                  datetimeutils.datetime_to_unixtimestamp(enddate)]}
 
@@ -389,7 +383,7 @@ class NewsItemFilter(Filter):
     def __filter_on_date_range(self, query, start, end):
         startdt = datetimeutils.datetime_to_unixtimestamp(start)
         enddt = datetimeutils.datetime_to_unixtimestamp(end)
-        query['idx_timestamp_ranges'] = {'query': [startdt, enddt]}
+        query['timestamp_ranges'] = {'query': [startdt, enddt]}
 
     def __filter_excluded_items(self, results):
         intids = getUtility(IIntIds)

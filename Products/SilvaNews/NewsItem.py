@@ -19,7 +19,10 @@ from datetime import datetime
 # Silva
 from silva.core import conf as silvaconf
 from silva.core.interfaces import IRoot
-from silva.core.interfaces.events import IContentPublishedEvent
+from silva.core.interfaces.events import (IContentPublishedEvent,
+    IPublishingEvent)
+from silva.core.services.interfaces import ICataloging
+
 from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
 from silva.app.document import document
@@ -28,10 +31,12 @@ from zeam.form import silva as silvaforms
 from silva.core.smi.content.publish import (IPublicationFields,
     VersionPublication)
 
-from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
+from Products.SilvaNews.interfaces import (INewsItem, INewsItemVersion,
+    IAgendaItemVersion)
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
     INewsViewer, INewsQualifiers)
-from Products.SilvaNews.datetimeutils import datetime_to_unixtimestamp
+from Products.SilvaNews.datetimeutils import (datetime_to_unixtimestamp,
+    CalendarDatetime)
 
 _ = MessageFactory('silva_news')
 
@@ -64,21 +69,13 @@ class NewsItemVersion(document.DocumentVersion):
         self._display_datetime = DateTime(ddt)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'display_datetime')
-    def display_datetime(self):
+                                'get_display_datetime')
+    def get_display_datetime(self):
         """returns the display datetime
 
             see 'set_display_datetime'
         """
         return self._display_datetime
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'idx_display_datetime')
-    idx_display_datetime = display_datetime
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_display_datetime')
-    get_display_datetime = display_datetime
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')
@@ -142,10 +139,6 @@ class NewsItemVersion(document.DocumentVersion):
             source, 'snn-np-settings', 'is_private')
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_is_private')
-    idx_is_private = is_private
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_subjects')
     def get_subjects(self):
         """Returns the subjects
@@ -153,27 +146,11 @@ class NewsItemVersion(document.DocumentVersion):
         return set(self._subjects or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subjects')
-    subjects = get_subjects
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_subjects')
-    idx_subjects = get_subjects
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_target_audiences')
     def get_target_audiences(self):
         """Returns the target audiences
         """
         return set(self._target_audiences or [])
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'target_audiences')
-    target_audiences = get_target_audiences
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_target_audiences')
-    idx_target_audiences = get_target_audiences
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'last_author_fullname')
@@ -204,10 +181,17 @@ class NewsItemVersion(document.DocumentVersion):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'sort_index')
     def sort_index(self):
-        dt = self.display_datetime()
+        dt = self.get_display_datetime()
         if dt:
             return datetime_to_unixtimestamp(dt)
         return None
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_timestamp_ranges')
+    def get_timestamp_ranges(self):
+        if self._display_datetime:
+            return CalendarDatetime(self._display_datetime, None).\
+                get_unixtimestamp_ranges()
 
 
 InitializeClass(NewsItemVersion)
@@ -274,7 +258,7 @@ class NewsItemView(silvaviews.View):
 
     @CachedProperty
     def article_date(self):
-        article_date = self.content.display_datetime()
+        article_date = self.content.get_display_datetime()
         if not article_date:
             article_date = self.content.publication_time()
         if article_date:
@@ -330,9 +314,69 @@ class NewsItemPublication(VersionPublication):
     display_datetime = property(get_display_datetime, set_display_datetime)
 
 
+from Products.Silva.cataloging import CatalogingAttributesPublishable
+
+
+class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
+    grok.context(INewsItem)
+
+    def __init__(self, context):
+        super(NewsItemCatalogingAttributes, self).__init__(context)
+        self.version = self.context.get_viewable() or \
+            self.context.get_previewable() or \
+            self.context.get_editable()
+
+    @property
+    def display_datetime(self):
+        if self.version is not None:
+            return self.version.get_display_datetime()
+
+    @property
+    def start_datetime(self):
+        if self.version is not None and \
+                IAgendaItemVersion.providedBy(self.version):
+            return self.version.get_start_datetime()
+
+    @property
+    def end_datetime(self):
+        if self.version is not None and \
+                IAgendaItemVersion.providedBy(self.version):
+            return self.version.get_end_datetime()
+
+    @property
+    def timestamp_ranges(self):
+        if self.version is not None:
+            return self.version.get_timestamp_ranges()
+
+    @property
+    def parent_path(self):
+        if self.version is not None:
+            return self.version.get_parent_path()
+
+    @property
+    def subjects(self):
+        if self.version is not None:
+            return self.version.get_subjects()
+
+    @property
+    def target_audiences(self):
+        if self.version is not None:
+            return self.version.get_target_audiences()
+
+    @property
+    def fulltext(self):
+        if self.version is not None:
+            return self.version.fulltext()
+
+
+@grok.subscribe(INewsItemVersion, IPublishingEvent)
+def reindex_content(content, event):
+    return ICataloging(content.get_content()).reindex()
+
+
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)
 def news_item_published(content, event):
-    if content.display_datetime() is None:
+    if content.get_display_datetime() is None:
         now = DateTime()
         content.set_display_datetime(now)
 

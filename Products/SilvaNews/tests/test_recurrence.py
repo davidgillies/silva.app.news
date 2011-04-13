@@ -84,21 +84,21 @@ class TestAgendaItemRecurrence(unittest.TestCase):
 
         def search():
             return map(lambda x: x.getObject(),
-                       catalog({'idx_timestamp_ranges': [start, end]}))
+                       catalog({'timestamp_ranges': [start, end]}))
 
-        self.assertEquals([version], search())
+        self.assertEquals([agenda_item], search())
 
         start = datetime_to_unixtimestamp(
             datetime(2010, 9, 24, 10, 0, tzinfo=tz))
         end = datetime_to_unixtimestamp(
             datetime(2010, 9, 24, 12, 0, tzinfo=tz))
-        self.assertEquals([version], search())
+        self.assertEquals([agenda_item], search())
 
         start = datetime_to_unixtimestamp(
             datetime(2010, 10, 8, 11, 0, tzinfo=tz))
         end = datetime_to_unixtimestamp(
             datetime(2010, 10, 8, 13, 0, tzinfo=tz))
-        self.assertEquals([version], search())
+        self.assertEquals([agenda_item], search())
 
     def create_agenda_item(self):
         factory = self.root.manage_addProduct['Products.SilvaNews']

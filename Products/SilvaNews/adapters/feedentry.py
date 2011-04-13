@@ -15,7 +15,7 @@ class NewsItemFeedEntryAdapter(feed.DocumentFeedEntry):
     def date_published(self):
         """ This field is used for ordering.
         """
-        return self.version.display_datetime()
+        return self.version.get_display_datetime()
 
 
 class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):

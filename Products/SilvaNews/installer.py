@@ -108,26 +108,17 @@ class SilvaNewsInstaller(DefaultInstaller):
         """Sets the ZCatalog up"""
         catalog = root.service_catalog
 
-        columns = ['get_end_datetime','get_start_datetime',
-            'get_location','get_title', 'display_datetime','get_intro', 'sort_index']
-
         indexes = [
-            ('idx_parent_path', 'FieldIndex'),
-            ('idx_start_datetime', 'DateIndex'),
-            ('idx_end_datetime', 'DateIndex'),
-            ('idx_display_datetime', 'DateIndex'),
-            ('idx_timestamp_ranges', 'IntegerRangesIndex'),
-            ('idx_subjects', 'KeywordIndex'),
-            ('idx_target_audiences', 'KeywordIndex'),
+            ('parent_path', 'FieldIndex'),
+            ('start_datetime', 'DateIndex'),
+            ('end_datetime', 'DateIndex'),
+            ('display_datetime', 'DateIndex'),
+            ('timestamp_ranges', 'IntegerRangesIndex'),
+            ('subjects', 'KeywordIndex'),
+            ('target_audiences', 'KeywordIndex'),
             ]
 
-        existing_columns = catalog.schema()
         existing_indexes = catalog.indexes()
-
-        for column_name in columns:
-            if column_name in existing_columns:
-                continue
-            catalog.addColumn(column_name)
 
         for field_name, field_type in indexes:
             if field_name in existing_indexes:

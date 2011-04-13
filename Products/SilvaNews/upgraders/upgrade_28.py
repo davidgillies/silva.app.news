@@ -9,7 +9,7 @@ VERSION_B1='2.2b1'
 
 
 class IndexUpgrader(BaseUpgrader):
-    """ remove the idx_is_private catalog index; it's
+    """ remove the is_private catalog index; it's
         not used anymore.  This functionality has been moved
         into metadata."""
     def upgrade(self, obj):

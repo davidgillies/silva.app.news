@@ -15,7 +15,7 @@
   </p>
   <p>
     <tal:newsarticleaudience
-      tal:define="audience_ids python: model.get_viewable().target_audiences();"
+      tal:define="audience_ids python: model.get_viewable().get_target_audiences();"
       tal:condition="audience_ids">
     <span i18n:translate="" class="subhead">target audience</span><br />
     <tal:audiences repeat="aid audience_ids"><tal:aid content="python: model.service_news.target_audience_title(aid)" /><br /></tal:audiences>
@@ -42,7 +42,7 @@
   </h3>
   <p>
     <tal:newsarticlesubject 
-      tal:define="subject_ids python: model.get_viewable().subjects();"
+      tal:define="subject_ids python: model.get_viewable().get_subjects();"
       tal:condition="subject_ids">
       <span i18n:translate="" class="subhead">subject</span><br />
       <tal:subjects repeat="sid subject_ids"><tal:sid content="python: model.service_news.subject_title(sid)" /><br /></tal:subjects>
@@ -50,7 +50,7 @@
   </p>
   <p>
     <tal:newsarticleaudience
-      tal:define="audience_ids python: model.get_viewable().target_audiences();"
+      tal:define="audience_ids python: model.get_viewable().get_target_audiences();"
       tal:condition="audience_ids">
       <span i18n:translate="" class="subhead">target audience</span><br />
       <tal:audiences repeat="aid audience_ids"><tal:aid content="python: model.service_news.target_audience_title(aid)" /><br /></tal:audiences>

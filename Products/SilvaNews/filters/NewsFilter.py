@@ -44,8 +44,8 @@ class NewsFilter(NewsItemFilter):
     silvaconf.icon("www/news_filter.png")
     silvaconf.priority(3.2)
 
-    _article_meta_types = ['Silva Article Version']
-    _agenda_item_meta_types = ['Silva Agenda Item Version']
+    _article_meta_types = ['Silva Article']
+    _agenda_item_meta_types = ['Silva Agenda Item']
 
     def __init__(self, id):
         super(NewsFilter, self).__init__(id)

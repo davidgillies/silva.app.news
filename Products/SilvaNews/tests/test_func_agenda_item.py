@@ -45,8 +45,8 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
         self.assertEquals('event', item.id)
         self.assertEquals('Event', version.get_title())
         self.assertEquals('Europe/Paris', version.get_timezone_name())
-        self.assertEquals([u'generic'], version.subjects())
-        self.assertEquals([u'all'], version.target_audiences())
+        self.assertEquals([u'generic'], version.get_subjects())
+        self.assertEquals([u'all'], version.get_target_audiences())
         self.assertEquals(
             datetime(2010, 9, 1, 10, 20, 0,
                      tzinfo=get_timezone('Europe/Paris')),

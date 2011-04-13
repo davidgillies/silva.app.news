@@ -106,8 +106,8 @@ class CategoryFilterProducer(SilvaBaseProducer):
              NS_SILVA_NEWS,
              'categoryfilter',
              {'id': self.context.id,
-              'target_audiences': ','.join(self.context.target_audiences()),
-              'subjects': ','.join(self.context.subjects()),
+              'target_audiences': ','.join(self.context.get_target_audiences()),
+              'subjects': ','.join(self.context.get_subjects()),
               })
          self.metadata()
          self.endElementNS(NS_SILVA_NEWS,'categoryfilter')
@@ -123,8 +123,8 @@ class NewsFilterProducer(SilvaBaseProducer, ReferenceSupportExporter):
             NS_SILVA_NEWS,
             'newsfilter',
             {'id': self.context.id,
-             'target_audiences': ','.join(self.context.target_audiences()),
-             'subjects': ','.join(self.context.subjects()),
+             'target_audiences': ','.join(self.context.get_target_audiences()),
+             'subjects': ','.join(self.context.get_subjects()),
              'show_agenda_items': str(self.context.show_agenda_items()),
              'keep_to_path': str(self.context.keep_to_path()),
              'excluded_items': ','.join(self.context.excluded_items())})
@@ -152,8 +152,8 @@ class AgendaFilterProducer(NewsFilterProducer):
             NS_SILVA_NEWS,
             'agendafilter',
             {'id': self.context.id,
-             'target_audiences': ','.join(self.context.target_audiences()),
-             'subjects': ','.join(self.context.subjects()),
+             'target_audiences': ','.join(self.context.get_target_audiences()),
+             'subjects': ','.join(self.context.get_subjects()),
              'keep_to_path': str(self.context.keep_to_path()),
              'excluded_items': ','.join(self.context.excluded_items())})
         self.sources()
@@ -232,8 +232,8 @@ class PlainArticleProducer(VersionedContentProducer):
 #         self.startElement(
 #             'content',
 #             {'version_id': self.context.id,
-#              'subjects': ','.join(self.context.subjects()),
-#              'target_audiences': ','.join(self.context.target_audiences()),
+#              'subjects': ','.join(self.context.get_subjects()),
+#              'target_audiences': ','.join(self.context.get_target_audiences()),
 #              'display_datetime': iso_datetime(
 #                 self.context.display_datetime())})
 #         self.metadata()
@@ -269,8 +269,8 @@ class PlainAgendaItemProducer(VersionedContentProducer):
 #         self.startElement(
 #             'content',
 #             {'version_id': self.context.id,
-#              'subjects': ','.join(self.context.subjects()),
-#              'target_audiences': ','.join(self.context.target_audiences()),
+#              'subjects': ','.join(self.context.get_subjects()),
+#              'target_audiences': ','.join(self.context.get_target_audiences()),
 #              'start_datetime': iso_datetime(self.context.get_start_datetime()),
 #              'end_datetime': iso_datetime(self.context.get_end_datetime()),
 #              'location': self.context.get_location(),

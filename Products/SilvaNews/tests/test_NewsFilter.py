@@ -46,10 +46,10 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     def test_synchronize_with_service(self):
         self.newsfilter.set_subjects(['sub'])
         self.newsfilter.synchronize_with_service()
-        self.assert_(self.newsfilter.subjects() == set(['sub']))
+        self.assert_(self.newsfilter.get_subjects() == set(['sub']))
         self.service_news.remove_subject('sub')
         self.newsfilter.synchronize_with_service()
-        self.assert_(self.newsfilter.subjects() == set([]))
+        self.assert_(self.newsfilter.get_subjects() == set([]))
 
     def test_search_items(self):
         self.newsfilter.set_subjects(['sub'])

@@ -207,16 +207,11 @@ class AgendaItemVersion(NewsItemVersion):
             return datetime_to_unixtimestamp(dt)
         return None
 
-    # indexes
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_timestamp_ranges')
-    def idx_timestamp_ranges(self):
+                              'get_timestamp_ranges')
+    def get_timestamp_ranges(self):
         return self.get_calendar_datetime().\
             get_unixtimestamp_ranges()
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'idx_start_datetime')
-    idx_start_datetime = get_start_datetime
 
 
 InitializeClass(AgendaItemVersion)

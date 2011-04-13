@@ -23,19 +23,19 @@ class TestEvent(SilvaNewsTestCase):
 
         version = getattr(self.root.ai1, '0')
         # make sure it does not raise
-        version.idx_timestamp_ranges()
+        version.get_timestamp_ranges()
 
         start_index = datetime_to_unixtimestamp(start)
         end_index = datetime_to_unixtimestamp(start + timedelta(30))
         brains = self.root.service_catalog(
-            {'idx_timestamp_ranges': {'query': [start_index, end_index]}})
+            {'timestamp_ranges': {'query': [start_index, end_index]}})
         l = [brain.getObject() for brain in brains]
-        self.assertEqual(l, [version])
+        self.assertEqual(l, [self.root.ai1])
 
         start_index = datetime_to_unixtimestamp(start - timedelta(30))
         end_index = datetime_to_unixtimestamp(start - timedelta(20))
         brains = self.root.service_catalog(
-            {'idx_timestamp_ranges': {'query': [start_index, end_index]}})
+            {'timestamp_ranges': {'query': [start_index, end_index]}})
         self.assertFalse(brains)
 
 
