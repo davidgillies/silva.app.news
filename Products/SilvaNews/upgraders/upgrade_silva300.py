@@ -18,8 +18,8 @@ class UpgradeCatalog(BaseUpgrader):
             'idx_parent_path', 'idx_start_datetime', 'idx_target_audiences',
             'idx_timestamp_ranges', 'idx_subjects']
 
-        existing_columns = catalog.schema()
-        existing_indexes = catalog.indexes()
+        existing_columns = catalog.schema
+        existing_indexes = catalog.indexes
 
         for column_name in columns:
             if column_name in existing_columns:

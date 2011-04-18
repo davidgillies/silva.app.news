@@ -46,20 +46,11 @@ class Filter(NonPublishable, SimpleItem.SimpleItem):
         return set(self._subjects or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'subjects')
-    subjects = get_subjects
-
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_target_audiences')
     def get_target_audiences(self):
         """Returns a list of target audiences
         """
         return set(self._target_audiences or [])
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'target_audiences')
-    target_audiences = get_target_audiences
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_subjects')

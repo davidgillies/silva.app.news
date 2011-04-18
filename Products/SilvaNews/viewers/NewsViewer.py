@@ -130,12 +130,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     get_number_to_show_archive = number_to_show_archive
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'is_published')
-    def is_published(self):
-        """Returns 1 so the object will be shown in TOCs and such"""
-        return 1
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_deletable')
     def is_deletable(self):
         """return 1 so this object can always be deleted"""

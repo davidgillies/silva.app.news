@@ -75,11 +75,11 @@
             </tal:widget>
           </span>
           <div class="extra-controls">
-            <a tal:condition="view.batch.previous"
+            <a tal:condition="view.batch.previous is not None"
                class="open-screen"
                i18n:translate=""
                rel="items/${view.batch.previous}">previous</a>
-            <a tal:condition="view.batch.next"
+            <a tal:condition="view.batch.next is not None"
                class="open-screen"
                i18n:translate=""
                rel="items/${view.batch.next}">next</a>

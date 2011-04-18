@@ -322,9 +322,21 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
 
     def __init__(self, context):
         super(NewsItemCatalogingAttributes, self).__init__(context)
-        self.version = self.context.get_viewable() or \
-            self.context.get_previewable() or \
-            self.context.get_editable()
+        self.version = self._get_version()
+
+    def _get_version(self):
+        version_id = self.context.get_public_version(0)
+        if version_id is None:
+            version_id = self.context.get_approved_version(0)
+        if version_id is None:
+            version_id = self.context.get_unapproved_version(0)
+        if version_id is None:
+            versions = self.context.get_previous_versions()
+            if versions:
+                return versions[-1]
+        if version_id is not None:
+            return getattr(self.context, version_id, None)
+        return None
 
     @property
     def display_datetime(self):

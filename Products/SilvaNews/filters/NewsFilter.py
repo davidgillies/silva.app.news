@@ -65,7 +65,8 @@ class NewsFilter(NewsItemFilter):
         if not self.get_sources():
             return []
         query = self._prepare_query(meta_types)
-        results = self._query_items(filter_excluded_items=False, **query)
+        results = self._query_items(
+            filter_excluded_items=False, public_only=False, **query)
         return results
 
     security.declarePrivate('get_allowed_meta_types')
