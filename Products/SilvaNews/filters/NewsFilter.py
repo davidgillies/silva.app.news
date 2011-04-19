@@ -53,14 +53,12 @@ class NewsFilter(NewsItemFilter):
 
     # ACCESSORS
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+    security.declareProtected(SilvaPermissions.ReadSilvaContent,
                               'get_all_items')
     def get_all_items(self, meta_types=None):
         """
         Returns all items available to this filter. This function will
-        probably only be used in the back-end, but nevertheless has
-        AccessContentsInformation-security because it does not reveal
-        any 'secret' information...
+        probably only be used in the back-end.
         """
         if not self.get_sources():
             return []
@@ -115,25 +113,6 @@ class NewsFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(INewsFilter)
     fields = silvaforms.Fields(INewsFilterSchema)
-
-
-class Items(silvaforms.SMIComposedForm):
-    grok.adapts(Screen, interfaces.INewsFilter)
-    grok.context(interfaces.INewsFilter)
-    grok.require('silva.ChangeSilvaContent')
-    grok.name('items')
-    label = _('Items')
-
-    offset = 0
-
-    def publishTraverse(self, request, name):
-        try:
-            offset = int(name)
-            self.offset = offset
-            return self
-        except (TypeError, ValueError):
-            pass
-        return super(Items, self).publishTraverse(request, name)
 
 
 class ExcludeAction(silvaforms.Action):
@@ -198,13 +177,13 @@ class ItemSelection(BaseDataManager):
             return dt.asdatetime()
 
 
-class ItemExcludeForm(silvaforms.SMISubTableForm):
-    grok.view(Items)
-    grok.context(interfaces.INewsFilter)
-    grok.order(10)
-    count = 15
+class Items(silvaforms.SMITableForm):
+    grok.baseclass()
+    grok.context(interfaces.INewsItemFilter)
+    grok.require('silva.ChangeSilvaContent')
+    grok.name('items')
+    label = _('Items')
 
-    label = _('Exclude items')
     description = _('uncheck items you want to ignore')
     ignoreRequest = True
     ignoreContent = False
@@ -220,14 +199,38 @@ class ItemExcludeForm(silvaforms.SMISubTableForm):
         field.ignoreRequest = True
 
     def getItems(self):
-        self.batch = batch(list(self.context.get_all_items()),
-            start=self.parent.offset,
-            count=self.count)
-        return [ItemSelection(i, self.context) for i in self.batch]
+        def build_item_selection(item):
+            return ItemSelection(item, self.context)
+
+        self.batch = self.getBatch(factory=build_item_selection)
+        return list(self.batch)
+
+    def getBatch(self, factory=None):
+        pass
+
+
+class NewsFilterItems(Items):
+    offset = 0
+    count = 10
+
+    def publishTraverse(self, request, name):
+        try:
+            offset = int(name)
+            self.offset = offset
+            return self
+        except (TypeError, ValueError):
+            pass
+        return super(Items, self).publishTraverse(request, name)
+
+    def getBatch(self, factory=None):
+        return batch(list(self.context.get_all_items()),
+            start=self.offset,
+            count=self.count,
+            factory=factory)
 
 
 class ItemsMenu(MenuItem):
-    grok.adapts(ContentMenu, interfaces.INewsFilter)
+    grok.adapts(ContentMenu, interfaces.INewsItemFilter)
     grok.require('silva.ChangeSilvaContent')
     grok.order(30)
     name = _('Items')

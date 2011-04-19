@@ -1,9 +1,8 @@
 <form name="#"
-      tal:define="form view.getComposedForm()"
       tal:attributes="name view.prefix"
       i18n:domain="silva">
   <div class="form-head">
-    <h4 tal:condition="view.label" tal:content="view.label">label</h4>
+    <h3 tal:condition="view.label" tal:content="view.label">label</h3>
     <p tal:condition="view.description"
        tal:content="structure view.description">
        Description
@@ -12,6 +11,26 @@
   <table class="form-table"
          tal:define="columns len(view.tableFields) + 1">
     <thead>
+      <tr class="batch"
+          tal:condition="columns > 0">
+        <td colspan="${columns}">
+          <div class="extra-controls">
+            <a href="#" tal:define="prev view.year - 1"
+               class="open-screen" rel="items/${prev}-12">${prev}</a>
+            <span class="items-month-sep"> - </span>
+            <tal:repeat repeat="month range(1, 13)">
+              <a href="#"
+                 class="open-screen ${month == view.month and 'items-current-month' or ''}"
+                 rel="items/${view.format_year_month(view.year, month)}">
+                  ${view.abbr_monthes[month]}
+              </a>
+              <span class="items-month-sep"> - </span>
+            </tal:repeat>
+            <a href="#" tal:define="next view.year + 1"
+               class="open-screen" rel="items/${next}-1">${next}</a>
+          </div>
+        </td>
+      </tr>
       <tr tal:condition="view.lineWidgets">
         <th width="2%"
             tal:define="name string:${view.htmlId()}-select;
@@ -50,10 +69,8 @@
     <tfoot tal:condition="view.actionWidgets">
       <tr class="form-controls">
         <td tal:attributes="colspan columns">
-
           <input tal:repeat="widget view.actionWidgets"
                  tal:replace="structure widget.render()" />
-
           <span class="footer-fields"
                 tal:repeat="widget view.fieldWidgets">
             <label tal:attributes="for widget.htmlId()"
@@ -74,16 +91,6 @@
               Widget.
             </tal:widget>
           </span>
-          <div class="extra-controls">
-            <a tal:condition="view.batch.previous is not None"
-               class="open-screen"
-               i18n:translate=""
-               rel="items/${view.batch.previous}">previous</a>
-            <a tal:condition="view.batch.next is not None"
-               class="open-screen"
-               i18n:translate=""
-               rel="items/${view.batch.next}">next</a>
-          </div>
         </td>
       </tr>
     </tfoot>

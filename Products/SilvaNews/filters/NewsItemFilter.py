@@ -348,8 +348,12 @@ class NewsItemFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None,
-            timezone=datetimeutils.local_timezone):
+    def get_items_by_date(self, month, year, meta_types=None):
+        return self._get_items_by_date(self, month, year, meta_types=meta_types)
+
+    def _get_items_by_date(self, month, year, meta_types=None,
+            timezone=datetimeutils.local_timezone, public_only=True,
+            filter_excluded_items=True):
         """ This does not play well with recurrence, this should not be used
         with agenda items
         """
@@ -361,24 +365,25 @@ class NewsItemFilter(Filter):
         startdate = datetimeutils.start_of_month(
             datetime(year, month, 1, tzinfo=timezone))
         enddate = datetimeutils.end_of_month(startdate)
-        query = self._prepare_query(meta_types)
-
-        query['timestamp_ranges'] = {
-            'query': [datetimeutils.datetime_to_unixtimestamp(startdate),
-                 datetimeutils.datetime_to_unixtimestamp(enddate)]}
-
-        return self._query_items(**query)
+        return self._get_items_by_date_range(startdate, enddate,
+            meta_types=meta_types, public_only=public_only,
+            filter_excluded_items=filter_excluded_items)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date_range')
     def get_items_by_date_range(self, start, end, meta_types=None):
+        return self._get_items_by_date_range(start, end, meta_types=meta_types)
+
+    def _get_items_by_date_range(self, start, end, meta_types=None,
+            public_only=True, filter_excluded_items=True):
         sources = self.get_sources()
         if not sources:
             return []
 
-        query = self._prepare_query(meta_types)
+        query = self._prepare_query(meta_types, public_only=public_only)
         self.__filter_on_date_range(query, start, end)
-        return self._query_items(**query)
+        return self._query_items(
+            filter_excluded_items=filter_excluded_items,**query)
 
     def __filter_on_date_range(self, query, start, end):
         startdt = datetimeutils.datetime_to_unixtimestamp(start)
