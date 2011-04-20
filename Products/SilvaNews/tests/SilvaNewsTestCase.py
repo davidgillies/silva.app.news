@@ -20,7 +20,7 @@ class SilvaNewsLayer(SilvaLayer):
 
 
 FunctionalLayer = SilvaNewsLayer(
-    Products.SilvaNews, zcml_file='configure.zcml')
+    Products.SilvaNews)
 
 class SilvaNewsTestCase(unittest.TestCase):
 

@@ -1,6 +1,5 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2011 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.35 $
 
 from five import grok
 from zope.component import getUtility
@@ -325,15 +324,17 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
         self.version = self._get_version()
 
     def _get_version(self):
-        version_id = self.context.get_public_version(0)
+        """ get the version the most close to public state
+        """
+        version_id = self.context.get_public_version(False)
         if version_id is None:
-            version_id = self.context.get_approved_version(0)
+            version_id = self.context.get_approved_version(False)
         if version_id is None:
-            version_id = self.context.get_unapproved_version(0)
+            version_id = self.context.get_unapproved_version(False)
         if version_id is None:
             versions = self.context.get_previous_versions()
             if versions:
-                return versions[-1]
+                return versions[0]
         if version_id is not None:
             return getattr(self.context, version_id, None)
         return None

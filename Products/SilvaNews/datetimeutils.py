@@ -182,7 +182,7 @@ class CalendarDatetime(object):
         elif isinstance(rrule_data, rrule):
             self._recurrence = rruleset()
             self._recurrence.rrule(rrule_data)
-        elif isinstance(rrule_data, str) or isinstance(rrule_data, unicode):
+        elif isinstance(rrule_data, basestring):
             self.set_recurrence_from_string(rrule_data)
         else:
             raise TypeError, "don't know how to handle provided "\

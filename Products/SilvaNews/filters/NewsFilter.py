@@ -20,7 +20,7 @@ from zeam.form import table as tableforms
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IVersionManager
 from silva.ui.menu import MenuItem, ContentMenu
-from silva.ui.rest import Screen
+
 
 # SilvaNews
 from Products.SilvaNews.widgets.path import Path
@@ -198,16 +198,6 @@ class Items(silvaforms.SMITableForm):
         field.ignoreContent = False
         field.ignoreRequest = True
 
-    def getItems(self):
-        def build_item_selection(item):
-            return ItemSelection(item, self.context)
-
-        self.batch = self.getBatch(factory=build_item_selection)
-        return list(self.batch)
-
-    def getBatch(self, factory=None):
-        pass
-
 
 class NewsFilterItems(Items):
     offset = 0
@@ -221,6 +211,13 @@ class NewsFilterItems(Items):
         except (TypeError, ValueError):
             pass
         return super(Items, self).publishTraverse(request, name)
+
+    def getItems(self):
+        def build_item_selection(item):
+            return ItemSelection(item, self.context)
+
+        self.batch = self.getBatch(factory=build_item_selection)
+        return list(self.batch)
 
     def getBatch(self, factory=None):
         return batch(list(self.context.get_all_items()),
