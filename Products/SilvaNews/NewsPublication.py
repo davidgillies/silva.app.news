@@ -38,7 +38,7 @@ class NewsPublication(Publication):
             'Silva News Filter', 'Silva Agenda Filter']
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'parent_path')
+                              'get_parent_path')
     def get_parent_path(self):
         """Returns the path of the parent of this source
         """
