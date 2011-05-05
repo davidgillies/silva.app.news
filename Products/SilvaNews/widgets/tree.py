@@ -61,7 +61,6 @@ UNDETERMINED = NOTCHECKED | CHECKED
 
 def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     status = NOTCHECKED
-
     if node.id() == 'root':
         html = ''
         for child in node.children():
@@ -121,7 +120,9 @@ class TreeWidgetInput(SchemaFieldWidget):
         field = self.component.get_field()
         tree = field.get_tree(self.form)
         vocabulary = field.value_type.vocabulary(self.form.context)
-        status, html = build_html_tree(tree, vocabulary, self.inputValue())
+        status, html = build_html_tree(tree,
+            vocabulary,
+            self.inputValue().split('|'))
         return html
 
     def valueToUnicode(self, value):
