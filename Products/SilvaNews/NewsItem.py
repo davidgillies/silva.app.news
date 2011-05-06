@@ -294,6 +294,7 @@ class INewsItemPublicationFields(Interface):
 
 
 class NewsItemPublicationFields(autofields.AutoFields):
+    autofields.context(INewsItem)
     autofields.group(IPublicationFields)
     autofields.order(20)
     fields = silvaforms.Fields(INewsItemPublicationFields)
@@ -326,11 +327,11 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
     def _get_version(self):
         """ get the version the most close to public state
         """
-        version_id = self.context.get_public_version(False)
+        version_id = self.context.get_public_version()
         if version_id is None:
-            version_id = self.context.get_approved_version(False)
+            version_id = self.context.get_approved_version()
         if version_id is None:
-            version_id = self.context.get_unapproved_version(False)
+            version_id = self.context.get_unapproved_version()
         if version_id is None:
             versions = self.context.get_previous_versions()
             if versions:
