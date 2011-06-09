@@ -9,6 +9,7 @@ from Products.SilvaNews.interfaces import INewsPublication, IServiceNews
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva import SilvaPermissions
+from Products.Silva.cataloging import CatalogingAttributes
 
 from five import grok
 from silva.core import conf as silvaconf
@@ -37,12 +38,13 @@ class NewsPublication(Publication):
             'Silva News Viewer', 'Silva Agenda Viewer',
             'Silva News Filter', 'Silva Agenda Filter']
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_parent_path')
-    def get_parent_path(self):
-        """Returns the path of the parent of this source
-        """
-        return '/'.join(self.aq_inner.aq_parent.getPhysicalPath())
+
+class NewsPublicationCatalogingAttributes(CatalogingAttributes):
+    grok.context(INewsPublication)
+
+    @property
+    def parent_path(self):
+        return '/'.join(self.context.aq_inner.aq_parent.getPhysicalPath())
 
 
 InitializeClass(NewsPublication)

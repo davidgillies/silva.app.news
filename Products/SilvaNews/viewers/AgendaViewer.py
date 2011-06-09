@@ -77,11 +77,12 @@ class AgendaViewer(NewsViewer, ExternalSource):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year):
+    def get_items_by_date(self, month, year, timezone=None):
         """Gets the items from the filters
         """
         func = lambda x: x.get_items_by_date(month,year,
-            timezone=self.get_timezone(), meta_types="Silva Agenda Item")
+            timezone=timezone or self.get_timezone(),
+            meta_types="Silva Agenda Item")
         sortattr = None
         if self.has_filter():
             sortattr = 'start_datetime'

@@ -385,7 +385,7 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
 
 @grok.subscribe(INewsItemVersion, IPublishingEvent)
 def reindex_content(content, event):
-    return ICataloging(content.get_content()).reindex()
+    ICataloging(content.get_content()).reindex()
 
 
 @grok.subscribe(INewsItemVersion, IContentPublishedEvent)
@@ -393,6 +393,7 @@ def news_item_published(content, event):
     if content.get_display_datetime() is None:
         now = DateTime()
         content.set_display_datetime(now)
+        ICataloging(content.get_content()).reindex()
 
 
 @grok.adapter(INewsItem)

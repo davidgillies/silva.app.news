@@ -118,7 +118,14 @@ class SilvaNewsInstaller(DefaultInstaller):
             ('target_audiences', 'KeywordIndex'),
             ]
 
+        columns = ['display_datetime', 'start_datetime']
+
+        existing_columns = catalog.schema()
         existing_indexes = catalog.indexes()
+
+        for column in columns:
+            if column not in existing_columns:
+                catalog.addColumn(column)
 
         for field_name, field_type in indexes:
             if field_name in existing_indexes:

@@ -80,7 +80,7 @@ class NewsItemFilter(Filter):
         q['parent_path'] = paths
         results += self._query(**q)
 
-        return map(lambda x: x.getObject(), results)
+        return [s.getObject() for s in results]
 
     def _get_sources_reference_set(self):
         if hasattr(self, '_v_source_reference_set'):
@@ -327,7 +327,6 @@ class NewsItemFilter(Filter):
         sources = self.get_sources()
         if not sources:
             return []
-
         query = self._prepare_query(meta_types)
 
         if number_is_days:
@@ -348,8 +347,10 @@ class NewsItemFilter(Filter):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, meta_types=None):
-        return self._get_items_by_date(self, month, year, meta_types=meta_types)
+    def get_items_by_date(self, month, year, 
+            timezone=datetimeutils.local_timezone, meta_types=None):
+        return self._get_items_by_date(
+                month, year, timezone=timezone, meta_types=meta_types)
 
     def _get_items_by_date(self, month, year, meta_types=None,
             timezone=datetimeutils.local_timezone, public_only=True,
