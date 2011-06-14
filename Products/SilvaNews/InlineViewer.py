@@ -99,35 +99,6 @@ class InlineViewer(CodeSource):
         with open(filename, 'r') as fd:
             self._setObject('rss10.gif', Image('rss10.gif', 'RSS (1.0)', fd))
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'get_viewers')
-    def get_viewers(self, model=None, request=None):
-        """returns a list of available viewers
-            finds all viewers on this level
-        """
-        request = request or self.REQUEST
-        model = model or request.get('model')
-        root = IVirtualSite(request).get_root()
-
-        #determine which silva types are IViewers
-        viewer_metatypes = []
-        mts = Products.meta_types
-        for mt in mts:
-            if (mt.has_key('instance') and
-                IViewer.implementedBy(mt['instance'])):
-                viewer_metatypes.append(mt['name'])
-
-        #this should get all viewers at this level or higher
-        # (to the vhost root), not at the code sources level
-        objects = []
-        container = model.get_container()
-        while container != root.aq_parent:
-            objs = [(o.get_title(), o.id) for o in
-                    container.objectValues(viewer_metatypes)]
-            objects.extend(objs)
-            container = container.aq_parent
-        return objects
-
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_items')
     def get_items(self, number, viewer, model):

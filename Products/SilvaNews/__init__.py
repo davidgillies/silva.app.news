@@ -49,13 +49,13 @@ CLASS_CHANGES = {
             'Products.SilvaNews.viewers.RSSAggregator RSSAggregator',
 
         # contents
-        'Products.SilvaNews.PlainAgendaItem.PlainAgendaItem':
-            'Products.SilvaNews.AgendaItem.AgendaItem',
-        'Products.SilvaNews.PlainAgendaItem.PlainAgendaItemVersion':
-            'Products.SilvaNews.AgendaItem.AgendaItemVersion',
-        'Products.SilvaNews.PlainArticle.PlainArticle':
-            'Products.SilvaNews.NewsItem.NewsItem',
-        'Products.SilvaNews.PlainArticle.PlainArticleVersion':
-            'Products.SilvaNews.NewsItem.NewsItemVersion',
+        'Products.SilvaNews.PlainAgendaItem PlainAgendaItem':
+            'Products.SilvaNews.AgendaItem AgendaItem',
+        'Products.SilvaNews.PlainAgendaItem PlainAgendaItemVersion':
+            'Products.SilvaNews.AgendaItem AgendaItemVersion',
+        'Products.SilvaNews.PlainArticle PlainArticle':
+            'Products.SilvaNews.NewsItem NewsItem',
+        'Products.SilvaNews.PlainArticle PlainArticleVersion':
+            'Products.SilvaNews.NewsItem NewsItemVersion',
     }
 
