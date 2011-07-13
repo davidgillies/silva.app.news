@@ -1,12 +1,12 @@
-<div tal:define="id widget.htmlId()" class="tree-widget" id="${id}">
+<div tal:define="id widget.htmlId()" id="${id}">
   <input type="hidden"
          size="30"
-         class="tree-input"
+         class="${widget.htmlClass()}"
          name="${widget.identifier}"
          value="${widget.inputValue()}"
          id="${id}-input" />
 
-  <div class="tree-widget-jstree">
+  <div class="field-tree-widget">
     <ul tal:content="structure widget.HTMLTree()" />
   </div>
 

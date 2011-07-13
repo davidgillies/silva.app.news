@@ -1,11 +1,11 @@
 (function ($) {
 
     function load_trees(event) {
-        var $trees = $(this).find(".tree-widget-jstree");
+        var $trees = $(this).find(".field-tree-widget");
 
         $trees.each(function () {
             var $tree = $(this);
-            var $input = $tree.siblings('input.tree-input');
+            var $input = $tree.siblings('input.field-tree');
 
             $tree.jstree({
                 "plugins" : ["html_data", "checkbox"]
@@ -18,6 +18,7 @@
                     values.push($(this).attr('id'));
                 });
                 $input.val(values.join('|'));
+                $input.change();
             });
         });
     };
