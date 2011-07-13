@@ -8,11 +8,12 @@ import calendar
 import localdatetime
 
 from five import grok
-from zope.component import getMultiAdapter, getUtility
-from zope.traversing.browser import absoluteURL
-from zope.intid.interfaces import IIntIds
-from zope.interface import alsoProvides
 from zope.cachedescriptors.property import CachedProperty
+from zope.component import getMultiAdapter, getUtility
+from zope.interface import alsoProvides
+from zope.intid.interfaces import IIntIds
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from zope.traversing.browser import absoluteURL
 
 # Zope
 import Products
@@ -22,15 +23,15 @@ from App.class_init import InitializeClass
 # Silva
 from Products.Silva import SilvaPermissions
 from silva.core import conf as silvaconf
-from silva.core.views import views as silvaviews
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from silva.core.conf.interfaces import ITitledContent
 from silva.core.layout.jquery.interfaces import IJQueryResources
+from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews import datetimeutils
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaViewer
-from Products.SilvaNews.viewers.NewsViewer import NewsViewer
+from Products.SilvaNews.viewers.NewsViewer import NewsViewer, INewsViewerSchema
 from Products.SilvaNews.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
 
@@ -53,7 +54,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
     show_in_tocs = 1
 
     def __init__(self, id):
-        AgendaViewer.inheritedAttribute('__init__')(self, id)
+        super(AgendaViewer, self).__init__(id)
         self._days_to_show = 31
         self._number_is_days = True
 
@@ -142,6 +143,9 @@ class ICalendarResources(IDefaultBrowserLayer):
 class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaViewer)
     grok.name(u"Silva Agenda Viewer")
+
+    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
+    fields['number_is_days'].mode = u'radio'
 
 
 class CalendarView(object):

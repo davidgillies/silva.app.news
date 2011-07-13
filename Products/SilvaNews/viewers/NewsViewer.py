@@ -22,7 +22,7 @@ from OFS.SimpleItem import SimpleItem
 from Products.Silva import SilvaPermissions
 from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
-from silva.core.services.interfaces import ICatalogService
+from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 from zeam.utils.batch import batch
@@ -57,10 +57,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     grok.implements(INewsViewer)
     silvaconf.icon("www/news_viewer.png")
     silvaconf.priority(3.1)
-
-    filter_meta_types = ['Silva News Filter',
-                         'Silva Agenda Filter',
-                         'Silva iCalendar Filter']
 
     _filter_reference_name = u'viewer-filter'
 
@@ -176,16 +172,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """
         gen = list(self._get_filters_reference_set().get_references())
         return len(gen) > 0
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_all_filters')
-    def get_all_filters(self):
-        util = getUtility(ICatalogService)
-        query = {}
-        query['meta_type'] = {
-            'operator': 'or',
-            'query': self.filter_meta_types}
-        return [brain.getObject() for brain in util(query)]
 
     def _get_items_helper(self, func, sortattr=None):
         #1) helper function for get_items...this was the same
@@ -341,6 +327,11 @@ InitializeClass(NewsViewer)
 class INewsViewerSchema(Interface):
     """ Fields description for use in forms only
     """
+    filters = schema.Set(
+        value_type=schema.Choice(source=filters_source),
+        title=_(u"filters"),
+        description=_(u"Use predefined filters."))
+
     number_is_days = schema.Choice(
         source=show_source,
         title=_(u"show"),
@@ -371,23 +362,18 @@ class INewsViewerSchema(Interface):
                       u"items that will be rendered by this viewer."),
         required=True)
 
-    _proxy = schema.Bool(
-        title=_(u"Proxy mode"),
-        description=_(u"When proxy mode is enabled items of the viewers are "
-                      u"displayed as children of the viewer"),
-        required=False,
-        default=False)
-
     first_weekday = schema.Choice(
         title=_(u"first day of the week"),
         source=week_days_source,
         description=_(u"Define first day of the week for calendar display."),
         required=True)
 
-    filters = schema.Set(
-        value_type=schema.Choice(source=filters_source),
-        title=_(u"filters"),
-        description=_(u"Use predefined filters."))
+    _proxy = schema.Bool(
+        title=_(u"proxy mode"),
+        description=_(u"When proxy mode is enabled items of the viewers are "
+                      u"displayed as children of the viewer"),
+        required=False,
+        default=False)
 
 
 class NewsViewerAddForm(silvaforms.SMIAddForm):
@@ -395,6 +381,9 @@ class NewsViewerAddForm(silvaforms.SMIAddForm):
     """
     grok.context(INewsViewer)
     grok.name('Silva News Viewer')
+
+    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
+    fields['number_is_days'].mode = u'radio'
 
 
 class NewsViewerEditForm(silvaforms.SMIEditForm):

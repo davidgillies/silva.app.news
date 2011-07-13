@@ -2,22 +2,26 @@
 # See also LICENSE.txt
 
 from five import grok
-
+from zope.component import getUtility
 import localdatetime
 
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
+from Acquisition import aq_parent
 from OFS.SimpleItem import SimpleItem
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
 #Silva
+from silva.core.interfaces import IContainer
 from silva.core import conf as silvaconf
 from silva.core.services.base import SilvaService
+from silva.core.services.interfaces import ICatalogService
 import Products.Silva.SilvaPermissions as SilvaPermissions
+from Products.Silva.ExtensionRegistry import meta_types_for_interface
 
 #SilvaNews
 from Products.SilvaNews import Tree
-from Products.SilvaNews.interfaces import IServiceNews
+from Products.SilvaNews.interfaces import IServiceNews, IFilter
 from Products.SilvaNews.datetimeutils import (local_timezone, get_timezone,
                                               zone_names)
 
@@ -172,6 +176,36 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         self._date_format = 'medium'
         self.add_subject(u'generic',u'Generic')
         self.add_target_audience(u'all',u'All')
+
+    def get_all_filters(self):
+        catalog = getUtility(ICatalogService)
+        query = {
+            'meta_type': {
+                'operator': 'or',
+                'query': meta_types_for_interface(IFilter)}}
+        return (brain.getObject() for brain in catalog(query))
+
+    def get_all_sources(self, item=None):
+        catalog = getUtility(ICatalogService)
+
+        brains = catalog({
+                'meta_type': 'Silva News Publication',
+                'snn-np-settingsis_private':'no'})
+
+        if item is not None:
+            while not IContainer.providedBy(item):
+                item = aq_parent(item)
+
+            paths = []
+            parts = item.getPhysicalPath()
+            for size in range(1, len(parts) + 1):
+                paths.append('/'.join(parts[:size]))
+
+            brains += catalog({
+                    'snn-np-settingsis_private': 'yes',
+                    'parent_path': paths})
+
+        return (brain.getObject() for brain in brains)
 
     security.declareProtected('Setup ServiceNews',
                                 'add_subject')

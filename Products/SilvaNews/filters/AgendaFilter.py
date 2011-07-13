@@ -14,12 +14,13 @@ from datetime import datetime
 
 from five import grok
 from silva.core import conf as silvaconf
+from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
 from Products.SilvaNews.filters.NewsFilter import Items, ItemSelection
-from Products.SilvaNews.interfaces import (IAgendaFilter, IAgendaItem,
+from Products.SilvaNews.interfaces import (IAgendaFilter,
     INewsQualifiers, news_source, IServiceNews)
 
 _ = MessageFactory('silva_news')
@@ -40,38 +41,36 @@ class AgendaFilter(NewsItemFilter):
 
     _allowed_meta_types = ['Silva Agenda Item']
 
-    def _is_agenda_addable(self, addable_dict):
-        return (
-            addable_dict.has_key('instance') and
-            IAgendaItem.isImplementedByInstancesOf(
-            addable_dict['instance']))
-
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
         """Returns the allowed meta_types for this filter"""
         return self._allowed_meta_types
 
+
 InitializeClass(AgendaFilter)
+
+
+class IAgendaFilterSchema(INewsQualifiers):
+    sources = schema.Set(
+        value_type=schema.Choice(source=news_source),
+        title=_(u"sources"),
+        description=_(u"Use predefined sources."))
+
+    _keep_to_path = schema.Bool(
+        title=_(u"stick to path"))
 
 
 class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaFilter)
     grok.name(u"Silva Agenda Filter")
 
-
-class IAgendaFilterSchema(INewsQualifiers):
-    _keep_to_path = schema.Bool(
-        title=_(u"stick to path"))
-
-    sources = schema.Set(
-        value_type=schema.Choice(source=news_source),
-        title=_(u"sources"),
-        description=_(u"Use predefined sources."))
+    fields = silvaforms.Fields(ITitledContent, IAgendaFilterSchema)
 
 
 class AgendaFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(IAgendaFilter)
+
     fields = silvaforms.Fields(IAgendaFilterSchema)
 
 

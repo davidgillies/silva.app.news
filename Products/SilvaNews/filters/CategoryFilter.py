@@ -2,10 +2,9 @@
 # See also LICENSE.txt
 # $Id$
 
-
 # Zope
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass # Zope 2.12
+from App.class_init import InitializeClass
 
 # Silva
 from five import grok
@@ -17,8 +16,7 @@ from zope.i18nmessageid import MessageFactory
 # SilvaNews
 from Products.SilvaNews.ServiceNews import CategoryMixin
 from Products.SilvaNews.filters.Filter import Filter
-from Products.SilvaNews.interfaces import (ICategoryFilter)
-
+from Products.SilvaNews.interfaces import ICategoryFilter
 
 _ = MessageFactory('silva_news')
 

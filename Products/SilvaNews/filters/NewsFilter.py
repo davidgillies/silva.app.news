@@ -12,14 +12,14 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 from Products.Silva import SilvaPermissions
-from silva.core import conf as silvaconf
-from zeam.form.base.datamanager import BaseDataManager
-from zeam.form import silva as silvaforms
-from zeam.form import table as tableforms
 
+from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IVersionManager
 from silva.ui.menu import MenuItem, ContentMenu
+from zeam.form import silva as silvaforms
+from zeam.form import table as tableforms
+from zeam.form.base.datamanager import BaseDataManager
 
 
 # SilvaNews
@@ -91,27 +91,30 @@ class NewsFilter(NewsItemFilter):
 InitializeClass(NewsFilter)
 
 
-class NewsFilterAddForm(silvaforms.SMIAddForm):
-    grok.context(INewsFilter)
-    grok.name(u'Silva News Filter')
-
-
 class INewsFilterSchema(INewsQualifiers):
+    sources = schema.Set(
+        value_type=schema.Choice(source=interfaces.news_source),
+        title=_(u"sources"),
+        description=_(u"Use predefined sources."))
+
     _keep_to_path = schema.Bool(
         title=_(u"stick to path"))
 
     _show_agenda_items = schema.Bool(
         title=_(u"show agenda items"))
 
-    sources = schema.Set(
-        value_type=schema.Choice(source=interfaces.news_source),
-        title=_(u"sources"),
-        description=_(u"Use predefined sources."))
+
+class NewsFilterAddForm(silvaforms.SMIAddForm):
+    grok.context(INewsFilter)
+    grok.name(u'Silva News Filter')
+
+    fields = silvaforms.Fields(ITitledContent, INewsFilterSchema)
 
 
 class NewsFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(INewsFilter)
+
     fields = silvaforms.Fields(INewsFilterSchema)
 
 

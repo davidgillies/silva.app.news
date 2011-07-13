@@ -351,23 +351,25 @@ def timezone_source(context):
 @grok.provider(IContextSourceBinder)
 def filters_source(context):
     terms = []
-    intids = getUtility(IIntIds)
-    for filter in context.get_all_filters():
+    get_token = getUtility(IIntIds).register
+    get_filters = getUtility(IServiceNews).get_all_filters
+    for filter in get_filters():
         path = "/".join(filter.getPhysicalPath())
         terms.append(SimpleTerm(value=filter,
                                 title="%s (%s)" % (filter.get_title(), path),
-                                token=str(intids.register(filter))))
+                                token=str(get_token(filter))))
     return SimpleVocabulary(terms)
 
 @grok.provider(IContextSourceBinder)
 def news_source(context):
     terms = []
-    intids = getUtility(IIntIds)
-    for source in context.get_all_sources():
+    get_token = getUtility(IIntIds).register
+    get_sources = getUtility(IServiceNews).get_all_sources
+    for source in get_sources(context):
         path = "/".join(source.getPhysicalPath())
         terms.append(SimpleTerm(value=source,
                                 title="%s (%s)" % (source.get_title(), path),
-                                token=str(intids.register(source))))
+                                token=str(get_token(source))))
     return SimpleVocabulary(terms)
 
 
@@ -500,3 +502,10 @@ class IServiceNews(ISilvaService):
         Each tuple is an (indent, subject) pair.
         """
 
+    def get_all_filters():
+        """Return all the Silva News Filter contents from the site.
+        """
+
+    def get_all_sources(item=None):
+        """Return all sources for News Item, global, or below the given item.
+        """

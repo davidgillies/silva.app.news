@@ -15,22 +15,17 @@ from App.class_init import InitializeClass
 
 from silva.core.services.interfaces import ICataloging
 from silva.core.references.reference import ReferenceSet
-import Products.Silva.SilvaPermissions as SilvaPermissions
+from Products.Silva import SilvaPermissions
 
 from Products.SilvaNews import interfaces
 from Products.SilvaNews.filters.Filter import Filter
 from Products.SilvaNews import datetimeutils
-
-import Products
 
 _ = MessageFactory('silva_news')
 
 import logging
 logger = logging.getLogger('silvanews.itemfilter')
 
-
-class MetaTypeException(Exception):
-    pass
 
 def brainsorter(a, b):
     atime = a.get_start_datetime
@@ -243,22 +238,6 @@ class NewsItemFilter(Filter):
         if filter_excluded_items:
             return self.__filter_excluded_items(results)
         return results
-
-    def _check_meta_types(self, meta_types):
-        for type in meta_types:
-            if type not in self._allowed_news_meta_types():
-                raise MetaTypeException, "Illegal meta_type: %s" % type
-
-    def _allowed_news_meta_types(self):
-        return [addable_dict['name']
-                for addable_dict in Products.meta_types
-                if self._is_news_addable(addable_dict)]
-
-    def _is_news_addable(self, addable_dict):
-        return (
-            addable_dict.has_key('instance') and
-            interfaces.INewsItem.implementedBy(
-            addable_dict['instance']))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'filtered_subject_form_tree')
