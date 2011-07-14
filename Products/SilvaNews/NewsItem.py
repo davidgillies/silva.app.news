@@ -221,7 +221,7 @@ class NewsItemDetailsForm(silvaforms.SMIEditForm):
     grok.context(INewsItem)
     grok.name('details')
 
-    label = _(u"Article properties")
+    label = _(u"Article details")
     fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema).omit('id')
     actions = silvaforms.Actions(
         silvaforms.CancelAction(),

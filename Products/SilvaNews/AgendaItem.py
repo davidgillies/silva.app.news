@@ -382,7 +382,7 @@ class EditAction(silvaforms.EditAction):
 class AgendaItemDetailsForm(NewsItemDetailsForm):
     grok.context(IAgendaItem)
 
-    label = _(u"Agenda item properties")
+    label = _(u"Agenda item details")
     fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema).omit('id')
     actions = silvaforms.Actions(silvaforms.CancelAction(), EditAction())
 
