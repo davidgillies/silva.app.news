@@ -8,7 +8,6 @@ from App.class_init import InitializeClass
 from Products.SilvaNews.interfaces import INewsPublication, IServiceNews
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
-from Products.Silva import SilvaPermissions
 from Products.Silva.cataloging import CatalogingAttributes
 
 from five import grok
@@ -39,15 +38,15 @@ class NewsPublication(Publication):
             'Silva News Filter', 'Silva Agenda Filter']
 
 
+InitializeClass(NewsPublication)
+
+
 class NewsPublicationCatalogingAttributes(CatalogingAttributes):
     grok.context(INewsPublication)
 
     @property
     def parent_path(self):
         return '/'.join(self.context.aq_inner.aq_parent.getPhysicalPath())
-
-
-InitializeClass(NewsPublication)
 
 
 class NewsPublicationAddForm(silvaforms.SMIAddForm):

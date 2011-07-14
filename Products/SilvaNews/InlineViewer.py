@@ -6,7 +6,6 @@ from zope.interface import implements
 from zope.lifecycleevent.interfaces import IObjectMovedEvent
 import os
 
-import Products
 from App.class_init import InitializeClass
 from App.Common import package_home
 
@@ -21,21 +20,12 @@ from Products.Formulator.XMLToForm import XMLToForm
 
 from Products.SilvaExternalSources.CodeSource import CodeSource
 
-from silva.core.views.interfaces import IVirtualSite
 from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 from Products.Silva.helpers import add_and_edit
 
-from Products.SilvaNews.interfaces import IViewer, IInlineViewer
+from Products.SilvaNews.interfaces import IInlineViewer
 from Products.SilvaNews.adapters.interfaces import INewsProvider
-
-
-def ustr(x):
-    if type(x) == unicode:
-        return x
-    elif type(x) == str:
-        return unicode(x, 'UTF-8')
-    return str(x)
 
 
 class InlineViewer(CodeSource):
