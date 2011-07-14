@@ -1,17 +1,24 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2011 Infrae. All rights reserved.
+# See also LICENSE.txt
+# $Id$
+
 from cgi import escape
 
 from five import grok
-from zope.interface import Interface
-from zope.schema.interfaces import ISet
-from zope.schema import Set
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zeam.form.base.markers import INPUT, DISPLAY
-from zeam.form.ztk.fields import (SchemaField, SchemaFieldWidget,
-    registerSchemaField)
+from zeam.form.base.markers import NO_VALUE
+from zeam.form.base.widgets import WidgetExtractor
+from zeam.form.ztk.fields import SchemaField, SchemaFieldWidget
+from zeam.form.ztk.fields import registerSchemaField
+from zope.interface import Interface
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
+from zope.schema import Set
+from zope.schema.interfaces import ISet
+
+from js.jquery import jquery
 from silva.core import conf as silvaconf
 from silva.fanstatic import need
-from zeam.form.base.widgets import WidgetExtractor
-from zeam.form.base.markers import NO_VALUE
 
 
 def register():
@@ -105,6 +112,7 @@ def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
 
 
 class ITreeResources(IDefaultBrowserLayer):
+    silvaconf.resource(jquery)
     silvaconf.resource('tree.js')
 
 

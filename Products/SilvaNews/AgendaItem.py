@@ -273,7 +273,7 @@ class IAgendaItemSchema(INewsCategorizationSchema):
     timezone_name = schema.Choice(
         source=timezone_source,
         title=_(u"timezone"),
-        description=_(u"Defines the time zone for dates"),
+        description=_(u"Defines the time zone for dates."),
         required=True)
     start_datetime = schema.Datetime(
         title=_(u"start date/time"),
@@ -287,7 +287,7 @@ class IAgendaItemSchema(INewsCategorizationSchema):
     end_recurrence_datetime = schema.Datetime(
         title=_(u"recurrence end date"),
         description=_(u"Date on which the recurrence stops. Required if "
-                      u"any recurrence is set"),
+                      u"any recurrence is set."),
         required=False)
     _location = schema.TextLine(
         title=_(u"location"),
