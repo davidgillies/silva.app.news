@@ -9,7 +9,6 @@ from OFS.SimpleItem import SimpleItem
 from five import grok
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
-from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 from zope.i18nmessageid import MessageFactory
 
@@ -46,8 +45,3 @@ class CategoryFilterEditForm(silvaforms.SMIEditForm):
     grok.context(ICategoryFilter)
 
     fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema).omit('id')
-
-
-class CategoryFilterView(silvaviews.View):
-    """ Default view for filters """
-    grok.context(ICategoryFilter)

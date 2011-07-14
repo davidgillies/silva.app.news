@@ -21,7 +21,6 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.Publishable import NonPublishable
 from silva.core.references.reference import ReferenceSet
 from silva.core.services.interfaces import ICataloging
-from silva.core.views import views as silvaviews
 
 from Products.SilvaNews.interfaces import INewsItemFilter, IServiceNews
 from Products.SilvaNews.interfaces import news_source
@@ -375,8 +374,4 @@ class INewsItemFilterSchema(INewsCategorizationSchema):
     _keep_to_path = schema.Bool(
         title=_(u"stick to path"))
 
-
-class NewsItemFilterView(silvaviews.View):
-    """ Default view for filters """
-    grok.context(INewsItemFilter)
 
