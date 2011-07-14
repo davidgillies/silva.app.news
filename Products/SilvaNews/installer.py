@@ -15,8 +15,6 @@ class SilvaNewsInstaller(DefaultInstaller):
 
     def install_custom(self, root):
         self.setup_catalog(root)
-        # XXX fix me remove all! old views
-        # self.register_views(root.service_view_registry)
         self.configure_extra_metadata(root)
 
         if not hasattr(root.aq_explicit,'service_news'):
@@ -46,63 +44,6 @@ class SilvaNewsInstaller(DefaultInstaller):
             collection.manage_delObjects(['snn-np-settings'])
         sm.removeTypeMapping('Silva News Publication',['snn-np-settings'])
         sm.removeTypeMapping('Silva News ICS Publication',['snn-np-settings'])
-
-    def register_views(self, reg):
-        """Register core views on registry.
-        """
-        ## edit
-        reg.register('edit',
-                     'Silva Agenda Filter', ['edit', 'Asset', 'Filter', 'AgendaFilter'])
-        reg.register('edit',
-                     'Silva News Filter', ['edit', 'Asset', 'Filter', 'NewsFilter'])
-        reg.register('edit',
-                     'Silva News Publication', ['edit', 'Container', 'Publication', 'NewsPublication'])
-        reg.register('edit',
-                     'Silva Article', ['edit', 'VersionedContent', 'NewsItem', 'PlainArticle'])
-        reg.register('edit',
-                     'Silva Agenda Item', ['edit', 'VersionedContent', 'NewsItem', 'PlainAgendaItem'])
-        reg.register('edit',
-        'Silva News Category Filter', ['edit', 'Asset', 'Filter', 'CategoryFilter'])
-
-        # public
-        reg.register('public', 'Silva Agenda Filter', ['public', 'AgendaFilter'])
-        reg.register('public',
-                     'Silva News Filter', ['public', 'NewsFilter'])
-        reg.register('public', 'Silva News Publication', ['public', 'NewsPublication'])
-
-        ## preview - required for e.g. the compare versions feature
-        reg.register('preview', 'Silva News Filter', ['public', 'NewsFilter'])
-        reg.register('preview', 'Silva Agenda Filter', ['public', 'AgendaFilter'])
-        reg.register('preview', 'Silva News Publication', ['public', 'NewsPublication'])
-
-    def unregister_views(self, reg):
-        #"""Unregister core views on registry.
-        #"""
-        ## edit
-        reg.unregister('edit', 'Silva Agenda Filter')
-        reg.unregister('edit', 'Silva News Filter')
-        reg.unregister('edit', 'Silva News Publication')
-        reg.unregister('edit', 'Silva News Viewer')
-        reg.unregister('edit', 'Silva Agenda Viewer')
-        reg.unregister('edit', 'Silva Article')
-        reg.unregister('edit', 'Silva Agenda Item')
-        reg.unregister('edit', 'Silva News Category Filter')
-        ## public
-        reg.unregister('public', 'Silva Agenda Filter')
-        reg.unregister('public', 'Silva News Filter')
-        reg.unregister('public', 'Silva News Publication')
-        reg.unregister('public', 'Silva RSS Aggregator')
-        reg.unregister('public', 'Silva Article Version')
-        reg.unregister('public', 'Silva Agenda Item Version')
-        ## preview
-        reg.unregister('preview', 'Silva News Filter')
-        reg.unregister('preview', 'Silva News Viewer')
-        reg.unregister('preview', 'Silva News Publication')
-        reg.unregister('preview', 'Silva Agenda Filter')
-        reg.unregister('preview', 'Silva Agenda Viewer')
-        reg.unregister('preview', 'Silva RSS Aggregator')
-        reg.unregister('preview', 'Silva Article Version')
-        reg.unregister('preview', 'Silva Agenda Item Version')
 
     def setup_catalog(self, root):
         """Sets the ZCatalog up"""
