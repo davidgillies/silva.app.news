@@ -19,6 +19,8 @@ from datetime import datetime
 from Products.Silva import SilvaPermissions
 from Products.Silva.cataloging import CatalogingAttributesPublishable
 from silva.app.document import document
+from silva.ui.menu import MenuItem
+from silva.core.smi.content import ContentEditMenu
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IRoot
@@ -28,8 +30,7 @@ from silva.core.smi.content.publish import IPublicationFields, VersionPublicatio
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 
-from Products.SilvaNews.interfaces import (INewsItem, INewsItemVersion,
-    IAgendaItemVersion)
+from Products.SilvaNews.interfaces import INewsItem, INewsItemVersion
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
     INewsViewer)
 from Products.SilvaNews.datetimeutils import (datetime_to_unixtimestamp,
@@ -40,7 +41,7 @@ from Products.SilvaNews.NewsCategorization import INewsCategorizationSchema
 _ = MessageFactory('silva_news')
 
 
-class NewsItemVersion(document.DocumentVersion, NewsCategorization):
+class NewsItemVersion(NewsCategorization, document.DocumentVersion):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
@@ -216,12 +217,23 @@ class NewsItemAddForm(silvaforms.SMIAddForm):
     fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema)
 
 
-class NewsItemEditProperties(silvaforms.SMIForm):
+class NewsItemDetailsForm(silvaforms.SMIEditForm):
     grok.context(INewsItem)
+    grok.name('details')
 
-    label = _(u"article properties")
+    label = _(u"Article properties")
     fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema).omit('id')
-    actions = silvaforms.Actions(silvaforms.EditAction())
+    actions = silvaforms.Actions(
+        silvaforms.CancelAction(),
+        silvaforms.EditAction())
+
+
+class NewsItemDetailsMenu(MenuItem):
+    grok.adapts(ContentEditMenu, INewsItem)
+    grok.require('silva.ChangeSilvaContent')
+    grok.order(15)
+    name = _('Details')
+    screen = NewsItemDetailsForm
 
 
 class NewsItemView(silvaviews.View):
@@ -315,18 +327,6 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
     def display_datetime(self):
         if self.version is not None:
             return self.version.get_display_datetime()
-
-    @property
-    def start_datetime(self):
-        if self.version is not None and \
-                IAgendaItemVersion.providedBy(self.version):
-            return self.version.get_start_datetime()
-
-    @property
-    def end_datetime(self):
-        if self.version is not None and \
-                IAgendaItemVersion.providedBy(self.version):
-            return self.version.get_end_datetime()
 
     @property
     def timestamp_ranges(self):

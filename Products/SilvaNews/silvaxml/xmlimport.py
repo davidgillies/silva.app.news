@@ -8,9 +8,6 @@ from Products.Silva.silvaxml.xmlimport import (
 from Products.Silva import mangle
 from silva.core import conf as silvaconf
 
-# from Products.SilvaDocument.silvaxml.xmlimport import (
-#     DocXMLHandler, resolve_path)
-# from Products.SilvaDocument.silvaxml import NS_SILVA_DOCUMENT
 from Products.SilvaNews.silvaxml.xmlexport import NS_SILVA_NEWS
 from Products.SilvaNews.silvaxml.helpers import *
 from Products.SilvaNews.NewsItem import (
@@ -41,11 +38,11 @@ class SNNHandlerMixin(object):
                 obj.add_excluded_item(ei)
 
 
-class PlainArticleHandler(SilvaBaseHandler):
+class NewsItemHandler(SilvaBaseHandler):
     silvaconf.name('plainarticle')
 
     def getOverrides(self):
-        return {(NS_URI, 'content'): PlainArticleContentHandler}
+        return {(NS_URI, 'content'): NewsItemContentHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS, 'plainarticle'):
@@ -60,7 +57,7 @@ class PlainArticleHandler(SilvaBaseHandler):
             self.notifyImport()
 
 
-class PlainArticleContentHandler(SilvaBaseHandler):
+class NewsItemContentHandler(SilvaBaseHandler):
     silvaconf.baseclass()
 
     def getOverrides(self):
@@ -89,17 +86,17 @@ class PlainArticleContentHandler(SilvaBaseHandler):
             self.storeWorkflow()
 
 
-class PlainAgendaItemHandler(SilvaBaseHandler):
+class AgendaItemHandler(SilvaBaseHandler):
     silvaconf.name('plainagendaitem')
 
     def getOverrides(self):
-        return {(NS_URI, 'content'): PlainAgendaItemContentHandler}
+        return {(NS_URI, 'content'): AgendaItemContentHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (NS_SILVA_NEWS, 'plainagendaitem'):
             id = attrs[(None, 'id')].encode('utf-8')
             uid = self.generateOrReplaceId(id)
-            object = PlainAgendaItem(uid)
+            object = AgendaItem(uid)
             self.parent()._setObject(uid, object)
             self.setResultId(uid)
 
@@ -108,7 +105,7 @@ class PlainAgendaItemHandler(SilvaBaseHandler):
             self.notifyImport()
 
 
-class PlainAgendaItemContentHandler(SilvaBaseHandler):
+class AgendaItemContentHandler(SilvaBaseHandler):
     silvaconf.baseclass()
 
     def getOverrides(self):
@@ -119,7 +116,7 @@ class PlainAgendaItemContentHandler(SilvaBaseHandler):
             id = attrs[(None, 'version_id')].encode('utf-8')
             if not mangle.Id(self._parent, id).isValid():
                 return
-            version = PlainAgendaItemVersion(id)
+            version = AgendaItemVersion(id)
             parent = self.parent()
             parent._setObject(id, version)
             version = version.__of__(parent)

@@ -97,7 +97,6 @@ class CategoryMixin(object):
     """Currently used by NewsService and CategoryFilter"""
 
     security = ClassSecurityInfo()
-    grok.baseclass()
 
     security.declareProtected('View', 'subject_tree')
     def subject_tree(self,audject=None):

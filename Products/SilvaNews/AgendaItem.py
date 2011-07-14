@@ -30,8 +30,10 @@ from Products.Silva import SilvaPermissions
 from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
 from Products.SilvaNews.interfaces import INewsViewer
 from Products.SilvaNews.interfaces import IServiceNews
+from Products.SilvaNews.NewsItem import NewsItemDetailsForm
 from Products.SilvaNews.NewsItem import NewsItemView, NewsItemListItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from Products.SilvaNews.NewsItem import NewsItemCatalogingAttributes
 from Products.SilvaNews.NewsCategorization import INewsCategorizationSchema
 
 from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
@@ -46,6 +48,8 @@ _ = MessageFactory('silva_news')
 class AgendaItemVersion(NewsItemVersion):
     """Silva News AgendaItemVersion
     """
+    grok.implements(IAgendaItemVersion)
+
     security = ClassSecurityInfo()
     meta_type = "Silva Agenda Item Version"
 
@@ -56,9 +60,6 @@ class AgendaItemVersion(NewsItemVersion):
     _recurrence = None
     _all_day = False
     _timezone_name = None
-
-    implements(IAgendaItemVersion)
-    silvaconf.baseclass()
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_timezone_name')
@@ -268,7 +269,7 @@ class AgendaItemView(NewsItemView, AgendaViewMixin):
     grok.context(IAgendaItem)
 
 
-class IAgendaItemSchema(interface.Interface):
+class IAgendaItemSchema(INewsCategorizationSchema):
     timezone_name = schema.Choice(
         source=timezone_source,
         title=_(u"timezone"),
@@ -363,8 +364,7 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
-    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema,
-        INewsCategorizationSchema)
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
     fields['timezone_name'].defaultValue = get_default_tz_name
 
     def _edit(self, parent, content, data):
@@ -373,17 +373,32 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
 
 
 class EditAction(silvaforms.EditAction):
+
     def applyData(self, form, content, data):
         data = process_data(data)
         return super(EditAction, self).applyData(form, content, data)
 
 
-class AgendaEditProperties(silvaforms.SMIForm):
+class AgendaItemDetailsForm(NewsItemDetailsForm):
     grok.context(IAgendaItem)
 
-    label = _(u"agenda item properties")
-    fields = silvaforms.Fields(IAgendaItemSchema)
-    actions = silvaforms.Actions(EditAction())
+    label = _(u"Agenda item properties")
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema).omit('id')
+    actions = silvaforms.Actions(silvaforms.CancelAction(), EditAction())
+
+
+class AgendaItemCatalogingAttributes(NewsItemCatalogingAttributes):
+    grok.context(IAgendaItem)
+
+    @property
+    def start_datetime(self):
+        if self.version is not None:
+            return self.version.get_start_datetime()
+
+    @property
+    def end_datetime(self):
+        if self.version is not None:
+            return self.version.get_end_datetime()
 
 
 class AgendaItemInlineView(silvaviews.View):
