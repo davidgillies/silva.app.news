@@ -2,26 +2,25 @@
 # See also LICENSE.txt
 # $Id$
 
-from zope import schema
-from zope.i18nmessageid import MessageFactory
-from zope.component import getUtility
-
-# Zope
-from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass # Zope 2.12
-
 from datetime import datetime
 
 from five import grok
+from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
+
+# Zope
+from AccessControl import ClassSecurityInfo
+from App.class_init import InitializeClass
+
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
 
 # SilvaNews
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
+from Products.SilvaNews.filters.NewsItemFilter import INewsItemFilterSchema
 from Products.SilvaNews.filters.NewsFilter import Items, ItemSelection
-from Products.SilvaNews.interfaces import (IAgendaFilter,
-    INewsQualifiers, news_source, IServiceNews)
+from Products.SilvaNews.interfaces import IAgendaFilter, IServiceNews
 
 _ = MessageFactory('silva_news')
 
@@ -50,28 +49,18 @@ class AgendaFilter(NewsItemFilter):
 InitializeClass(AgendaFilter)
 
 
-class IAgendaFilterSchema(INewsQualifiers):
-    sources = schema.Set(
-        value_type=schema.Choice(source=news_source),
-        title=_(u"sources"),
-        description=_(u"Use predefined sources."))
-
-    _keep_to_path = schema.Bool(
-        title=_(u"stick to path"))
-
-
 class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaFilter)
     grok.name(u"Silva Agenda Filter")
 
-    fields = silvaforms.Fields(ITitledContent, IAgendaFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsItemFilterSchema)
 
 
 class AgendaFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(IAgendaFilter)
 
-    fields = silvaforms.Fields(IAgendaFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsItemFilterSchema).omit('id')
 
 
 class AgendaFilterItems(Items):

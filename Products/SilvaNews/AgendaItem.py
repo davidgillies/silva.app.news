@@ -1,26 +1,23 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.21 $
+# $Id$
+
 from icalendar import vDatetime, Calendar
 from icalendar.interfaces import IEvent
 from dateutil.rrule import rrulestr
 
 # ztk
-from zope.interface import implements
-from zope import interface, schema
-from zope.component import getAdapter, getUtility
-from zope.traversing.browser import absoluteURL
-from zope.cachedescriptors.property import CachedProperty
-from zope.i18nmessageid import MessageFactory
 from five import grok
+from zope import interface, schema
+from zope.cachedescriptors.property import CachedProperty
+from zope.component import getAdapter, getUtility
+from zope.i18nmessageid import MessageFactory
+from zope.interface import implements
+from zope.traversing.browser import absoluteURL
 
 # Zope
 from AccessControl import ClassSecurityInfo
-from App.class_init import InitializeClass # Zope 2.12
-
-# Silva interfaces
-from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
-from Products.SilvaNews.interfaces import INewsViewer
+from App.class_init import InitializeClass
 
 # Silva
 from silva.core import conf as silvaconf
@@ -30,9 +27,12 @@ from zeam.form import silva as silvaforms
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
-from Products.SilvaNews.interfaces import IServiceNews, INewsQualifiers
+from Products.SilvaNews.interfaces import IAgendaItem, IAgendaItemVersion
+from Products.SilvaNews.interfaces import INewsViewer
+from Products.SilvaNews.interfaces import IServiceNews
 from Products.SilvaNews.NewsItem import NewsItemView, NewsItemListItemView
 from Products.SilvaNews.NewsItem import NewsItem, NewsItemVersion
+from Products.SilvaNews.NewsCategorization import INewsCategorizationSchema
 
 from Products.SilvaNews.datetimeutils import (datetime_with_timezone,
     CalendarDatetime, datetime_to_unixtimestamp, get_timezone, RRuleData, UTC)
@@ -364,7 +364,7 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva Agenda Item")
 
     fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema,
-        INewsQualifiers)
+        INewsCategorizationSchema)
     fields['timezone_name'].defaultValue = get_default_tz_name
 
     def _edit(self, parent, content, data):

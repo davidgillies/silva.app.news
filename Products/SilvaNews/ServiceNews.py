@@ -21,7 +21,7 @@ from Products.Silva.ExtensionRegistry import meta_types_for_interface
 
 #SilvaNews
 from Products.SilvaNews import Tree
-from Products.SilvaNews.interfaces import IServiceNews, IFilter
+from Products.SilvaNews.interfaces import IServiceNews, INewsItemFilter
 from Products.SilvaNews.datetimeutils import (local_timezone, get_timezone,
                                               zone_names)
 
@@ -182,7 +182,7 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         query = {
             'meta_type': {
                 'operator': 'or',
-                'query': meta_types_for_interface(IFilter)}}
+                'query': meta_types_for_interface(INewsItemFilter)}}
         return (brain.getObject() for brain in catalog(query))
 
     def get_all_sources(self, item=None):

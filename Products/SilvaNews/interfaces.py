@@ -8,14 +8,13 @@ from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-from zope import schema
 
-from silva.core.interfaces import IAsset, ISilvaService, IPublication, IContent
+from silva.core.interfaces import ISilvaService
+from silva.core.interfaces import INonPublishable, IPublication, IContent
 
 from silva.app.document.interfaces import IDocument, IDocumentVersion
 from Products.SilvaExternalSources.interfaces import IExternalSource
 from Products.SilvaNews.datetimeutils import zone_names
-from Products.SilvaNews.widgets.tree import Tree
 
 
 from zope.i18nmessageid import MessageFactory
@@ -28,11 +27,6 @@ class IInlineViewer(IExternalSource):
 
 class ISilvaNewsExtension(Interface):
     """Marker interface for SNN Extension"""
-
-
-class INewsItem(IDocument):
-    """Silva News Item interface
-    """
 
 
 @grok.provider(IContextSourceBinder)
@@ -65,30 +59,33 @@ def get_target_audiences_tree(form):
     return service._target_audiences
 
 
-class INewsQualifiers(Interface):
-    subjects = Tree(
-        title=_(u"subjects"),
-        value_type=schema.Choice(source=subjects_source),
-        tree=get_subjects_tree,
-        required=True)
-    target_audiences = Tree(
-        title=_(u"target audiences"),
-        value_type=schema.Choice(source=target_audiences_source),
-        tree=get_target_audiences_tree,
-        required=True)
+class INewsCategorization(Interface):
+    """Categorize news information by subject and target audience.
+    """
+
+    def get_subjects():
+        """Returns the list of subjects."""
+
+    def get_target_audiences():
+        """Returns the list of target audiences."""
+
+    def set_subjects(subjects):
+        """Updates the list of subjects"""
+
+    def set_target_audiences(target_audiences):
+        """Updates the list of target_audiences"""
 
 
-class INewsItemVersion(IDocumentVersion):
+class INewsItem(IDocument):
+    """Silva News Item interface
+    """
+
+
+class INewsItemVersion(IDocumentVersion, INewsCategorization):
     """Silva news item version.
 
     This contains the real content for a news item.
     """
-
-    def set_subjects(subjects):
-        """Sets the subjects this news item is in."""
-
-    def set_target_audiences(target_audiences):
-        """Sets the target audiences for this news item."""
 
     def source_path():
         """Returns the physical path of the versioned content."""
@@ -100,26 +97,11 @@ class INewsItemVersion(IDocumentVersion):
         container as the source.
         """
 
-    def get_subjects():
-        """Returns the subjects this news item is in."""
-
-    def get_target_audiences():
-        """Returns the target audiences for this news item."""
-
     def fulltext():
         """Returns a string containing all the words of all content.
 
         For fulltext ZCatalog search.
         XXX This should really be on an interface in the Silva core"""
-
-    def to_xml():
-        """Returns an XML representation of the object"""
-
-    def content_xml():
-        """Returns the document-element of the XML-content.
-
-        XXX what does this mean?
-        (not used by all subclasses)"""
 
 
 class IAgendaItem(INewsItem):
@@ -154,33 +136,18 @@ class INewsPublication(IPublication):
     """Marker interface for INewsPublication"""
 
 
-class IFilter(IAsset):
+class ICategoryFilter(INonPublishable, INewsCategorization):
+    """Filter subjects and target audiences for content in lower containers.
 
-    def get_subjects():
-        """Returns the list of subjects."""
+    This reduce the set of visible subjects and target audiences in
+    site, below the current container.
 
-    def get_target_audiences():
-        """Returns the list of target audiences."""
-
-    def set_subject(subjects):
-        """Updates the list of subjects"""
-
-    def set_target_audience(target_audiences):
-        """Updates the list of target_audiences"""
-
-    def synchronize_with_service():
-        """Checks whether the lists of subjects and target_audiences
-        only contain items that the service_news-lists contain (to remove
-        items from the object's list that are removed in the service)
-        """
+    This is NOT a news item filter.
+    """
 
 
-class ICategoryFilter(IFilter):
-    """A CategoryFilter is editable in silva.  It allows you to specify elements in the silva news article and silva news filter to hide from content authors"""
-
-
-class INewsItemFilter(IFilter):
-    """Super-class for news item filters.
+class INewsItemFilter(INonPublishable, INewsCategorization):
+    """Filter Silva News items contents.
 
     A NewsItemFilter picks up news from news sources. Editors can
     browse through this news. It can also be used by

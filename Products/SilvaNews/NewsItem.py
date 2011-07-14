@@ -16,31 +16,31 @@ from DateTime import DateTime
 from datetime import datetime
 
 # Silva
-from silva.core import conf as silvaconf
-from silva.core.interfaces import IRoot
-from silva.core.interfaces.events import (IContentPublishedEvent,
-    IPublishingEvent)
-from silva.core.services.interfaces import ICataloging
-
-from silva.core.views import views as silvaviews
 from Products.Silva import SilvaPermissions
+from Products.Silva.cataloging import CatalogingAttributesPublishable
 from silva.app.document import document
+from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
+from silva.core.interfaces import IRoot
+from silva.core.interfaces.events import IContentPublishedEvent, IPublishingEvent
+from silva.core.services.interfaces import ICataloging
+from silva.core.smi.content.publish import IPublicationFields, VersionPublication
+from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
-from silva.core.smi.content.publish import (IPublicationFields,
-    VersionPublication)
 
 from Products.SilvaNews.interfaces import (INewsItem, INewsItemVersion,
     IAgendaItemVersion)
 from Products.SilvaNews.interfaces import (INewsPublication, IServiceNews,
-    INewsViewer, INewsQualifiers)
+    INewsViewer)
 from Products.SilvaNews.datetimeutils import (datetime_to_unixtimestamp,
     CalendarDatetime)
+from Products.SilvaNews.NewsCategorization import NewsCategorization
+from Products.SilvaNews.NewsCategorization import INewsCategorizationSchema
 
 _ = MessageFactory('silva_news')
 
 
-class NewsItemVersion(document.DocumentVersion):
+class NewsItemVersion(document.DocumentVersion, NewsCategorization):
     """Base class for news item versions.
     """
     security = ClassSecurityInfo()
@@ -49,8 +49,6 @@ class NewsItemVersion(document.DocumentVersion):
 
     def __init__(self, id):
         super(NewsItemVersion, self).__init__(id)
-        self._subjects = set()
-        self._target_audiences = set()
         self._display_datetime = None
 
     # XXX I would rather have this get called automatically on setting
@@ -75,16 +73,6 @@ class NewsItemVersion(document.DocumentVersion):
             see 'set_display_datetime'
         """
         return self._display_datetime
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_subjects')
-    def set_subjects(self, subjects):
-        self._subjects = set(subjects)
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_target_audiences')
-    def set_target_audiences(self, target_audiences):
-        self._target_audiences = set(target_audiences)
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -136,20 +124,6 @@ class NewsItemVersion(document.DocumentVersion):
             return False
         return self.service_metadata.getMetadataValue(
             source, 'snn-np-settings', 'is_private')
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_subjects')
-    def get_subjects(self):
-        """Returns the subjects
-        """
-        return set(self._subjects or [])
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_target_audiences')
-    def get_target_audiences(self):
-        """Returns the target audiences
-        """
-        return set(self._target_audiences or [])
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'last_author_fullname')
@@ -239,14 +213,14 @@ class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
     grok.name(u"Silva Article")
 
-    fields = silvaforms.Fields(ITitledContent, INewsQualifiers)
+    fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema)
 
 
 class NewsItemEditProperties(silvaforms.SMIForm):
     grok.context(INewsItem)
 
     label = _(u"article properties")
-    fields = silvaforms.Fields(ITitledContent, INewsQualifiers).omit('id')
+    fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema).omit('id')
     actions = silvaforms.Actions(silvaforms.EditAction())
 
 
@@ -312,9 +286,6 @@ class NewsItemPublication(VersionPublication):
         return self.context.get_unapproved_version_display_datetime()
 
     display_datetime = property(get_display_datetime, set_display_datetime)
-
-
-from Products.Silva.cataloging import CatalogingAttributesPublishable
 
 
 class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):

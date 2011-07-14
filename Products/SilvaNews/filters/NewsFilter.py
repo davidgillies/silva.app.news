@@ -24,8 +24,9 @@ from zeam.form.base.datamanager import BaseDataManager
 
 # SilvaNews
 from Products.SilvaNews.widgets.path import Path
-from Products.SilvaNews.interfaces import INewsFilter, INewsQualifiers
+from Products.SilvaNews.interfaces import INewsFilter
 from Products.SilvaNews.filters.NewsItemFilter import NewsItemFilter
+from Products.SilvaNews.filters.NewsItemFilter import INewsItemFilterSchema
 from Products.SilvaNews import interfaces
 
 _ = MessageFactory('silva_news')
@@ -91,15 +92,7 @@ class NewsFilter(NewsItemFilter):
 InitializeClass(NewsFilter)
 
 
-class INewsFilterSchema(INewsQualifiers):
-    sources = schema.Set(
-        value_type=schema.Choice(source=interfaces.news_source),
-        title=_(u"sources"),
-        description=_(u"Use predefined sources."))
-
-    _keep_to_path = schema.Bool(
-        title=_(u"stick to path"))
-
+class INewsFilterSchema(INewsItemFilterSchema):
     _show_agenda_items = schema.Bool(
         title=_(u"show agenda items"))
 
@@ -115,7 +108,7 @@ class NewsFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(INewsFilter)
 
-    fields = silvaforms.Fields(INewsFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsFilterSchema).omit('id')
 
 
 class ExcludeAction(silvaforms.Action):

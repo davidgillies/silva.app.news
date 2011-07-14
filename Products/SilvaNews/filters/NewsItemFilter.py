@@ -1,29 +1,36 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Revision$
-from DateTime import DateTime
+
 from datetime import datetime
 from itertools import imap, ifilter
+import logging
 
-from zope.i18nmessageid import MessageFactory
-from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
 from five import grok
+from zope import schema
+from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
+from zope.intid.interfaces import IIntIds
 
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
+from DateTime import DateTime
+from OFS.SimpleItem import SimpleItem
 
-from silva.core.services.interfaces import ICataloging
-from silva.core.references.reference import ReferenceSet
 from Products.Silva import SilvaPermissions
+from Products.Silva.Publishable import NonPublishable
+from silva.core.references.reference import ReferenceSet
+from silva.core.services.interfaces import ICataloging
+from silva.core.views import views as silvaviews
 
-from Products.SilvaNews import interfaces
-from Products.SilvaNews.filters.Filter import Filter
+from Products.SilvaNews.interfaces import INewsItemFilter, IServiceNews
+from Products.SilvaNews.interfaces import news_source
+from Products.SilvaNews.NewsCategorization import NewsCategorization
+from Products.SilvaNews.NewsCategorization import INewsCategorizationSchema
 from Products.SilvaNews import datetimeutils
 
 _ = MessageFactory('silva_news')
 
-import logging
 logger = logging.getLogger('silvanews.itemfilter')
 
 
@@ -34,7 +41,7 @@ def brainsorter(a, b):
 
 # XXX upgrade _excluded_items move to a set of intids
 
-class NewsItemFilter(Filter):
+class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     """Super-class for news item filters.
 
     A NewsItemFilter picks up news from news sources. Editors can
@@ -44,7 +51,7 @@ class NewsItemFilter(Filter):
     A super-class for the News Filters (NewsFilter, AgendaFilter)
     which contains shared code for both filters"""
 
-    grok.implements(interfaces.INewsItemFilter)
+    grok.implements(INewsItemFilter)
     grok.baseclass()
     security = ClassSecurityInfo()
 
@@ -56,27 +63,6 @@ class NewsItemFilter(Filter):
         self._excluded_items = set()
 
     # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_all_sources')
-    def get_all_sources(self):
-        """Returns all the sources available for querying
-        """
-        q = {'meta_type':self._allowed_source_types,
-             'snn-np-settingsis_private':'no'}
-        results = self._query(**q)
-        paths = []
-
-        cpp = "/".join(self.aq_inner.aq_parent.getPhysicalPath())
-        while cpp:
-            paths.append(cpp)
-            cpp = cpp[:cpp.rfind('/')]
-
-        q['snn-np-settingsis_private'] = 'yes'
-        q['parent_path'] = paths
-        results += self._query(**q)
-
-        return [s.getObject() for s in results]
-
     def _get_sources_reference_set(self):
         if hasattr(self, '_v_source_reference_set'):
             refset = getattr(self, '_v_source_reference_set', None)
@@ -211,7 +197,7 @@ class NewsItemFilter(Filter):
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         if public_only:
             query['version_status'] = 'public'
-        service = getUtility(interfaces.IServiceNews)
+        service = getUtility(IServiceNews)
         query['subjects'] = {
             'query': self._collect_subjects(service),
             'operator': 'or'}
@@ -248,7 +234,7 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].get_subjects()
-        service_news = getUtility(interfaces.IServiceNews)
+        service_news = getUtility(IServiceNews)
         return service_news.subject_form_tree(audject)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -260,7 +246,7 @@ class NewsItemFilter(Filter):
         audject = self.superValues('Silva News Category Filter')
         if audject:
             audject = audject[0].target_audiences()
-        service_news = getUtility(interfaces.IServiceNews)
+        service_news = getUtility(IServiceNews)
         return service_news.target_audience_form_tree(audject)
 
 
@@ -285,8 +271,8 @@ class NewsItemFilter(Filter):
         results = []
 
         #if this is a new filter that doesn't show agenda items
-        if (interfaces.INewsFilter.providedBy(self)
-                and not self.show_agenda_items()):
+        if (INewsItemFilter.providedBy(self)
+            and not self.show_agenda_items()):
             return results
 
         lastnight = (DateTime()-1).latestTime()
@@ -380,4 +366,17 @@ class NewsItemFilter(Filter):
 
 InitializeClass(NewsItemFilter)
 
+
+class INewsItemFilterSchema(INewsCategorizationSchema):
+    sources = schema.Set(
+        value_type=schema.Choice(source=news_source),
+        title=_(u"sources"),
+        description=_(u"Use predefined sources."))
+    _keep_to_path = schema.Bool(
+        title=_(u"stick to path"))
+
+
+class NewsItemFilterView(silvaviews.View):
+    """ Default view for filters """
+    grok.context(INewsItemFilter)
 
