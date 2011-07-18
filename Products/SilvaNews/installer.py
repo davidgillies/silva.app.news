@@ -22,7 +22,6 @@ class SilvaNewsInstaller(DefaultInstaller):
             factory.manage_addServiceNews('service_news')
 
     def uninstall_custom(self, root):
-        # self.unregister_views(root.service_view_registry)
         self.unconfigure_extra_metadata(root)
 
     def configure_extra_metadata(self, root):
@@ -34,7 +33,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         fh = open(xml_file, 'r')
         collection.importSet(fh)
         sm.addTypeMapping('Silva News Publication', ['snn-np-settings'])
-        sm.addTypeMapping('Silva News ICS Publication', ['snn-np-settings'])
         sm.initializeMetadata()
 
     def unconfigure_extra_metadata(self, root):
@@ -43,7 +41,6 @@ class SilvaNewsInstaller(DefaultInstaller):
         if 'snn-np-settings' in collection.objectIds():
             collection.manage_delObjects(['snn-np-settings'])
         sm.removeTypeMapping('Silva News Publication',['snn-np-settings'])
-        sm.removeTypeMapping('Silva News ICS Publication',['snn-np-settings'])
 
     def setup_catalog(self, root):
         """Sets the ZCatalog up"""
