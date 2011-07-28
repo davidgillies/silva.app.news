@@ -6,7 +6,7 @@ from silva.app.news.installer import install
 
 from silva.core import conf as silvaconf
 
-silvaconf.extension_name("SilvaNews")
+silvaconf.extension_name("silva.app.news")
 silvaconf.extension_title("Silva News Network")
 silvaconf.extension_depends(["silva.app.document", "SilvaExternalSources"])
 

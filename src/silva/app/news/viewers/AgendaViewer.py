@@ -16,12 +16,12 @@ from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.browser import absoluteURL
 
 # Zope
-import Products
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
 # Silva
 from Products.Silva import SilvaPermissions
+from Products.Silva.ExtensionRegistry import meta_types_for_interface
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.layout.jquery.interfaces import IJQueryResources
@@ -108,13 +108,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
         """Returns the allowed meta_types for this Viewer"""
         """results are passed to the filters, some of which may be
            news filters -- don't want to return PlainNewsItems"""
-        allowed = []
-        mts = Products.meta_types
-        for mt in mts:
-            if (mt.has_key('instance') and
-                IAgendaItem.implementedBy(mt['instance'])):
-                allowed.append(mt['name'])
-        return allowed
+        return meta_types_for_interface(IAgendaItem)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_days_to_show')
@@ -398,7 +392,8 @@ class AgendaViewerJSCalendar(silvaviews.Page):
 
     @property
     def events_json_url(self):
-        return absoluteURL(self.context, self.request) + '/++rest++events'
+        return ''.join((absoluteURL(self.context, self.request),
+                        '/++rest++silva.app.news.events'))
 
 
 class AgendaViewerICSCalendar(silvaviews.View):

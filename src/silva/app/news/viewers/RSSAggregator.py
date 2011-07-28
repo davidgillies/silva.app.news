@@ -3,11 +3,11 @@
 # $Id$
 
 import time
+import feedparser
 
 from zope.interface import Interface
 from zope import schema
 from zope.i18nmessageid import MessageFactory
-_ = MessageFactory('silva_news')
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -22,7 +22,8 @@ from zeam.form import silva as silvaforms
 # SilvaNews
 from silva.app.news.viewers.NewsViewer import NewsViewer
 from silva.app.news.interfaces import IAggregator
-from silva.app.news import feedparser
+
+_ = MessageFactory('silva_news')
 
 
 class RSSAggregator(NewsViewer):
@@ -97,8 +98,9 @@ class RSSAggregator(NewsViewer):
         ret = []
         for uri, channel in feed_data.items():
             for item in channel['items']:
-                item['parent_channel'] = {'title':channel['feed']['title'],
-                                          'link':channel['feed'].get('link',uri)}
+                item['parent_channel'] = {
+                    'title':channel['feed']['title'],
+                    'link':channel['feed'].get('link',uri)}
                 ret.append((item.get('date_parsed',None),item))
         ret.sort(reverse=True)
         return [ r[1] for r in ret ]

@@ -5,12 +5,13 @@
 from logging import getLogger
 
 from five import grok
+from zope import schema
 from zope.component import getUtility, getMultiAdapter
+from zope.i18nmessageid import MessageFactory
+from zope.interface import Interface
+from zope.intid.interfaces import IIntIds
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-from zope import schema
-from zope.intid.interfaces import IIntIds
-from zope.interface import Interface
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -24,15 +25,10 @@ from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
+from silva.core.references.reference import ReferenceSet
 from zeam.form import silva as silvaforms
 from zeam.utils.batch import batch
 from zeam.utils.batch.interfaces import IBatching
-
-from zope.i18nmessageid import MessageFactory
-_ = MessageFactory('silva_news')
-
-from silva.core.references.reference import ReferenceSet
-
 
 # SilvaNews
 from silva.app.news.interfaces import (INewsViewer, IServiceNews,
@@ -41,6 +37,7 @@ from silva.app.news.ServiceNews import TimezoneMixin
 from silva.app.news.traverser import set_parent
 
 
+_ = MessageFactory('silva_news')
 logger = getLogger('silva.app.news.NewsViewer')
 
 

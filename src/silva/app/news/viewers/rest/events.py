@@ -15,7 +15,7 @@ class Events(rest.REST):
     """
     grok.context(IAgendaViewer)
     grok.require('zope2.View')
-    grok.name('events')
+    grok.name('silva.app.news.events')
 
     def datetime_from_timestamp(self, ts):
         ts = int(ts)

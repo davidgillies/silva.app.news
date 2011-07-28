@@ -33,10 +33,12 @@ setup(name='silva.app.news',
         'Products.Formulator',
         'Products.Silva',
         'five.grok',
+        'feedparser',
         'icalendar',
         'megrok.chameleon',
         'python-dateutil',
         'setuptools',
+        'feedparser',
         'silva.app.document',
         'silva.core.conf',
         'silva.core.interfaces',
@@ -63,6 +65,9 @@ setup(name='silva.app.news',
       [zodbupdate]
       renames = silva.app.news:CLASS_CHANGES
       [zeam.form.components]
-      recurrence = silva.app.widgets.recurrence:register
+      recurrence = silva.app.news.widgets.recurrence:register
+      tree = silva.app.news.widgets.tree:register
+      path = silva.app.news.widgets.path:register
+
       """
       )
