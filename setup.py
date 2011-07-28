@@ -1,4 +1,4 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# Copyright (c) 2002-2011 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id$
 
@@ -7,38 +7,34 @@ import os
 
 version = '3.0dev'
 
-def product_readme(filename):
-    return  open(os.path.join('Products', 'SilvaNews', filename)).read()
 
-
-setup(name='Products.SilvaNews',
+setup(name='silva.app.news',
       version=version,
       description="News extension for Silva",
-      long_description=product_readme("README.txt") + "\n" +
-                       product_readme("HISTORY.txt"),
-
+      long_description=open("README.txt").read() + "\n" +
+                       open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
-              "Framework :: Zope2",
-              "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
-              "Programming Language :: Python",
-              "Topic :: Software Development :: Libraries :: Python Modules",
-              ],
+        "Framework :: Zope2",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
+        "Programming Language :: Python",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+        ],
       keywords='news silva zope2',
       author='Infrae',
       author_email='info@infrae.com',
       url='http://infrae.com/products/silva',
       license='BSD',
-      packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['Products'],
+      package_dir={'': 'src'},
+      packages=find_packages('src'),
+      namespace_packages=['silva', 'silva.app'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+        'Products.Formulator',
+        'Products.Silva',
         'five.grok',
         'icalendar',
         'megrok.chameleon',
-        'Products.Formulator',
-        'Products.ParsedXML',
-        'Products.Silva',
         'python-dateutil',
         'setuptools',
         'silva.app.document',
@@ -49,10 +45,10 @@ setup(name='Products.SilvaNews',
         'silva.core.smi',
         'silva.core.upgrade',
         'silva.core.views',
-        'silva.ui',
         'z3locales',
         'zeam.form.silva',
         'zeam.utils.batch',
+        'zope.app.container',
         'zope.component',
         'zope.i18nmessageid',
         'zope.interface',
@@ -65,10 +61,8 @@ setup(name='Products.SilvaNews',
         ],
       entry_points = """
       [zodbupdate]
-      renames = Products.SilvaNews:CLASS_CHANGES
+      renames = silva.app.news:CLASS_CHANGES
       [zeam.form.components]
-      recurrence = Products.SilvaNews.widgets.recurrence:register
-      tree = Products.SilvaNews.widgets.tree:register
-      path = Products.SilvaNews.widgets.path:register
+      recurrence = silva.app.widgets.recurrence:register
       """
       )

@@ -1,1 +1,3 @@
-recursive-include Products *.cpt *.css *.form *.gif *.js *.mo *.png *.po *.pot *.pt *.py *.txt *.xml *.zcml *.zpt
+recursive-include src *.cpt *.css *.form *.gif *.js *.mo *.png *.po *.pot *.pt *.py *.txt *.xml *.zcml *.zpt
+recursive-include docs *.txt
+include README.txt
