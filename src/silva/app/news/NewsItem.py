@@ -181,7 +181,7 @@ class NewsItem(document.Document):
     meta_type = "Silva Article"
     silvaconf.icon("www/news_item.png")
     silvaconf.priority(3.7)
-    silvaconf.versionClass(NewsItemVersion)
+    silvaconf.version_class(NewsItemVersion)
 
     security.declareProtected(SilvaPermissions.ApproveSilvaContent,
                               'set_next_version_display_datetime')
@@ -340,6 +340,7 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
 
     @property
     def subjects(self):
+        print 'subjects', self.version
         if self.version is not None:
             return self.version.get_subjects()
 
