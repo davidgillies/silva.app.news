@@ -52,9 +52,6 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         super(NewsItemVersion, self).__init__(id)
         self._display_datetime = None
 
-    # XXX I would rather have this get called automatically on setting
-    # the publication datetime, but that would have meant some nasty monkey-
-    # patching would be required...
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                                 'set_display_datetime')
     def set_display_datetime(self, ddt):

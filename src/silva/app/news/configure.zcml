@@ -16,7 +16,7 @@
   <include package="Products.Silva" />
   <include package="silva.app.document" />
 
-  <five:registerPackage package="." />
+  <five:registerPackage package="." initialize=".initialize" />
 
   <!-- Grok Silva News -->
   <grok:grok package="." />
