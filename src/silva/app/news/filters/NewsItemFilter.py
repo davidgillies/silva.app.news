@@ -111,7 +111,7 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
             intid = getUtility(IIntIds).register(target)
         self._p_changed = 1
         self._excluded_items.add(intid)
-
+        
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'remove_excluded_item')
     def remove_excluded_item(self, target):
@@ -195,7 +195,7 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         query = {}
         query['path'] = map(lambda s: "/".join(s), self._get_sources_path())
         if public_only:
-            query['version_status'] = 'public'
+            query['publication_status'] = 'public'
         service = getUtility(IServiceNews)
         query['subjects'] = {
             'query': self._collect_subjects(service),
