@@ -10,7 +10,7 @@
        i18n:attributes="title"
        tal:attributes="href view/event_url"
        title="Add this event to your calendar">
-      <img tal:attributes="src view/event_img_url" />
+      <img tal:attributes="src python:view.static['date.png']()" />
       Add this event to my calendar
     </a>
   </p>
