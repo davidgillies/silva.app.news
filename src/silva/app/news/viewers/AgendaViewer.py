@@ -24,9 +24,10 @@ from Products.Silva import SilvaPermissions
 from Products.Silva.ExtensionRegistry import meta_types_for_interface
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
-from silva.core.layout.jquery.interfaces import IJQueryResources
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
+
+from js import jquery
 
 # SilvaNews
 from silva.app.news import datetimeutils
@@ -374,7 +375,8 @@ class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
         return self.calendar.formatyear(self.year)
 
 
-class IViewResources(IJQueryResources):
+class IViewResources(IDefaultBrowserLayer):
+    silvaconf.resource(jquery.jquery)
     silvaconf.resource('fullcalendar/fullcalendar.js')
     silvaconf.resource('calendar.js')
     silvaconf.resource('qtip.js')

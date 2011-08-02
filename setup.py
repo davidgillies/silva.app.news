@@ -32,13 +32,15 @@ setup(name='silva.app.news',
       install_requires=[
         'Products.Formulator',
         'Products.Silva',
-        'five.grok',
         'feedparser',
+        'feedparser',
+        'five.grok',
         'icalendar',
+        'js.jquery',
+        'js.jqueryui',
         'megrok.chameleon',
         'python-dateutil',
         'setuptools',
-        'feedparser',
         'silva.app.document',
         'silva.core.conf',
         'silva.core.interfaces',
@@ -47,10 +49,13 @@ setup(name='silva.app.news',
         'silva.core.smi',
         'silva.core.upgrade',
         'silva.core.views',
+        'silva.ui',
         'z3locales',
+        'zeam.form.base',
         'zeam.form.silva',
+        'zeam.form.ztk',
         'zeam.utils.batch',
-        'zope.app.container',
+        'zope.cachedescriptors',
         'zope.component',
         'zope.i18nmessageid',
         'zope.interface',
@@ -62,12 +67,9 @@ setup(name='silva.app.news',
         'zope.traversing',
         ],
       entry_points = """
-      [zodbupdate]
-      renames = silva.app.news:CLASS_CHANGES
       [zeam.form.components]
       recurrence = silva.app.news.widgets.recurrence:register
       tree = silva.app.news.widgets.tree:register
       path = silva.app.news.widgets.path:register
-
       """
       )
