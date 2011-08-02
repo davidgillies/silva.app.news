@@ -87,9 +87,6 @@ class INewsItemVersion(IDocumentVersion, INewsCategorization):
     This contains the real content for a news item.
     """
 
-    def source_path():
-        """Returns the physical path of the versioned content."""
-
     def is_private():
         """Returns true if the item is private.
 

@@ -78,19 +78,6 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
 
     # ACCESSORS
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_intro')
-    def get_intro(self, max_size=128, request=None):
-        """Returns first bit of the news item's content
-
-            this returns all elements up to and including the first
-            paragraph, if it turns out that there are more than max_size
-            characters in the data returned it will truncate (per element)
-            to minimally 1 element
-        """
-        # XXX fix intro, remove this function.
-        return u""
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                                 'get_description')
     def get_description(self):
         return self.service_metadata.getMetadataValue(
@@ -107,16 +94,6 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         return None
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'source_path')
-    def source_path(self):
-        """Returns the path to the source containing this item
-        """
-        source = self._get_source()
-        if not source:
-            return None
-        return source.getPhysicalPath()
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_private')
     def is_private(self):
         """Returns whether the object is in a private source
@@ -126,16 +103,6 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
             return False
         return self.service_metadata.getMetadataValue(
             source, 'snn-np-settings', 'is_private')
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'last_author_fullname')
-    def last_author_fullname(self):
-        """Returns the userid of the last author, to be used in
-        combination with the ZCatalog.  The data this method returns
-        can, in opposite to the sec_get_last_author_info data, be
-        stored in the ZCatalog without any problems.
-        """
-        return self.sec_get_last_author_info().fullname()
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'fulltext')
