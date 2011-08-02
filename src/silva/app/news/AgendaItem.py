@@ -12,7 +12,6 @@ from zope import interface, schema
 from zope.cachedescriptors.property import CachedProperty
 from zope.component import getAdapter, getUtility
 from zope.i18nmessageid import MessageFactory
-from zope.interface import implements
 from zope.traversing.browser import absoluteURL
 
 # Zope
@@ -223,11 +222,11 @@ class AgendaItem(NewsItem):
        metadata, as well settings for subjects and audiences.
     """
     security = ClassSecurityInfo()
-    implements(IAgendaItem)
+    grok.implements(IAgendaItem)
     meta_type = "Silva Agenda Item"
     silvaconf.icon("www/agenda_item.png")
     silvaconf.priority(3.8)
-    silvaconf.versionClass(AgendaItemVersion)
+    silvaconf.version_class(AgendaItemVersion)
 
 
 InitializeClass(AgendaItem)

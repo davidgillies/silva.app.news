@@ -18,16 +18,20 @@ from datetime import datetime
 # Silva
 from Products.Silva import SilvaPermissions
 from Products.Silva.cataloging import CatalogingAttributesPublishable
+from Products.SilvaMetadata.interfaces import IMetadataService
+
 from silva.app.document import document
-from silva.ui.menu import MenuItem
-from silva.core.smi.content import ContentEditMenu
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IRoot
-from silva.core.interfaces.events import IContentPublishedEvent, IPublishingEvent
+from silva.core.interfaces.events import IContentPublishedEvent
+from silva.core.interfaces.events import IPublishingEvent
 from silva.core.services.interfaces import ICataloging
-from silva.core.smi.content.publish import IPublicationFields, VersionPublication
+from silva.core.smi.content import ContentEditMenu
+from silva.core.smi.content.publish import IPublicationFields
+from silva.core.smi.content.publish import VersionPublication
 from silva.core.views import views as silvaviews
+from silva.ui.menu import MenuItem
 from zeam.form import silva as silvaforms
 
 from silva.app.news.interfaces import INewsItem, INewsItemVersion
@@ -144,12 +148,6 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         return keywords
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'publication_time')
-    def publication_time(self):
-        binding = self.service_metadata.getMetadata(self)
-        return binding.get('silva-extra', 'publicationtime')
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'sort_index')
     def sort_index(self):
         dt = self.get_display_datetime()
@@ -242,7 +240,8 @@ class NewsItemView(silvaviews.View):
     def article_date(self):
         article_date = self.content.get_display_datetime()
         if not article_date:
-            article_date = self.content.publication_time()
+            article_date =  getUtility(IMetadataService).getMetadataValue(
+                self.content, 'silva-extra', 'publicationtime')
         if article_date:
             news_service = getUtility(IServiceNews)
             return news_service.format_date(
@@ -315,7 +314,7 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
         if version_id is None:
             versions = self.context.get_previous_versions()
             if versions:
-                return versions[0]
+                version_id = versions[0]
         if version_id is not None:
             return getattr(self.context, version_id, None)
         return None
@@ -337,7 +336,6 @@ class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
 
     @property
     def subjects(self):
-        print 'subjects', self.version
         if self.version is not None:
             return self.version.get_subjects()
 
