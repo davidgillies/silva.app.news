@@ -180,7 +180,7 @@ class Items(silvaforms.SMITableForm):
     grok.name('items')
     label = _('Items')
 
-    description = _('uncheck items you want to ignore')
+    description = _('Uncheck items you want to ignore.')
     ignoreRequest = True
     ignoreContent = False
 
@@ -190,36 +190,16 @@ class Items(silvaforms.SMITableForm):
     tableActions = tableforms.TableSelectionActions(
         ExcludeAction(identifier='update', title=_("Update")))
 
-    def prepareSelectedField(self, field):
-        field.ignoreContent = False
-        field.ignoreRequest = True
-
 
 class NewsFilterItems(Items):
-    offset = 0
-    count = 10
+    batchSize = 10
 
-    def publishTraverse(self, request, name):
-        try:
-            offset = int(name)
-            self.offset = offset
-            return self
-        except (TypeError, ValueError):
-            pass
-        return super(Items, self).publishTraverse(request, name)
+    def batchFactory(self, item):
+        return ItemSelection(item, self.context)
 
     def getItems(self):
-        def build_item_selection(item):
-            return ItemSelection(item, self.context)
+        return list(self.context.get_all_items())
 
-        self.batch = self.getBatch(factory=build_item_selection)
-        return list(self.batch)
-
-    def getBatch(self, factory=None):
-        return batch(list(self.context.get_all_items()),
-            start=self.offset,
-            count=self.count,
-            factory=factory)
 
 
 class ItemsMenu(MenuItem):

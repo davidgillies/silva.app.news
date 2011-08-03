@@ -38,7 +38,7 @@ from silva.app.news.traverser import set_parent
 
 
 _ = MessageFactory('silva_news')
-logger = getLogger('silva.app.news.NewsViewer')
+logger = getLogger('silva.app.news.viewer')
 
 
 class NewsViewer(Content, SimpleItem, TimezoneMixin):

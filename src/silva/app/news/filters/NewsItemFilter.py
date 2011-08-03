@@ -30,7 +30,7 @@ from silva.app.news import datetimeutils
 
 _ = MessageFactory('silva_news')
 
-logger = logging.getLogger('silvanews.itemfilter')
+logger = logging.getLogger('silva.app.news.filter')
 
 
 def brainsorter(a, b):
@@ -111,7 +111,7 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
             intid = getUtility(IIntIds).register(target)
         self._p_changed = 1
         self._excluded_items.add(intid)
-        
+
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'remove_excluded_item')
     def remove_excluded_item(self, target):
@@ -311,7 +311,7 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_items_by_date')
-    def get_items_by_date(self, month, year, 
+    def get_items_by_date(self, month, year,
             timezone=datetimeutils.local_timezone, meta_types=None):
         return self._get_items_by_date(
                 month, year, timezone=timezone, meta_types=meta_types)
