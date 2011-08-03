@@ -190,6 +190,12 @@ class Items(silvaforms.SMITableForm):
     tableActions = tableforms.TableSelectionActions(
         ExcludeAction(identifier='update', title=_("Update")))
 
+    def createSelectedField(self, item):
+        field = super(Items, self).createSelectedField(item)
+        field.ignoreContent = False
+        field.ignoreRequest = True
+        return field
+
 
 class NewsFilterItems(Items):
     batchSize = 10
