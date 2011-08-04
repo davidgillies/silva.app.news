@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
-  tal:define="data view/data">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
+      tal:define="data view/data">
   <id tal:content="data/url" />
   <title type="text" tal:content="data/title"/>
   <subtitle tal:content="data/description" />
@@ -26,17 +26,20 @@
     <author tal:repeat="author item/authors">
       <name tal:content="author"/>
     </author>
-    <tal:repeat repeat="keyword item/keywords">
-     <category tal:condition="keyword"
-       tal:attributes="term keyword" />
-    </tal:repeat>
+    <category
+      tal:repeat="keyword item/keywords"
+      tal:attributes="term keyword" />
     <summary type="xhtml">
-      <div tal:content="structure item/html_description" xmlns="http://www.w3.org/1999/xhtml" />
+      <div tal:content="structure item/html_description" />
     </summary>
-    <silvanews:location tal:condition="item/location|nothing" tal:content="item/location" />
-    <silvanews:start_datetime tal:condition="item/start_datetime|nothing" 
-               tal:content="item/start_datetime" />
-    <silvanews:end_datetime tal:condition="item/end_datetime|nothing" 
-               tal:content="item/end_datetime" />
+    <silvanews:start_datetime
+       tal:condition="item/start_datetime|nothing"
+       tal:content="item/start_datetime" />
+    <silvanews:end_datetime
+       tal:condition="item/end_datetime|nothing"
+       tal:content="item/end_datetime" />
+    <silvanews:location
+       tal:condition="item/location|nothing"
+       tal:content="item/location" />
   </entry>
 </feed>

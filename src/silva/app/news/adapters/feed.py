@@ -3,28 +3,31 @@ from five import grok
 from DateTime import DateTime
 
 from zope.interface import Interface
-from zope import component
+from zope.component import queryMultiAdapter
 
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
 from Products.Silva.browser import feed
-from silva.app.news.interfaces import (INewsViewer,
-    IAggregator, INewsPublication)
-from Products.Silva.browser.feed import ContainerFeedProvider
+from silva.app.news.interfaces import INewsViewer, IAggregator
+from silva.app.news.interfaces import INewsPublication
 
 
-class NewsPublicationFeedEntryProvider(ContainerFeedProvider):
+class NewsPublicationFeedEntryProvider(feed.ContainerFeedProvider):
     grok.adapts(INewsPublication, Interface)
 
     def entries(self):
         default = self.context.get_default()
         if default and INewsViewer.providedBy(default):
-            return IFeedEntryProvider(default).entries()
+            provider = queryMultiAdapter(
+                (default, self.request), IFeedEntryProvider)
+            if provider is not None:
+                return provider.entries()
         return super(self.__class__, self).entries()
 
 
 class NewsViewerFeedEntryProvider(grok.MultiAdapter):
     grok.adapts(INewsViewer, Interface)
     grok.implements(IFeedEntryProvider)
+    grok.provides(IFeedEntryProvider)
 
     def __init__(self, context, request):
         self.context = context
@@ -35,8 +38,7 @@ class NewsViewerFeedEntryProvider(grok.MultiAdapter):
         for item in items:
             if item.get_viewable() is None:
                 continue
-            entry = component.queryMultiAdapter(
-                (item, self.request), IFeedEntry)
+            entry = queryMultiAdapter((item, self.request), IFeedEntry)
             if not entry is None:
                 yield entry
 
