@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from five import grok
-from zope.component import getUtility
+from zope.component import getUtility, getMultiAdapter
 from zope.cachedescriptors.property import CachedProperty
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
@@ -21,6 +21,7 @@ from Products.Silva.cataloging import CatalogingAttributesPublishable
 from Products.SilvaMetadata.interfaces import IMetadataService
 
 from silva.app.document import document
+from silva.app.document.interfaces import IDocumentDetails
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IRoot
@@ -231,9 +232,9 @@ class NewsItemListItemView(NewsItemView):
     @CachedProperty
     def article(self):
         if self.content is not None:
-            return self.content.body.render_intro(
-                self.content, self.request,
-                max_length=128)
+            details = getMultiAdapter(
+                (self.content, self.request), IDocumentDetails)
+            return details.get_introduction()
         return u''
 
 # Add display datetime on publish smi tab
