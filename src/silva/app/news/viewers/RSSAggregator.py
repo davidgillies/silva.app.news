@@ -127,6 +127,7 @@ class RSSAggregatorEditForm(silvaforms.SMIEditForm):
     """
     grok.context(IAggregator)
     fields = silvaforms.Fields(IRSSAggregatorSchema)
+    fields['feeds'].allowOrdering = False
 
 
 class RSSAggregatorView(silvaviews.View):
