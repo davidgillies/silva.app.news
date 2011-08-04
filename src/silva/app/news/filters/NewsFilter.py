@@ -5,7 +5,6 @@
 from zope import schema
 from zope.i18nmessageid import MessageFactory
 from five import grok
-from zeam.utils.batch import batch
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -112,6 +111,7 @@ class NewsFilterEditForm(silvaforms.SMIEditForm):
 
 
 class ExcludeAction(silvaforms.Action):
+
     def __call__(self, form, content, selected, deselected, unchanged):
         news_filter = form.context
         for line in selected:
@@ -130,8 +130,9 @@ class IItemSelection(ITitledContent):
 
 class ItemSelection(BaseDataManager):
 
-    def __init__(self, content, filter):
-        self.filter = filter
+    def __init__(self, content, form):
+        self._filter = form.context
+        self._get_content_path = form.get_content_path
         self.content = content
         self.version = self.content.get_viewable() or \
             self.content.get_previewable() or \
@@ -146,15 +147,11 @@ class ItemSelection(BaseDataManager):
 
     @property
     def select(self):
-        return not self.filter.is_excluded_item(self.content)
+        return not self._filter.is_excluded_item(self.content)
 
     @property
     def path(self):
-        path = self.content.getPhysicalPath()
-        root_path = self.content.get_root().getPhysicalPath()
-        if root_path == path[:len(root_path)]:
-            return "/".join(path[len(root_path):])
-        return "/".join(path)
+        return self._get_content_path(self.content)
 
     @property
     def title(self):
@@ -201,7 +198,7 @@ class NewsFilterItems(Items):
     batchSize = 10
 
     def batchFactory(self, item):
-        return ItemSelection(item, self.context)
+        return ItemSelection(item, self)
 
     def getItems(self):
         return list(self.context.get_all_items())
