@@ -10,11 +10,12 @@
       <span class="value" tal:content="view/article_date" />
     </div>
   </div>
-  <div class="newsintro">
+  <div class="newsintro"
+       tal:define="details content/@@details">
     <div class="newsitem-thumbnail">
-      <img tal:replace="structure context/@@thumbnail" />
+      <img tal:replace="structure details/get_thumbnail" />
     </div>
-    <tal:insertintro replace="structure view/article" />
+    <p tal:replace="structure details/get_introduction" />
   </div>
   <p class="p articlelink">
    <a href="#" tal:attributes="href context/@@absolute_url" i18n:translate="">

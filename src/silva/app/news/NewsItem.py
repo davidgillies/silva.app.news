@@ -212,8 +212,7 @@ class NewsItemView(silvaviews.View):
                 self.content, 'silva-extra', 'publicationtime')
         if article_date:
             news_service = getUtility(IServiceNews)
-            return news_service.format_date(
-                article_date)
+            return news_service.format_date(article_date)
         return u''
 
     @CachedProperty
@@ -229,13 +228,6 @@ class NewsItemListItemView(NewsItemView):
     grok.context(INewsItem)
     grok.name('search_result')
 
-    @CachedProperty
-    def article(self):
-        if self.content is not None:
-            details = getMultiAdapter(
-                (self.content, self.request), IDocumentDetails)
-            return details.get_introduction()
-        return u''
 
 # Add display datetime on publish smi tab
 
