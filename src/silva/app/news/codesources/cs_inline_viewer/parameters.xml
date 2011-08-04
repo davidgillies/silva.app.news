@@ -15,32 +15,25 @@
     <group>
       <title>Default</title>
       <fields>
-        <field><id>viewer</id> <type>ListField</type>
+        <field><id>viewer</id> <type>ReferenceField</type>
           <values>
             <alternate_name></alternate_name>
-            <css_class>store</css_class>
-            <default></default>
+            <css_class></css_class>
             <description>Choose a News Viewer, Agenda Viewer, or RSS Aggregator</description>
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
-            <extra></extra>
-            <extra_item></extra_item>
-            <first_item type="int">0</first_item>
             <hidden type="int">0</hidden>
-            <items type="list">[]</items>
+            <interface type="interface">silva.app.news.interfaces.INewsViewer</interface>
+            <multiple type="int">0</multiple>
             <required type="int">1</required>
-            <size type="int">1</size>
-            <title>news source</title>
-            <unicode type="int">1</unicode>
-            <whitespace_preserve type="int">0</whitespace_preserve>
+            <title>Viewer</title>
           </values>
           <tales>
-            <items>python:modules['silva.app.news.helpers'].get_viewers(form.aq_parent, request)</items>
           </tales>
           <messages>
             <message name="external_validator_failed">The input failed the external validator.</message>
             <message name="required_not_found">Input is required but no input given.</message>
-            <message name="unknown_selection">You selected an item that was not in the list.</message>
+            <message name="invalid_value">Input is incorrect</message>
           </messages>
         </field>
         <field><id>inv_div_id</id> <type>StringField</type>

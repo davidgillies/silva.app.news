@@ -107,6 +107,7 @@ class IAgendaItem(INewsItem):
 
 
 class IAgendaItemVersion(INewsItemVersion):
+
     def get_start_datetime():
         """Returns start_datetime
         """

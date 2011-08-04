@@ -4,34 +4,29 @@
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       i18n:domain="silva_news"
-      tal:define="model options/model;
-                  viewer options/viewer;
-                  viewerobj python:here.get_viewer(viewer, model);
-                  ">
+      tal:define="viewer options/viewer;
+                  title_level options/title_level;
+                  limit options/number_of_articles;
+                  show_link_article options/show_link_article;">
 
   <p class="p newsmessage"
-     tal:condition="python: viewerobj is None">
+     tal:condition="python: viewer is None">
     Sorry, no viewer is available.
   </p>
 
-  <tal:if tal:condition="python: viewerobj is not None"
-          tal:define="viewer_url viewerobj/@@absolute_url;
-                      limit python:int(options['number_of_articles']);
-                      items python:here.get_items(limit, viewer, model);
-                      show_link_article python:options['show_link_article'];
-                      mangle modules/Products/Silva/mangle;
-                      formatdate nocall:here/service_news/format_date;
-                      title_level options/title_level
-                  ">
+  <tal:viewer tal:condition="python: viewer is not None"
+              tal:define="viewer_url viewer/@@absolute_url;
+                          items python:modules['silva.app.news.codesources.inline'].get_items(viewer, request, limit);
+                          formatdate nocall:here/service_news/format_date">
     <div tal:attributes="class python:options['inv_div'] or nothing;
                          id python:options['inv_div_id'] or nothing">
 
-      <h3 tal:condition="python:options['show_title']=='1'"
-          tal:content="viewerobj/get_title">
+      <h3 tal:condition="options/show_title"
+          tal:content="viewer/get_title">
         title
       </h3>
 
-      <div class="searchbox" tal:condition="python:options['show_search']=='1'">
+      <div class="searchbox" tal:condition="options/show_search">
         <form tal:attributes="action viewer_url" method="post">
           <input type="text" name="query" />
           <input class="button"
@@ -44,13 +39,12 @@
         </form>
       </div>
 
-      <tal:loop condition="python:len(items) > 0"
-                repeat="item items">
+      <tal:loop tal:repeat="item items">
         <div tal:attributes="class python:'newsitem %s'%(repeat['item'].odd() and 'odd' or 'even')">
           <span tal:replace="structure string:<$title_level class='heading newsitemheading'>" />
           <a tal:define="title item/title"
              tal:content="structure title"
-             tal:attributes="href python:item.link(request)"
+             tal:attributes="href item/link"
              tal:omit-tag="python:show_link_article != 'heading'"
              >
             title
@@ -58,12 +52,13 @@
           <span tal:replace="structure string:</$title_level>" />
 
           <div class="newsiteminfo"
-               tal:condition="python:int(options['show_creationdate']) or int(options['show_datetime']) or int(options['show_location'])">
+               tal:condition="python:options['show_creationdate'] or options['show_datetime'] or options['show_location']">
             <p class="p eventdates">
               <tal:block tal:condition="python:(int(options['show_creationdate']) and item.creation_datetime())">
                 <tal:translate i18n:translate="">Publication date:
                   <span class="newsitemcreationdate"
-                        tal:content="structure python: formatdate(item.creation_datetime())" i18n:name="datetime" />
+                        tal:content="structure python: formatdate(item.creation_datetime())"
+                        i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
@@ -77,7 +72,8 @@
               <tal:block condition="python: item.end_datetime() and options['show_datetime']=='1'">
                 <tal:translate i18n:translate="">Ends:
                   <span class="newsitemenddate"
-                        tal:content="structure python: formatdate(item.end_datetime())" i18n:name="datetime" />
+                        tal:content="structure python: formatdate(item.end_datetime())"
+                        i18n:name="datetime" />
                 </tal:translate>
                 <br />
               </tal:block>
@@ -90,29 +86,28 @@
           </div>
 
           <div class="newsimage"
-               tal:define="di options/display_image"
-               tal:condition="python:di=='thumbnail'">
-              <img tal:replace="structure item/@@thumbnail" />
-            </tal:def>
+               tal:condition="python:options['display_image']=='thumbnail'">
+            <img tal:replace="structure item/thumbnail" />
           </div>
 
-          <tal:set define="maxchars python: int(options['number_of_characters'])">
+          <tal:set define="maxchars options/number_of_characters">
             <p class="p newslead">
               <tal:cond condition="python: options['show_intro']=='intro'">
-                <tal:insert tal:define="intro python:item.intro(maxchars)"
-                  tal:content="structure intro"
-                  tal:condition="intro"
-                />
+                <tal:insert tal:define="intro python:item.introduction(maxchars)"
+                            tal:content="structure intro"
+                            tal:condition="intro"
+                            />
               </tal:cond>
               <tal:cond condition="python: options['show_intro']=='description'">
                 <tal:insert tal:define="desc python:item.description(maxchars)"
-                  tal:content="structure desc"
-                  tal:condition="desc"
-                />
+                            tal:content="structure desc"
+                            tal:condition="desc"
+                            />
               </tal:cond>
-              <span class="articlelink" tal:condition="python:show_link_article=='separate'">
-                <a tal:attributes="href python:item.link(request)"
-                  tal:content="structure options/link_text_article" />
+              <span class="articlelink"
+                    tal:condition="python:show_link_article=='separate'">
+                <a tal:attributes="href item/link"
+                   tal:content="structure options/link_text_article" />
               </span>
             </p>
           </tal:set>
@@ -121,12 +116,12 @@
       </tal:loop>
 
       <p class="p newsmessage"
-         tal:condition="python:len(items) <= 0">
+         tal:condition="not:items">
         No articles are available.
       </p>
 
       <p class="p newsviewer-otherarticles"
-         tal:condition="python:options['show_link']=='1'">
+         tal:condition="options/show_link">
         <br />
         <a tal:content="structure options/link_text_viewer"
            tal:attributes="href viewer_url">
@@ -134,10 +129,17 @@
         </a>
       </p>
 
-      <tal:cond tal:condition="python:options['show_footer']=='1'">
-        <metal:plug use-macro="here/feed_footer/macros/footer" />
-      </tal:cond>
+      <p class="footer"
+         tal:condition="options/show_footer">
+        <a class="image" tal:attributes="href string:${viewer_url}/rss.xml"
+           title="Get the source...."
+           i18n:attributes="title;
+                            value">
+          <img tal:replace="structure here/rss10/tag | nothing" />
+          <tal:i18n i18n:translate="">Subscribe to feed</tal:i18n>
+        </a>
+      </p>
 
     </div>
-  </tal:if>
+  </tal:viewer>
 </html>

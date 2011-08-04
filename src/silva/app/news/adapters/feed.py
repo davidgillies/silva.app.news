@@ -73,8 +73,7 @@ class AggregatorFeedEntry(object):
         return titl
 
     def html_description(self):
-        desc = self.item['description']
-        return desc
+        return self.item['description']
 
     def description(self):
         return self.html_description()

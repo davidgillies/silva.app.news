@@ -71,5 +71,7 @@ setup(name='silva.app.news',
       recurrence = silva.app.news.widgets.recurrence:register
       tree = silva.app.news.widgets.tree:register
       path = silva.app.news.widgets.path:register
+      [Products.SilvaExternalSources.sources]
+      news = silva.app.news.codesources
       """
       )
