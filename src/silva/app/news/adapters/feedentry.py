@@ -8,8 +8,9 @@ from silva.app.news.interfaces import INewsItem, IAgendaItem
 
 
 class NewsItemFeedEntryAdapter(feed.DocumentFeedEntry):
-    """Adapter for Silva News Items (article, agenda) to get an atom/rss feed entry 
-    representation."""
+    """Adapter for Silva News Items (article, agenda) to get an
+    atom/rss feed entry representation.
+    """
     grok.adapts(INewsItem, Interface)
 
     def date_published(self):

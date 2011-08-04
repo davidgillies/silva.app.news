@@ -10,7 +10,7 @@ from dateutil.rrule import rrulestr
 from five import grok
 from zope import interface, schema
 from zope.cachedescriptors.property import CachedProperty
-from zope.component import getAdapter, getUtility
+from zope.component import getAdapter, getUtility, getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.traversing.browser import absoluteURL
 
@@ -26,6 +26,7 @@ from zeam.form import silva as silvaforms
 from Products.Silva import SilvaPermissions
 
 # SilvaNews
+from silva.app.document.interfaces import IDocumentDetails
 from silva.app.news.interfaces import IAgendaItem, IAgendaItemVersion
 from silva.app.news.interfaces import INewsViewer
 from silva.app.news.interfaces import IServiceNews
@@ -401,12 +402,10 @@ class AgendaItemInlineView(silvaviews.View):
     grok.context(IAgendaItem)
     grok.name('tooltip.html')
 
-    def update(self):
-        # XXX fix intro
-        self.intro = u''
-
     def render(self):
-        return u'<div>' + self.intro + u"</div>"
+        details = getMultiAdapter(
+            (self.content, self.request), IDocumentDetails)
+        return u'<div>' + details.get_introduction() + u"</div>"
 
 
 class AgendaItemListItemView(NewsItemListItemView, AgendaViewMixin):
