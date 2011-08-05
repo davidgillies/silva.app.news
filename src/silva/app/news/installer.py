@@ -18,7 +18,7 @@ class SilvaNewsInstaller(DefaultInstaller):
         self.configure_extra_metadata(root)
 
         if not hasattr(root.aq_explicit,'service_news'):
-            factory = root.manage_addProduct['SilvaNews']
+            factory = root.manage_addProduct['silva.app.news']
             factory.manage_addServiceNews('service_news')
 
     def uninstall_custom(self, root):
