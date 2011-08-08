@@ -129,12 +129,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         return 1
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'can_set_title')
-    def can_set_title(self):
-        """return 1 so the title can be set"""
-        return 1
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'number_is_days')
     def number_is_days(self):
         """
