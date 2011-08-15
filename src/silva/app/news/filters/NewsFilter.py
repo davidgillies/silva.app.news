@@ -14,7 +14,6 @@ from Products.Silva import SilvaPermissions
 
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
-from silva.core.interfaces import IVersionManager
 from silva.ui.menu import MenuItem, ContentMenu
 from zeam.form import silva as silvaforms
 from zeam.form import table as tableforms
@@ -124,8 +123,7 @@ class ExcludeAction(silvaforms.Action):
 
 class IItemSelection(ITitledContent):
     path = Path(title=_(u'Path'), html_target="_blank")
-    publication_datetime = schema.Datetime(title=_(u'Publication date'))
-    expiration_datetime = schema.Datetime(title=_(u'Expiration date'))
+    display_datetime = schema.Datetime(title=_(u'Display date'))
 
 
 class ItemSelection(BaseDataManager):
@@ -137,7 +135,6 @@ class ItemSelection(BaseDataManager):
         self.version = self.content.get_viewable() or \
             self.content.get_previewable() or \
             self.content.get_editable()
-        self.manager = IVersionManager(self.version)
 
     def get(self, identifier):
         try:
@@ -155,17 +152,11 @@ class ItemSelection(BaseDataManager):
 
     @property
     def title(self):
-        return self.content.get_title_or_id()
+        return self.version.get_title_or_id()
 
     @property
-    def publication_datetime(self):
-        dt = self.manager.get_publication_datetime()
-        if dt is not None:
-            return dt.asdatetime()
-
-    @property
-    def expiration_datetime(self):
-        dt = self.manager.get_expiration_datetime()
+    def display_datetime(self):
+        dt = self.version.get_display_datetime()
         if dt is not None:
             return dt.asdatetime()
 
