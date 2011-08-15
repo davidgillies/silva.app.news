@@ -111,14 +111,25 @@ class NewsFilterEditForm(silvaforms.SMIEditForm):
 
 class ExcludeAction(silvaforms.Action):
 
-    def __call__(self, form, content, selected, deselected, unchanged):
+    def __call__(self, form, selected, deselected, unchanged):
         news_filter = form.context
+        changed = 0
         for line in selected:
             content = line.getContentData().getContent()
             news_filter.remove_excluded_item(content)
+            changed += 1
         for line in deselected:
             content = line.getContentData().getContent()
             news_filter.add_excluded_item(content)
+            changed += 1
+        if changed:
+            form.send_message(
+                _(u"Changed exclusion settings for ${count} news item(s).",
+                  mapping=dict(count=changed)), type="feedback")
+        else:
+            form.send_message(
+                _(u"No exclusion settings changed."), type="feedback")
+        return silvaforms.SUCCESS
 
 
 class IItemSelection(ITitledContent):
