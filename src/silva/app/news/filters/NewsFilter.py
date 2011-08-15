@@ -123,9 +123,9 @@ class ExcludeAction(silvaforms.Action):
 
 
 class IItemSelection(ITitledContent):
-    path = Path(title=_(u'path'), html_target="_blank")
-    publication_datetime = schema.Datetime(title=_(u'publication date'))
-    expiration_datetime = schema.Datetime(title=_(u'expiration date'))
+    path = Path(title=_(u'Path'), html_target="_blank")
+    publication_datetime = schema.Datetime(title=_(u'Publication date'))
+    expiration_datetime = schema.Datetime(title=_(u'Expiration date'))
 
 
 class ItemSelection(BaseDataManager):
@@ -184,6 +184,7 @@ class Items(silvaforms.SMITableForm):
     mode = silvaforms.DISPLAY
     emptyDescription = _(u"There are no items.")
     tableFields = silvaforms.Fields(IItemSelection).omit('id')
+    tableFields['title'].mode = 'silva.icon.edit'
     tableActions = tableforms.TableSelectionActions(
         ExcludeAction(identifier='update', title=_("Update")))
 
