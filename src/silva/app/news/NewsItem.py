@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from five import grok
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getUtility
 from zope.cachedescriptors.property import CachedProperty
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
@@ -21,7 +21,6 @@ from Products.Silva.cataloging import CatalogingAttributesPublishable
 from Products.SilvaMetadata.interfaces import IMetadataService
 
 from silva.app.document import document
-from silva.app.document.interfaces import IDocumentDetails
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.interfaces import IRoot
@@ -30,7 +29,7 @@ from silva.core.interfaces.events import IPublishingEvent
 from silva.core.services.interfaces import ICataloging
 from silva.core.smi.content import ContentEditMenu
 from silva.core.smi.content.publish import IPublicationFields
-from silva.core.smi.content.publish import VersionPublication
+from silva.core.smi.content.publish import VersionPublication, Publish
 from silva.core.views import views as silvaviews
 from silva.ui.menu import MenuItem
 from zeam.form import silva as silvaforms
@@ -197,6 +196,22 @@ class NewsItemDetailsMenu(MenuItem):
     grok.order(15)
     name = _('Details')
     screen = NewsItemDetailsForm
+
+
+class NewsItemPublicationPortlet(silvaviews.Viewlet):
+    grok.context(INewsItem)
+    grok.view(Publish)
+    grok.viewletmanager(silvaforms.SMIFormPortlets)
+    grok.order(20)
+
+    def update(self):
+        viewable = self.context.get_viewable()
+        self.display_date = None
+        if viewable is not None:
+            format = self.request.locale.dates.getFormatter('dateTime').format
+            convert = lambda d: d is not None and format(d.asdatetime()) or None
+            self.display_date = convert(viewable.get_display_datetime())
+
 
 
 class NewsItemView(silvaviews.View):

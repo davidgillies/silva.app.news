@@ -1,0 +1,9 @@
+<div class="portlet" i18n:domain="silva_news"
+     tal:condition="viewlet.display_date">
+  <h4 title="Display date of the public version"
+      i18n:attributes="title"
+      i18n:translate="">Display date</h4>
+  <p tal:content="viewlet.display_date">date</p>
+</div>
+
+
