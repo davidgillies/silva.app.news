@@ -29,7 +29,7 @@ from silva.core.interfaces.events import IPublishingEvent
 from silva.core.services.interfaces import ICataloging
 from silva.core.smi.content import ContentEditMenu
 from silva.core.smi.content.publish import IPublicationFields
-from silva.core.smi.content.publish import VersionPublication, Publish
+from silva.core.smi.content.publish import Publish
 from silva.core.views import views as silvaviews
 from silva.ui.menu import MenuItem
 from zeam.form import silva as silvaforms
@@ -250,25 +250,31 @@ class INewsItemPublicationFields(Interface):
     display_datetime = schema.Datetime(title=_("Display datetime"))
 
 
+class NewsItemPublication(grok.Adapter):
+    grok.context(INewsItem)
+    grok.provides(INewsItemPublicationFields)
+
+    @apply
+    def display_datetime():
+
+        def getter(self):
+            current = self.context.get_unapproved_version_display_datetime()
+            if current is None:
+                return datetime.now()
+            return current
+
+        def setter(self, value):
+            self.context.set_unapproved_version_display_datetime(
+                DateTime(value))
+
+        return property(getter, setter)
+
+
 class NewsItemPublicationFields(autofields.AutoFields):
     autofields.context(INewsItem)
     autofields.group(IPublicationFields)
     autofields.order(20)
     fields = silvaforms.Fields(INewsItemPublicationFields)
-    fields['display_datetime'].defaultValue = lambda d: datetime.now()
-
-
-class NewsItemPublication(VersionPublication):
-    grok.context(INewsItem)
-    grok.provides(IPublicationFields)
-
-    def set_display_datetime(self, value):
-        self.context.set_unapproved_version_display_datetime(DateTime(value))
-
-    def get_display_datetime(self):
-        return self.context.get_unapproved_version_display_datetime()
-
-    display_datetime = property(get_display_datetime, set_display_datetime)
 
 
 class NewsItemCatalogingAttributes(CatalogingAttributesPublishable):
