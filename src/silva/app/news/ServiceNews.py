@@ -1,6 +1,8 @@
 # Copyright (c) 2002-2011 Infrae. All rights reserved.
 # See also LICENSE.txt
 
+from datetime import datetime
+
 from five import grok
 from zope.component import getUtility
 import localdatetime
@@ -16,16 +18,15 @@ from silva.core.interfaces import IContainer
 from silva.core import conf as silvaconf
 from silva.core.services.base import SilvaService
 from silva.core.services.interfaces import ICatalogService
+from silva.core.views import views as silvaviews
 import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.Silva.ExtensionRegistry import meta_types_for_interface
 
 #SilvaNews
 from silva.app.news import Tree
 from silva.app.news.interfaces import IServiceNews, INewsItemFilter
-from silva.app.news.datetimeutils import (local_timezone, get_timezone,
-                                              zone_names)
-
-from datetime import datetime
+from silva.app.news.datetimeutils import (
+    local_timezone, get_timezone, zone_names)
 
 
 class TimezoneMixin(object):
@@ -91,40 +92,7 @@ class TimezoneMixin(object):
 InitializeClass(TimezoneMixin)
 
 
-class CategoryMixin(object):
-    """Code that can be shared between category users for the
-    purpose of generating flat lists of SilvaNews categories"""
-    """Currently used by NewsService and CategoryFilter"""
-
-    security = ClassSecurityInfo()
-
-    security.declareProtected('View', 'subject_tree')
-    def subject_tree(self, audject=None):
-        """returns a list (id, title, depth) for all elements in the tree"""
-        ret = []
-        self._flatten_tree_helper(self._subjects, ret, filterby=audject)
-        return ret
-
-    security.declareProtected('View', 'target_audience_tree')
-    def target_audience_tree(self, audject=None):
-        """returns a list (id, title, depth) for all elements in the tree"""
-        ret = []
-        self._flatten_tree_helper(self._target_audiences, ret, filterby=audject)
-        return ret
-
-    def _flatten_tree_helper(self, tree, ret, depth=0, filterby=[]):
-        els = tree.children()
-        els.sort(lambda a, b: cmp(a.id(), b.id()))
-        for el in els:
-            if not filterby or el.id() in filterby:
-                ret.append((el.id(), el.title(), depth))
-            self._flatten_tree_helper(el, ret, depth+1, filterby=filterby)
-
-
-InitializeClass(CategoryMixin)
-
-
-class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
+class ServiceNews(SilvaService, TimezoneMixin):
     """This object provides lists of subjects and target_audiences for Filters
     """
     grok.implements(IServiceNews)
@@ -134,11 +102,9 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     silvaconf.icon('www/newsservice.gif')
 
     manage_options = (
-        {'label': 'Edit', 'action': 'manage_main'},
+        {'label': 'Edit', 'action': 'manage_news'},
         ) + SimpleItem.manage_options
 
-    manage_main = edit_tab = PageTemplateFile(
-        'www/serviceNewsEditTab', globals(), __name__='edit_tab')
     manage_rename_view = PageTemplateFile(
         'www/serviceNewsRenameView', globals(), __name__='manage_rename_view')
 
@@ -206,21 +172,22 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     security.declareProtected('View', 'get_subjects')
     def get_subjects(self):
         """returns a list of (id, title) tuples"""
-        return [(x.id(), x.title()) for x in  self._subjects.getElements()]
+        return [(x.id(), x.title())
+                for x in  self._subjects.getElements()]
 
     security.declareProtected('View', 'get_subjects_tree')
     def get_subjects_tree(self):
         return self._subjects
 
-    security.declareProtected('View', 'get_target_audiences_tree')
-    def get_target_audiences_tree(self):
-        return self._target_audiences
-
     security.declareProtected('View', 'get_target_audiences')
     def get_target_audiences(self):
         """returns a list of (id, title) tuples"""
-        return [(x.id(), x.title()) for x in
-                self._target_audiences.getElements()]
+        return [(x.id(), x.title())
+                for x in self._target_audiences.getElements()]
+
+    security.declareProtected('View', 'get_target_audiences_tree')
+    def get_target_audiences_tree(self):
+        return self._target_audiences
 
     security.declareProtected('Setup ServiceNews',
                                 'remove_subject')
@@ -242,15 +209,12 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         node.parent().removeChild(node)
         self._p_changed = 1
 
-
-    security.declareProtected('View',
-                                'locale')
+    security.declareProtected('View', 'locale')
     def locale(self):
         """returns the current locale (used to format public dates)"""
         return self._locale
 
-    security.declareProtected('View',
-                                'date_format')
+    security.declareProtected('View', 'date_format')
     def date_format(self):
         """returns the current date format
 
@@ -259,193 +223,6 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
             on this service (since there's no better place atm)
         """
         return self._date_format
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_add_subject')
-    def manage_add_subject(self, REQUEST):
-        """Add a subject"""
-        if (not REQUEST.has_key('subject') or not
-                REQUEST.has_key('parent') or REQUEST['subject'] == ''
-                or not REQUEST.has_key('title') or REQUEST['title'] == ''):
-            return self.edit_tab(
-                        manage_tabs_message='Missing id or title')
-
-        if REQUEST['parent']:
-            try:
-                self.add_subject(unicode(REQUEST['subject']),
-                                    unicode(REQUEST['title']),
-                                    unicode(REQUEST['parent']))
-            except Tree.DuplicateIdError, e:
-                return self.edit_tab(manage_tabs_message=e)
-        else:
-            try:
-                self.add_subject(unicode(REQUEST['subject']),
-                                    unicode(REQUEST['title']))
-            except Tree.DuplicateIdError, e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(
-                    manage_tabs_message='Subject %s added' %
-                        unicode(REQUEST['subject']))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_remove_subject')
-    def manage_remove_subject(self, REQUEST):
-        """Remove a subject"""
-        if not REQUEST.has_key('subjects'):
-            return self.edit_tab(manage_tabs_message='No subjects specified')
-
-        subs = [unicode(s) for s in REQUEST['subjects']]
-        for subject in subs:
-            try:
-                self.remove_subject(subject)
-            except (KeyError, ValueError), e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(
-                manage_tabs_message='Subjects %s removed' % ', '.join(subs))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_add_target_audience')
-    def manage_add_target_audience(self, REQUEST):
-        """Add a target_audience"""
-        if (not REQUEST.has_key('target_audience') or
-                not REQUEST.has_key('parent') or
-                REQUEST['target_audience'] == '' or
-                not REQUEST.has_key('title') or
-                REQUEST['title'] == ''):
-            return self.edit_tab(
-                manage_tabs_message='Missing id or title')
-
-        if REQUEST['parent']:
-            try:
-                self.add_target_audience(
-                            unicode(REQUEST['target_audience'], 'UTF-8'),
-                            unicode(REQUEST['title'], 'UTF-8'),
-                            unicode(REQUEST['parent'], 'UTF-8'))
-            except Tree.DuplicateIdError, e:
-                return self.edit_tab(manage_tabs_message=e)
-        else:
-            try:
-                self.add_target_audience(
-                            unicode(REQUEST['target_audience'], 'UTF-8'),
-                            unicode(REQUEST['title'], 'UTF-8'))
-            except Tree.DuplicateIdError, e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(
-                    manage_tabs_message='Target audience %s added' %
-                        unicode(REQUEST['target_audience'], 'UTF-8'))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_remove_target_audience')
-    def manage_remove_target_audience(self, REQUEST):
-        """Remove a target_audience"""
-        if not REQUEST.has_key('target_audiences'):
-            return self.edit_tab(
-                    manage_tabs_message='No target audience specified')
-
-        tas = [unicode(t, 'UTF-8') for t in REQUEST['target_audiences']]
-        for target_audience in tas:
-            try:
-                self.remove_target_audience(target_audience)
-            except (KeyError, ValueError), e:
-                return self.edit_tab(manage_tabs_message=e)
-
-        return self.edit_tab(
-                    manage_tabs_message='Target audiences %s removed' %
-                        ', '.join(tas))
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_rename_start')
-    def manage_rename_start(self, REQUEST):
-        """Rename one or more items"""
-        if (not REQUEST.has_key('subjects') and not
-                REQUEST.has_key('target_audiences')):
-            return self.edit_tab(
-                manage_tabs_message='No items selected to rename')
-        return self.manage_rename_view()
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_rename_subjects')
-    def manage_rename_subjects(self, REQUEST):
-        """Rename subjects"""
-        illegal = []
-        for name, value in REQUEST.form.items():
-            if name.startswith('title_'):
-                continue
-            uname = unicode(name, 'UTF-8')
-            uvalue = unicode(value, 'UTF-8')
-            subject = self._subjects.getElement(uname)
-            if uvalue != subject.id():
-                try:
-                    subject.set_id(uvalue)
-                except Tree.DuplicateIdError:
-                    illegal.append(uvalue)
-                    continue
-            title = unicode(REQUEST.form['title_%s' % name], 'UTF-8')
-            subject.set_title(title)
-            self._p_changed = 1
-        if illegal:
-            return self.edit_tab(
-                manage_tabs_message=
-                    'Items %s could not be renamed (name already in use).' %
-                        ', '.join(illegal))
-        else:
-            return self.edit_tab(manage_tabs_message='Items renamed')
-
-    security.declareProtected('Setup ServiceNews',
-                              'manage_rename_target_audiences')
-    def manage_rename_target_audiences(self, REQUEST):
-        """Rename target audiences"""
-        illegal = []
-        for name, value in REQUEST.form.items():
-            if name.startswith('title_'):
-                continue
-            uname = unicode(name, 'UTF-8')
-            uvalue = unicode(value, 'UTF-8')
-            audience = self._target_audiences.getElement(uname)
-            if uvalue != audience.id():
-                try:
-                    audience.set_id(uvalue)
-                except Tree.DuplicateIdError:
-                    illegal.append(uvalue)
-                    continue
-            title = unicode(REQUEST.form['title_%s' % name], 'UTF-8')
-            audience.set_title(title)
-            self._p_changed = 1
-        if illegal:
-            return self.edit_tab(
-                manage_tabs_message=
-                    'Items %s could not be renamed (name already in use).' %
-                        ', '.join(illegal))
-        else:
-            return self.edit_tab(manage_tabs_message='Items renamed')
-
-    # XXX we probably want to move these elsewhere, for now however this seems
-    # the most logical location
-    security.declareProtected('Setup ServiceNews', 'manage_set_locale')
-    def manage_set_locale(self, REQUEST):
-        """set the locale and date format
-
-            used for displaying public date/times
-        """
-        field_errors = {
-            'locale': "No locale provided!",
-            'date_format': "No date format provided!",
-            'timezone_name': "No timezone provided!",
-            'first_weekday': "No first weekday provided!"
-        }
-        for field, error in field_errors.iteritems():
-            if not REQUEST.has_key(field) or not REQUEST[field]:
-                return self.edit_tab(
-                    manage_tabs_message=error)
-
-        self._locale = REQUEST['locale']
-        self._date_format = REQUEST['date_format']
-        self.set_timezone_name(REQUEST['timezone_name'])
-        self.set_first_weekday(int(REQUEST['first_weekday']))
-        return self.edit_tab(manage_tabs_message='Locale set')
 
     security.declareProtected('View', 'format_date')
     def format_date(self, dt, display_time=True):
@@ -469,3 +246,212 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
 
 
 InitializeClass(ServiceNews)
+
+
+def flatten_tree_helper(tree, ret, depth=0):
+    els = tree.children()
+    els.sort(lambda a, b: cmp(a.id(), b.id()))
+    for el in els:
+        ret.append((el.id(), el.title(), depth))
+        flatten_tree_helper(el, ret, depth+1)
+
+
+class ManageServiceNews(silvaviews.ZMIView):
+    grok.name('manage_news')
+
+    def update(self):
+        self.status = None
+        for action in  ['manage_add_subject',
+                        'manage_remove_subject',
+                        'manage_add_target_audience',
+                        'manage_remove_target_audience',
+                        'manage_rename_start',
+                        'manage_rename_subjects',
+                        'manage_rename_target_audiences',
+                        'manage_set_locale']:
+            if action in self.request:
+                getattr(self, action)()
+
+    def subject_tree(self):
+        """returns a list (id, title, depth) for all elements in the tree"""
+        ret = []
+        flatten_tree_helper(self.context._subjects, ret)
+        return ret
+
+    def target_audience_tree(self):
+        """returns a list (id, title, depth) for all elements in the tree"""
+        ret = []
+        flatten_tree_helper(self.context._target_audiences, ret)
+        return ret
+
+    def manage_add_subject(self):
+        """Add a subject"""
+        if (not self.request.has_key('subject') or not
+            self.request.has_key('parent') or self.request['subject'] == ''
+            or not self.request.has_key('title') or self.request['title'] == ''):
+            self.status ='Missing id or title'
+            return
+
+        if self.request['parent']:
+            try:
+                self.context.add_subject(unicode(self.request['subject']),
+                                         unicode(self.request['title']),
+                                         unicode(self.request['parent']))
+            except Tree.DuplicateIdError, e:
+                self.status = e
+                return
+        else:
+            try:
+                self.context.add_subject(unicode(self.request['subject']),
+                                         unicode(self.request['title']))
+            except Tree.DuplicateIdError, e:
+                self.status = e
+                return
+
+        self.status ='Subject %s added' % unicode(self.request['subject'])
+
+    def manage_remove_subject(self):
+        """Remove a subject"""
+        if not self.request.has_key('subjects'):
+            self.status ='No subjects specified'
+            return
+
+        subs = [unicode(s) for s in self.request['subjects']]
+        for subject in subs:
+            try:
+                self.context.remove_subject(subject)
+            except (KeyError, ValueError), e:
+                self.status = e
+                return
+
+        self.status ='Subjects %s removed' % ', '.join(subs)
+
+    def manage_add_target_audience(self):
+        """Add a target_audience"""
+        if (not self.request.has_key('target_audience') or
+                not self.request.has_key('parent') or
+                self.request['target_audience'] == '' or
+                not self.request.has_key('title') or
+                self.request['title'] == ''):
+            self.status ='Missing id or title'
+            return
+
+        if self.request['parent']:
+            try:
+                self.context.add_target_audience(
+                    unicode(self.request['target_audience'], 'UTF-8'),
+                    unicode(self.request['title'], 'UTF-8'),
+                    unicode(self.request['parent'], 'UTF-8'))
+            except Tree.DuplicateIdError, e:
+                self.status = e
+                return
+        else:
+            try:
+                self.context.add_target_audience(
+                    unicode(self.request['target_audience'], 'UTF-8'),
+                    unicode(self.request['title'], 'UTF-8'))
+            except Tree.DuplicateIdError, e:
+                self.status = e
+                return
+
+        self.status ='Target audience %s added' % (
+            unicode(self.request['target_audience'], 'UTF-8'))
+
+    def manage_remove_target_audience(self):
+        """Remove a target_audience"""
+        if not self.request.has_key('target_audiences'):
+            self.status ='No target audience specified'
+            return
+
+        tas = [unicode(t, 'UTF-8') for t in self.request['target_audiences']]
+        for target_audience in tas:
+            try:
+                self.context.remove_target_audience(target_audience)
+            except (KeyError, ValueError), e:
+                self.status = e
+                return
+
+        self.status ='Target audiences %s removed' % ', '.join(tas)
+
+    def manage_rename_start(self):
+        """Rename one or more items"""
+        if (not self.request.has_key('subjects') and not
+                self.request.has_key('target_audiences')):
+            self.status ='No items selected to rename'
+            return
+        return self.manage_rename_view()
+
+    def manage_rename_subjects(self):
+        """Rename subjects"""
+        illegal = []
+        for name, value in self.request.form.items():
+            if name.startswith('title_'):
+                continue
+            uname = unicode(name, 'UTF-8')
+            uvalue = unicode(value, 'UTF-8')
+            subject = self.context._subjects.getElement(uname)
+            if uvalue != subject.id():
+                try:
+                    subject.set_id(uvalue)
+                except Tree.DuplicateIdError:
+                    illegal.append(uvalue)
+                    continue
+            title = unicode(self.request.form['title_%s' % name], 'UTF-8')
+            subject.set_title(title)
+            self.context._p_changed = 1
+        if illegal:
+            self.status = \
+                'Items %s could not be renamed (name already in use).' % (
+                ', '.join(illegal))
+        else:
+            self.status ='Items renamed'
+
+    def manage_rename_target_audiences(self):
+        """Rename target audiences"""
+        illegal = []
+        for name, value in self.request.form.items():
+            if name.startswith('title_'):
+                continue
+            uname = unicode(name, 'UTF-8')
+            uvalue = unicode(value, 'UTF-8')
+            audience = self.context._target_audiences.getElement(uname)
+            if uvalue != audience.id():
+                try:
+                    audience.set_id(uvalue)
+                except Tree.DuplicateIdError:
+                    illegal.append(uvalue)
+                    continue
+            title = unicode(self.request.form['title_%s' % name], 'UTF-8')
+            audience.set_title(title)
+            self.context._p_changed = 1
+        if illegal:
+            self.status = \
+                'Items %s could not be renamed (name already in use).' % (
+                ', '.join(illegal))
+        else:
+            self.status ='Items renamed'
+
+    # XXX we probably want to move these elsewhere, for now however this seems
+    # the most logical location
+    def manage_set_locale(self):
+        """set the locale and date format
+
+            used for displaying public date/times
+        """
+        field_errors = {
+            'locale': "No locale provided!",
+            'date_format': "No date format provided!",
+            'timezone_name': "No timezone provided!",
+            'first_weekday': "No first weekday provided!"
+        }
+        for field, error in field_errors.iteritems():
+            if not self.request.has_key(field) or not self.request[field]:
+                self.status = error
+                return
+
+        self.context._locale = self.request['locale']
+        self.context._date_format = self.request['date_format']
+        self.context.set_timezone_name(self.request['timezone_name'])
+        self.context.set_first_weekday(int(self.request['first_weekday']))
+        self.status ='Locale set'
+
