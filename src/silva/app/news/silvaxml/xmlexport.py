@@ -97,22 +97,6 @@ class RSSAggregatorProducer(SilvaBaseProducer):
          self.endElementNS(NS_SILVA_NEWS,'rssaggregator')
 
 
-class CategoryFilterProducer(SilvaBaseProducer):
-     """Export a CategoryFilter object to XML."""
-     grok.adapts(interfaces.ICategoryFilter, Interface)
-
-     def sax(self):
-         self.startElementNS(
-             NS_SILVA_NEWS,
-             'categoryfilter',
-             {'id': self.context.id,
-              'target_audiences': ','.join(self.context.get_target_audiences()),
-              'subjects': ','.join(self.context.get_subjects()),
-              })
-         self.metadata()
-         self.endElementNS(NS_SILVA_NEWS,'categoryfilter')
-
-
 class NewsFilterProducer(SilvaBaseProducer, ReferenceSupportExporter):
     """Export a NewsFilter object to XML.
     """

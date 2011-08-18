@@ -77,7 +77,7 @@ class INewsCategorization(Interface):
 
 
 class INewsItem(IDocument):
-    """Silva News Item interface
+    """News item
     """
 
 
@@ -102,7 +102,7 @@ class INewsItemVersion(IDocumentVersion, INewsCategorization):
 
 
 class IAgendaItem(INewsItem):
-    """Silva AgendaItem Version.
+    """Agenda item
     """
 
 
@@ -131,21 +131,12 @@ class IAgendaItemVersion(INewsItemVersion):
 
 
 class INewsPublication(IPublication):
-    """Marker interface for INewsPublication"""
-
-
-class ICategoryFilter(INonPublishable, INewsCategorization):
-    """Filter subjects and target audiences for content in lower containers.
-
-    This reduce the set of visible subjects and target audiences in
-    site, below the current container.
-
-    This is NOT a news item filter.
+    """Publication that contains agenda and news items
     """
 
 
 class INewsItemFilter(INonPublishable, INewsCategorization):
-    """Filter Silva News items contents.
+    """Filter agenda and news items
 
     A NewsItemFilter picks up news from news sources. Editors can
     browse through this news. It can also be used by
@@ -223,7 +214,8 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
 
 
 class INewsFilter(INewsItemFilter):
-    """A filter for news items"""
+    """Filter for news items
+    """
 
     def show_agenda_items():
         """should we also show agenda items?"""
@@ -246,7 +238,8 @@ class INewsFilter(INewsItemFilter):
 
 
 class IAgendaFilter(INewsItemFilter):
-    """A filter for agenda items"""
+    """Filter for agenda items
+    """
 
     def get_items_by_date(month, year, meta_types=None):
         """gets the events for a specific month
@@ -329,7 +322,7 @@ def news_source(context):
 
 
 class INewsViewer(IViewer):
-    """A viewer of news items.
+    """Viewer for news items
     """
     # manipulators
     def set_number_to_show(number):
@@ -391,10 +384,14 @@ class INewsViewer(IViewer):
         """
 
 class IAggregator(INewsViewer):
-    """interface for RSSAggregator"""
+    """Aggregator of RSS items
+    """
 
 
 class IAgendaViewer(INewsViewer):
+    """Viewer for agenda items
+    """
+
     def days_to_show():
         """Return number of days to show on front page.
         """
@@ -437,24 +434,12 @@ class IServiceNews(ISilvaService):
         """
 
     # ACCESSORS
-    def subjects():
+    def get_subjects():
         """Return the tree of subjects.
         """
 
-    def subject_tuples():
-        """Returns subject tree in tuple representation.
-
-        Each tuple is an (indent, subject) pair.
-        """
-
-    def target_audiences():
+    def get_target_audiences():
         """Return the tree of target_audiences.
-        """
-
-    def target_audience_tuples():
-        """Returns target audience tree in tuple representation.
-
-        Each tuple is an (indent, subject) pair.
         """
 
     def get_all_filters():

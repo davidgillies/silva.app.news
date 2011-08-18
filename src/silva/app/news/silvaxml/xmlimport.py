@@ -249,26 +249,6 @@ class AgendaFilterHandler(NewsFilterHandler):
     factory_name = 'manage_addAgendaFilter'
 
 
-class CategoryFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
-    """Import a CategoryFilter.
-    """
-    silvaconf.name('categoryfilter')
-
-    def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS,'categoryfilter'):
-            id = str(attrs[(None, 'id')])
-            uid = self.generateOrReplaceId(id)
-            factory = self.parent().manage_addProduct['SilvaNews']
-            factory.manage_addCategoryFilter(uid,'')
-            obj = getattr(self.parent(),uid)
-            self.set_attrs(attrs,obj)
-            self.setResultId(uid)
-
-    def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, 'categoryfilter'):
-            self.storeMetadata()
-            self.notifyImport()
-
 class RSSAggregatorHandler(SilvaBaseHandler):
     """Import a defined RSS Aggregator.
     """
