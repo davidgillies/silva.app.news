@@ -217,31 +217,6 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
             count += 1
             yield item
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'filtered_subject_form_tree')
-    def filtered_subject_form_tree(self):
-        """return a subject_form_tree (for the SMI edit screen)
-        that is filtered through a news category filter, or if
-        none are found, all subjects from the news service"""
-        audject = self.superValues('Silva News Category Filter')
-        if audject:
-            audject = audject[0].get_subjects()
-        service_news = getUtility(IServiceNews)
-        return service_news.subject_form_tree(audject)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'filtered_ta_form_tree')
-    def filtered_ta_form_tree(self):
-        """return a ta_form_tree (for the SMI edit screen)
-        that is filtered through a news category filter, or if
-        none are found, all ta's from the news service"""
-        audject = self.superValues('Silva News Category Filter')
-        if audject:
-            audject = audject[0].target_audiences()
-        service_news = getUtility(IServiceNews)
-        return service_news.target_audience_form_tree(audject)
-
-
     # refactorized functions
     # these functions where used/copied in both AgendaFilter and NewsFilter,
     # so place here with clear notes on usage

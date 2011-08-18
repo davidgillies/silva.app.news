@@ -33,7 +33,7 @@ class ISilvaNewsExtension(Interface):
 def subjects_source(context):
     service = getUtility(IServiceNews)
     result = []
-    for value, title, depth in service.subject_tree():
+    for value, title in service.get_subjects():
         result.append(SimpleTerm(
             value=value, token=value, title=title))
     return SimpleVocabulary(result)
@@ -43,7 +43,7 @@ def subjects_source(context):
 def target_audiences_source(context):
     service = getUtility(IServiceNews)
     result = []
-    for value, title, depth in service.target_audience_tree():
+    for value, title in service.get_target_audiences():
         result.append(SimpleTerm(
             value=value, token=value, title=title))
     return SimpleVocabulary(result)
@@ -51,12 +51,12 @@ def target_audiences_source(context):
 
 def get_subjects_tree(form):
     service = getUtility(IServiceNews)
-    return service._subjects
+    return service.get_subjects_tree()
 
 
 def get_target_audiences_tree(form):
     service = getUtility(IServiceNews)
-    return service._target_audiences
+    return service.get_target_audiences_tree()
 
 
 class INewsCategorization(Interface):
@@ -194,16 +194,6 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     def search_items(keywords, meta_types=None):
         """ Returns the items from the catalog that have keywords
         in fulltext"""
-
-    def filtered_subject_form_tree():
-        """return a subject_form_tree (for the SMI edit screen)
-        that is filtered through a news category filter, or if
-        none are found, all subjects from the news service"""
-
-    def filtered_ta_form_tree():
-        """return a ta_form_tree (for the SMI edit screen)
-        that is filtered through a news category filter, or if
-        none are found, all ta's from the news service"""
 
     #functions to aid in compatibility between news and agenda filters
     # and viewers, so the viewers can pull from both types of filters

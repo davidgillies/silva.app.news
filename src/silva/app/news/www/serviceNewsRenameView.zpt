@@ -38,14 +38,14 @@ Version of this file: $Revision: 1.4 $
         <tr tal:define="title python: getattr(view, '%s_title' % modify)(item)">
           <td tal:content="item" class="form-text" />
           <td>
-            <input type="text" 
-                    class="form-element" 
+            <input type="text"
+                    class="form-element"
                     tal:attributes="name item; value item" />
           </td>
           <td tal:content="title" class="form-text" />
           <td>
-            <input type="text" 
-                    class="form-element" 
+            <input type="text"
+                    class="form-element"
                     tal:attributes="name string:title_${item}; value title" />
           </td>
         </tr>

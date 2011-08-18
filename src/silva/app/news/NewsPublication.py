@@ -63,23 +63,24 @@ def news_publication_created(publication, event):
     binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
 
-    factory = publication.manage_addProduct['SilvaNews']
+    factory = publication.manage_addProduct['silva.app.news']
     factory.manage_addNewsViewer(
         'index', publication.get_title_or_id())
     factory.manage_addNewsFilter(
         'filter', 'Filter for %s' % publication.get_title_or_id())
 
+    viewer = publication._getOb('index')
+    filter = publication._getOb('filter')
     service = getUtility(IServiceNews)
 
     # XXX add test..
 
-    publication.filter.add_source(publication)
-
-    publication.filter.set_subjects(
+    filter.add_source(publication)
+    filter.set_subjects(
         [node.id() for node in service.get_subjects_tree().children()])
-    publication.filter.set_target_audiences(
+    filter.set_target_audiences(
         [node.id() for node in service.get_target_audiences_tree().children()])
 
-    publication.index.add_filter(publication.filter)
+    viewer.add_filter(filter)
 
 

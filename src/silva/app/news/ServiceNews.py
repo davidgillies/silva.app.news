@@ -99,40 +99,17 @@ class CategoryMixin(object):
     security = ClassSecurityInfo()
 
     security.declareProtected('View', 'subject_tree')
-    def subject_tree(self,audject=None):
+    def subject_tree(self, audject=None):
         """returns a list (id, title, depth) for all elements in the tree"""
         ret = []
         self._flatten_tree_helper(self._subjects, ret, filterby=audject)
         return ret
 
-    security.declareProtected('View', 'subject_form_tree')
-    def subject_form_tree(self, audject=None):
-        """returns a list (html_repr, id) for each element
-
-            html_repr consists of '%s%s' % (
-                (depth * 2 * '&nsbp;'), title)
-        """
-        tree = self.subject_tree(audject)
-        return self._form_tree_helper(tree)
-
     security.declareProtected('View', 'target_audience_tree')
-    def target_audience_tree(self,audject=None):
+    def target_audience_tree(self, audject=None):
         """returns a list (id, title, depth) for all elements in the tree"""
         ret = []
         self._flatten_tree_helper(self._target_audiences, ret, filterby=audject)
-        return ret
-
-    security.declareProtected('View', 'target_audience_form_tree')
-    def target_audience_form_tree(self, audject=None):
-        """see subject_form_tree"""
-        tree = self.target_audience_tree(audject)
-        return self._form_tree_helper(tree)
-
-    def _form_tree_helper(self, tree):
-        ret = []
-        for el in tree:
-            r = '%s%s' % ((el[2] * 2 * '&nbsp;'), el[1])
-            ret.append((r, el[0]))
         return ret
 
     def _flatten_tree_helper(self, tree, ret, depth=0, filterby=[]):
@@ -157,15 +134,13 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     silvaconf.icon('www/newsservice.gif')
 
     manage_options = (
-                      {'label': 'Edit', 'action': 'manage_main'},
-                      ) + SimpleItem.manage_options
+        {'label': 'Edit', 'action': 'manage_main'},
+        ) + SimpleItem.manage_options
 
-    manage_main = edit_tab = PageTemplateFile('www/serviceNewsEditTab',
-                                            globals(),
-                                            __name__='edit_tab')
-    manage_rename_view = PageTemplateFile('www/serviceNewsRenameView',
-                                            globals(),
-                                            __name__='manage_rename_view')
+    manage_main = edit_tab = PageTemplateFile(
+        'www/serviceNewsEditTab', globals(), __name__='edit_tab')
+    manage_rename_view = PageTemplateFile(
+        'www/serviceNewsRenameView', globals(), __name__='manage_rename_view')
 
     def __init__(self, id):
         SilvaService.__init__(self, id)
@@ -173,8 +148,8 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         self._target_audiences = Tree.Root()
         self._locale = 'en'
         self._date_format = 'medium'
-        self.add_subject(u'generic',u'Generic')
-        self.add_target_audience(u'all',u'All')
+        self.add_subject(u'generic', u'Generic')
+        self.add_target_audience(u'all', u'All')
 
     def get_all_filters(self):
         catalog = getUtility(ICatalogService)
@@ -233,9 +208,6 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
         """returns a list of (id, title) tuples"""
         return [(x.id(), x.title()) for x in  self._subjects.getElements()]
 
-    security.declareProtected('View', 'subjects')
-    subjects = get_subjects
-
     security.declareProtected('View', 'get_subjects_tree')
     def get_subjects_tree(self):
         return self._subjects
@@ -244,56 +216,11 @@ class ServiceNews(SilvaService, CategoryMixin, TimezoneMixin):
     def get_target_audiences_tree(self):
         return self._target_audiences
 
-    security.declareProtected('View',
-                                'subject_title')
-    def subject_title(self, id):
-        """returns the title of a certain subject"""
-        try:
-            el = self._subjects.getElement(id)
-        except KeyError:
-            return None
-        return el.title()
-
-    def filtered_subject_form_tree(self, context):
-        """ tries to acquire the nearest news category filter
-        in the content, and returns a subject_form_tree with the
-        subjects selected in the filter removed.
-        This method is primarliy used in the add screens of
-        SNN objects"""
-        audject = context.superValues('Silva News Category Filter')
-        if audject:
-            audject = audject[0].get_subjects()
-        return self.subject_form_tree(audject)
-
-    def filtered_ta_form_tree(self, context):
-        """ tries to acquire the nearest news category filter
-        in the content, and returns a ta_form_tree with the
-        ta's selected in the filter removed.
-        This method is primarliy used in the add screens of
-        SNN objects"""
-        audject = context.superValues('Silva News Category Filter')
-        if audject:
-            audject = audject[0].target_audiences()
-        return self.target_audience_form_tree(audject)
-
     security.declareProtected('View', 'get_target_audiences')
     def get_target_audiences(self):
         """returns a list of (id, title) tuples"""
         return [(x.id(), x.title()) for x in
                 self._target_audiences.getElements()]
-
-    security.declareProtected('View', 'target_audiences')
-    target_audiences = get_target_audiences
-
-    security.declareProtected('View',
-                                'target_audience_title')
-    def target_audience_title(self, id):
-        """returns the title of a certain target audience"""
-        try:
-            el = self._target_audiences.getElement(id)
-        except KeyError:
-            return None
-        return el.title()
 
     security.declareProtected('Setup ServiceNews',
                                 'remove_subject')
