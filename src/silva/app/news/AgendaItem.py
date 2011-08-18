@@ -201,14 +201,6 @@ class AgendaItemVersion(NewsItemVersion):
         return "%s %s" % (parenttext, self._location)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'sort_index')
-    def sort_index(self):
-        dt = self.get_start_datetime()
-        if dt:
-            return datetime_to_unixtimestamp(dt)
-        return None
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_timestamp_ranges')
     def get_timestamp_ranges(self):
         return self.get_calendar_datetime().\
@@ -228,6 +220,21 @@ class AgendaItem(NewsItem):
     silvaconf.icon("www/agenda_item.png")
     silvaconf.priority(3.8)
     silvaconf.version_class(AgendaItemVersion)
+
+    @property
+    def item_order(self):
+        version_id = self.get_public_version()
+        if version_id is None:
+            version_id = self.get_approved_version()
+            if version_id is None:
+                return None
+        version = getattr(self, version_id, None)
+        if version is None:
+            return None
+        order_date = version.get_start_datetime()
+        if order_date is None:
+            return None
+        return datetime_to_unixtimestamp(order_date)
 
 
 InitializeClass(AgendaItem)

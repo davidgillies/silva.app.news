@@ -3,7 +3,6 @@
 # $Revision$
 
 from datetime import datetime
-from itertools import imap, ifilter
 import logging
 
 from five import grok
@@ -27,18 +26,12 @@ from silva.app.news.interfaces import news_source
 from silva.app.news.NewsCategorization import NewsCategorization
 from silva.app.news.NewsCategorization import INewsCategorizationSchema
 from silva.app.news import datetimeutils
+from silva.app.news.datetimeutils import local_timezone
 
 _ = MessageFactory('silva_news')
 
 logger = logging.getLogger('silva.app.news.filter')
 
-
-def brainsorter(a, b):
-    atime = a.get_start_datetime
-    btime = b.get_start_datetime
-    return cmp(atime, btime)
-
-# XXX upgrade _excluded_items move to a set of intids
 
 class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     """Super-class for news item filters.
@@ -70,16 +63,25 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         self._v_source_reference_set = ReferenceSet(self, 'sources')
         return self._v_source_reference_set
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_sources')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_sources')
     def get_sources(self):
         return list(self._get_sources_reference_set())
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'has_sources')
+    def has_sources(self):
+        for filter in self._get_sources_reference_set().get_references():
+            # We have at least one item in the generator (don't need
+            # to consume it all).
+            return True
+        return False
 
     def _get_sources_path(self):
         return map(lambda s: s.getPhysicalPath(), self.get_sources())
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'keep_to_path')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'keep_to_path')
     def keep_to_path(self):
         """Returns true if the item should keep to path
         """
@@ -152,23 +154,6 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         self._keep_to_path = not not value
         ICataloging(self).reindex()
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'search_items')
-    def search_items(self, keywords, meta_types=None):
-        """Returns the items from the catalog that have keywords in fulltext.
-        """
-        keywords = unicode(keywords, 'UTF-8')
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-
-        # replace +'es with spaces so the effect is the same...
-        keywords = keywords.replace('+', ' ')
-        query = self._prepare_query(meta_types=meta_types)
-        query['fulltext'] = keywords.split(' ')
-        result = self._query_items(**query)
-
-        return result
-
     # HELPERS
 
     def _collect_subjects(self, service):
@@ -206,23 +191,31 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         query['meta_type'] = meta_types
-        # Workaround for ProxyIndex bug
         query['sort_on'] = 'display_datetime'
         query['sort_order'] = 'descending'
         return query
 
-    def _query(self, **kw):
-        logger.info('query %s', repr(kw))
-        return self.service_catalog(kw)
+    def _query(self, query):
+        logger.info('query %s', repr(query))
+        return self.service_catalog(query)
 
-    def _query_items(self, filter_excluded_items=True, **kw):
-        brains = self._query(**kw)
-        results = imap(
-            lambda x: x.getObject(),
-            brains)
-        if filter_excluded_items:
-            return self.__filter_excluded_items(results)
-        return results
+    def _query_items(self, query, filter_items=True, max_items=None):
+        count = 0
+        if filter_items:
+            get_id = getUtility(IIntIds).register
+        elif max_items is not None:
+            # Local catalog optimization
+            query['sort_limit'] = max_items
+
+        for brain in self._query(query):
+            if max_items is not None and count > max_items:
+                break
+            item = brain.getObject()
+            if filter_items:
+                if get_id(item) in self._excluded_items:
+                    continue
+            count += 1
+            yield item
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'filtered_subject_form_tree')
@@ -254,7 +247,22 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     # so place here with clear notes on usage
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_next_items')
+                              'search_items')
+    def search_items(self, keywords, meta_types=None):
+        """Returns the items from the catalog that have keywords in fulltext.
+        """
+        keywords = unicode(keywords, 'UTF-8')
+        if not meta_types:
+            meta_types = self.get_allowed_meta_types()
+
+        # replace +'es with spaces so the effect is the same...
+        keywords = keywords.replace('+', ' ')
+        query = self._prepare_query(meta_types=meta_types)
+        query['fulltext'] = keywords.split(' ')
+        return self._query_items(query)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_next_items')
     def get_next_items(self, numdays, meta_types=None):
         """ Note: ONLY called by AgendaViewers
         Returns the next <number> AGENDAitems,
@@ -263,35 +271,28 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         any way because it requres start_datetime to be set.
         NewsViewers use only get_last_items.
         """
-        sources = self.get_sources()
-        if not sources:
+        if not self.has_sources():
             return []
-
-        results = []
-
-        #if this is a new filter that doesn't show agenda items
-        if (INewsItemFilter.providedBy(self)
-            and not self.show_agenda_items()):
-            return results
 
         lastnight = (DateTime()-1).latestTime()
         endate = (lastnight + numdays).latestTime()
 
-        return self.get_items_by_date_range(
+        return self._get_items_by_date_range(
             datetimeutils.utc_datetime(lastnight),
             datetimeutils.utc_datetime(endate),
             meta_types)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_last_items')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_last_items')
     def get_last_items(self, number, number_is_days=0, meta_types=None):
         """Returns the last (number) published items
            This is _only_ used by News Viewers.
         """
-        sources = self.get_sources()
-        if not sources:
+        if not self.has_sources():
             return []
+
         query = self._prepare_query(meta_types)
+        max_items = None
 
         if number_is_days:
             # the number specified must be used to restrict
@@ -301,30 +302,37 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
             query['display_datetime'] = {
                 'query': [last_night - number, now],
                 'range': 'minmax'}
-
-        result = self._query_items(**query)
-        if not number_is_days:
-            output = list(result)[:number]
         else:
-            output = result
-        return output
+            max_items = number
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date')
-    def get_items_by_date(self, month, year,
-            timezone=datetimeutils.local_timezone, meta_types=None):
+        return self._query_items(query, max_items=max_items)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_items_by_date')
+    def get_items_by_date(
+        self, month, year, timezone=local_timezone, meta_types=None):
+
+        if not self.has_sources():
+            return []
+
         return self._get_items_by_date(
                 month, year, timezone=timezone, meta_types=meta_types)
 
-    def _get_items_by_date(self, month, year, meta_types=None,
-            timezone=datetimeutils.local_timezone, public_only=True,
-            filter_excluded_items=True):
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_items_by_date_range')
+    def get_items_by_date_range(self, start, end, meta_types=None):
+        if not self.has_sources():
+            return []
+
+        return self._get_items_by_date_range(start, end, meta_types=meta_types)
+
+    def _get_items_by_date(
+        self, month, year, timezone=local_timezone, meta_types=None,
+        public_only=True, filter_items=True):
         """ This does not play well with recurrence, this should not be used
         with agenda items
         """
-        sources = self.get_sources()
-        if not sources:
-            return []
+
         month = int(month)
         year = int(year)
         startdate = datetimeutils.start_of_month(
@@ -332,35 +340,18 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
         enddate = datetimeutils.end_of_month(startdate)
         return self._get_items_by_date_range(startdate, enddate,
             meta_types=meta_types, public_only=public_only,
-            filter_excluded_items=filter_excluded_items)
+            filter_items=filter_items)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date_range')
-    def get_items_by_date_range(self, start, end, meta_types=None):
-        return self._get_items_by_date_range(start, end, meta_types=meta_types)
-
-    def _get_items_by_date_range(self, start, end, meta_types=None,
-            public_only=True, filter_excluded_items=True):
-        sources = self.get_sources()
-        if not sources:
-            return []
+    def _get_items_by_date_range(
+        self, start, end, meta_types=None, public_only=True, filter_items=True):
 
         query = self._prepare_query(meta_types, public_only=public_only)
-        self.__filter_on_date_range(query, start, end)
-        return self._query_items(
-            filter_excluded_items=filter_excluded_items,**query)
+        query['timestamp_ranges'] = {
+            'query': [
+                datetimeutils.datetime_to_unixtimestamp(start),
+                datetimeutils.datetime_to_unixtimestamp(end)]}
 
-    def __filter_on_date_range(self, query, start, end):
-        startdt = datetimeutils.datetime_to_unixtimestamp(start)
-        enddt = datetimeutils.datetime_to_unixtimestamp(end)
-        query['timestamp_ranges'] = {'query': [startdt, enddt]}
-
-    def __filter_excluded_items(self, results):
-        intids = getUtility(IIntIds)
-        def filter_out_exclude_items(item):
-            return not intids.register(item) in self._excluded_items
-
-        return ifilter(filter_out_exclude_items, results)
+        return self._query_items(query, filter_items=filter_items)
 
 
 InitializeClass(NewsItemFilter)

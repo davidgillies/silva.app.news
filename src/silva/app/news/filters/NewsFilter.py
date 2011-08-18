@@ -52,19 +52,26 @@ class NewsFilter(NewsItemFilter):
 
     # ACCESSORS
 
-    security.declareProtected(SilvaPermissions.ReadSilvaContent,
-                              'get_all_items')
+    security.declareProtected(
+        SilvaPermissions.ReadSilvaContent, 'get_all_items')
     def get_all_items(self, meta_types=None):
         """
         Returns all items available to this filter. This function will
         probably only be used in the back-end.
         """
-        if not self.get_sources():
+        if not self.has_sources():
             return []
-        query = self._prepare_query(meta_types)
-        results = self._query_items(
-            filter_excluded_items=False, public_only=False, **query)
-        return results
+
+        query = self._prepare_query(meta_types, public_only=False)
+        return self._query_items(query, filter_items=False)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_next_items')
+    def get_next_items(self, numdays, meta_types=None):
+        if not self.show_agenda_items():
+            return []
+        return super(NewsFilter, self).get_next_items(
+            numdays, meta_types=meta_types)
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
@@ -76,13 +83,13 @@ class NewsFilter(NewsItemFilter):
 
     # MANIPULATORS
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'show_agenda_items')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'show_agenda_items')
     def show_agenda_items(self):
         return self._show_agenda_items
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_show_agenda_items')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_show_agenda_items')
     def set_show_agenda_items(self, value):
         self._show_agenda_items = not not int(value)
 

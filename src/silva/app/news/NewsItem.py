@@ -56,8 +56,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         super(NewsItemVersion, self).__init__(id)
         self._display_datetime = None
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'set_display_datetime')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_display_datetime')
     def set_display_datetime(self, ddt):
         """set the display datetime
 
@@ -67,8 +67,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         """
         self._display_datetime = DateTime(ddt)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_display_datetime')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_display_datetime')
     def get_display_datetime(self):
         """returns the display datetime
 
@@ -77,8 +77,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         return self._display_datetime
 
     # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'get_description')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_description')
     def get_description(self):
         return self.service_metadata.getMetadataValue(
             self, 'silva-extra', 'content_description')
@@ -93,8 +93,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
             c = c.aq_parent
         return None
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'is_private')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'is_private')
     def is_private(self):
         """Returns whether the object is in a private source
         """
@@ -104,8 +104,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         return self.service_metadata.getMetadataValue(
             source, 'snn-np-settings', 'is_private')
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'fulltext')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'fulltext')
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
@@ -114,16 +114,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         keywords.extend(super(NewsItemVersion, self).fulltext())
         return keywords
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'sort_index')
-    def sort_index(self):
-        dt = self.get_display_datetime()
-        if dt:
-            return datetime_to_unixtimestamp(dt)
-        return None
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_timestamp_ranges')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_timestamp_ranges')
     def get_timestamp_ranges(self):
         if self._display_datetime:
             return CalendarDatetime(self._display_datetime, None).\
@@ -144,6 +136,23 @@ class NewsItem(document.Document):
     silvaconf.icon("www/news_item.png")
     silvaconf.priority(3.7)
     silvaconf.version_class(NewsItemVersion)
+
+    @property
+    def item_order(self):
+        # XXX This should be catalog metadata, but where we use it
+        # We don't have the brain anymore
+        version_id = self.get_public_version()
+        if version_id is None:
+            version_id = self.get_approved_version()
+            if version_id is None:
+                return None
+        version = getattr(self, version_id, None)
+        if version is None:
+            return None
+        order_date = version.get_display_datetime()
+        if order_date is None:
+            return None
+        return datetime_to_unixtimestamp(order_date)
 
     security.declareProtected(SilvaPermissions.ApproveSilvaContent,
                               'set_next_version_display_datetime')

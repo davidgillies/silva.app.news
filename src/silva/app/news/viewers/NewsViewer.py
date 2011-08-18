@@ -1,8 +1,9 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Revision: 1.34 $
+# $Id$
 
 from logging import getLogger
+import operator
 
 from five import grok
 from zope import schema
@@ -67,31 +68,29 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     security = ClassSecurityInfo()
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'default_timezone')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'default_timezone')
     def default_timezone(self):
         """ this is an override of TimezoneMixin to make the service news
         to decide the default timezone
         """
-        service_news = getUtility(IServiceNews)
-        return service_news.get_timezone()
+        return getUtility(IServiceNews).get_timezone()
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'default_timezone_name')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'default_timezone_name')
     def default_timezone_name(self):
-        service_news = getUtility(IServiceNews)
-        return service_news.get_timezone_name()
+        return getUtility(IServiceNews).get_timezone_name()
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_first_weekday')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_first_weekday')
     def get_first_weekday(self):
         first_weekday = getattr(self, '_first_weekday', None)
         if first_weekday is None:
             return getUtility(IServiceNews).get_first_weekday()
         return first_weekday
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'year_range')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'year_range')
     def year_range(self):
         """Returns number of items to show
         """
@@ -103,15 +102,15 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
                               'get_year_range')
     get_year_range = year_range
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'number_to_show')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'number_to_show')
     def number_to_show(self):
         """Returns number of items to show
         """
         return self._number_to_show
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_number_to_show')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_number_to_show')
     get_number_to_show = number_to_show
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
@@ -122,14 +121,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     get_number_to_show_archive = number_to_show_archive
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'is_deletable')
-    def is_deletable(self):
-        """return 1 so this object can always be deleted"""
-        return 1
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'number_is_days')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'number_is_days')
     def number_is_days(self):
         """
         Returns the value of number_is_days (which controls whether
@@ -149,160 +142,144 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._v_filter_reference_set = ReferenceSet(self, 'filters')
         return self._v_filter_reference_set
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_filters')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_filters')
     def get_filters(self):
         """Returns a list of all filters of this object
         """
         return list(self._get_filters_reference_set())
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'has_filter')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'has_filter')
     def has_filter(self):
         """Returns a list of (the path to) all filters of this object
         """
-        gen = list(self._get_filters_reference_set().get_references())
-        return len(gen) > 0
+        for filter in self._get_filters_reference_set().get_references():
+            # We have at least one item in the generator (don't need
+            # to consume it all).
+            return True
+        return False
 
-    def _get_items_helper(self, func, sortattr=None):
-        #1) helper function for get_items...this was the same
-        #code in NV and AV.  Now this helper contains that code
-        #and calls func(obj) for each filter to actually
-        #get the items.  Func can be a simple lamba: function
-        #2) sortattr is an attribute of the CatalogBraings objects
-        #   i.e. a result item.  It's a catalog metadata column
-        #   use it for fast sort / merging of multiple filters
-        #   e.g. on display_datetime or start_datetime
-        results = []
-        for newsfilter in self._get_filters_reference_set():
-            res = func(newsfilter)
-            results += res
+    def _get_items_helper(self, generator):
+        # 1) helper function for get_items...this was the same
+        # code in NV and AV.  Now this helper contains that code
+        # and calls func(obj) for each filter to actually
+        # get the items.
 
-        results = self._remove_doubles(results)
+        def builder():
+            get_id = getUtility(IIntIds).register
+            seen_ids = set()
 
-        if sortattr:
-            results = [(getattr(r,sortattr,None),r) for r in results ]
-            results.sort()
-            results = [ r[1] for r in results ]
-            results.reverse()
-        return results
+            for news_filter in self._get_filters_reference_set():
+                for item in generator(news_filter):
+                    # Check for duplicate using IntId
+                    item_id = get_id(item)
+                    if item_id in seen_ids:
+                        continue
+                    seen_ids.add(item_id)
+                    yield item
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items')
+        # Not sorting because we have no news_filter (so no items)
+        # is a fake optimization.
+        return sorted(
+            builder(),
+            key=operator.attrgetter('item_order'),
+            reverse=True)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_items')
     def get_items(self):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_last_items(self._number_to_show,
-                                          self._number_is_days)
-        #merge/sort results if > 1 filter
-        sortattr = None
-        if self.has_filter():
-            sortattr = 'sort_index'
-        results = self._get_items_helper(func,sortattr)
+        func = lambda x: x.get_last_items(
+            self._number_to_show, self._number_is_days)
+
+        results = self._get_items_helper(func)
         if not self._number_is_days:
             return results[:self._number_to_show]
 
         return results
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_items_by_date')
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_items_by_date(month,year,
-            timezone=self.get_timezone())
-        sortattr = None
-        if self.has_filter():
-            sortattr = 'sort_index'
-        return self._get_items_helper(func,sortattr)
+        func = lambda x: x.get_items_by_date(
+            month,year, timezone=self.get_timezone())
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date_range')
+        return self._get_items_helper(func)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_items_by_date_range')
     def get_items_by_date_range(self, start, end):
         """Gets the items from the filters
         """
         func = lambda x: x.get_items_by_date_range(start, end)
-        sortattr = None
-        if self.has_filter():
-            sortattr = 'sort_index'
-        return self._get_items_helper(func, sortattr)
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'search_items')
+        return self._get_items_helper(func)
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'search_items')
     def search_items(self, keywords):
         """Search the items in the filters
         """
         func = lambda x: x.search_items(keywords)
-        sortattr = None
-        if self.has_filter():
-            sortattr = 'sort_index'
-        return self._get_items_helper(func,sortattr)
 
-    def _remove_doubles(self, resultlist):
-        """Removes double items from a resultset from a ZCatalog-query
-        (useful when the resultset is built out of more than 1 query)
-        """
-        intids = getUtility(IIntIds)
-        ids = set()
-        retval = []
-        for item in resultlist:
-            id = intids.register(item)
-            if not id in ids:
-                ids.add(id)
-                retval.append(item)
-        return retval
+        return self._get_items_helper(func)
 
     # MANIPULATORS
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_year_range')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_year_range')
     def set_year_range(self, number):
         """Sets the range of years to show links to
         """
         self._year_range = number
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_number_to_show')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_number_to_show')
     def set_number_to_show(self, number):
         """Sets the number of items to show
         """
         self._number_to_show = number
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'set_number_to_show_archive')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_number_to_show_archive')
     def set_number_to_show_archive(self, number):
         """set self._number_to_show_archive"""
         self._number_to_show_archive = number
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_number_is_days')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_number_is_days')
     def set_number_is_days(self, onoff):
         """Sets the number of items to show
         """
         self._number_is_days = int(onoff)
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_filters')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_filters')
     def set_filters(self, filters):
         """update filters
         """
         self._get_filters_reference_set().set(filters)
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'add_filter')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'add_filter')
     def add_filter(self, filter):
         """add filters
         """
         self._get_filters_reference_set().add(filter)
         return filter
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'allow_feeds')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'allow_feeds')
     def allow_feeds(self):
         return True
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'allow_feeds')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation,
+        'allow_feeds')
     def set_proxy(self, item, force=False):
         """ Set the viewer as parent of the item if it is configured to or
         is force flag is set.

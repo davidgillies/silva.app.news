@@ -96,9 +96,8 @@ class AgendaFilterItems(Items):
         return super(Items, self).publishTraverse(request, name)
 
     def getItems(self):
-        return [ItemSelection(c, self.context)
-                    for c in self.context._get_items_by_date(
-                        self.month, self.year, public_only=False,
-                        filter_excluded_items=False)]
+        return [ItemSelection(item, self.context)
+                for item in self.context._get_items_by_date(
+                self.month, self.year, public_only=False, filter_items=False)]
 
 
