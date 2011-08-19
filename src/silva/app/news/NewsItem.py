@@ -185,7 +185,8 @@ class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
     grok.name(u"Silva Article")
 
-    fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema)
+    fields = silvaforms.Fields(
+        ITitledContent, INewsCategorizationSchema)
 
 
 class NewsItemDetailsForm(silvaforms.SMIEditForm):
@@ -193,10 +194,8 @@ class NewsItemDetailsForm(silvaforms.SMIEditForm):
     grok.name('details')
 
     label = _(u"Article details")
-    fields = silvaforms.Fields(ITitledContent, INewsCategorizationSchema).omit('id')
-    actions = silvaforms.Actions(
-        silvaforms.CancelAction(),
-        silvaforms.EditAction())
+    fields = silvaforms.Fields(
+        ITitledContent, INewsCategorizationSchema).omit('id')
 
 
 class NewsItemDetailsMenu(MenuItem):

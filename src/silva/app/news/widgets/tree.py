@@ -137,10 +137,6 @@ class TreeWidgetInput(SchemaFieldWidget):
         return u''
 
 
-class TreeWidgetDisplay(TreeWidgetInput):
-    grok.name(str(DISPLAY))
-
-
 class TreeWidgetExtractor(WidgetExtractor):
     grok.adapts(TreeSchemaField, Interface, Interface)
 
@@ -155,3 +151,6 @@ class TreeWidgetExtractor(WidgetExtractor):
             choices.add(vocabulary.getTerm(choice).value)
         return choices, error
 
+
+class TreeWidgetDisplay(TreeWidgetInput):
+    grok.name(str(DISPLAY))

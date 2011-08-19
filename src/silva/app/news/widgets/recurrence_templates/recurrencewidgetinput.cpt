@@ -25,7 +25,6 @@
   <div class="recurrence-sentence">
   </div>
   <input type="hidden"
-         size="30"
          class="recurrence-data"
          name="${widget.identifier}"
          value="${widget.inputValue()}"

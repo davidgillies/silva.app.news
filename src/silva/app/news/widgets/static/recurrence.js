@@ -919,18 +919,20 @@
 
     $('form').live('load-smiform', function(event){
         $(this).find('.recurrence-widget').each(function() {
-            var widget = $(this);
-            var input = widget.find('input.recurrence-data');
-            var value = String(input.val());
-            widget.find('.recurrence-sentence').text(
+            var $widget = $(this);
+            var $input = $widget.find('input.recurrence-data');
+            var value = String($input.val());
+            $widget.find('.recurrence-sentence').text(
                 humanize(parse_recurrence_data(value),
                          humanize_translations));
         });
     });
 
     $('.recurrence-popup-button').live('click', function() {
+        var widget = $(this).parent('.recurrence-widget');
+        var input = widget.find('input.recurrence-data');
 
-        function updateInputWidget(){
+        function updateInputWidget() {
             var value = widget.data('recurrence-value');
             input.val(value);
             widget.find('.recurrence-sentence').text(
@@ -938,9 +940,7 @@
                          humanize_translations));
         }
 
-        var widget = $(this).parent('.recurrence-widget');
         var popup = $("#" + widget.attr('id') + '-popup').clone();
-        var input = widget.find('input.recurrence-data');
         // initialize widget value from input value
         widget.data('recurrence-value', String(input.val()));
         popup.find('.sentence-val').text(
