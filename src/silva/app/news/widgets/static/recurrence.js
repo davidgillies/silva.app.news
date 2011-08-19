@@ -815,7 +815,7 @@
         },
         BYMONTH: 'in %s',
         listterm: 'and',
-        notset: 'No value set.'
+        notset: 'no recurence set.'
     };
 
     function daySort(x, y) {

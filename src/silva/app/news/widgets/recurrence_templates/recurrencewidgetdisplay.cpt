@@ -1,6 +1,7 @@
 <div class="recurrence-widget" id="${id}"
      tal:define="id widget.htmlId()">
   <div class="recurrence-sentence">
+    no recurence set.
   </div>
   <input type="hidden"
          class="recurrence-data"
