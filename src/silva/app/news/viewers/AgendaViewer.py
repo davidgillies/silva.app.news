@@ -80,7 +80,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
     def get_items_by_date(self, month, year, timezone=None):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_items_by_date(month,year,
+        func = lambda x: x.get_items_by_date(month, year,
             timezone=timezone or self.get_timezone(),
             meta_types="Silva Agenda Item")
 

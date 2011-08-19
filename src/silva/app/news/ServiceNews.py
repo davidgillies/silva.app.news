@@ -233,11 +233,6 @@ class ServiceNews(SilvaService, TimezoneMixin):
             locale=self._locale,
             display_time=display_time)
 
-    security.declareProtected('View', 'get_month_abbrs')
-    def get_month_abbrs(self):
-        """returns a list of localized abbreviated month names"""
-        return localdatetime.get_month_abbreviations(locale=self._locale)
-
 
 InitializeClass(ServiceNews)
 

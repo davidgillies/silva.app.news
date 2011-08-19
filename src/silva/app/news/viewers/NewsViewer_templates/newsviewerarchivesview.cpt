@@ -3,47 +3,28 @@
   xmlns:metal="http://xml.zope.org/namespaces/metal"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="silva_news"
->
+  i18n:domain="silva_news">
 
   <h2 class="heading" i18n:translate="">
-    Archive of&nbsp;${context.get_title()}
+    Archive of
+    <tal:title i18n:name="title" tal:replace="context.get_title()" />
+    for
+    <tal:periode i18n:name="periode" tal:replace="view.periode"/>
   </h2>
 
-  <form action="${request.URL}" method="get"
-        enctype="multipart/form-data">
-    <div class="fields"
-         tal:condition="view.fieldWidgets">
-      <div class="field" tal:repeat="widget view.fieldWidgets">
-        <label class="field-label" for="#"
-               tal:attributes="for widget.htmlId()"
-               tal:content="widget.title">
-          Label
-        </label>
-        <tal:widget tal:content="structure widget.render()" />
-      </div>
-      <div class="actions"
-           tal:condition="view.actionWidgets">
-        <div class="action" tal:repeat="widget view.actionWidgets">
-          <tal:widget tal:content="structure widget.render()" />
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <div class="nav" tal:content="structure path:view/batch" />
+  <div class="nav" tal:content="structure view.batch" />
 
   <div class="newsitem" tal:repeat="r view.items">
     <div tal:replace="structure path:r/@@search_result" />
   </div>
 
   <p class="p newsmessage"
-     tal:condition="len(view.results) &lt; 1"
+     tal:condition="len(view.items) &lt; 1"
      i18n:translate="">
     There are no articles available
   </p>
 
-  <div class="nav" tal:content="structure path:view/batch" />
+  <div class="nav" tal:content="structure view.batch" />
 
   <p class="p viewlink">
     <a href="#"

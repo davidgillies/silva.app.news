@@ -11,13 +11,10 @@ from zope.component import getUtility, getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
-from zope.schema.interfaces import IContextSourceBinder
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
-from datetime import datetime
 from OFS.SimpleItem import SimpleItem
 
 # Silva
@@ -28,8 +25,8 @@ from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
 from silva.core.references.reference import ReferenceSet
 from zeam.form import silva as silvaforms
-from zeam.utils.batch import batch
-from zeam.utils.batch.interfaces import IBatching
+from zeam.utils import batch
+
 
 # SilvaNews
 from silva.app.news.interfaces import (INewsViewer, IServiceNews,
@@ -61,7 +58,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     _number_to_show = 25
     _number_to_show_archive = 10
     _number_is_days = 0
-    _year_range = 2
 
     # define wether the items are displayed sub elements of the viewer
     _proxy = False
@@ -88,19 +84,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         if first_weekday is None:
             return getUtility(IServiceNews).get_first_weekday()
         return first_weekday
-
-    security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'year_range')
-    def year_range(self):
-        """Returns number of items to show
-        """
-        if not hasattr(self, '_year_range'):
-            self._year_range = 2
-        return self._year_range
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_year_range')
-    get_year_range = year_range
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'number_to_show')
@@ -231,13 +214,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     # MANIPULATORS
 
     security.declareProtected(
-        SilvaPermissions.ChangeSilvaContent, 'set_year_range')
-    def set_year_range(self, number):
-        """Sets the range of years to show links to
-        """
-        self._year_range = number
-
-    security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_number_to_show')
     def set_number_to_show(self, number):
         """Sets the number of items to show
@@ -315,12 +291,6 @@ class INewsViewerSchema(Interface):
     number_to_show_archive = schema.Int(
         title=_(u"archive number"),
         description=_(u"Number of archive items to show per page."),
-        required=True)
-
-    year_range = schema.Int(
-        title=_(u"year range"),
-        description=_(u"Allow navigation this number of years ahead "
-                      u"of / behind today."),
         required=True)
 
     timezone_name = schema.Choice(
@@ -406,76 +376,23 @@ class NewsViewerSearchView(silvaviews.Page, NewsViewerListView):
             pass
 
 
-@grok.provider(IContextSourceBinder)
-def monthes(context):
-    month_list = []
-    service_news = getUtility(IServiceNews)
-    for m, month in enumerate(service_news.get_month_abbrs()):
-        month_list.append(
-            SimpleTerm(value=m+1, token=str(m+1), title=month))
-    return SimpleVocabulary(month_list)
-
-@grok.provider(IContextSourceBinder)
-def years(context):
-    year = datetime.now(context.get_timezone()).year
-    year_list = []
-    for y in range(year - context.get_year_range(), year + 1):
-        year_list.append(SimpleTerm(value=y, token=str(y), title=str(y)))
-    return SimpleVocabulary(year_list)
-
-
-class IArchiveForm(Interface):
-    year = schema.Choice(
-        title=_(u"year"),
-        source=years,
-        required=False)
-    month = schema.Choice(
-        title=_(u"month"),
-        source=monthes,
-        required=False)
-
-
-def current_month(form):
-    return datetime.now(form.context.get_timezone()).month
-
-def current_year(form):
-    return datetime.now(form.context.get_timezone()).year
-
-
-class NewsViewerArchivesView(silvaforms.PublicForm, NewsViewerListView):
+class NewsViewerArchivesView(silvaviews.Page, NewsViewerListView):
     """ Archives view
     """
     grok.context(INewsViewer)
     grok.name('archives')
 
-    postOnly = False
-    ignoreContent = True
-    ignoreRequest = False
-
-    fields = silvaforms.Fields(IArchiveForm)
-    fields['month'].defaultValue = current_month
-    fields['year'].defaultValue = current_year
-
-    @silvaforms.action(_(u'go'), identifier='update')
-    def go(self):
-        data, errors = self.extractData()
-        if len(errors) > 0:
-            self.results = []
-        else:
-            self.results = self.context.get_items_by_date(
-                data.getWithDefault('month'),
-                data.getWithDefault('year'))
-            self.results = map(self._set_parent, self.results)
-        self.items = batch(
-            self.results,
-            request=self.request,
-            count=self.context.number_to_show_archive())
-        self.batch = getMultiAdapter(
-            (self, self.items, self.request), IBatching)
-
     def update(self):
-        self.request.timezone = self.context.get_timezone()
-        # always execute action
-        self.request.form['form.action.update'] = '1'
 
+        def getter(date):
+            return self.context.get_items_by_date(date.month, date.year)
 
+        self.items = batch.DateBatch(getter, request=self.request)
+        self.batch = getMultiAdapter(
+            (self, self.items, self.request), batch.IBatching)()
+
+        # Get the month and year of the corresponding periode
+        calendar = self.request.locale.dates.calendars['gregorian']
+        periode = self.items.start
+        self.periode = '%s %s' % (
+            calendar.getMonthNames()[periode.month-1], periode.year)
