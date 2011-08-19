@@ -917,9 +917,9 @@
 
     // ------------------------------------------------------------------------
 
-    $(document).bind('zeam-form-ready', function(event){
-        $.each($('.recurrence-widget'), function(index, element) {
-            var widget = $(element);
+    $('form').live('load-smiform', function(event){
+        $(this).find('.recurrence-widget').each(function() {
+            var widget = $(this);
             var input = widget.find('input.recurrence-data');
             var value = String(input.val());
             widget.find('.recurrence-sentence').text(

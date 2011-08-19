@@ -3,26 +3,19 @@
 # $Id$
 
 from five import grok
-from zope.interface import Interface
 from zope.component import getUtility
+from zope.i18nmessageid import MessageFactory
+from zope.interface import Interface
 from zope.intid.interfaces import IIntIds
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-from silva.core.interfaces import ISilvaService
-from silva.core.interfaces import INonPublishable, IPublication, IContent
-
 from silva.app.document.interfaces import IDocument, IDocumentVersion
-from Products.SilvaExternalSources.interfaces import IExternalSource
 from silva.app.news.datetimeutils import zone_names
+from silva.core.interfaces import INonPublishable, IPublication, IContent
+from silva.core.interfaces import ISilvaService
 
-
-from zope.i18nmessageid import MessageFactory
 _ = MessageFactory('silva_news')
-
-
-class IInlineViewer(IExternalSource):
-    """Marker interface for Inline News Viewer"""
 
 
 class ISilvaNewsExtension(Interface):
@@ -31,7 +24,7 @@ class ISilvaNewsExtension(Interface):
 
 @grok.provider(IContextSourceBinder)
 def subjects_source(context):
-    service = getUtility(IServiceNews)
+    service = getUtility(IServiceNewsCategorization)
     result = []
     for value, title in service.get_subjects():
         result.append(SimpleTerm(
@@ -41,7 +34,7 @@ def subjects_source(context):
 
 @grok.provider(IContextSourceBinder)
 def target_audiences_source(context):
-    service = getUtility(IServiceNews)
+    service = getUtility(IServiceNewsCategorization)
     result = []
     for value, title in service.get_target_audiences():
         result.append(SimpleTerm(
@@ -50,12 +43,12 @@ def target_audiences_source(context):
 
 
 def get_subjects_tree(form):
-    service = getUtility(IServiceNews)
+    service = getUtility(IServiceNewsCategorization)
     return service.get_subjects_tree()
 
 
 def get_target_audiences_tree(form):
-    service = getUtility(IServiceNews)
+    service = getUtility(IServiceNewsCategorization)
     return service.get_target_audiences_tree()
 
 
@@ -401,14 +394,29 @@ class IAgendaViewer(INewsViewer):
         """
 
 
-class IServiceNews(ISilvaService):
-    """A service that provides trees of subjects and target_audiences.
+class IServiceNewsCategorization(ISilvaService):
+    """Defines subjects and target audiences.
+    """
 
-    It allows these trees to be edited on a site-wide basis. It also
-    provides these trees to the filter and items.
+    def get_subjects():
+        """Return all of the subjects.
+        """
 
-    The trees are dicts with the content as key and a a list of parent
-    (first item) and children (the rest of the items) as value.
+    def get_target_audiences():
+        """Return all of the target_audiences.
+        """
+
+    def get_subjects_tree():
+        """Return the tree of subjects.
+        """
+
+    def get_target_audiences_tree():
+        """Return the tree of target_audiences.
+        """
+
+
+class IServiceNews(IServiceNewsCategorization):
+    """A service that configures service news settings.
     """
 
     def add_subject(subject, parent):
@@ -434,14 +442,6 @@ class IServiceNews(ISilvaService):
         """
 
     # ACCESSORS
-    def get_subjects():
-        """Return the tree of subjects.
-        """
-
-    def get_target_audiences():
-        """Return the tree of target_audiences.
-        """
-
     def get_all_filters():
         """Return all the Silva News Filter contents from the site.
         """

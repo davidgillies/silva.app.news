@@ -8,7 +8,10 @@
             var $input = $tree.siblings('input.field-tree');
 
             $tree.jstree({
-                "plugins" : ["html_data", "checkbox"]
+                core: {
+                    animation: 100
+                },
+                plugins: ["html_data", "ui", "checkbox"]
             });
 
             $tree.delegate('a', 'click', function() {

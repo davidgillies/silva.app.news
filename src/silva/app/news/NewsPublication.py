@@ -5,7 +5,8 @@
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-from silva.app.news.interfaces import INewsPublication, IServiceNews
+from silva.app.news.interfaces import INewsPublication
+from silva.app.news.interfaces import IServiceNewsCategorization
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva.cataloging import CatalogingAttributes
@@ -71,15 +72,13 @@ def news_publication_created(publication, event):
 
     viewer = publication._getOb('index')
     filter = publication._getOb('filter')
-    service = getUtility(IServiceNews)
 
-    # XXX add test..
+    # Configure the new filter and viewer.
 
+    service = getUtility(IServiceNewsCategorization)
+    filter.set_subjects(service.get_subjects_tree().get_ids(1))
+    filter.set_target_audiences(service.get_target_audiences_tree().get_ids(1))
     filter.add_source(publication)
-    filter.set_subjects(
-        [node.id() for node in service.get_subjects_tree().children()])
-    filter.set_target_audiences(
-        [node.id() for node in service.get_target_audiences_tree().children()])
 
     viewer.add_filter(filter)
 

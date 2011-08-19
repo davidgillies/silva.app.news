@@ -158,18 +158,20 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
 
     def _collect_subjects(self, service):
         result = set()
+        tree = service.get_subjects_tree()
         for sub in self._subjects:
-            node = service._subjects.find(sub)
+            node = tree.get_element(sub)
             if node is not None:
-                result = result.union(set(node.get_subtree_ids()))
+                result = result.union(set(node.get_ids()))
         return list(result)
 
     def _collect_target_audiences(self, service):
         result = set()
+        tree = service.get_target_audiences_tree()
         for sub in self._target_audiences:
-            node = service._target_audiences.find(sub)
+            node = tree.get_element(sub)
             if node is not None:
-                result = result.union(set(node.get_subtree_ids()))
+                result = result.union(set(node.get_ids()))
         return list(result)
 
     def _prepare_query(self, meta_types=None, public_only=True):

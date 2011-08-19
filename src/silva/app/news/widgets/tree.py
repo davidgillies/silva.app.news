@@ -12,11 +12,10 @@ from zeam.form.base.widgets import WidgetExtractor
 from zeam.form.ztk.fields import SchemaField, SchemaFieldWidget
 from zeam.form.ztk.fields import registerSchemaField
 from zope.interface import Interface
-from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.schema import Set
 from zope.schema.interfaces import ISet
 
-from js.jquery import jquery
+from silva.ui.interfaces import IJSTreeResources
 from silva.core import conf as silvaconf
 from silva.fanstatic import need
 
@@ -111,8 +110,7 @@ def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     return status, html
 
 
-class ITreeResources(IDefaultBrowserLayer):
-    silvaconf.resource(jquery)
+class ITreeResources(IJSTreeResources):
     silvaconf.resource('tree.js')
 
 

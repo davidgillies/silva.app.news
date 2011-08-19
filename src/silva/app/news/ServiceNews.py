@@ -10,10 +10,7 @@ import localdatetime
 from App.class_init import InitializeClass
 from AccessControl import ClassSecurityInfo
 from Acquisition import aq_parent
-from OFS.SimpleItem import SimpleItem
-from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
-#Silva
 from silva.core.interfaces import IContainer
 from silva.core import conf as silvaconf
 from silva.core.services.base import SilvaService
@@ -22,7 +19,6 @@ from silva.core.views import views as silvaviews
 import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.Silva.ExtensionRegistry import meta_types_for_interface
 
-#SilvaNews
 from silva.app.news import Tree
 from silva.app.news.interfaces import IServiceNews, INewsItemFilter
 from silva.app.news.datetimeutils import (
@@ -39,36 +35,36 @@ class TimezoneMixin(object):
         self._timezone = local_timezone
         self._timezone_name = 'local'
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'default_timezone')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'default_timezone')
     def default_timezone(self):
         return local_timezone
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'default_timezone_name')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'default_timezone_name')
     def default_timezone_name(self):
         return 'local'
 
     # ACCESSORS
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_timezone')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation,'get_timezone')
     def get_timezone(self):
         return getattr(self, '_timezone', self.default_timezone())
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_timezone_name')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_timezone_name')
     def get_timezone_name(self):
         return getattr(self, '_timezone_name',
             self.default_timezone_name())
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_timezone_name')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_timezone_name')
     def set_timezone_name(self, name):
         self._timezone = get_timezone(name)
         self._timezone_name = name
 
-    security.declareProtected('View',
-                                'timezone_list')
+    security.declareProtected(
+        'View', 'timezone_list')
     def timezone_list(self):
         default = self.default_timezone_name()
         zones = list(zone_names)
@@ -76,15 +72,15 @@ class TimezoneMixin(object):
             zones.append(default)
         return zones
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                                'set_first_weekday')
+    security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_first_weekday')
     def set_first_weekday(self, weekday):
         if weekday not in range(0, 7):
             raise ValueError("weekday should be between 0 and 6")
         self._first_weekday = weekday
 
-    security.declareProtected('View',
-                                'get_first_weekday')
+    security.declareProtected(
+        'View', 'get_first_weekday')
     def get_first_weekday(self):
         return getattr(self, '_first_weekday', 0)
 
@@ -93,9 +89,10 @@ InitializeClass(TimezoneMixin)
 
 
 class ServiceNews(SilvaService, TimezoneMixin):
-    """This object provides lists of subjects and target_audiences for Filters
+    """Provides settings for various news settings.
     """
     grok.implements(IServiceNews)
+    grok.name('service_news')
     security = ClassSecurityInfo()
     meta_type = 'Silva News Service'
 
@@ -103,10 +100,7 @@ class ServiceNews(SilvaService, TimezoneMixin):
 
     manage_options = (
         {'label': 'Edit', 'action': 'manage_news'},
-        ) + SimpleItem.manage_options
-
-    manage_rename_view = PageTemplateFile(
-        'www/serviceNewsRenameView', globals(), __name__='manage_rename_view')
+        ) + SilvaService.manage_options
 
     def __init__(self, id):
         SilvaService.__init__(self, id)
@@ -154,8 +148,8 @@ class ServiceNews(SilvaService, TimezoneMixin):
         node = Tree.Node(id, title)
         parentnode = self._subjects
         if parent is not None:
-            parentnode = self._subjects.getElement(parent)
-        parentnode.addChild(node)
+            parentnode = self._subjects.get_element(parent)
+        parentnode.add_child(node)
         self._p_changed = 1
 
     security.declareProtected('Setup ServiceNews',
@@ -165,25 +159,25 @@ class ServiceNews(SilvaService, TimezoneMixin):
         node = Tree.Node(id, title)
         parentnode = self._target_audiences
         if parent is not None:
-            parentnode = self._target_audiences.getElement(parent)
-        parentnode.addChild(node)
+            parentnode = self._target_audiences.get_element(parent)
+        parentnode.add_child(node)
         self._p_changed = 1
-
-    security.declareProtected('View', 'get_subjects')
-    def get_subjects(self):
-        """returns a list of (id, title) tuples"""
-        return [(x.id(), x.title())
-                for x in  self._subjects.getElements()]
 
     security.declareProtected('View', 'get_subjects_tree')
     def get_subjects_tree(self):
         return self._subjects
 
+    security.declareProtected('View', 'get_subjects')
+    def get_subjects(self):
+        """returns a list of (id, title) tuples"""
+        return [(x.id(), x.title())
+                for x in  self._subjects.get_elements()]
+
     security.declareProtected('View', 'get_target_audiences')
     def get_target_audiences(self):
         """returns a list of (id, title) tuples"""
         return [(x.id(), x.title())
-                for x in self._target_audiences.getElements()]
+                for x in self._target_audiences.get_elements()]
 
     security.declareProtected('View', 'get_target_audiences_tree')
     def get_target_audiences_tree(self):
@@ -193,20 +187,20 @@ class ServiceNews(SilvaService, TimezoneMixin):
                                 'remove_subject')
     def remove_subject(self, id):
         """removes a subject by id"""
-        node = self._subjects.getElement(id)
+        node = self._subjects.get_element(id)
         if node.children():
             raise ValueError, 'node not empty'
-        node.parent().removeChild(node)
+        node.parent().remove_child(node)
         self._p_changed = 1
 
     security.declareProtected('Setup ServiceNews',
                                 'remove_target_audience')
     def remove_target_audience(self, id):
         """removes a target audience by id"""
-        node = self._target_audiences.getElement(id)
+        node = self._target_audiences.get_element(id)
         if node.children():
             raise ValueError, 'node not empty'
-        node.parent().removeChild(node)
+        node.parent().remove_child(node)
         self._p_changed = 1
 
     security.declareProtected('View', 'locale')
@@ -258,9 +252,11 @@ def flatten_tree_helper(tree, ret, depth=0):
 
 class ManageServiceNews(silvaviews.ZMIView):
     grok.name('manage_news')
+    grok.context(ServiceNews)
 
     def update(self):
         self.status = None
+        self.renaming = []
         for action in  ['manage_add_subject',
                         'manage_remove_subject',
                         'manage_add_target_audience',
@@ -389,7 +385,7 @@ class ManageServiceNews(silvaviews.ZMIView):
                 continue
             uname = unicode(name, 'UTF-8')
             uvalue = unicode(value, 'UTF-8')
-            subject = self.context._subjects.getElement(uname)
+            subject = self.context._subjects.get_element(uname)
             if uvalue != subject.id():
                 try:
                     subject.set_id(uvalue)

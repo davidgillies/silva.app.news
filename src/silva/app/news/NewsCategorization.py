@@ -8,7 +8,6 @@ from zope.interface import Interface
 from zope import schema
 from zope.i18nmessageid import MessageFactory
 
-# Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
