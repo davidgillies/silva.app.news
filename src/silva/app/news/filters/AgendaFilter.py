@@ -2,10 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
-from datetime import datetime
 
 from five import grok
-from zope.component import getUtility
 from zope.i18nmessageid import MessageFactory
 
 # Zope
@@ -15,12 +13,13 @@ from App.class_init import InitializeClass
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
+from zeam.utils import batch
 
 # SilvaNews
 from silva.app.news.filters.NewsItemFilter import NewsItemFilter
 from silva.app.news.filters.NewsItemFilter import INewsItemFilterSchema
-from silva.app.news.filters.NewsFilter import Items, ItemSelection
-from silva.app.news.interfaces import IAgendaFilter, IServiceNews
+from silva.app.news.filters.NewsFilter import NewsFilterItems
+from silva.app.news.interfaces import IAgendaFilter
 
 _ = MessageFactory('silva_news')
 
@@ -63,41 +62,18 @@ class AgendaFilterEditForm(silvaforms.SMIEditForm):
     fields = silvaforms.Fields(ITitledContent, INewsItemFilterSchema).omit('id')
 
 
-class AgendaFilterItems(Items):
+class AgendaFilterItems(NewsFilterItems):
     grok.context(IAgendaFilter)
-
-    month = None
-    year = None
-
-    def update(self):
-        if self.month is None or self.year is None:
-            now = datetime.now()
-            self.month = now.month
-            self.year = now.year
-        self.abbr_monthes = [None] + getUtility(IServiceNews).get_month_abbrs()
-        self.label = _('Items of %s %d') % (
-            self.abbr_monthes[self.month], self.year)
-
-    def format_year_month(self, year, month):
-        return "%d-%02d" % (year, month)
-
-    def publishTraverse(self, request, name):
-        try:
-            year, month = name.split("-")
-            month = int(month)
-            year = int(year)
-            if month < 1 or month > 12:
-                raise ValueError('invalid month %s' % month)
-            self.month = month
-            self.year = year
-            return self
-        except (TypeError, ValueError):
-            pass
-        return super(Items, self).publishTraverse(request, name)
+    batchFactory = batch.DateBatch
+    batchSize = batch.BATCH_MONTH
 
     def getItems(self):
-        return [ItemSelection(item, self.context)
-                for item in self.context._get_items_by_date(
-                self.month, self.year, public_only=False, filter_items=False)]
+
+        def getter(date):
+            return self.context._get_items_by_date(
+                date.month, date.year,
+                public_only=False, filter_items=False)
+
+        return getter
 
 

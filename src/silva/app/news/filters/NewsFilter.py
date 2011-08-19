@@ -19,7 +19,6 @@ from zeam.form import silva as silvaforms
 from zeam.form import table as tableforms
 from zeam.form.base.datamanager import BaseDataManager
 
-
 # SilvaNews
 from silva.app.news.widgets.path import Path
 from silva.app.news.interfaces import INewsFilter
@@ -179,8 +178,7 @@ class ItemSelection(BaseDataManager):
             return dt.asdatetime()
 
 
-class Items(silvaforms.SMITableForm):
-    grok.baseclass()
+class NewsFilterItems(silvaforms.SMITableForm):
     grok.context(interfaces.INewsItemFilter)
     grok.require('silva.ChangeSilvaContent')
     grok.name('items')
@@ -190,6 +188,7 @@ class Items(silvaforms.SMITableForm):
     ignoreRequest = True
     ignoreContent = False
 
+    batchSize = 10
     mode = silvaforms.DISPLAY
     emptyDescription = _(u"There are no items.")
     tableFields = silvaforms.Fields(IItemSelection).omit('id')
@@ -198,21 +197,16 @@ class Items(silvaforms.SMITableForm):
         ExcludeAction(identifier='update', title=_("Update")))
 
     def createSelectedField(self, item):
-        field = super(Items, self).createSelectedField(item)
+        field = super(NewsFilterItems, self).createSelectedField(item)
         field.ignoreContent = False
         field.ignoreRequest = True
         return field
 
-
-class NewsFilterItems(Items):
-    batchSize = 10
-
-    def batchFactory(self, item):
+    def batchItemFactory(self, item):
         return ItemSelection(item, self)
 
     def getItems(self):
         return list(self.context.get_all_items())
-
 
 
 class ItemsMenu(MenuItem):
@@ -220,6 +214,6 @@ class ItemsMenu(MenuItem):
     grok.require('silva.ChangeSilvaContent')
     grok.order(30)
     name = _('Items')
-    screen = Items
+    screen = NewsFilterItems
 
 
