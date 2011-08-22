@@ -8,7 +8,7 @@ from silva.core import conf as silvaconf
 
 silvaconf.extension_name("silva.app.news")
 silvaconf.extension_title("Silva News Network")
-silvaconf.extension_depends(["silva.app.document", "SilvaExternalSources"])
+silvaconf.extension_depends(["Silva", "silva.app.document", "SilvaExternalSources"])
 
 
 def initialize(context):

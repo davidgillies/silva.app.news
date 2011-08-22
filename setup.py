@@ -10,7 +10,7 @@ version = '3.0dev'
 
 setup(name='silva.app.news',
       version=version,
-      description="News extension for Silva",
+      description="News extension for Silva 3.x.",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
