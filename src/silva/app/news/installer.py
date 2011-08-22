@@ -78,4 +78,5 @@ class SilvaNewsInstaller(DefaultInstaller):
             else:
                 catalog.addIndex(field_name, field_type)
 
-install = SilvaNewsInstaller("SilvaNews", ISilvaNewsExtension)
+
+install = SilvaNewsInstaller("silva.app.news", ISilvaNewsExtension)
