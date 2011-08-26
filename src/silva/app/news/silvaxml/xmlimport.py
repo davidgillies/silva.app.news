@@ -2,21 +2,19 @@
 # See also LICENSE.txt
 
 
+from Products.Silva.silvaxml import xmlimport
 from Products.Silva.silvaxml.xmlimport import (
-    SilvaBaseHandler, NS_URI,
-    generateUniqueId, updateVersionCount)
-from Products.Silva import mangle
+    SilvaBaseHandler, updateVersionCount)
 from silva.core import conf as silvaconf
+from silva.core.editor.transform.silvaxml import NS_EDITOR_URI
+from silva.core.editor.transform.silvaxml.xmlimport import TextHandler
 
-from silva.app.news.silvaxml.xmlexport import NS_SILVA_NEWS
-from silva.app.news.silvaxml.helpers import *
-from silva.app.news.NewsItem import (
-    NewsItem, NewsItemVersion)
-from silva.app.news.AgendaItem import (
-    AgendaItem, AgendaItemVersion)
+from five import grok
+from silva.app.news.silvaxml import NS_NEWS_URI
+from silva.app.news.silvaxml import helpers
 from silva.app.news.datetimeutils import get_timezone
 
-silvaconf.namespace(NS_SILVA_NEWS)
+silvaconf.namespace(NS_NEWS_URI)
 
 
 class SNNHandlerMixin(object):
@@ -24,103 +22,104 @@ class SNNHandlerMixin(object):
         many of the SNN objects """
 
     def set_attrs(self,attrs,obj):
-        set_attribute_as_list(obj, 'target_audiences', attrs)
-        set_attribute_as_list(obj, 'subjects', attrs)
-        set_attribute_as_bool(obj, 'number_is_days', attrs)
-        set_attribute_as_bool(obj, 'show_agenda_items', attrs)
-        set_attribute_as_bool(obj, 'keep_to_path', attrs)
-        set_attribute_as_int(obj, 'number_to_show', attrs)
-        set_attribute_as_int(obj, 'number_to_show_archive', attrs)
-        set_attribute_as_int(obj, 'days_to_show', attrs)
-        if attrs.has_key((None,'excluded_items')):
-            eis = attrs[(None,'excluded_items')]
-            for ei in eis.split(','):
-                obj.add_excluded_item(ei)
+        helpers.set_attribute_as_list(obj, 'target_audiences', attrs)
+        helpers.set_attribute_as_list(obj, 'subjects', attrs)
+        helpers.set_attribute_as_bool(obj, 'number_is_days', attrs)
+        helpers.set_attribute_as_bool(obj, 'show_agenda_items', attrs)
+        helpers.set_attribute_as_bool(obj, 'keep_to_path', attrs)
+        helpers.set_attribute_as_int(obj, 'number_to_show', attrs)
+        helpers.set_attribute_as_int(obj, 'number_to_show_archive', attrs)
+        helpers.set_attribute_as_int(obj, 'days_to_show', attrs)
 
 
 class NewsItemHandler(SilvaBaseHandler):
-    silvaconf.name('plainarticle')
+    grok.name('news_item')
 
     def getOverrides(self):
-        return {(NS_URI, 'content'): NewsItemContentHandler}
+        return {(xmlimport.NS_SILVA_URI, 'content'): NewsItemVersionHandler}
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, 'plainarticle'):
-            id = attrs[(None, 'id')].encode('utf-8')
-            uid = self.generateOrReplaceId(id)
-            object = NewsItem(uid)
-            self.parent()._setObject(uid, object)
+        if name == (NS_NEWS_URI, 'news_item'):
+            uid = self.generateOrReplaceId(attrs[(None, 'id')].encode('utf-8'))
+            factory = self.parent().manage_addProduct['silva.app.news']
+            factory.manage_addNewsItem(uid, '', no_default_version=True)
             self.setResultId(uid)
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, 'plainarticle'):
+        if name == (NS_NEWS_URI, 'news_item'):
             self.notifyImport()
 
 
-class NewsItemContentHandler(SilvaBaseHandler):
-    silvaconf.baseclass()
+class NewsItemVersionBodyHandler(xmlimport.SilvaBaseHandler):
 
     def getOverrides(self):
-        return{(NS_SILVA_DOCUMENT, 'doc'): DocXMLHandler}
+        return {(NS_EDITOR_URI, 'text'): TextHandler}
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_URI, 'content'):
-            id = attrs[(None, 'version_id')].encode('utf-8')
-            if not mangle.Id(self._parent, id).isValid():
-                return
-            version = NewsItemVersion(id)
-            parent = self.parent()
-            parent._setObject(id, version)
-            version = version.__of__(parent)
+        if (NS_NEWS_URI, 'body') == name:
+            self.setResult(self.parent().body)
 
+    def endElementNS(self, name, qname):
+        pass
+
+
+class NewsItemVersionHandler(SilvaBaseHandler):
+    grok.baseclass()
+
+    def getOverrides(self):
+        return {(NS_NEWS_URI, 'body'): NewsItemVersionBodyHandler}
+
+    def startElementNS(self, name, qname, attrs):
+        if name == (xmlimport.NS_SILVA_URI, 'content'):
+            uid = attrs[(None, 'version_id')].encode('utf-8')
+            factory = self.parent().manage_addProduct['silva.app.news']
+            factory.manage_addNewsItemVersion(uid, '')
+            self.setResultId(uid)
+
+            version = self.result()
             set_attribute_as_list(version, 'target_audiences', attrs)
             set_attribute_as_list(version, 'subjects', attrs)
             set_attribute_as_naive_datetime(version, 'display_datetime', attrs)
 
-            self.setResultId(id)
-            updateVersionCount(self)
-
     def endElementNS(self, name, qname):
-        if name == (NS_URI, 'content'):
+        if name == (xmlimport.NS_SILVA_URI, 'content'):
+            updateVersionCount(self)
             self.storeMetadata()
             self.storeWorkflow()
 
 
 class AgendaItemHandler(SilvaBaseHandler):
-    silvaconf.name('plainagendaitem')
+    grok.name('agenda_item')
 
     def getOverrides(self):
-        return {(NS_URI, 'content'): AgendaItemContentHandler}
+        return {(xmlimport.NS_SILVA_URI, 'content'): AgendaItemVersionHandler}
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, 'plainagendaitem'):
-            id = attrs[(None, 'id')].encode('utf-8')
-            uid = self.generateOrReplaceId(id)
-            object = AgendaItem(uid)
-            self.parent()._setObject(uid, object)
+        if name == (NS_NEWS_URI, 'agenda_item'):
+            uid = self.generateOrReplaceId(attrs[(None, 'id')].encode('utf-8'))
+            factory = self.parent().manage_addProduct['silva.app.news']
+            factory.manage_addAgendaItem(uid, '', no_default_version=True)
             self.setResultId(uid)
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, 'plainagendaitem'):
+        if name == (NS_NEWS_URI, 'agenda_item'):
             self.notifyImport()
 
 
-class AgendaItemContentHandler(SilvaBaseHandler):
-    silvaconf.baseclass()
+class AgendaItemVersionHandler(SilvaBaseHandler):
+    grok.baseclass()
 
     def getOverrides(self):
-        return{(NS_SILVA_DOCUMENT, 'doc'): DocXMLHandler}
+        return {(NS_NEWS_URI, 'body'): NewsItemVersionBodyHandler}
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_URI, 'content'):
-            id = attrs[(None, 'version_id')].encode('utf-8')
-            if not mangle.Id(self._parent, id).isValid():
-                return
-            version = AgendaItemVersion(id)
-            parent = self.parent()
-            parent._setObject(id, version)
-            version = version.__of__(parent)
+        if name == (xmlimport.NS_SILVA_URI, 'content'):
+            uid = attrs[(None, 'version_id')].encode('utf-8')
+            factory = self.parent().manage_addProduct['silva.app.news']
+            factory.manage_addAgendaItemVersion(uid, '')
+            self.setResultId(uid)
 
+            version = self.result()
             set_attribute_as_list(version, 'target_audiences', attrs)
             set_attribute_as_list(version, 'subjects', attrs)
             set_attribute(version, 'location', attrs)
@@ -134,32 +133,25 @@ class AgendaItemContentHandler(SilvaBaseHandler):
             set_attribute_as_datetime(version, 'end_datetime', attrs, tz=tz)
             set_attribute_as_naive_datetime(version, 'display_datetime', attrs)
 
-            self.setResultId(id)
-            updateVersionCount(self)
-
     def endElementNS(self, name, qname):
-        if name == (NS_URI, 'content'):
+        if name == (xmlimport.NS_SILVA_URI, 'content'):
+            updateVersionCount(self)
             self.storeMetadata()
             self.storeWorkflow()
 
 
 class NewsPublicationHandler(SilvaBaseHandler):
-    silvaconf.name('newspublication')
+    grok.name('news_publication')
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
-            id = str(attrs[(None, 'id')])
-            parent = self.parent()
-            if self.settings().replaceObjects() and id in parent.objectIds():
-                self.setResultId(id)
-                return
-            uid = generateUniqueId(id, parent)
-            factory = self.parent().manage_addProduct['SilvaNews']
-            factory.manage_addNewsPublication(uid, '', create_default=0)
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
+            uid = self.generateOrReplaceId(attrs[(None, 'id')].encode('utf-8'))
+            factory = self.parent().manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication(uid, '')
             self.setResultId(uid)
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
             self.storeMetadata()
             self.notifyImport()
 
@@ -167,77 +159,59 @@ class NewsPublicationHandler(SilvaBaseHandler):
 class NewsViewerHandler(SNNHandlerMixin, SilvaBaseHandler):
     """Import a defined News Viewer.
     """
-    silvaconf.name('newsviewer')
+    grok.name('news_viewer')
     factory_name = 'manage_addNewsViewer'
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            factory = self.parent().manage_addProduct['SilvaNews']
-            getattr(factory, self.factory_name)(uid,'')
-            obj = getattr(self.parent(),uid)
-            self.set_attrs(attrs,obj)
+            factory = self.parent().manage_addProduct['silva.app.news']
+            getattr(factory, self.factory_name)(uid, '')
             self.setResultId(uid)
+            self.set_attrs(attrs, self.result())
 
-        if name == (NS_SILVA_NEWS, 'filter'):
+        if name == (NS_NEWS_URI, 'filter'):
             target = attrs[(None, 'target')]
             info = self.getInfo()
             info.addAction(
-                resolve_path,
+                xmlimport.resolve_path,
                 [self.result().add_filter, info, target])
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
             self.storeMetadata()
             self.notifyImport()
 
 
-class AgendaViewerHandler(SNNHandlerMixin, SilvaBaseHandler):
+class AgendaViewerHandler(NewsViewerHandler):
     """Import a defined Agenda Viewer.
     """
-    silvaconf.name('agendaviewer')
+    grok.name('agenda_viewer')
     factory_name = 'manage_addAgendaViewer'
-
-    def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
-            id = str(attrs[(None, 'id')])
-            uid = self.generateOrReplaceId(id)
-            factory = self.parent().manage_addProduct['SilvaNews']
-            factory.manage_addAgendaViewer(uid,'')
-            obj = getattr(self.parent(),uid)
-            self.set_attrs(attrs,obj)
-            self.setResultId(uid)
-
-    def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
-            self.storeMetadata()
-            self.notifyImport()
 
 
 class NewsFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
-    silvaconf.name('newsfilter')
+    grok.name('news_filter')
     factory_name = 'manage_addNewsFilter'
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
-            id = str(attrs[(None, 'id')])
-            uid = self.generateOrReplaceId(id)
-            factory = self.parent().manage_addProduct['SilvaNews']
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
+            uid = self.generateOrReplaceId(str(attrs[(None, 'id')]))
+            factory = self.parent().manage_addProduct['silva.app.news']
             getattr(factory, self.factory_name)(uid, '')
-            obj = getattr(self.parent(),uid)
-            self.set_attrs(attrs,obj)
             self.setResultId(uid)
+            self.set_attrs(attrs, self.result())
 
-        if name == (NS_SILVA_NEWS, 'source'):
+        if name == (NS_NEWS_URI, 'source'):
             target = attrs[(None, 'target')]
             info = self.getInfo()
             info.addAction(
-                resolve_path,
+                xmlimport.resolve_path,
                 [self.result().add_source, info, target])
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, silvaconf.name.bind(self).get(self)):
+        if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
             self.storeMetadata()
             self.notifyImport()
 
@@ -245,30 +219,31 @@ class NewsFilterHandler(SNNHandlerMixin, SilvaBaseHandler):
 class AgendaFilterHandler(NewsFilterHandler):
     """Import an Agenda Filter.
     """
-    silvaconf.name('agendafilter')
+    grok.name('agenda_filter')
     factory_name = 'manage_addAgendaFilter'
 
 
 class RSSAggregatorHandler(SilvaBaseHandler):
     """Import a defined RSS Aggregator.
     """
-    silvaconf.name('rssaggregator')
+    grok.name('rss_aggregator')
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_SILVA_NEWS,'rssaggregator'):
+        if name == (NS_NEWS_URI,'rssaggregator'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
-            factory = self.parent().manage_addProduct['SilvaNews']
+            factory = self.parent().manage_addProduct['silva.app.news']
             factory.manage_addRSSAggregator(uid,'')
-            obj = getattr(self.parent(),uid)
+            self.setResultId(uid)
+
+            obj = self.result()
             if (attrs.get((None, 'feed_urls'),None)):
                 feed_urls = attrs[(None,'feed_urls')]
                 # reformat feed_urls to be in the format set_feeds expects
                 obj.set_feeds(feed_urls)
-            self.setResultId(uid)
 
     def endElementNS(self, name, qname):
-        if name == (NS_SILVA_NEWS, 'rssaggregator'):
+        if name == (NS_NEWS_URI, 'rss_aggregator'):
             self.storeMetadata()
             self.notifyImport()
 

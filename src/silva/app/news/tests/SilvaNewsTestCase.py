@@ -2,25 +2,10 @@
 # See also LICENSE.txt
 # $Id$
 
-from Products.Silva.testing import SilvaLayer
 from DateTime import DateTime
-import transaction
-import silva.app.news
 import unittest
+from silva.app.news.testing import FunctionalLayer
 
-
-class SilvaNewsLayer(SilvaLayer):
-
-    default_products = SilvaLayer.default_products + ['SilvaNews',]
-
-    def _install_application(self, app):
-        super(SilvaNewsLayer, self)._install_application(app)
-        app.root.service_extensions.install('SilvaNews')
-        transaction.commit()
-
-
-FunctionalLayer = SilvaNewsLayer(
-    silva.app.news)
 
 class SilvaNewsTestCase(unittest.TestCase):
 
@@ -35,37 +20,37 @@ class SilvaNewsTestCase(unittest.TestCase):
         self.catalog = self.root.service_catalog
 
     def add_news_publication(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addNewsPublication(id, title, **kw)
         return getattr(parent, id)
 
     def add_plain_article(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addNewsItem(id, title, **kw)
         return getattr(parent, id)
 
     def add_news_viewer(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addNewsViewer(id, title, **kw)
         return getattr(parent, id)
 
     def add_agenda_viewer(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addAgendaViewer(id, title, **kw)
         return getattr(parent, id)
 
     def add_news_filter(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addNewsFilter(id, title, **kw)
         return getattr(parent, id)
 
     def add_agenda_filter(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addAgendaFilter(id, title, **kw)
         return getattr(parent, id)
 
     def add_published_news_item(self, parent, id, title, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addNewsItem(id, title, **kw)
         item = getattr(parent, id)
         version = item.get_editable()
@@ -78,7 +63,7 @@ class SilvaNewsTestCase(unittest.TestCase):
         return item
 
     def add_published_agenda_item(self, parent, id, title, sdt, edt=None, **kw):
-        factory = parent.manage_addProduct['SilvaNews']
+        factory = parent.manage_addProduct['silva.app.news']
         factory.manage_addAgendaItem(id, title, **kw)
         item = getattr(parent, id)
         ver = item.get_editable()

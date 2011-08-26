@@ -7,6 +7,10 @@ import os
 
 version = '3.0dev'
 
+tests_require = [
+    'Products.Silva [test]',
+    ]
+
 
 setup(name='silva.app.news',
       version=version,
@@ -73,5 +77,7 @@ setup(name='silva.app.news',
       path = silva.app.news.widgets.path:register
       [Products.SilvaExternalSources.sources]
       news = silva.app.news.codesources
-      """
+      """,
+      tests_require = tests_require,
+      extras_require = {'test': tests_require},
       )

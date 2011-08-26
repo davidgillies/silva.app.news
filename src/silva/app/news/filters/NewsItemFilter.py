@@ -33,7 +33,7 @@ _ = MessageFactory('silva_news')
 logger = logging.getLogger('silva.app.news.filter')
 
 
-class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
+class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
     """Super-class for news item filters.
 
     A NewsItemFilter picks up news from news sources. Editors can
@@ -139,9 +139,10 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_excluded_items')
     def get_excluded_items(self):
-        """Returns a list of object-paths of all excluded items
+        """Returns a list of all excluded items
         """
-        return self._excluded_items
+        resolve = getUtility(IIntIds).getObject
+        return map(resolve, self._excluded_items)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_keep_to_path')
@@ -223,11 +224,9 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     # these functions where used/copied in both AgendaFilter and NewsFilter,
     # so place here with clear notes on usage
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'search_items')
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'search_items')
     def search_items(self, keywords, meta_types=None):
-        """Returns the items from the catalog that have keywords in fulltext.
-        """
         keywords = unicode(keywords, 'UTF-8')
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
@@ -241,13 +240,6 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_next_items')
     def get_next_items(self, numdays, meta_types=None):
-        """ Note: ONLY called by AgendaViewers
-        Returns the next <number> AGENDAitems,
-        should return items that conform to the
-        AgendaItem-interface (IAgendaItemVersion), although it will in
-        any way because it requres start_datetime to be set.
-        NewsViewers use only get_last_items.
-        """
         if not self.has_sources():
             return []
 
@@ -262,9 +254,6 @@ class NewsItemFilter(NonPublishable, NewsCategorization, SimpleItem):
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_last_items')
     def get_last_items(self, number, number_is_days=0, meta_types=None):
-        """Returns the last (number) published items
-           This is _only_ used by News Viewers.
-        """
         if not self.has_sources():
             return []
 

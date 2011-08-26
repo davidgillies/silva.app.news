@@ -89,8 +89,8 @@ class NewsFilter(NewsItemFilter):
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_show_agenda_items')
-    def set_show_agenda_items(self, value):
-        self._show_agenda_items = not not int(value)
+    def set_show_agenda_items(self, flag):
+        self._show_agenda_items = bool(flag)
 
 
 InitializeClass(NewsFilter)

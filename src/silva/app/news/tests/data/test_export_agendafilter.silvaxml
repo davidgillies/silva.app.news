@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<silva xmlns="http://infrae.com/namespace/silva"
+       {namespaces} silva_version="{version}">
+  <folder id="export">
+    <metadata>
+      <set id="silva-content">
+        <silva-content:maintitle>Export Folder</silva-content:maintitle>
+        <silva-content:shorttitle/>
+      </set>
+      <set id="silva-extra">
+        <silva-extra:comment/>
+        <silva-extra:contactemail/>
+        <silva-extra:contactname/>
+        <silva-extra:content_description/>
+        <silva-extra:creationtime>YYYY-MM-DDTHH:MM:SS</silva-extra:creationtime>
+        <silva-extra:creator>author</silva-extra:creator>
+        <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
+        <silva-extra:keywords/>
+        <silva-extra:language/>
+        <silva-extra:lastauthor>author</silva-extra:lastauthor>
+        <silva-extra:modificationtime>YYYY-MM-DDTHH:MM:SS</silva-extra:modificationtime>
+        <silva-extra:subject/>
+      </set>
+    </metadata>
+    <content>
+      <silva-app-news:news_publication id="news">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>News Publication</silva-content:maintitle>
+            <silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/>
+            <silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>YYYY-MM-DDTHH:MM:SS</silva-extra:creationtime>
+            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
+            <silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>author</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              YYYY-MM-DDTHH:MM:SS
+            </silva-extra:modificationtime>
+            <silva-extra:subject/>
+          </set>
+          <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
+            <snn-np-settings:is_private>no</snn-np-settings:is_private>
+          </set>
+        </metadata>
+        <content>
+          <default>
+            <silva-app-news:news_viewer id="index" number_is_days="0" number_to_show="25" number_to_show_archive="10">
+              <metadata>
+                <set id="silva-content">
+                  <silva-content:maintitle>
+                    News Publication
+                  </silva-content:maintitle>
+                  <silva-content:shorttitle>
+                  </silva-content:shorttitle>
+                </set>
+                <set id="silva-extra">
+                  <silva-extra:comment>
+                  </silva-extra:comment>
+                  <silva-extra:contactemail>
+                  </silva-extra:contactemail>
+                  <silva-extra:contactname>
+                  </silva-extra:contactname>
+                  <silva-extra:content_description>
+                  </silva-extra:content_description>
+                  <silva-extra:creationtime>
+                    YYYY-MM-DDTHH:MM:SS
+                  </silva-extra:creationtime>
+                  <silva-extra:creator>
+                    author
+                  </silva-extra:creator>
+                  <silva-extra:hide_from_tocs>
+                    do not hide
+                  </silva-extra:hide_from_tocs>
+                  <silva-extra:keywords>
+                  </silva-extra:keywords>
+                  <silva-extra:language>
+                  </silva-extra:language>
+                  <silva-extra:lastauthor>
+                    author
+                  </silva-extra:lastauthor>
+                  <silva-extra:modificationtime>
+                    YYYY-MM-DDTHH:MM:SS
+                  </silva-extra:modificationtime>
+                  <silva-extra:subject>
+                  </silva-extra:subject>
+                </set>
+              </metadata>
+              <content>
+                <silva-app-news:filters>
+                  <silva-app-news:filter target="export/news/filter">
+                  </silva-app-news:filter>
+                </silva-app-news:filters>
+              </content>
+            </silva-app-news:news_viewer>
+          </default>
+          <silva-app-news:news_filter id="filter" keep_to_path="0" show_agenda_items="0" subjects="generic,root" target_audiences="all,root">
+            <metadata>
+              <set id="silva-content">
+                <silva-content:maintitle>
+                  Filter for News Publication
+                </silva-content:maintitle>
+                <silva-content:shorttitle>
+                </silva-content:shorttitle>
+              </set>
+              <set id="silva-extra">
+                <silva-extra:comment>
+                </silva-extra:comment>
+                <silva-extra:contactemail>
+                </silva-extra:contactemail>
+                <silva-extra:contactname>
+                </silva-extra:contactname>
+                <silva-extra:content_description>
+                </silva-extra:content_description>
+                <silva-extra:creationtime>
+                  YYYY-MM-DDTHH:MM:SS
+                </silva-extra:creationtime>
+                <silva-extra:creator>
+                  author
+                </silva-extra:creator>
+                <silva-extra:hide_from_tocs>
+                  do not hide
+                </silva-extra:hide_from_tocs>
+                <silva-extra:keywords>
+                </silva-extra:keywords>
+                <silva-extra:language>
+                </silva-extra:language>
+                <silva-extra:lastauthor>
+                  author
+                </silva-extra:lastauthor>
+                <silva-extra:modificationtime>
+                  YYYY-MM-DDTHH:MM:SS
+                </silva-extra:modificationtime>
+                <silva-extra:subject>
+                </silva-extra:subject>
+              </set>
+            </metadata>
+            <content>
+              <silva-app-news:sources>
+                <silva-app-news:source target="export/news">
+                </silva-app-news:source>
+              </silva-app-news:sources>
+              <silva-app-news:excludes>
+              </silva-app-news:excludes>
+            </content>
+          </silva-app-news:news_filter>
+        </content>
+      </silva-app-news:news_publication>
+      <silva-app-news:agenda_filter id="filter" keep_to_path="0" subjects="" target_audiences="">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Agenda Filter</silva-content:maintitle>
+            <silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/>
+            <silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>
+              YYYY-MM-DDTHH:MM:SS
+            </silva-extra:creationtime>
+            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
+            <silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>author</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              YYYY-MM-DDTHH:MM:SS
+            </silva-extra:modificationtime>
+            <silva-extra:subject/>
+          </set>
+        </metadata>
+        <content>
+          <silva-app-news:sources>
+            <silva-app-news:source target="export/news" />
+          </silva-app-news:sources>
+          <silva-app-news:excludes>
+          </silva-app-news:excludes>
+        </content>
+      </silva-app-news:agenda_filter>
+    </content>
+  </folder>
+</silva>

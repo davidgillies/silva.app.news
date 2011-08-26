@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<silva xmlns="http://infrae.com/namespace/silva"
+       xmlns:doc="http://infrae.com/namespace/silva-document"
+       xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content"
+       xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra"
+       xmlns:silva-find="http://infrae.com/namespace/silva-find"
+       xmlns:silva-app-news="http://infrae.com/namespace/silva-app-news"
+       silva_version="Silva 2.3b2">
+  <folder id="export">
+    <metadata>
+      <set id="silva-content">
+        <silva-content:maintitle>Export Folder</silva-content:maintitle>
+        <silva-content:shorttitle/>
+      </set>
+      <set id="silva-extra">
+        <silva-extra:comment/>
+        <silva-extra:contactemail/>
+        <silva-extra:contactname/>
+        <silva-extra:content_description/>
+        <silva-extra:creationtime>
+          2010-11-22T13:55:13Z
+        </silva-extra:creationtime>
+        <silva-extra:creator>author</silva-extra:creator>
+        <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
+        <silva-extra:keywords/>
+        <silva-extra:language/>
+        <silva-extra:lastauthor>author</silva-extra:lastauthor>
+        <silva-extra:modificationtime>
+          2010-11-22T13:55:14Z
+        </silva-extra:modificationtime>
+        <silva-extra:subject/>
+      </set>
+    </metadata>
+    <content>
+      <silva-app-news:news_publication id="news">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>News Publication</silva-content:maintitle>
+            <silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/>
+            <silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>
+              2010-11-22T13:55:13Z
+            </silva-extra:creationtime>
+            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
+            <silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>author</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              2010-11-22T13:55:14Z
+            </silva-extra:modificationtime>
+            <silva-extra:subject/>
+          </set>
+          <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
+            <snn-np-settings:is_private>no</snn-np-settings:is_private>
+          </set>
+        </metadata>
+        <content>
+        </content>
+      </silva-app-news:news_publication>
+      <silva-app-news:agenda_filter id="filter"
+                               keep_to_path="0"
+                               subjects=""
+                               target_audiences="">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Agenda Filter</silva-content:maintitle>
+            <silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/>
+            <silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>
+              2010-11-22T13:55:14Z
+            </silva-extra:creationtime>
+            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
+            <silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>author</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              2010-11-22T13:55:14Z
+            </silva-extra:modificationtime>
+            <silva-extra:subject/>
+          </set>
+        </metadata>
+        <content>
+          <silva-app-news:sources>
+            <silva-app-news:source target="export/news"/>
+            <silva-app-news:source target="export/events"/>
+          </silva-app-news:sources>
+        </content>
+      </silva-app-news:agenda_filter>
+      <silva-app-news:news_publication id="events">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Events</silva-content:maintitle>
+            <silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/>
+            <silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>
+              2010-11-22T13:55:13Z
+            </silva-extra:creationtime>
+            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
+            <silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>author</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              2010-11-22T13:55:14Z
+            </silva-extra:modificationtime>
+            <silva-extra:subject/>
+          </set>
+          <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
+            <snn-np-settings:is_private>no</snn-np-settings:is_private>
+          </set>
+        </metadata>
+        <content>
+        </content>
+      </silva-app-news:news_publication>
+    </content>
+  </folder>
+</silva>

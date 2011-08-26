@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <silva xmlns="http://infrae.com/namespace/silva"
-    xmlns:doc="http://infrae.com/namespace/silva-document"
     xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content"
     xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra"
-    xmlns:silva-find="http://infrae.com/namespace/silva-find"
-    xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
+    xmlns:silva-app-news="http://infrae.com/namespace/silva-app-news"
     silva_version="Silva 2.3b2">
   <folder id="export">
     <metadata>
@@ -30,10 +28,10 @@
       </set>
     </metadata>
     <content>
-      <silvanews:newspublication id="newspub">
+      <silva-app-news:news_publication id="news">
         <metadata>
           <set id="silva-content">
-            <silva-content:maintitle>NewsPublication</silva-content:maintitle>
+            <silva-content:maintitle>News Publication</silva-content:maintitle>
             <silva-content:shorttitle/>
           </set>
           <set id="silva-extra">
@@ -57,44 +55,14 @@
           </set>
         </metadata>
         <content>
-          <default>
-            <auto_toc depth="-1" display_desc_flag="False" id="index" show_icon="False" sort_order="silva" types="Silva Article,Silva Agenda Item">
-              <metadata>
-                <set id="silva-content">
-                  <silva-content:maintitle>NewsPublication</silva-content:maintitle>
-                  <silva-content:shorttitle/>
-                </set>
-                <set id="silva-extra">
-                  <silva-extra:comment/>
-                  <silva-extra:contactemail/>
-                  <silva-extra:contactname/>
-                  <silva-extra:content_description/>
-                  <silva-extra:creationtime>2010-10-23T10:42:42Z</silva-extra:creationtime>
-                  <silva-extra:creator>author</silva-extra:creator>
-                  <silva-extra:expirationtime/>
-                  <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
-                  <silva-extra:keywords/>
-                  <silva-extra:language/>
-                  <silva-extra:lastauthor>author</silva-extra:lastauthor>
-                  <silva-extra:modificationtime>2010-10-23T10:52:42Z</silva-extra:modificationtime>
-                  <silva-extra:publicationtime/>
-                  <silva-extra:subject/>
-                </set>
-              </metadata>
-            </auto_toc>
-          </default>
         </content>
-      </silvanews:newspublication>
-      <silvanews:newsfilter
-          excluded_items=""
+      </silva-app-news:news_publication>
+      <silva-app-news:news_filter
           id="filter"
           keep_to_path="0"
           show_agenda_items="0"
           subjects=""
           target_audiences="">
-        <silvanews:sources>
-          <silvanews:source target="export/newspub" />
-        </silvanews:sources>
         <metadata>
           <set id="silva-content">
             <silva-content:maintitle>News Filter</silva-content:maintitle>
@@ -117,7 +85,12 @@
             <silva-extra:subject/>
           </set>
         </metadata>
-      </silvanews:newsfilter>
+        <content>
+          <silva-app-news:sources>
+            <silva-app-news:source target="export/news" />
+          </silva-app-news:sources>
+        </content>
+      </silva-app-news:news_filter>
     </content>
   </folder>
 </silva>

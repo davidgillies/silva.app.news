@@ -14,6 +14,7 @@ from silva.app.document.interfaces import IDocument, IDocumentVersion
 from silva.app.news.datetimeutils import zone_names
 from silva.core.interfaces import INonPublishable, IPublication, IContent
 from silva.core.interfaces import ISilvaService
+from silva.app.news.datetimeutils import local_timezone
 
 _ = MessageFactory('silva_news')
 
@@ -136,10 +137,8 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     public pages to expose published news items to end users.
 
     A super-class for the News Filters (NewsFilter, AgendaFilter)
-    which contains shared code for both filters"""
-
-    def find_sources():
-        """returns all the sources available for querying"""
+    which contains shared code for both filters
+    """
 
     def get_sources():
         """return the source list of this newsitemfilter"""
@@ -157,22 +156,20 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
         """Removes the filter from the list of filters where the item
         should appear"""
 
-    def number_to_show():
-        """Returns amount of items to show."""
-
-    def set_number_to_show(number):
-        """Updates the list of target_audiences"""
-
-    def excluded_items():
-        """Returns a list of object-paths of all excluded items
+    def get_excluded_items():
+        """Returns a list of all excluded items
         """
 
-    def add_excluded_item(object):
-        """Add an item to or from the excluded_items list
+    def add_excluded_item(target):
+        """Exclude the target from any result list.
         """
 
-    def remove_exclude_item(object):
-        """ remove an item in excluded items
+    def remove_excluded_item(target):
+        """Remove the exclusion on targte from any result list.
+        """
+
+    def is_excluded_item(target):
+        """Return true if target is excluded.
         """
 
     def search_items(keywords, meta_types=None):
@@ -182,14 +179,12 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     #functions to aid in compatibility between news and agenda filters
     # and viewers, so the viewers can pull from both types of filters
 
-    def get_agenda_items_by_date(month, year, meta_types=None,
-            timezone=None):
-        """        Returns non-excluded published AGENDA-items for a particular
-        month. This method is for exclusive use by AgendaViewers only,
-        NewsViewers should use get_items_by_date instead (which
-        filters on display_datetime instead of start_datetime and
-        returns all objects instead of only IAgendaItem-
-        implementations)"""
+    def get_items_by_date(
+        month, year, timezone=local_timezone, meta_types=None):
+        """For looking through the archives
+        This is different because AgendaFilters search on start/end
+        datetime, whereas NewsFilters look at display datetime
+        """
 
     def get_next_items(numdays, meta_types=None):
         """ Note: ONLY called by AgendaViewers
@@ -205,6 +200,11 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
            This is _only_ used by News Viewers.
         """
 
+    def get_allowed_meta_types():
+        """Return allowed meta_type for items that the filter should
+        return.
+        """
+
 
 class INewsFilter(INewsItemFilter):
     """Filter for news items
@@ -213,35 +213,17 @@ class INewsFilter(INewsItemFilter):
     def show_agenda_items():
         """should we also show agenda items?"""
 
-    def set_show_agenda_items():
+    def set_show_agenda_items(flag):
         """sets whether to show agenda items"""
-
-    def get_allowed_meta_types():
-        """returns what metatypes are filtered on
-        This is different because AgendaFilters search on start/end
-        datetime, whereas NewsFilters look at display datetime"""
 
     def get_all_items(meta_types=None):
         """Returns all items, only to be used on the back-end"""
 
-    def get_items_by_date(month, year, meta_types=None):
-        """For looking through the archives
-        This is different because AgendaFilters search on start/end
-        datetime, whereas NewsFilters look at display datetime"""
 
 
 class IAgendaFilter(INewsItemFilter):
     """Filter for agenda items
     """
-
-    def get_items_by_date(month, year, meta_types=None):
-        """gets the events for a specific month
-        This is different because AgendaFilters search on start/end
-        datetime, whereas NewsFilters look at display datetime"""
-
-    def backend_get_items_by_date(month, year, meta_types=None):
-        """Returns all published items for a particular month
-           FOR: the SMI 'items' tab"""
 
 
 class IViewer(IContent):
@@ -354,10 +336,6 @@ class INewsViewer(IViewer):
 
     def add_filter(filter):
         """ add a filter.
-        """
-
-    def findfilters():
-        """Returns a list of all paths to all filters.
         """
 
     def get_items():
