@@ -64,9 +64,8 @@
         </content>
       </silva-app-news:news_publication>
       <silva-app-news:agenda_filter id="filter"
-                               keep_to_path="0"
-                               subjects=""
-                               target_audiences="">
+                                    subjects=""
+                                    target_audiences="">
         <metadata>
           <set id="silva-content">
             <silva-content:maintitle>Agenda Filter</silva-content:maintitle>

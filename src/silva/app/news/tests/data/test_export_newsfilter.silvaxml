@@ -104,7 +104,10 @@
               </content>
             </silva-app-news:news_viewer>
           </default>
-          <silva-app-news:news_filter id="filter" keep_to_path="0" show_agenda_items="0" subjects="generic,root" target_audiences="all,root">
+          <silva-app-news:news_filter id="filter"
+                                      show_agenda_items="0"
+                                      subjects="generic,root"
+                                      target_audiences="all,root">
             <metadata>
               <set id="silva-content">
                 <silva-content:maintitle>
@@ -156,12 +159,10 @@
           </silva-app-news:news_filter>
         </content>
       </silva-app-news:news_publication>
-      <silva-app-news:news_filter
-         id="filter"
-         keep_to_path="0"
-         show_agenda_items="0"
-         subjects=""
-         target_audiences="">
+      <silva-app-news:news_filter id="filter"
+                                  show_agenda_items="0"
+                                  subjects=""
+                                  target_audiences="">
         <metadata>
           <set id="silva-content">
             <silva-content:maintitle>News Filter</silva-content:maintitle>

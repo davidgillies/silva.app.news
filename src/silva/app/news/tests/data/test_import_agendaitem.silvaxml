@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <silva xmlns="http://infrae.com/namespace/silva"
-  xmlns:doc="http://infrae.com/namespace/silva-document"
-  xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content"
-  xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra"
-  xmlns:silva-find="http://infrae.com/namespace/silva-find"
-  xmlns:silvanews="http://infrae.com/namespace/silva-news-network"
-  silva_version="Silva 2.3b2">
+       xmlns:doc="http://infrae.com/namespace/silva-document"
+       xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content"
+       xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra"
+       xmlns:silva-app-news="http://infrae.com/namespace/silva-app-news"
+       xmlns:silva-core-editor="http://infrae.com/namespace/silva-core-editor"
+       xmlns:html="http://www.w3.org/1999/xhtml"
+       silva_version="Silva 2.89">
   <folder id="export">
     <metadata>
       <set id="silva-content">
@@ -17,23 +18,26 @@
         <silva-extra:contactemail/>
         <silva-extra:contactname/>
         <silva-extra:content_description/>
-        <silva-extra:creationtime>2010-11-23T16:02:33Z</silva-extra:creationtime>
-        <silva-extra:creator>author</silva-extra:creator>
-        <silva-extra:expirationtime/>
+        <silva-extra:creationtime>
+          2010-11-23T16:02:33Z
+        </silva-extra:creationtime>
+        <silva-extra:creator>Bender</silva-extra:creator>
         <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
         <silva-extra:keywords/>
         <silva-extra:language/>
-        <silva-extra:lastauthor>author</silva-extra:lastauthor>
-        <silva-extra:modificationtime>2010-11-23T16:02:33Z</silva-extra:modificationtime>
+        <silva-extra:lastauthor>Bender</silva-extra:lastauthor>
+        <silva-extra:modificationtime>
+          2010-11-23T16:02:33Z
+        </silva-extra:modificationtime>
         <silva-extra:publicationtime/>
         <silva-extra:subject/>
       </set>
     </metadata>
     <content>
-      <silvanews:newspublication id="newspub">
+      <silva-app-news:news_publication id="news">
         <metadata>
           <set id="silva-content">
-            <silva-content:maintitle>NewsPublication</silva-content:maintitle>
+            <silva-content:maintitle>News Publication</silva-content:maintitle>
             <silva-content:shorttitle/>
           </set>
           <set id="silva-extra">
@@ -41,15 +45,18 @@
             <silva-extra:contactemail/>
             <silva-extra:contactname/>
             <silva-extra:content_description/>
-            <silva-extra:creationtime>2010-11-23T16:02:33Z</silva-extra:creationtime>
-            <silva-extra:creator>author</silva-extra:creator>
+            <silva-extra:creationtime>
+              2010-11-23T16:02:33Z
+            </silva-extra:creationtime>
+            <silva-extra:creator>Bender</silva-extra:creator>
             <silva-extra:expirationtime/>
             <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
             <silva-extra:keywords/>
             <silva-extra:language/>
-            <silva-extra:lastauthor>author</silva-extra:lastauthor>
-            <silva-extra:modificationtime>2010-11-23T16:02:33Z</silva-extra:modificationtime>
-            <silva-extra:publicationtime/>
+            <silva-extra:lastauthor>Bender</silva-extra:lastauthor>
+            <silva-extra:modificationtime>
+              2010-11-23T16:02:33Z
+            </silva-extra:modificationtime>
             <silva-extra:subject/>
           </set>
           <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
@@ -57,33 +64,7 @@
           </set>
         </metadata>
         <content>
-          <default>
-            <auto_toc depth="-1" display_desc_flag="False" id="index" show_icon="False" sort_order="silva" types="Silva Article,Silva Agenda Item">
-              <metadata>
-                <set id="silva-content">
-                  <silva-content:maintitle>NewsPublication</silva-content:maintitle>
-                  <silva-content:shorttitle/>
-                </set>
-                <set id="silva-extra">
-                  <silva-extra:comment/>
-                  <silva-extra:contactemail/>
-                  <silva-extra:contactname/>
-                  <silva-extra:content_description/>
-                  <silva-extra:creationtime>2010-11-23T16:02:33Z</silva-extra:creationtime>
-                  <silva-extra:creator>author</silva-extra:creator>
-                  <silva-extra:expirationtime/>
-                  <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
-                  <silva-extra:keywords/>
-                  <silva-extra:language/>
-                  <silva-extra:lastauthor>author</silva-extra:lastauthor>
-                  <silva-extra:modificationtime>2010-11-23T16:02:33Z</silva-extra:modificationtime>
-                  <silva-extra:publicationtime/>
-                  <silva-extra:subject/>
-                </set>
-              </metadata>
-            </auto_toc>
-          </default>
-          <silvanews:plainagendaitem id="event">
+          <silva-app-news:agenda_item id="event">
             <workflow>
               <version id="0">
                 <status>public</status>
@@ -92,18 +73,20 @@
               </version>
             </workflow>
             <content all_day="True"
-                display_datetime="2010-09-30T08:00:00Z"
-                end_datetime="2010-09-01T09:00:00Z"
-                location="Rotterdam"
-                recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
-                start_datetime="2010-09-01T08:00:00Z"
-                subjects="all"
-                target_audiences="generic"
-                timezone_name="Europe/Amsterdam"
-                version_id="0">
+                     display_datetime="2010-09-30T08:00:00Z"
+                     end_datetime="2010-09-01T09:00:00Z"
+                     location="Long Long Island"
+                     recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
+                     start_datetime="2010-09-01T08:00:00Z"
+                     subjects="all"
+                     target_audiences="generic"
+                     timezone_name="America/New York"
+                     version_id="0">
               <metadata>
                 <set id="silva-content">
-                  <silva-content:maintitle>Some event</silva-content:maintitle>
+                  <silva-content:maintitle>
+                    Great news everybody !
+                  </silva-content:maintitle>
                   <silva-content:shorttitle/>
                 </set>
                 <set id="silva-extra">
@@ -111,23 +94,40 @@
                   <silva-extra:contactemail/>
                   <silva-extra:contactname/>
                   <silva-extra:content_description/>
-                  <silva-extra:creationtime>2010-11-23T16:02:33Z</silva-extra:creationtime>
-                  <silva-extra:creator>author</silva-extra:creator>
-                  <silva-extra:expirationtime/>
-                  <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
+                  <silva-extra:creationtime>
+                    2010-11-23T16:02:33Z
+                  </silva-extra:creationtime>
+                  <silva-extra:creator>
+                    Hubert J. Farnsworth
+                  </silva-extra:creator>
+                  <silva-extra:hide_from_tocs>
+                    do not hide
+                  </silva-extra:hide_from_tocs>
                   <silva-extra:keywords/>
                   <silva-extra:language/>
-                  <silva-extra:lastauthor>author</silva-extra:lastauthor>
-                  <silva-extra:modificationtime>2010-11-23T16:02:33Z</silva-extra:modificationtime>
-                  <silva-extra:publicationtime>2010-11-23T16:02:34Z</silva-extra:publicationtime>
+                  <silva-extra:lastauthor>
+                    Hubert J. Farnsworth
+                  </silva-extra:lastauthor>
+                  <silva-extra:modificationtime>
+                    2010-11-23T16:02:33Z
+                  </silva-extra:modificationtime>
                   <silva-extra:subject/>
                 </set>
               </metadata>
-              <doc:doc/>
+              <silva-app-news:body>
+                <silva-core-editor:text>
+                  <html:div>
+                    <html:h1>
+                      Great news everybody !
+                    </html:h1>
+                    <html:p>We found new broken tests to fix.</html:p>
+                  </html:div>
+                </silva-core-editor:text>
+              </silva-app-news:body>
             </content>
-          </silvanews:plainagendaitem>
+          </silva-app-news:agenda_item>
         </content>
-      </silvanews:newspublication>
+      </silva-app-news:news_publication>
     </content>
   </folder>
 </silva>

@@ -51,7 +51,6 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
 
     def __init__(self, id):
         super(NewsItemFilter, self).__init__(id)
-        self._keep_to_path = 0
         self._excluded_items = set()
 
     # ACCESSORS
@@ -79,13 +78,6 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
 
     def _get_sources_path(self):
         return map(lambda s: s.getPhysicalPath(), self.get_sources())
-
-    security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'keep_to_path')
-    def keep_to_path(self):
-        """Returns true if the item should keep to path
-        """
-        return self._keep_to_path
 
     # MANIPULATORS
 
@@ -143,17 +135,6 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
         """
         resolve = getUtility(IIntIds).getObject
         return map(resolve, self._excluded_items)
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_keep_to_path')
-    def set_keep_to_path(self, value):
-        """
-        Sets the keep_to_path property to restrict the searcharea of
-        the browser
-        """
-        # make sure the var will contain either 0 or 1
-        self._keep_to_path = not not value
-        ICataloging(self).reindex()
 
     # HELPERS
 
@@ -328,7 +309,5 @@ class INewsItemFilterSchema(INewsCategorizationSchema):
         value_type=schema.Choice(source=news_source),
         title=_(u"sources"),
         description=_(u"Use predefined sources."))
-    _keep_to_path = schema.Bool(
-        title=_(u"stick to path"))
 
 

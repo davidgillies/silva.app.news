@@ -3,9 +3,8 @@
        xmlns:doc="http://infrae.com/namespace/silva-document"
        xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content"
        xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra"
-       xmlns:silva-find="http://infrae.com/namespace/silva-find"
        xmlns:silva-app-news="http://infrae.com/namespace/silva-app-news"
-       silva_version="Silva 3.0">
+       silva_version="Silva 2.999">
   <folder id="export">
     <metadata>
       <set id="silva-content">
@@ -100,7 +99,6 @@
         </content>
       </silva-app-news:news_viewer>
       <silva-app-news:news_filter id="filter"
-                                  keep_to_path="0"
                                   show_agenda_items="0"
                                   subjects=""
                                   target_audiences="">

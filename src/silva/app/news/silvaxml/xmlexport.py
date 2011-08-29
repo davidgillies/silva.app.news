@@ -94,8 +94,7 @@ class NewsFilterProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
             {'id': self.context.id,
              'target_audiences': ','.join(self.context.get_target_audiences()),
              'subjects': ','.join(self.context.get_subjects()),
-             'show_agenda_items': str(self.context.show_agenda_items()),
-             'keep_to_path': str(self.context.keep_to_path())})
+             'show_agenda_items': str(self.context.show_agenda_items())})
         self.metadata()
         self.startElement('content')
         self.sources()
@@ -137,8 +136,7 @@ class AgendaFilterProducer(NewsFilterProducer):
             'agenda_filter',
             {'id': self.context.id,
              'target_audiences': ','.join(self.context.get_target_audiences()),
-             'subjects': ','.join(self.context.get_subjects()),
-             'keep_to_path': str(self.context.keep_to_path())})
+             'subjects': ','.join(self.context.get_subjects())})
         self.metadata()
         self.startElement('content')
         self.sources()
@@ -196,8 +194,8 @@ class AgendaViewerProducer(NewsViewerProducer):
         self.endElementNS(NS_NEWS_URI,'agenda_viewer')
 
 
-class PlainArticleProducer(xmlexport.SilvaVersionedContentProducer):
-    """Export a PlainArticle object to XML.
+class NewsItemProducer(xmlexport.SilvaVersionedContentProducer):
+    """Export a NewsItem object to XML.
     """
     grok.adapts(interfaces.INewsItem, Interface)
 
@@ -210,8 +208,8 @@ class PlainArticleProducer(xmlexport.SilvaVersionedContentProducer):
         self.endElementNS(NS_NEWS_URI,'news_item')
 
 
-class PlainArticleVersionProducer(xmlexport.SilvaProducer):
-    """Export a version of a PlainArticle object to XML.
+class NewsItemVersionProducer(xmlexport.SilvaProducer):
+    """Export a version of a NewsItem object to XML.
     """
     grok.adapts(interfaces.INewsItemVersion, Interface)
 
@@ -231,7 +229,7 @@ class PlainArticleVersionProducer(xmlexport.SilvaProducer):
         self.endElement('content')
 
 
-class PlainAgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
+class AgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
     """Export an AgendaItem object to XML.
     """
     grok.adapts(interfaces.IAgendaItem, Interface)
@@ -245,7 +243,7 @@ class PlainAgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
         self.endElementNS(NS_NEWS_URI,'agenda_item')
 
 
-class PlainAgendaItemVersionProducer(xmlexport.SilvaProducer):
+class AgendaItemVersionProducer(xmlexport.SilvaProducer):
     """Export a version of an AgendaItem object to XML.
     """
     grok.adapts(interfaces.IAgendaItemVersion, Interface)

@@ -149,13 +149,6 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     def add_source(source):
         """add a"""
 
-    def keep_to_path():
-        """Returns true if the item should keep to path"""
-
-    def set_keep_to_path(value):
-        """Removes the filter from the list of filters where the item
-        should appear"""
-
     def get_excluded_items():
         """Returns a list of all excluded items
         """
