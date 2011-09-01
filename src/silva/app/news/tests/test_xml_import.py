@@ -36,6 +36,7 @@ class XMLImportTestCase(SilvaXMLTestCase):
 
         self.assertEqual(export.news.get_title(), 'News Publication')
         self.assertEqual(export.filter.get_title(), 'News Filter')
+        self.assertEqual(export.filter.show_agenda_items(), False)
         self.assertEqual(export.filter.get_sources(), [export.news])
         self.assertEqual(
             map(aq_chain, export.filter.get_sources()),
@@ -85,6 +86,7 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertTrue(verifyObject(interfaces.INewsFilter, export.filter))
         self.assertTrue(verifyObject(interfaces.INewsViewer, export.viewer))
 
+        self.assertEqual(export.filter.show_agenda_items(), True)
         self.assertEqual(export.viewer.get_title(), 'News Viewer')
         self.assertEqual(
             export.viewer.get_filters(),
@@ -94,7 +96,30 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.filter)])
 
     def test_agenda_viewer(self):
-        assert False, 'TBD'
+        self.import_file('test_import_agendaviewer.silvaxml', globs=globals())
+        self.assertEventsAre(
+            ['ContentImported for /root/export',
+             'ContentImported for /root/export/news',
+             'ContentImported for /root/export/viewer',
+             'ContentImported for /root/export/filter'],
+            IContentImported)
+
+        self.assertEquals(
+            self.root.export.objectIds(),
+            ['news', 'viewer', 'filter'])
+        export = self.root.export
+
+        self.assertTrue(verifyObject(interfaces.INewsPublication, export.news))
+        self.assertTrue(verifyObject(interfaces.IAgendaFilter, export.filter))
+        self.assertTrue(verifyObject(interfaces.IAgendaViewer, export.viewer))
+
+        self.assertEqual(export.viewer.get_title(), 'Agenda Viewer')
+        self.assertEqual(
+            export.viewer.get_filters(),
+            [export.filter])
+        self.assertEqual(
+            map(aq_chain, export.viewer.get_filters()),
+            [aq_chain(export.filter)])
 
     def test_news_item(self):
         self.import_file('test_import_newsitem.silvaxml', globs=globals())

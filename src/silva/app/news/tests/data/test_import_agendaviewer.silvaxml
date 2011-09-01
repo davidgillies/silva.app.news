@@ -64,13 +64,13 @@
         <content>
         </content>
       </silva-app-news:news_publication>
-      <silva-app-news:news_viewer id="viewer"
-                                  number_is_days="0"
-                                  number_to_show="25"
-                                  number_to_show_archive="10">
+      <silva-app-news:agenda_viewer id="viewer"
+                                    number_is_days="0"
+                                    number_to_show="25"
+                                    number_to_show_archive="10">
         <metadata>
           <set id="silva-content">
-            <silva-content:maintitle>News Viewer</silva-content:maintitle>
+            <silva-content:maintitle>Agenda Viewer</silva-content:maintitle>
             <silva-content:shorttitle/>
           </set>
           <set id="silva-extra">
@@ -97,11 +97,10 @@
             <silva-app-news:filter target="export/filter" />
           </silva-app-news:filters>
         </content>
-      </silva-app-news:news_viewer>
-      <silva-app-news:news_filter id="filter"
-                                  show_agenda_items="1"
-                                  subjects=""
-                                  target_audiences="">
+      </silva-app-news:agenda_viewer>
+      <silva-app-news:agenda_filter id="filter"
+                                    subjects=""
+                                    target_audiences="">
         <metadata>
           <set id="silva-content">
             <silva-content:maintitle>News Filter</silva-content:maintitle>
@@ -131,7 +130,7 @@
           <silva-app-news:source target="export/news"/>
         </silva-app-news:sources>
         </content>
-      </silva-app-news:news_filter>
+      </silva-app-news:agenda_filter>
     </content>
   </folder>
 </silva>
