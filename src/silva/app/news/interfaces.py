@@ -19,10 +19,6 @@ from silva.app.news.datetimeutils import local_timezone
 _ = MessageFactory('silva_news')
 
 
-class ISilvaNewsExtension(Interface):
-    """Marker interface for SNN Extension"""
-
-
 @grok.provider(IContextSourceBinder)
 def subjects_source(context):
     service = getUtility(IServiceNewsCategorization)
@@ -420,3 +416,7 @@ class IServiceNews(IServiceNewsCategorization):
     def get_all_sources(item=None):
         """Return all sources for News Item, global, or below the given item.
         """
+
+
+### BBB
+from silva.app.news.installer import IExtension as ISilvaNewsExtension

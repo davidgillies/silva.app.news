@@ -2,19 +2,22 @@
 # See also LICENSE.txt
 # $Id$
 
-from SilvaNewsTestCase import SilvaNewsTestCase
+from zope.component import queryUtility
+from silva.app.news.interfaces import IServiceNews
+from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
 from Products.Silva.roleinfo import AUTHOR_ROLES
+
 
 class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
 
-    def test_news_service_available(self):
-        #make sure the news service is present
-        self.assertEquals(True, hasattr(self.root,'service_news'))
-
-    def is_installed(self):
-        self.assertEquals(True,
-                          self.root.service_extensions.is_installed(
-                'SilvaNews'))
+    def test_installation(self):
+        self.assertEqual(
+            self.root.service_extensions.is_installed('silva.app.news'),
+            True)
+        self.assertTrue('service_news' in self.root.objectIds())
+        service = queryUtility(IServiceNews)
+        self.assertNotEqual(service, None)
+        self.assertEqual(service, self.root.service_news)
 
     def test_catalog_indexes(self):
         #ensure catalog indexes are setup
@@ -34,8 +37,8 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
                 if i.id == id:
                     index = i
                     break
-            self.assertEquals(id, index.id)
-            self.assertEquals(index.meta_type,mt)
+            self.assertEqual(id, index.id)
+            self.assertEqual(index.meta_type,mt)
 
     def test_security(self):
         #ensure addable security is assigned to the
@@ -61,7 +64,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
             if perm in possible_permissions:
                 roles = [ r['name'] for r in root.rolesOfPermission(perm)
                           if r['selected'] == 'SELECTED' ]
-                self.assertEquals(a_roles,roles)
+                self.assertEqual(a_roles,roles)
 
     def test_addables(self):
         # make sure the root addables doesn't include

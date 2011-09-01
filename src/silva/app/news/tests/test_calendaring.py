@@ -44,7 +44,7 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         super(TestAgendaViewerLookup, self).setUp()
         self.tz = get_timezone('Europe/Amsterdam')
         root = self.layer.get_application()
-        factory = root.manage_addProduct['SilvaNews']
+        factory = root.manage_addProduct['silva.app.news']
         factory.manage_addAgendaFilter('agenda_filter', 'Agenda Filter')
         factory.manage_addAgendaViewer('agenda_viewer', 'Agenda Viewer')
         self.root.agenda_viewer.set_timezone_name('Europe/Amsterdam')

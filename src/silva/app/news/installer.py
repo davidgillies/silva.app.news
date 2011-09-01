@@ -4,8 +4,12 @@ from App.Common import package_home
 
 from silva.core.services.catalog import RecordStyle
 from silva.core.conf.installer import DefaultInstaller
+from zope.interface import Interface
 
-from silva.app.news.interfaces import ISilvaNewsExtension
+
+class IExtension(Interface):
+    """silva.app.news extension
+    """
 
 
 class SilvaNewsInstaller(DefaultInstaller):
@@ -17,7 +21,7 @@ class SilvaNewsInstaller(DefaultInstaller):
         self.setup_catalog(root)
         self.configure_extra_metadata(root)
 
-        if not hasattr(root.aq_explicit,'service_news'):
+        if 'service_news' not in root.objectIds():
             factory = root.manage_addProduct['silva.app.news']
             factory.manage_addServiceNews('service_news')
 
@@ -79,4 +83,4 @@ class SilvaNewsInstaller(DefaultInstaller):
                 catalog.addIndex(field_name, field_type)
 
 
-install = SilvaNewsInstaller("silva.app.news", ISilvaNewsExtension)
+install = SilvaNewsInstaller("silva.app.news", IExtension)

@@ -12,7 +12,7 @@ class TestRendering(SilvaNewsTestCase):
         self.browser.options.handle_errors = False
 
     def test_render_simple_article(self):
-        factory = self.root.manage_addProduct['SilvaNews']
+        factory = self.root.manage_addProduct['silva.app.news']
         factory.manage_addNewsItem('article', 'Article from SilvaNews')
         article = self.root.article
         article.set_unapproved_version_publication_datetime(DateTime())

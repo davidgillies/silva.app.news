@@ -19,7 +19,6 @@ from OFS.SimpleItem import SimpleItem
 from Products.Silva import SilvaPermissions
 from Products.Silva.Publishable import NonPublishable
 from silva.core.references.reference import ReferenceSet
-from silva.core.services.interfaces import ICataloging
 
 from silva.app.news.interfaces import INewsItemFilter, IServiceNews
 from silva.app.news.interfaces import news_source

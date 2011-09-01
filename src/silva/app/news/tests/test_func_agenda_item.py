@@ -11,7 +11,7 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
 
     def setUp(self):
         self.root = self.layer.get_application()
-        factory = self.root.manage_addProduct['SilvaNews']
+        factory = self.root.manage_addProduct['silva.app.news']
         factory.manage_addNewsPublication('news', 'News Publication')
         transaction.commit()
 

@@ -39,7 +39,7 @@ class IReadableRoot(IReadableNode):
         """Return a node by its id.
         """
 
-    def get_elements(id):
+    def get_elements():
         """Return all nodes.
         """
 
@@ -96,7 +96,7 @@ class Node:
         return self._parent
 
     def set_id(self, id):
-        if id in self._root.getIds():
+        if id in self._root.get_ids():
             raise DuplicateIdError(
                 u'identifier already in use - %s' % id)
         del self._root._references[self._id]
