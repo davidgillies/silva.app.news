@@ -23,7 +23,7 @@
             <enabled type="int">1</enabled>
             <external_validator></external_validator>
             <hidden type="int">0</hidden>
-            <interface type="interface">silva.app.news.interfaces.INewsViewer</interface>
+            <interface type="interface">silva.app.news.interfaces.IViewer</interface>
             <multiple type="int">0</multiple>
             <required type="int">1</required>
             <title>Viewer</title>

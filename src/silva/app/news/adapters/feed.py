@@ -7,7 +7,7 @@ from zope.component import queryMultiAdapter
 
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
 from Products.Silva.browser import feed
-from silva.app.news.interfaces import INewsViewer, IAggregator
+from silva.app.news.interfaces import INewsViewer, IRSSAggregator
 from silva.app.news.interfaces import INewsPublication
 
 
@@ -98,7 +98,7 @@ class AggregatorFeedEntry(object):
 
 
 class AggregatorFeedProvider(grok.MultiAdapter):
-    grok.adapts(IAggregator, Interface)
+    grok.adapts(IRSSAggregator, Interface)
     grok.implements(IFeedEntryProvider)
 
     def entries(self):

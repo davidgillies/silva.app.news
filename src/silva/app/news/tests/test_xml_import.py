@@ -207,7 +207,26 @@ class XMLImportTestCase(SilvaXMLTestCase):
 """, unicode(version.body))
 
     def test_rss_aggregator(self):
-        assert False, 'TBD'
+        self.import_file('test_import_rssaggregator.silvaxml', globs=globals())
+        self.assertEventsAre(
+            ['ContentImported for /root/export',
+             'ContentImported for /root/export/news',
+             'ContentImported for /root/export/empty'],
+            IContentImported)
+
+        self.assertEqual(
+            self.root.export.objectIds(),
+            ['news', 'empty'])
+
+        rss = self.root.export.news
+        rss_empty = self.root.export.empty
+        self.assertTrue(verifyObject(interfaces.IRSSAggregator, rss))
+        self.assertTrue(verifyObject(interfaces.IRSSAggregator, rss_empty))
+        self.assertEqual(rss.get_title(), 'Latest Ubernet news')
+        self.assertEqual(rss.get_feeds(), ['foo', 'bar'])
+
+        self.assertEqual(rss_empty.get_title(), 'Nothing to see here')
+        self.assertEqual(rss_empty.get_feeds(), [])
 
     def test_full(self):
         # A news pub with a viewer (index) a filter (filter) customized

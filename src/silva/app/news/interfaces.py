@@ -216,7 +216,32 @@ class IAgendaFilter(INewsItemFilter):
 
 
 class IViewer(IContent):
-    """Base interface for SilvaNews Viewers"""
+    """Base interface for SilvaNews Viewers
+    """
+
+
+class IRSSAggregator(IViewer):
+    """Aggregator of RSS items
+    """
+
+    def set_feeds(rss_feeds):
+        """Set a list of URLs to use and fetch content from.
+        """
+
+    def get_feeds():
+        """Return the list of URLs used to fetch content from.
+        """
+
+    def get_feed_contents():
+        """Return the contents of all given feeds in a dict.
+
+        keys are the feeds set with set_feeds, values are dicts describing
+        the feeds content.
+        """
+
+    def get_merged_feed_contents():
+        pass
+
 
 _number_to_show = [
     (_(u"number of days"), 1),
@@ -342,10 +367,6 @@ class INewsViewer(IViewer):
     def set_proxy(item, force=False):
         """ Set the news viewer as parent of the item if proxy mode enabled.
         """
-
-class IAggregator(INewsViewer):
-    """Aggregator of RSS items
-    """
 
 
 class IAgendaViewer(INewsViewer):

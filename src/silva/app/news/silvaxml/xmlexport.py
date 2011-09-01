@@ -69,7 +69,7 @@ class NewsPublicationProducer(xmlexport.SilvaContainerProducer):
 class RSSAggregatorProducer(xmlexport.SilvaProducer):
      """Export a RSSAggregator object to XML.
      """
-     grok.adapts(interfaces.IAggregator, Interface)
+     grok.adapts(interfaces.IRSSAggregator, Interface)
 
      def sax(self):
          self.startElementNS(

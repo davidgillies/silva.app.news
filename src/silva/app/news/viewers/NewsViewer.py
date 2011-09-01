@@ -328,7 +328,7 @@ class NewsViewerEditForm(silvaforms.SMIEditForm):
     """ Edit form for news viewer
     """
     grok.context(INewsViewer)
-    fields = silvaforms.Fields(INewsViewerSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema).omit('id')
     fields['number_is_days'].mode = u'radio'
 
 

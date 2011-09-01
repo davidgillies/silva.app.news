@@ -5,6 +5,7 @@
 import time
 import feedparser
 
+from five import grok
 from zope.interface import Interface
 from zope import schema
 from zope.i18nmessageid import MessageFactory
@@ -12,21 +13,22 @@ from zope.i18nmessageid import MessageFactory
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
+from OFS.SimpleItem import SimpleItem
 
 from Products.Silva import SilvaPermissions
-from five import grok
+from Products.Silva.Content import Content
 from silva.core import conf as silvaconf
+from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
 from zeam.form import silva as silvaforms
 
 # SilvaNews
-from silva.app.news.viewers.NewsViewer import NewsViewer
-from silva.app.news.interfaces import IAggregator
+from silva.app.news.interfaces import IRSSAggregator
 
 _ = MessageFactory('silva_news')
 
 
-class RSSAggregator(NewsViewer):
+class RSSAggregator(Content, SimpleItem):
     """The aggregator is used to display content from RSS feeds,
        either from Silva or from extenal sites. One or more feeds are
        merged into a listing for public presentation. The titles and
@@ -36,7 +38,7 @@ class RSSAggregator(NewsViewer):
     security = ClassSecurityInfo()
 
     meta_type = 'Silva RSS Aggregator'
-    grok.implements(IAggregator)
+    grok.implements(IRSSAggregator)
     silvaconf.icon("www/rss_aggregator.png")
     silvaconf.priority(3.5)
 
@@ -53,7 +55,7 @@ class RSSAggregator(NewsViewer):
         SilvaPermissions.ChangeSilvaContent, 'set_feeds')
     def set_feeds(self, rss_feeds):
         self._v_cache = None
-        self._rss_feeds = rss_feeds
+        self._rss_feeds = list(rss_feeds)
         self._rss_feeds.sort()
 
     # ACCESSORS
@@ -109,11 +111,6 @@ class RSSAggregator(NewsViewer):
 InitializeClass(RSSAggregator)
 
 
-class RSSAggregatorAddForm(silvaforms.SMIAddForm):
-    grok.context(IAggregator)
-    grok.name(u'Silva RSS Aggregator')
-
-
 class IRSSAggregatorSchema(Interface):
     feeds = schema.List(
         value_type=schema.TextLine(),
@@ -122,16 +119,24 @@ class IRSSAggregatorSchema(Interface):
                       u'to use as sources of news items.'))
 
 
+class RSSAggregatorAddForm(silvaforms.SMIAddForm):
+    grok.context(IRSSAggregator)
+    grok.name(u'Silva RSS Aggregator')
+
+    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorSchema)
+    fields['feeds'].allowOrdering = False
+
+
 class RSSAggregatorEditForm(silvaforms.SMIEditForm):
     """ Edit form for RSS aggregators
     """
-    grok.context(IAggregator)
-    fields = silvaforms.Fields(IRSSAggregatorSchema)
+    grok.context(IRSSAggregator)
+    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorSchema).omit('id')
     fields['feeds'].allowOrdering = False
 
 
 class RSSAggregatorView(silvaviews.View):
-    grok.context(IAggregator)
+    grok.context(IRSSAggregator)
 
     def update(self):
         self.items = self.context.get_merged_feed_contents()

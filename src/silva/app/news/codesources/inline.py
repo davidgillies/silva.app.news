@@ -8,7 +8,7 @@ from DateTime import DateTime
 from five import grok
 from silva.app.document.interfaces import IDocumentDetails
 from silva.app.news.interfaces import IAgendaItemVersion
-from silva.app.news.interfaces import INewsViewer, IAggregator
+from silva.app.news.interfaces import INewsViewer, IRSSAggregator
 from zope.component import queryMultiAdapter
 from zope.interface import Interface
 from zope.traversing.browser import absoluteURL
@@ -197,7 +197,7 @@ class RSSItemReference(object):
 
 class RSSAggregatorNewsProvider(grok.Adapter):
     grok.implements(INewsProvider)
-    grok.context(IAggregator)
+    grok.context(IRSSAggregator)
 
     def get_items(self, request, number):
         """return a number of the most current items

@@ -247,7 +247,7 @@ class RSSAggregatorHandler(SilvaBaseHandler):
     grok.name('rss_aggregator')
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_NEWS_URI,'rssaggregator'):
+        if name == (NS_NEWS_URI,'rss_aggregator'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
             factory = self.parent().manage_addProduct['silva.app.news']
