@@ -231,7 +231,12 @@ class XMLImportTestCase(SilvaXMLTestCase):
     def test_full(self):
         # A news pub with a viewer (index) a filter (filter) customized
         # A news item, an agenda item, and an another one excluded
-        assert False, 'TBD'
+        self.import_file('test_import_full.silvaxml', globs=globals())
+        self.assertEventsAre(
+            ['ContentImported for /root/export',
+             'ContentImported for /root/export/news',
+             'ContentImported for /root/export/empty'],
+            IContentImported)
 
 def test_suite():
     suite = unittest.TestSuite()

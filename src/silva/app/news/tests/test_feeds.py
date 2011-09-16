@@ -1,8 +1,10 @@
+
+import unittest
+
 from silva.app.news.datetimeutils import local_timezone
 from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-from lxml import etree
 
 
 class TestFeeds(SilvaNewsTestCase):
@@ -33,25 +35,29 @@ class TestFeeds(SilvaNewsTestCase):
     def test_rss_feed(self):
         browser = self.layer.get_browser()
         browser.options.handle_errors = False
-        status = browser.open('http://localhost/root/viewer/rss.xml')
-        self.assertEquals(200, status)
-        xml = etree.fromstring(browser.contents)
+        self.assertEqual(
+            browser.open('http://localhost/root/viewer/rss.xml'),
+            200)
+        self.assertEqual(
+            browser.content_type, 'text/xml;charset=UTF-8')
+
         ns = { 'rss': "http://purl.org/rss/1.0/"}
-        items = xml.xpath('//rss:item', namespaces=ns)
+        items = browser.xml.xpath('//rss:item', namespaces=ns)
         self.assertEquals(3, len(items))
 
     def test_atom_feed(self):
         browser = self.layer.get_browser()
         browser.options.handle_errors = False
-        status = browser.open('http://localhost/root/viewer/atom.xml')
-        self.assertEquals(200, status)
-        xml = etree.fromstring(browser.contents)
+        self.assertEqual(
+            browser.open('http://localhost/root/viewer/rss.xml'),
+            200)
+        self.assertEqual(
+            browser.content_type, 'text/xml;charset=UTF-8')
+
         ns = { 'atom': "http://www.w3.org/2005/Atom"}
-        items = xml.xpath('//atom:entry', namespaces=ns)
+        items = browser.xml.xpath('//atom:entry', namespaces=ns)
         self.assertEquals(3, len(items))
 
-
-import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestFeeds))

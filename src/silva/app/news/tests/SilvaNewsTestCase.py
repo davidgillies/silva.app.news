@@ -8,7 +8,6 @@ from silva.app.news.testing import FunctionalLayer
 
 
 class SilvaNewsTestCase(unittest.TestCase):
-
     layer = FunctionalLayer
 
     def setUp(self):

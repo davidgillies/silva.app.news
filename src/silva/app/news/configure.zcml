@@ -8,6 +8,7 @@
 
   <include package="five.grok" />
   <include package="zeam.form.silva" />
+  <include package="zeam.utils.batch" />
   <include package="infrae.rest" />
   <include package="silva.core.smi" />
   <include package="silva.core.views" />
