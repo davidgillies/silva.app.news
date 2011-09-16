@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 # $Id$
 
-from zope.component import queryUtility
-from silva.app.news.interfaces import IServiceNews
+import unittest
+
 from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
@@ -14,10 +14,6 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         self.assertEqual(
             self.root.service_extensions.is_installed('silva.app.news'),
             True)
-        self.assertTrue('service_news' in self.root.objectIds())
-        service = queryUtility(IServiceNews)
-        self.assertNotEqual(service, None)
-        self.assertEqual(service, self.root.service_news)
 
     def test_catalog_indexes(self):
         #ensure catalog indexes are setup
@@ -80,7 +76,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         for dis in disallowed_snn_types:
             self.assert_(dis not in addables)
 
-import unittest
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(SilvaNewsInstallerTestCase))

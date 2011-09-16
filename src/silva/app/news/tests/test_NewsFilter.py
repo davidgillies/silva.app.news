@@ -43,14 +43,6 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
         self.assertEquals(1, len(self.newsfilter.get_excluded_items()))
         self.assertEquals([], self.newsfilter.get_last_items(10))
 
-    def test_synchronize_with_service(self):
-        self.newsfilter.set_subjects(['sub'])
-        self.newsfilter.synchronize_with_service()
-        self.assert_(self.newsfilter.get_subjects() == set(['sub']))
-        self.service_news.remove_subject('sub')
-        self.newsfilter.synchronize_with_service()
-        self.assert_(self.newsfilter.get_subjects() == set([]))
-
     def test_search_items(self):
         self.newsfilter.set_subjects(['sub'])
         self.newsfilter.set_target_audiences(['ta'])

@@ -13,14 +13,16 @@ from silva.core.services.interfaces import ICatalogService
 
 
 class TestAgendaItemRecurrence(unittest.TestCase):
-
     layer = FunctionalLayer
 
     def setUp(self):
         self.root = self.layer.get_application()
 
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addAgendaItem('event', 'Event')
+
     def test_create_agenda_item_without_recurrence(self):
-        agenda_item = self.create_agenda_item()
+        agenda_item = self.root.event
         version = agenda_item.get_editable()
         dt = datetime(2010, 10, 9, 10, 1)
         version.set_start_datetime(dt)
@@ -28,7 +30,7 @@ class TestAgendaItemRecurrence(unittest.TestCase):
         self.assertEquals(None, version.get_rrule())
 
     def test_create_agenda_item_with_recurrence(self):
-        agenda_item = self.create_agenda_item()
+        agenda_item = self.root.event
         version = agenda_item.get_editable()
         version.set_timezone_name('Europe/Amsterdam')
         dt = datetime(2010, 9, 10, 10, 0, tzinfo=version.get_timezone())
@@ -58,7 +60,7 @@ class TestAgendaItemRecurrence(unittest.TestCase):
             ranges)
 
     def test_catalog(self):
-        agenda_item = self.create_agenda_item()
+        agenda_item = self.root.event
         version = agenda_item.get_editable()
         version.set_timezone_name('Europe/Amsterdam')
         dt = datetime(2010, 9, 10, 10, 0, tzinfo=version.get_timezone())
@@ -99,11 +101,6 @@ class TestAgendaItemRecurrence(unittest.TestCase):
         end = datetime_to_unixtimestamp(
             datetime(2010, 10, 8, 13, 0, tzinfo=tz))
         self.assertEquals([agenda_item], search())
-
-    def create_agenda_item(self):
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaItem('event', 'Event')
-        return self.root.event
 
 
 def test_suite():
