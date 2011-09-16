@@ -50,14 +50,14 @@ class TestJsonEventsAPI(NewsBaseTestCase):
     def test_request_without_start_and_end(self):
         """json events without start and end returns empty list"""
         status = self.browser.open(
-            'http://localhost/root/agenda/++rest++events')
+            'http://localhost/root/agenda/++rest++silva.app.news.events')
         self.assertEquals(200, status)
         self.assertEquals([], json.loads(self.browser.contents))
 
     def test_json_results(self):
         """json events returns only the agenda items within the range"""
         status = self.browser.open(
-            'http://localhost/root/agenda/++rest++events?start=%s&end=%s' %
+            'http://localhost/root/agenda/++rest++silva.app.news.events?start=%s&end=%s' %
             (datetime(2010, 9, 1).strftime("%s"),
              datetime(2010, 9, 30).strftime("%s")))
         self.assertEquals(200, status)
