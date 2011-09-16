@@ -223,7 +223,7 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertTrue(verifyObject(interfaces.IRSSAggregator, rss))
         self.assertTrue(verifyObject(interfaces.IRSSAggregator, rss_empty))
         self.assertEqual(rss.get_title(), 'Latest Ubernet news')
-        self.assertEqual(rss.get_feeds(), ['foo', 'bar'])
+        self.assertEqual(rss.get_feeds(), ['bar', 'foo'])
 
         self.assertEqual(rss_empty.get_title(), 'Nothing to see here')
         self.assertEqual(rss_empty.get_feeds(), [])

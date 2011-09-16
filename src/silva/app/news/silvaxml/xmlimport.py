@@ -3,8 +3,6 @@
 
 
 from Products.Silva.silvaxml import xmlimport
-from Products.Silva.silvaxml.xmlimport import (
-    SilvaBaseHandler, updateVersionCount)
 from silva.core import conf as silvaconf
 from silva.core.editor.transform.silvaxml import NS_EDITOR_URI
 from silva.core.editor.transform.silvaxml.xmlimport import TextHandler
@@ -17,7 +15,7 @@ from silva.app.news.datetimeutils import get_timezone
 silvaconf.namespace(NS_NEWS_URI)
 
 
-class NewsItemHandler(SilvaBaseHandler):
+class NewsItemHandler(xmlimport.SilvaBaseHandler):
     grok.name('news_item')
 
     def getOverrides(self):
@@ -48,7 +46,7 @@ class NewsItemVersionBodyHandler(xmlimport.SilvaBaseHandler):
         pass
 
 
-class NewsItemVersionHandler(SilvaBaseHandler):
+class NewsItemVersionHandler(xmlimport.SilvaBaseHandler):
     grok.baseclass()
 
     def getOverrides(self):
@@ -68,12 +66,12 @@ class NewsItemVersionHandler(SilvaBaseHandler):
 
     def endElementNS(self, name, qname):
         if name == (xmlimport.NS_SILVA_URI, 'content'):
-            updateVersionCount(self)
+            xmlimport.updateVersionCount(self)
             self.storeMetadata()
             self.storeWorkflow()
 
 
-class AgendaItemHandler(SilvaBaseHandler):
+class AgendaItemHandler(xmlimport.SilvaBaseHandler):
     grok.name('agenda_item')
 
     def getOverrides(self):
@@ -91,7 +89,7 @@ class AgendaItemHandler(SilvaBaseHandler):
             self.notifyImport()
 
 
-class AgendaItemVersionHandler(SilvaBaseHandler):
+class AgendaItemVersionHandler(xmlimport.SilvaBaseHandler):
     grok.baseclass()
 
     def getOverrides(self):
@@ -120,12 +118,12 @@ class AgendaItemVersionHandler(SilvaBaseHandler):
 
     def endElementNS(self, name, qname):
         if name == (xmlimport.NS_SILVA_URI, 'content'):
-            updateVersionCount(self)
+            xmlimport.updateVersionCount(self)
             self.storeMetadata()
             self.storeWorkflow()
 
 
-class NewsPublicationHandler(SilvaBaseHandler):
+class NewsPublicationHandler(xmlimport.SilvaBaseHandler):
     grok.name('news_publication')
 
     def startElementNS(self, name, qname, attrs):
@@ -141,7 +139,7 @@ class NewsPublicationHandler(SilvaBaseHandler):
             self.notifyImport()
 
 
-class NewsViewerHandler(SilvaBaseHandler):
+class NewsViewerHandler(xmlimport.SilvaBaseHandler):
     """Import a defined News Viewer.
     """
     grok.name('news_viewer')
@@ -195,7 +193,7 @@ class AgendaViewerHandler(NewsViewerHandler):
         helpers.set_as_int(viewer, 'days_to_show', attrs)
 
 
-class NewsFilterHandler(SilvaBaseHandler):
+class NewsFilterHandler(xmlimport.SilvaBaseHandler):
     grok.name('news_filter')
 
     def createFilter(self, uid, attrs):
@@ -241,27 +239,34 @@ class AgendaFilterHandler(NewsFilterHandler):
         helpers.set_as_list(obj, 'subjects', attrs)
 
 
-class RSSAggregatorHandler(SilvaBaseHandler):
+class RSSAggregatorHandler(xmlimport.SilvaBaseHandler):
     """Import a defined RSS Aggregator.
     """
     grok.name('rss_aggregator')
 
     def startElementNS(self, name, qname, attrs):
-        if name == (NS_NEWS_URI,'rss_aggregator'):
+        if name == (NS_NEWS_URI, 'rss_aggregator'):
             id = str(attrs[(None, 'id')])
             uid = self.generateOrReplaceId(id)
             factory = self.parent().manage_addProduct['silva.app.news']
             factory.manage_addRSSAggregator(uid,'')
             self.setResultId(uid)
+            self.urls = []
 
-            obj = self.result()
-            if (attrs.get((None, 'feed_urls'),None)):
-                feed_urls = attrs[(None,'feed_urls')]
-                # reformat feed_urls to be in the format set_feeds expects
-                obj.set_feeds(feed_urls)
+        if name == (NS_NEWS_URI, 'url'):
+            self.buffer = ''
+
+    def characters(self, chars):
+        if hasattr(self, 'buffer'):
+            self.buffer += chars
 
     def endElementNS(self, name, qname):
+        if name == (NS_NEWS_URI, 'url'):
+            self.urls.append(self.buffer.strip())
+
         if name == (NS_NEWS_URI, 'rss_aggregator'):
             self.storeMetadata()
+            aggregator = self.result()
+            aggregator.set_feeds(self.urls)
             self.notifyImport()
 
