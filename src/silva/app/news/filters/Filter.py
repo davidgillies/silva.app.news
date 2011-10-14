@@ -175,7 +175,7 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
         if not meta_types:
             meta_types = self.get_allowed_meta_types()
         query['meta_type'] = meta_types
-        query['sort_on'] = 'display_datetime'
+        query['sort_on'] = 'sort_index'
         query['sort_order'] = 'descending'
         return query
 

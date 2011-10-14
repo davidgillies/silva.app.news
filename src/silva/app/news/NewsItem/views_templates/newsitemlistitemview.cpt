@@ -3,7 +3,8 @@
      xmlns:tal="http://xml.zope.org/namespaces/tal"
      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
      i18n:domain="silva_news">
-  <h3 class="heading newsitemheading" tal:content="content.get_title()"/>
+  <h2 class="heading newsitemheading"
+      tal:content="content.get_title()"/>
   <div class="newsiteminfo">
     <div class="publicationdate" tal:condition="view.article_date">
       <span class="label" i18n:translate="">Publication date:</span>
