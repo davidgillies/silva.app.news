@@ -10,7 +10,6 @@ from zope import schema
 from zope.component import getUtility, getMultiAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
-from zope.intid.interfaces import IIntIds
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -29,10 +28,10 @@ from zeam.utils import batch
 
 
 # SilvaNews
+from silva.app.news.interfaces import get_default_tz_name, timezone_source
 from silva.app.news.interfaces import (INewsViewer, IServiceNews,
-    show_source, timezone_source, week_days_source, filters_source)
+    show_source, week_days_source, filters_source)
 from silva.app.news.ServiceNews import TimezoneMixin
-from silva.app.news.traverser import set_parent
 
 
 _ = MessageFactory('silva_news')
@@ -58,9 +57,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     _number_to_show = 25
     _number_to_show_archive = 10
     _number_is_days = 0
-
-    # define wether the items are displayed sub elements of the viewer
-    _proxy = False
 
     security = ClassSecurityInfo()
 
@@ -143,41 +139,39 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
             return True
         return False
 
-    def _get_items_helper(self, generator):
+    def _get_items(self, generator):
         # 1) helper function for get_items...this was the same
         # code in NV and AV.  Now this helper contains that code
         # and calls func(obj) for each filter to actually
         # get the items.
 
-        def builder():
-            get_id = getUtility(IIntIds).register
-            seen_ids = set()
+        seen_ids = set()
+        filter_count = 0
+        items = []
 
-            for news_filter in self._get_filters_reference_set():
-                for item in generator(news_filter):
-                    # Check for duplicate using IntId
-                    item_id = get_id(item)
-                    if item_id in seen_ids:
-                        continue
-                    seen_ids.add(item_id)
-                    yield item
+        for news_filter in self._get_filters_reference_set():
+            for item in generator(news_filter):
+                # Check for duplicate using content_intid
+                if filter_count and item.content_intid in seen_ids:
+                    continue
+                seen_ids.add(item.content_intid)
+                items.append(item)
+            filter_count += 1
 
-        # Not sorting because we have no news_filter (so no items)
-        # is a fake optimization.
-        return sorted(
-            builder(),
-            key=operator.attrgetter('item_order'),
-            reverse=True)
+        if filter_count > 1:
+            # Sort only if we have more than one filter used.
+            items.sort(key=operator.attrgetter('sort_index'), reverse=True)
+        return items
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_items')
     def get_items(self):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_last_items(
-            self._number_to_show, self._number_is_days)
+        results = self._get_items(
+            lambda x: x.get_last_items(
+                self._number_to_show, self._number_is_days))
 
-        results = self._get_items_helper(func)
         if not self._number_is_days:
             return results[:self._number_to_show]
 
@@ -188,28 +182,25 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_items_by_date(
-            month,year, timezone=self.get_timezone())
-
-        return self._get_items_helper(func)
+        return self._get_items(
+            lambda x: x.get_items_by_date(
+                month,year, timezone=self.get_timezone()))
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_items_by_date_range')
     def get_items_by_date_range(self, start, end):
         """Gets the items from the filters
         """
-        func = lambda x: x.get_items_by_date_range(start, end)
-
-        return self._get_items_helper(func)
+        return self._get_items(
+            lambda x: x.get_items_by_date_range(start, end))
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'search_items')
     def search_items(self, keywords):
         """Search the items in the filters
         """
-        func = lambda x: x.search_items(keywords)
-
-        return self._get_items_helper(func)
+        return self._get_items(
+            lambda x: x.search_items(keywords))
 
     # MANIPULATORS
 
@@ -253,17 +244,6 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def allow_feeds(self):
         return True
 
-    security.declareProtected(
-        SilvaPermissions.AccessContentsInformation,
-        'allow_feeds')
-    def set_proxy(self, item, force=False):
-        """ Set the viewer as parent of the item if it is configured to or
-        is force flag is set.
-        """
-        if force or self._proxy:
-            return set_parent(self, item)
-        return item
-
 
 InitializeClass(NewsViewer)
 
@@ -281,16 +261,19 @@ class INewsViewerSchema(Interface):
         title=_(u"show"),
         description=_(u"Show a specific number of items, or show "
                       u"items from a range of days in the past."),
+        default=1,
         required=True)
 
     number_to_show = schema.Int(
         title=_(u"days / items number"),
         description=_(u"Number of news items to show per page."),
+        default=25,
         required=True)
 
     number_to_show_archive = schema.Int(
         title=_(u"archive number"),
         description=_(u"Number of archive items to show per page."),
+        default=10,
         required=True)
 
     timezone_name = schema.Choice(
@@ -306,13 +289,6 @@ class INewsViewerSchema(Interface):
         description=_(u"Define first day of the week for calendar display."),
         required=True)
 
-    _proxy = schema.Bool(
-        title=_(u"proxy mode"),
-        description=_(u"When proxy mode is enabled items of the viewers are "
-                      u"displayed as children of the viewer"),
-        required=False,
-        default=False)
-
 
 class NewsViewerAddForm(silvaforms.SMIAddForm):
     """Add form news viewer
@@ -322,6 +298,7 @@ class NewsViewerAddForm(silvaforms.SMIAddForm):
 
     fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
     fields['number_is_days'].mode = u'radio'
+    fields['timezone_name'].defaultValue = get_default_tz_name
 
 
 class NewsViewerEditForm(silvaforms.SMIEditForm):
@@ -330,69 +307,41 @@ class NewsViewerEditForm(silvaforms.SMIEditForm):
     grok.context(INewsViewer)
     fields = silvaforms.Fields(ITitledContent, INewsViewerSchema).omit('id')
     fields['number_is_days'].mode = u'radio'
+    fields['timezone_name'].defaultValue = get_default_tz_name
 
 
-class NewsViewerListView(object):
-
-    def _set_parent(self, item):
-        """ Change the parent of the NewsItem so traversing is made trough
-        the news viewer
-        """
-        return self.context.set_proxy(item)
-
-
-class NewsViewerView(silvaviews.View, NewsViewerListView):
+class NewsViewerView(silvaviews.View):
     """ Default view for news viewer
     """
     grok.context(INewsViewer)
 
-    @property
-    def archive_url(self):
-        return self.url('archives')
-
-    @property
-    def search_url(self):
-        return self.url('search')
-
     def update(self):
-        self.request.timezone = self.context.get_timezone()
-        self.results = map(self._set_parent, self.context.get_items())
-
-
-class NewsViewerSearchView(silvaviews.Page, NewsViewerListView):
-    """ Search view for news viewer
-    """
-    grok.context(INewsViewer)
-    grok.name('search')
-
-    def update(self):
-        self.request.timezone = self.context.get_timezone()
         self.query = self.request.get('query', '')
-        self.results = []
-        try:
-            self.results = map(self._set_parent,
-                               self.context.search_items(self.query) or [])
-        except:
-            pass
+        if self.query:
+            brains = self.context.search_items(self.query)
+        else:
+            brains = self.context.get_items()
+        self.items = map(lambda b: b.getObject().get_content(), brains)
 
 
-class NewsViewerArchivesView(silvaviews.Page, NewsViewerListView):
+class NewsViewerArchivesView(silvaviews.Page):
     """ Archives view
     """
     grok.context(INewsViewer)
-    grok.name('archives')
+    grok.name('archives.html')
 
     def update(self):
 
         def getter(date):
             return self.context.get_items_by_date(date.month, date.year)
 
-        self.items = batch.DateBatch(getter, request=self.request)
+        items = batch.DateBatch(getter, request=self.request)
         self.batch = getMultiAdapter(
-            (self, self.items, self.request), batch.IBatching)()
+            (self, items, self.request), batch.IBatching)()
+        self.items = map(lambda b: b.getObject().get_content(), items)
 
         # Get the month and year of the corresponding periode
         calendar = self.request.locale.dates.calendars['gregorian']
-        periode = self.items.start
+        periode = items.start
         self.periode = '%s %s' % (
             calendar.getMonthNames()[periode.month-1], periode.year)

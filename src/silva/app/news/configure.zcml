@@ -18,23 +18,9 @@
   <include package="silva.app.document" />
 
   <five:registerPackage package="." initialize=".initialize" />
+  <i18n:registerTranslations directory="i18n" />
 
   <!-- Grok Silva News -->
   <grok:grok package="." />
-
-  <!-- i18n -->
-  <i18n:registerTranslations directory="i18n" />
-
-  <view for="silva.app.news.interfaces.INewsItem"
-        factory="silva.app.news.traverser.NewsItemAbsoluteURL"
-        type="zope.publisher.interfaces.http.IHTTPRequest"
-        name="absolute_url"
-        permission="zope.Public" />
-
-  <view for="silva.app.news.interfaces.INewsItemVersion"
-        factory="silva.app.news.traverser.NewsItemVersionAbsoluteURL"
-        type="zope.publisher.interfaces.http.IHTTPRequest"
-        name="absolute_url"
-        permission="zope.Public" />
 
 </configure>

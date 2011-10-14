@@ -9,9 +9,8 @@ import localdatetime
 
 from five import grok
 from zope.cachedescriptors.property import CachedProperty
-from zope.component import getMultiAdapter, getUtility
+from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
-from zope.intid.interfaces import IIntIds
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.browser import absoluteURL
 
@@ -21,7 +20,6 @@ from App.class_init import InitializeClass
 
 # Silva
 from Products.Silva import SilvaPermissions
-from Products.Silva.ExtensionRegistry import meta_types_for_interface
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
@@ -31,7 +29,8 @@ from js import jquery
 
 # SilvaNews
 from silva.app.news import datetimeutils
-from silva.app.news.interfaces import IAgendaItem, IAgendaViewer
+from silva.app.news.interfaces import IAgendaViewer
+from silva.app.news.interfaces import get_default_tz_name
 from silva.app.news.viewers.NewsViewer import NewsViewer, INewsViewerSchema
 from silva.app.news.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
@@ -52,8 +51,6 @@ class AgendaViewer(NewsViewer, ExternalSource):
     silvaconf.icon("www/agenda_viewer.png")
     silvaconf.priority(3.3)
 
-    show_in_tocs = 1
-
     def __init__(self, id):
         super(AgendaViewer, self).__init__(id)
         self._days_to_show = 31
@@ -66,49 +63,20 @@ class AgendaViewer(NewsViewer, ExternalSource):
         """
         return self._days_to_show
 
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items')
-    def get_items(self):
-        """Gets the items from the filters
-        """
-        func = lambda x: x.get_next_items(self._days_to_show)
-
-        return self._get_items_helper(func)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items_by_date')
-    def get_items_by_date(self, month, year, timezone=None):
-        """Gets the items from the filters
-        """
-        func = lambda x: x.get_items_by_date(month, year,
-            timezone=timezone or self.get_timezone(),
-            meta_types="Silva Agenda Item")
-
-        return self._get_items_helper(func)
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'search_items')
-    def search_items(self, keywords):
-        """Search the items in the filters
-        """
-        allowed_meta_types = self.get_allowed_meta_types()
-        func = lambda x: x.search_items(keywords,allowed_meta_types)
-
-        return self._get_items_helper(func)
-
-    security.declarePrivate('get_allowed_meta_types')
-    def get_allowed_meta_types(self):
-        """Returns the allowed meta_types for this Viewer"""
-        """results are passed to the filters, some of which may be
-           news filters -- don't want to return PlainNewsItems"""
-        return meta_types_for_interface(IAgendaItem)
-
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_days_to_show')
     def set_days_to_show(self, number):
         """Sets the number of days to show in the agenda
         """
         self._days_to_show = number
+
+    security.declareProtected(SilvaPermissions.AccessContentsInformation,
+                              'get_items')
+    def get_items(self):
+        """Gets the items from the filters
+        """
+        return self._get_items(
+            lambda x: x.get_next_items(self._days_to_show))
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_html')
@@ -118,7 +86,6 @@ class AgendaViewer(NewsViewer, ExternalSource):
         view.document = content.get_content()
         view.parameters = parameters
         return view()
-
 
 InitializeClass(AgendaViewer)
 
@@ -133,6 +100,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
 
     fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
     fields['number_is_days'].mode = u'radio'
+    fields['timezone_name'].defaultValue = get_default_tz_name
 
 
 class CalendarView(object):
@@ -167,27 +135,26 @@ class CalendarView(object):
         self._store_events_in_index = store_events_in_index
         today = today or datetime.now(self.context.get_timezone()).date()
 
-        events = self.context.get_items_by_date_range(start, end)
         acalendar = HTMLCalendar(
             self.context.get_first_weekday(),
             today=today,
             current_day=current_day or today,
             day_render_callback=self._render_day_callback)
-        for event in events:
-            self._register_event(acalendar, event, start, end)
+        for brain in self.context.get_items_by_date_range(start, end):
+            self._register_event(acalendar, brain.getObject(), start, end)
         return acalendar
 
     def _register_event(self, acalendar, event, start, end):
         """ index all the days for which the event has an occurrence between
         start and end.
         """
-        version = event.get_viewable()
-        cd = version.get_calendar_datetime()
-        for datetime_range in cd.get_datetime_ranges(start, end):
-            for occurence in datetimeutils.DayWalk(datetime_range[0],
-                                                   datetime_range[1],
-                                                   version.get_timezone()):
-                self._index_event(occurence, event)
+        for occurrence in event.get_occurrences():
+            cd = occurrence.get_calendar_datetime()
+            for datetime_range in cd.get_datetime_ranges(start, end):
+                for day in datetimeutils.DayWalk(
+                    datetime_range[0], datetime_range[1],
+                    self.context.get_timezone()):
+                    self._index_event(day, event)
 
     def _index_event(self, adate, event):
         """ (internal) actual indexing of an event.
@@ -260,22 +227,6 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     def context_absolute_url(self):
         return absoluteURL(self.context, self.request)
 
-    def item_calevent_url(self, newsitem):
-        return str(absoluteURL(newsitem, self.request)) + '/event.ics'
-
-    def item_id(self, news_item):
-        util = getUtility(IIntIds)
-        return "event_%s" % util.register(self.context)
-
-    def browser_resource(self, path):
-        return "/".join([self.context_absolute_url,
-                  '++resource++silva.app.news',
-                  path])
-
-    @property
-    def archive_url(self):
-        return self.context_absolute_url + '/archives'
-
     def update(self):
         alsoProvides(self.request, ICalendarResources)
         now = datetime.now(self.context.get_timezone())
@@ -324,9 +275,7 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
             return "Events on %s" % dayinfo
         return u"No events on %s" % dayinfo
 
-    def subscribe_url(self):
-        return "%s/subscribe.html" % self.context_absolute_url
-
+    @property
     def day_events(self):
         return self._day_events
 
@@ -334,9 +283,11 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
         return self.calendar.formatmonth(self.year, self.month)
 
     def _selected_day_events(self):
-        return self.context.get_items_by_date_range(
-                    datetimeutils.start_of_day(self.day_datetime),
-                    datetimeutils.end_of_day(self.day_datetime))
+        return map(
+            lambda b: b.getObject().get_content(),
+            self.context.get_items_by_date_range(
+                datetimeutils.start_of_day(self.day_datetime),
+                datetimeutils.end_of_day(self.day_datetime)))
 
     def _set_calendar_nav(self):
         self.calendar.prev_link = \
@@ -379,7 +330,7 @@ class IViewResources(IDefaultBrowserLayer):
 class AgendaViewerJSCalendar(silvaviews.Page):
     """ Agenda view advanced javascript calendar """
     grok.context(IAgendaViewer)
-    grok.name('fullcalendar')
+    grok.name('calendar.html')
 
     def update(self):
         alsoProvides(self.request, IViewResources)
@@ -396,8 +347,8 @@ class AgendaViewerICSCalendar(silvaviews.View):
     grok.name('calendar.ics')
 
     def update(self):
-        self.request.timezone = self.context.get_timezone()
-        self.request.response.setHeader('Content-Type', 'text/calendar')
+        self.response.setHeader(
+            'Content-Type', 'text/calendar; charset=UTF-8')
         self.calendar = getMultiAdapter(
             (self.context, self.request,), ICalendar)
 

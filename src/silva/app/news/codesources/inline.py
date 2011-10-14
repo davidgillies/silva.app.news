@@ -92,7 +92,8 @@ class NewsItemReference(object):
 
     def description(self, maxchars=1024):
         # we can be sure there is no markup here, so just limit
-        desc = self._item.get_description()
+        desc = self._item.service_metadata.getMetadataValue(
+            self._item, 'silva-extra', 'content_description')
         if desc is None:
             return ''
         if maxchars > 0:

@@ -1,0 +1,22 @@
+<html tal:omit-tag=""
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="silva_news">
+
+  <h1 class="heading" tal:content="context.get_title()">Viewer</h1>
+
+  <p>
+    To subscribe to the calendar <span tal:replace="context.get_title()"/>
+    go to you calendar application (iCal, Outlook, Google calendar) and
+    subscribe using this url :
+  </p>
+
+  <input type="text" readonly="true" size="60"
+         tal:attributes="value view.calendar_url()" />
+
+  <p>
+    <a href="${path:context/@@absolute_url}" i18n:translate="">back ...</a>
+  </p>
+
+</html>

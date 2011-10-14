@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 # $Id$
 
-
 from five import grok
 from zope.i18nmessageid import MessageFactory
 
@@ -16,15 +15,15 @@ from zeam.form import silva as silvaforms
 from zeam.utils import batch
 
 # SilvaNews
-from silva.app.news.filters.NewsItemFilter import NewsItemFilter
-from silva.app.news.filters.NewsItemFilter import INewsItemFilterSchema
+from silva.app.news.filters.Filter import Filter
+from silva.app.news.filters.Filter import IFilterSchema
 from silva.app.news.filters.NewsFilter import NewsFilterItems
 from silva.app.news.interfaces import IAgendaFilter
 
 _ = MessageFactory('silva_news')
 
 
-class AgendaFilter(NewsItemFilter):
+class AgendaFilter(Filter):
     """To enable editors to channel newsitems on a site, all items
        are passed from NewsFolder to NewsViewer through filters. On a filter
        you can choose which NewsFolders you want to channel items for and
@@ -37,7 +36,7 @@ class AgendaFilter(NewsItemFilter):
     silvaconf.icon("www/agenda_filter.png")
     silvaconf.priority(3.4)
 
-    _allowed_meta_types = ['Silva Agenda Item']
+    _allowed_meta_types = ['Silva Agenda Item Version']
 
     security.declarePrivate('get_allowed_meta_types')
     def get_allowed_meta_types(self):
@@ -52,14 +51,14 @@ class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaFilter)
     grok.name(u"Silva Agenda Filter")
 
-    fields = silvaforms.Fields(ITitledContent, INewsItemFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, IFilterSchema)
 
 
 class AgendaFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(IAgendaFilter)
 
-    fields = silvaforms.Fields(ITitledContent, INewsItemFilterSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, IFilterSchema).omit('id')
 
 
 class AgendaFilterItems(NewsFilterItems):

@@ -14,7 +14,8 @@ from App.class_init import InitializeClass
 from Products.Silva import SilvaPermissions
 
 from silva.app.news.interfaces import INewsCategorization
-from silva.app.news.interfaces import get_subjects_tree, get_target_audiences_tree
+from silva.app.news.interfaces import (
+    get_subjects_tree, get_target_audiences_tree)
 from silva.app.news.interfaces import subjects_source, target_audiences_source
 from silva.app.news.widgets.tree import Tree
 

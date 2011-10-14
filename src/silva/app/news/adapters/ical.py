@@ -1,35 +1,72 @@
-from five import grok
-from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
+# Copyright (c) 2002-2011 Infrae. All rights reserved.
+# See also LICENSE.txt
+# $Id$
+
 from icalendar import Calendar, Event, vText, vDatetime, vDate
 from icalendar.interfaces import ICalendar, IEvent
-from silva.app.news.interfaces import IAgendaItemVersion, IAgendaViewer
-from silva.app.news.datetimeutils import UTC
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
-from zope.interface import Interface
+
+from five import grok
+from zope.component import getUtility, getMultiAdapter
+from zope.intid.interfaces import IIntIds
+from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.traversing.browser import absoluteURL
 
+from silva.app.news.interfaces import IAgendaItemVersion, IAgendaViewer
+from silva.app.news.datetimeutils import UTC
 
-class AgendaFactoryEvent(grok.Adapter):
-    grok.context(IAgendaItemVersion)
+
+def asdatetime(date):
+    if date is not None:
+        return date.asdatetime().astimezone(UTC)
+    return None
+
+
+class AgendaItemInfo(object):
+
+    def __init__(self, item, request):
+        self.summary = item.get_title()
+        self.url = absoluteURL(item, request)
+        self.description = None # document details
+        self.created = asdatetime(item.get_creation_datetime())
+        self.last_modified = asdatetime(item.get_modification_datetime())
+        self.__uid_base = getUtility(IIntIds).register(item)
+        self.__uid_count = 0
+
+    def uid(self):
+        uid = "%d@%d@silvanews" % (self.__uid_base, self.__uid_count)
+        self.__uid_count += 1
+        return uid
+
+
+class AgendaFactoryEvent(grok.MultiAdapter):
+    grok.adapts(IAgendaItemVersion, IBrowserRequest)
     grok.implements(IEvent)
     grok.provides(IEvent)
 
-    def __call__(self, viewer, request):
-        return AgendaEvent(self.context, request, viewer)
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        self.info =  AgendaItemInfo(context, request)
+
+    def __call__(self, viewer):
+        for occurrence in self.context.get_occurrences():
+            yield AgendaEvent(self.info, occurrence, viewer)
 
 
 class AgendaEvent(Event):
 
-    def __init__(self, context, request, viewer=None):
+    def __init__(self, info, occurrence, viewer=None):
         super(AgendaEvent, self).__init__()
-        intid = getUtility(IIntIds)
-        timezone = (viewer and viewer.get_timezone()) or context.get_timezone()
-        cdate = context.get_calendar_datetime()
+        if viewer is not None:
+            timezone = viewer.get_timezone()
+        else:
+            timezone = occurrence.get_timezone()
+        cdate = occurrence.get_calendar_datetime()
         start_dt = cdate.get_start_datetime(timezone)
         end_dt = cdate.get_end_datetime(timezone)
-        if context.is_all_day():
+        if occurrence.is_all_day():
             start_date = date(start_dt.year, start_dt.month, start_dt.day)
             # end date is exclusive
             end_date = date(end_dt.year, end_dt.month, end_dt.day) + \
@@ -41,40 +78,42 @@ class AgendaEvent(Event):
             self['DTSTART'] = vDatetime(start_dt.astimezone(UTC))
             self['DTEND'] = vDatetime(end_dt.astimezone(UTC))
 
-        rrule_string = context.get_recurrence()
+        rrule_string = occurrence.get_recurrence()
         if rrule_string is not None:
             self['RRULE'] = rrule_string
+        location = occurrence.get_location()
+        if location:
+            self['LOCATION'] = vText(location)
 
-        self['UID'] = "%d@silvanews" % intid.register(context.get_content())
-        if context.get_location():
-            self['LOCATION'] = vText(context.get_location())
-        self['SUMMARY'] = vText(context.get_title())
-        self['URL'] = absoluteURL(context, request)
+        # Generic properties
+        self['URL'] = info.url
+        self['UID'] = info.uid()
+        self['SUMMARY'] = vText(info.summary)
+        if info.created:
+            self['CREATED'] = vDatetime(info.created)
+        if info.last_modified:
+            self['LAST-MODIFIED'] = vDatetime(info.last_modified)
+        if info.description:
+            self['DESCRIPTION'] = vText(info.description)
 
 
 class AgendaCalendar(Calendar, grok.MultiAdapter):
-    grok.adapts(IAgendaViewer, Interface)
+    grok.adapts(IAgendaViewer, IBrowserRequest)
     grok.implements(ICalendar)
     grok.provides(ICalendar)
 
     def __init__(self, context, request):
         super(AgendaCalendar, self).__init__()
-        self.context = context
-        self.request = request
         self['PRODID'] = \
             vText('-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN')
         self['VERSION'] = '2.0'
-        self['X-WR-CALNAME'] = self.context.get_title()
-        self['X-WR-TIMEZONE'] = self.context.get_timezone_name()
+        self['X-WR-CALNAME'] = vText(context.get_title())
+        self['X-WR-TIMEZONE'] = vText(context.get_timezone_name())
         now = datetime.now(UTC)
-        for content in self.context.get_items_by_date_range(
+        for brain in context.get_items_by_date_range(
                 now + relativedelta(years=-1), now + relativedelta(years=+1)):
-            version = content.get_viewable()
-            if version is None:
-                continue
-            content.__parent__ = self.context
-            event_factory = AgendaFactoryEvent(version)
-            event = event_factory(self.context, self.request)
-            if event is not None:
+
+            factory = getMultiAdapter((brain.getObject(), request), IEvent)
+            for event in factory(context):
                 self.add_component(event)
 

@@ -1,8 +1,8 @@
+
 from os import path
 
 from App.Common import package_home
 
-from silva.core.services.catalog import RecordStyle
 from silva.core.conf.installer import DefaultInstaller
 from zope.interface import Interface
 
@@ -51,16 +51,15 @@ class SilvaNewsInstaller(DefaultInstaller):
         catalog = root.service_catalog
 
         indexes = [
+            ('sort_index', 'FieldIndex'),
             ('parent_path', 'FieldIndex'),
-            ('start_datetime', 'DateIndex'),
-            ('end_datetime', 'DateIndex'),
             ('display_datetime', 'DateIndex'),
             ('timestamp_ranges', 'IntegerRangesIndex'),
             ('subjects', 'KeywordIndex'),
             ('target_audiences', 'KeywordIndex'),
             ]
 
-        columns = ['display_datetime', 'start_datetime']
+        columns = ['display_datetime', 'sort_index']
 
         existing_columns = catalog.schema()
         existing_indexes = catalog.indexes()
@@ -70,16 +69,7 @@ class SilvaNewsInstaller(DefaultInstaller):
                 catalog.addColumn(column)
 
         for field_name, field_type in indexes:
-            if field_name in existing_indexes:
-                continue
-            if field_type == 'ZCTextIndex':
-                extra = RecordStyle(
-                    {'doc_attr':field_name,
-                     'lexicon_id':'silva_lexicon',
-                     'index_type':'Okapi BM25 Rank'}
-                    )
-                catalog.addIndex(field_name, field_type, extra)
-            else:
+            if field_name not in existing_indexes:
                 catalog.addIndex(field_name, field_type)
 
 

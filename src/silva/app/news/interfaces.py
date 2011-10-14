@@ -285,6 +285,10 @@ def timezone_source(context):
                                 token=zone))
     return SimpleVocabulary(terms)
 
+def get_default_tz_name(form):
+    util = getUtility(IServiceNews)
+    return util.get_timezone_name()
+
 @grok.provider(IContextSourceBinder)
 def filters_source(context):
     terms = []

@@ -22,14 +22,14 @@ from zeam.form.base.datamanager import BaseDataManager
 # SilvaNews
 from silva.app.news.widgets.path import Path
 from silva.app.news.interfaces import INewsFilter
-from silva.app.news.filters.NewsItemFilter import NewsItemFilter
-from silva.app.news.filters.NewsItemFilter import INewsItemFilterSchema
+from silva.app.news.filters.Filter import Filter
+from silva.app.news.filters.Filter import IFilterSchema
 from silva.app.news import interfaces
 
 _ = MessageFactory('silva_news')
 
 
-class NewsFilter(NewsItemFilter):
+class NewsFilter(Filter):
     """To enable editors to channel newsitems on a site, all items
         are passed from NewsFolder to NewsViewer through filters. On a filter
         you can choose which NewsFolders you want to channel items for and
@@ -42,8 +42,8 @@ class NewsFilter(NewsItemFilter):
     silvaconf.icon("www/news_filter.png")
     silvaconf.priority(3.2)
 
-    _article_meta_types = ['Silva Article']
-    _agenda_item_meta_types = ['Silva Agenda Item']
+    _article_meta_types = ['Silva Article Version']
+    _agenda_item_meta_types = ['Silva Agenda Item Version']
 
     def __init__(self, id):
         super(NewsFilter, self).__init__(id)
@@ -96,7 +96,7 @@ class NewsFilter(NewsItemFilter):
 InitializeClass(NewsFilter)
 
 
-class INewsFilterSchema(INewsItemFilterSchema):
+class INewsFilterSchema(IFilterSchema):
     _show_agenda_items = schema.Bool(
         title=_(u"show agenda items"))
 
@@ -121,12 +121,12 @@ class ExcludeAction(silvaforms.Action):
         news_filter = form.context
         changed = 0
         for line in selected:
-            content = line.getContentData().getContent()
-            news_filter.remove_excluded_item(content)
+            data = line.getContentData()
+            news_filter.remove_excluded_item(data.intid)
             changed += 1
         for line in deselected:
-            content = line.getContentData().getContent()
-            news_filter.add_excluded_item(content)
+            data = line.getContentData()
+            news_filter.add_excluded_item(data.intid)
             changed += 1
         if changed:
             form.send_message(
@@ -145,13 +145,16 @@ class IItemSelection(ITitledContent):
 
 class ItemSelection(BaseDataManager):
 
-    def __init__(self, content, form):
+    def __init__(self, brain, form):
         self._filter = form.context
         self._get_content_path = form.get_content_path
-        self.content = content
-        self.version = self.content.get_viewable() or \
-            self.content.get_previewable() or \
-            self.content.get_editable()
+        self._intid = brain.content_intid
+        self.version = brain.getObject()
+        self.content = self.version.get_content()
+
+    @property
+    def intid(self):
+        return self._intid
 
     def get(self, identifier):
         try:
@@ -161,7 +164,7 @@ class ItemSelection(BaseDataManager):
 
     @property
     def select(self):
-        return not self._filter.is_excluded_item(self.content)
+        return not self._filter.is_excluded_item(self._intid)
 
     @property
     def path(self):
@@ -176,6 +179,7 @@ class ItemSelection(BaseDataManager):
         dt = self.version.get_display_datetime()
         if dt is not None:
             return dt.asdatetime()
+        return None
 
 
 class NewsFilterItems(silvaforms.SMITableForm):

@@ -5,28 +5,27 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news">
 
-  <h2 class="heading" i18n:translate="">
+  <h1 class="heading" i18n:translate="">
     Archive of
     <tal:title i18n:name="title" tal:replace="context.get_title()" />
     for
-    <tal:periode i18n:name="periode" tal:replace="view.periode"/>
-  </h2>
+    <tal:periode i18n:name="periode" tal:replace="view.periode" />
+  </h1>
 
   <div class="nav" tal:content="structure view.batch" />
 
-  <div class="newsitem" tal:repeat="r view.items">
-    <div tal:replace="structure path:r/@@search_result" />
+  <div class="newsitem" tal:repeat="event view.items">
+    <div tal:replace="structure path:event/@@search_result" />
   </div>
 
-  <p class="p newsmessage"
-     tal:condition="len(view.items) &lt; 1"
+  <p tal:condition="not:view.items"
      i18n:translate="">
     There are no articles available
   </p>
 
   <div class="nav" tal:content="structure view.batch" />
 
-  <p class="p viewlink">
+  <p class="viewlink">
     <a href="#"
        tal:attributes="href path:context/@@absolute_url"
        i18n:translate="">view news</a>

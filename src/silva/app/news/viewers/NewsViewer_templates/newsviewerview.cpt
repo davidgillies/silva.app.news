@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      tal:define="here_url path:context/@@absolute_url"
+      tal:omit-tag=""
+      i18n:domain="silva_news">
+
+  <h1 class="heading" tal:content="context.get_title()"  />
+
+  <div class="searchbox">
+    <form action="${here_url}" method="get">
+      <input type="search" name="query" value="${view.query}" />
+      <input class="button"
+             type="submit"
+             value="Search"
+             title="Do a full text search: alt-s"
+             accesskey="s"
+             i18n:attributes="title; value" />
+    </form>
+  </div>
+
+  <div class="newsitem" tal:repeat="event view.items">
+    <div tal:replace="structure path:event/@@search_result" />
+  </div>
+
+  <p tal:condition="not:view.items"
+     i18n:translate="">
+    There are no articles matching.
+  </p>
+
+  <p class="viewlink">
+    <a href="${here_url}/archives.html"
+       i18n:translate="">
+      view archive
+    </a>
+  </p>
+</html>

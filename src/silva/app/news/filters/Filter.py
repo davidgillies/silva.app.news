@@ -19,6 +19,7 @@ from OFS.SimpleItem import SimpleItem
 from Products.Silva import SilvaPermissions
 from Products.Silva.Publishable import NonPublishable
 from silva.core.references.reference import ReferenceSet
+from silva.core.services.interfaces import ICatalogService
 
 from silva.app.news.interfaces import INewsItemFilter, IServiceNews
 from silva.app.news.interfaces import news_source
@@ -32,7 +33,7 @@ _ = MessageFactory('silva_news')
 logger = logging.getLogger('silva.app.news.filter')
 
 
-class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
+class Filter(NewsCategorization, NonPublishable, SimpleItem):
     """Super-class for news item filters.
 
     A NewsItemFilter picks up news from news sources. Editors can
@@ -49,7 +50,7 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
     _source_reference_name = 'filter-source'
 
     def __init__(self, id):
-        super(NewsItemFilter, self).__init__(id)
+        super(Filter, self).__init__(id)
         self._excluded_items = set()
 
     # ACCESSORS
@@ -114,11 +115,6 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
         self._p_changed = 1
         self._excluded_items.remove(intid)
 
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'remove_excluded_item')
-    def set_excluded_item(self, excluded_set):
-        self._excluded_items = set(excluded_set)
-
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'is_excluded_item')
     def is_excluded_item(self, target):
@@ -126,6 +122,11 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
         if not isinstance(intid, int):
             intid = getUtility(IIntIds).register(target)
         return intid in self._excluded_items
+
+    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
+                              'remove_excluded_item')
+    def set_excluded_item(self, excluded_set):
+        self._excluded_items = set(excluded_set)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_excluded_items')
@@ -178,27 +179,21 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
         query['sort_order'] = 'descending'
         return query
 
-    def _query(self, query):
-        logger.info('query %s', repr(query))
-        return self.service_catalog(query)
-
     def _query_items(self, query, filter_items=True, max_items=None):
         count = 0
-        if filter_items:
-            get_id = getUtility(IIntIds).register
-        elif max_items is not None:
+        if not filter_items and max_items is not None:
             # Local catalog optimization
             query['sort_limit'] = max_items
 
-        for brain in self._query(query):
+        logger.info('query %s', repr(query))
+        for brain in getUtility(ICatalogService)(query):
             if max_items is not None and count > max_items:
                 break
-            item = brain.getObject()
             if filter_items:
-                if get_id(item) in self._excluded_items:
+                if brain.content_intid in self._excluded_items:
                     continue
             count += 1
-            yield item
+            yield brain
 
     # refactorized functions
     # these functions where used/copied in both AgendaFilter and NewsFilter,
@@ -207,12 +202,8 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'search_items')
     def search_items(self, keywords, meta_types=None):
-        keywords = unicode(keywords, 'UTF-8')
-        if not meta_types:
-            meta_types = self.get_allowed_meta_types()
-
         # replace +'es with spaces so the effect is the same...
-        keywords = keywords.replace('+', ' ')
+        keywords = unicode(keywords, 'UTF-8').replace('+', ' ')
         query = self._prepare_query(meta_types=meta_types)
         query['fulltext'] = keywords.split(' ')
         return self._query_items(query)
@@ -300,10 +291,10 @@ class NewsItemFilter(NewsCategorization, NonPublishable, SimpleItem):
         return self._query_items(query, filter_items=filter_items)
 
 
-InitializeClass(NewsItemFilter)
+InitializeClass(Filter)
 
 
-class INewsItemFilterSchema(INewsCategorizationSchema):
+class IFilterSchema(INewsCategorizationSchema):
     sources = schema.Set(
         value_type=schema.Choice(source=news_source),
         title=_(u"sources"),
