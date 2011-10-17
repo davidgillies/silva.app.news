@@ -255,18 +255,24 @@ class AgendaItemVersionProducer(xmlexport.SilvaProducer):
             {'version_id': self.context.id,
              'subjects': ','.join(self.context.get_subjects()),
              'target_audiences': ','.join(self.context.get_target_audiences()),
-             'start_datetime': iso_datetime(self.context.get_start_datetime()),
-             'end_datetime': iso_datetime(self.context.get_end_datetime()),
-             'location': self.context.get_location(),
-             'recurrence': self.context.get_recurrence() or '',
-             'all_day': str(self.context.is_all_day()),
-             'timezone_name': self.context.get_timezone_name(),
              'display_datetime': iso_datetime(
                 self.context.get_display_datetime())})
         self.metadata()
         self.startElementNS(NS_NEWS_URI, 'body')
         TextProducerProxy(self.context, self.context.body).sax(self)
         self.endElementNS(NS_NEWS_URI, 'body')
+        for occurrence in self.context.get_occurrences():
+            self.startElementNS(
+                NS_NEWS_URI, 'occurrence',
+                {'start_datetime': iso_datetime(
+                        occurrence.get_start_datetime()),
+                 'end_datetime': iso_datetime(
+                        occurrence.get_end_datetime()),
+                 'location': occurrence.get_location(),
+                 'recurrence': occurrence.get_recurrence() or '',
+                 'all_day': str(occurrence.is_all_day()),
+                 'timezone_name': occurrence.get_timezone_name()})
+            self.endElementNS(NS_NEWS_URI, 'occurrence')
         self.endElement('content')
 
 

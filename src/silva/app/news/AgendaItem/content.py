@@ -21,7 +21,7 @@ from Products.Silva import SilvaPermissions
 
 # SilvaNews
 from silva.app.news.interfaces import IAgendaItem, IAgendaItemVersion
-from silva.app.news.interfaces import IServiceNews
+from silva.app.news.interfaces import IServiceNews, IAgendaItemOccurrence
 from silva.app.news.NewsItem import NewsItem, NewsItemVersion
 from silva.app.news.NewsItem import NewsItemVersionCatalogingAttributes
 
@@ -34,6 +34,7 @@ _ = MessageFactory('silva_news')
 
 
 class AgendaItemOccurrence(Explicit):
+    grok.implements(IAgendaItemOccurrence)
     # This in inherit of Explicit because it did in 2.3 and Explicit
     # is not compatible with object.
     _start_datetime = None

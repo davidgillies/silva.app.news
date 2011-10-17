@@ -181,20 +181,25 @@ class XMLImportTestCase(SilvaXMLTestCase):
 
         version = self.root.export.news.event.get_viewable()
         self.assertTrue(verifyObject(interfaces.IAgendaItemVersion, version))
-        self.assertEqual('America/New York', version.get_timezone_name())
-        timezone = version.get_timezone()
-        self.assertEqual(
-            version.get_start_datetime(),
-            datetime(2010, 9, 1, 4, 0, 0, tzinfo=timezone))
-        self.assertEqual('Long Long Island', version.get_location())
-        self.assertTrue(version.is_all_day())
         self.assertEqual(version.get_subjects(), set(['all']))
         self.assertEqual(version.get_target_audiences(), set(['generic']))
-        self.assertEqual('FREQ=DAILY;UNTIL=20100910T123212Z',
-            version.get_recurrence())
         self.assertEqual(
             version.get_display_datetime(),
             DateTime('2010/09/30 10:00:00 GMT+2'))
+
+        occurrences = version.get_occurrences()
+        self.assertEqual(len(occurrences), 1)
+
+        occurrence = occurrences[0]
+        self.assertEqual('America/New York', occurrence.get_timezone_name())
+        timezone = occurrence.get_timezone()
+        self.assertEqual(
+            occurrence.get_start_datetime(),
+            datetime(2010, 9, 1, 4, 0, 0, tzinfo=timezone))
+        self.assertEqual('Long Long Island', occurrence.get_location())
+        self.assertTrue(occurrence.is_all_day())
+        self.assertEqual('FREQ=DAILY;UNTIL=20100910T123212Z',
+            occurrence.get_recurrence())
         self.assertXMLEqual("""
 <div>
  <h1>

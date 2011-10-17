@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 from zope.component import getUtility
 
+from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.datetimeutils import (
     datetime_to_unixtimestamp, get_timezone)
 from silva.app.news.tests.SilvaNewsTestCase import FunctionalLayer
@@ -18,37 +19,32 @@ class TestAgendaItemRecurrence(unittest.TestCase):
     def setUp(self):
         self.root = self.layer.get_application()
 
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaItem('event', 'Event')
-
-    def test_create_agenda_item_without_recurrence(self):
-        agenda_item = self.root.event
-        version = agenda_item.get_editable()
+    def test_occurrence_item_without_recurrence(self):
         dt = datetime(2010, 10, 9, 10, 1)
-        version.set_start_datetime(dt)
-        version.set_end_datetime(dt + relativedelta(hours=+2))
-        self.assertEquals(None, version.get_rrule())
+        occurrence = AgendaItemOccurrence(
+            start_datetime=dt, end_datetime=dt + relativedelta(hours=+2))
+        self.assertEquals(occurrence.get_rrule(), None)
 
-    def test_create_agenda_item_with_recurrence(self):
-        agenda_item = self.root.event
-        version = agenda_item.get_editable()
-        version.set_timezone_name('Europe/Amsterdam')
-        dt = datetime(2010, 9, 10, 10, 0, tzinfo=version.get_timezone())
-        version.set_start_datetime(dt)
-        version.set_end_datetime(dt + relativedelta(hours=+2))
+    def test_occurrence_with_recurrence(self):
+        dt = datetime(2010, 9, 10, 10, 0)
         # every two weeks
-        version.set_recurrence(
-            'FREQ=WEEKLY;INTERVAL=2;BYDAY=FR;UNTIL=%s' %
-            vDatetime(dt + relativedelta(months=+1)))
-        recurrence = version.get_rrule()
-        self.assertNotEquals(None, recurrence)
+        occurrence = AgendaItemOccurrence(
+            timezone_name='Europe/Amsterdam',
+            start_datetime=dt,
+            end_datetime=dt + relativedelta(hours=+2),
+            recurrence='FREQ=WEEKLY;INTERVAL=2;BYDAY=FR',
+            end_recurrence_datetime=dt + relativedelta(months=+1))
+
+        recurrence = occurrence.get_rrule()
+        self.assertNotEquals(recurrence, None)
         tz = get_timezone('Europe/Amsterdam')
         self.assertEquals(
             [datetime(2010, 9, 10, 10, 0, tzinfo=tz),
              datetime(2010, 9, 24, 10, 0, tzinfo=tz),
              datetime(2010, 10, 8, 10, 0, tzinfo=tz)],
             list(recurrence))
-        calendar_date = version.get_calendar_datetime()
+
+        calendar_date = occurrence.get_calendar_datetime()
         ranges = calendar_date.get_datetime_ranges()
         self.assertEquals(
             [(datetime(2010, 9, 10, 10, 0, tzinfo=tz),
@@ -60,25 +56,29 @@ class TestAgendaItemRecurrence(unittest.TestCase):
             ranges)
 
     def test_catalog(self):
-        agenda_item = self.root.event
-        version = agenda_item.get_editable()
-        version.set_timezone_name('Europe/Amsterdam')
-        dt = datetime(2010, 9, 10, 10, 0, tzinfo=version.get_timezone())
-        version.set_start_datetime(dt)
-        version.set_end_datetime(dt + relativedelta(hours=+2))
-        # every two weeks
-        version.set_recurrence(
-            'FREQ=WEEKLY;INTERVAL=2;BYDAY=FR;UNTIL=%s' %
-            vDatetime(dt + relativedelta(months=+1)))
-        # last for one month
-        recurrence = version.get_rrule()
-        self.assertNotEquals(None, recurrence)
-        tz = get_timezone('Europe/Amsterdam')
+        dt = datetime(2010, 9, 10, 10, 0)
 
-        agenda_item.set_unapproved_version_publication_datetime(DateTime())
-        agenda_item.approve_version()
+        # every two weeks
+        occurrence = AgendaItemOccurrence(
+            timezone_name='Europe/Amsterdam',
+            start_datetime=dt,
+            end_datetime=dt + relativedelta(hours=+2),
+            recurrence='FREQ=WEEKLY;INTERVAL=2;BYDAY=FR',
+            end_recurrence_datetime=dt + relativedelta(months=+1))
+
+        # last for one month
+        recurrence = occurrence.get_rrule()
+        self.assertNotEquals(recurrence, None)
+
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addAgendaItem('event', 'Event')
+        version = self.root.event.get_editable()
+        version.set_occurrences([occurrence])
+        self.root.event.set_unapproved_version_publication_datetime(DateTime())
+        self.root.event.approve_version()
 
         catalog = getUtility(ICatalogService)
+        tz = get_timezone('Europe/Amsterdam')
         start = datetime_to_unixtimestamp(
             datetime(2010, 9, 10, 0, 0, tzinfo=tz))
         end = datetime_to_unixtimestamp(
@@ -88,19 +88,19 @@ class TestAgendaItemRecurrence(unittest.TestCase):
             return map(lambda x: x.getObject(),
                        catalog({'timestamp_ranges': [start, end]}))
 
-        self.assertEquals([agenda_item], search())
+        self.assertEquals([version], search())
 
         start = datetime_to_unixtimestamp(
             datetime(2010, 9, 24, 10, 0, tzinfo=tz))
         end = datetime_to_unixtimestamp(
             datetime(2010, 9, 24, 12, 0, tzinfo=tz))
-        self.assertEquals([agenda_item], search())
+        self.assertEquals([version], search())
 
         start = datetime_to_unixtimestamp(
             datetime(2010, 10, 8, 11, 0, tzinfo=tz))
         end = datetime_to_unixtimestamp(
             datetime(2010, 10, 8, 13, 0, tzinfo=tz))
-        self.assertEquals([agenda_item], search())
+        self.assertEquals([version], search())
 
 
 def test_suite():

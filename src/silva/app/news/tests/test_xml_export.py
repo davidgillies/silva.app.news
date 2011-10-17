@@ -9,6 +9,7 @@ from Products.Silva.silvaxml import xmlexport
 from Products.Silva.tests.helpers import publish_object
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 from silva.app.news.datetimeutils import get_timezone
+from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.testing import FunctionalLayer
 
 
@@ -109,15 +110,15 @@ class XMLExportTestCase(SilvaXMLTestCase):
 
         version = self.root.export.news.event.get_editable()
         self.assertTrue(version)
-        version.set_location('Rotterdam')
+        version.set_occurrences([
+                AgendaItemOccurrence(
+                    location='Rotterdam',
+                    recurrence='FREQ=DAILY;UNTIL=20100910T123212Z',
+                    timezone_name='Europe/Amsterdam',
+                    all_day=True,
+                    start_datetime=datetime(2010, 9, 1, 10, 0, 0))])
         version.set_subjects(['all'])
         version.set_target_audiences(['generic'])
-        version.set_recurrence('FREQ=DAILY;UNTIL=20100910T123212Z')
-        timezone = get_timezone('Europe/Amsterdam')
-        version.set_timezone_name('Europe/Amsterdam')
-        version.set_start_datetime(
-            datetime(2010, 9, 1, 10, 0, 0, tzinfo=timezone))
-        version.set_all_day(True)
         version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
         publish_object(self.root.export.news.event)
 

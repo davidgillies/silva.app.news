@@ -11,6 +11,7 @@ from five import grok
 from silva.app.news.silvaxml import NS_NEWS_URI
 from silva.app.news.silvaxml import helpers
 from silva.app.news.datetimeutils import get_timezone
+from silva.app.news.AgendaItem import AgendaItemOccurrence
 
 silvaconf.namespace(NS_NEWS_URI)
 
@@ -89,11 +90,31 @@ class AgendaItemHandler(xmlimport.SilvaBaseHandler):
             self.notifyImport()
 
 
+class AgendaItemOccurrenceHandler(xmlimport.SilvaBaseHandler):
+    silvaconf.baseclass()
+
+    def startElementNS(self, name, qname, attrs):
+        if name == (NS_NEWS_URI, 'occurrence'):
+            occurrence = AgendaItemOccurrence()
+            helpers.set(occurrence, 'location', attrs)
+            helpers.set(occurrence, 'recurrence', attrs)
+            tz_name = helpers.set(occurrence, 'timezone_name', attrs)
+            tz = None
+            if tz_name:
+                tz = get_timezone(tz_name)
+            helpers.set_as_bool(occurrence, 'all_day', attrs)
+            helpers.set_as_datetime(occurrence, 'start_datetime', attrs, tz=tz)
+            helpers.set_as_datetime(occurrence, 'end_datetime', attrs, tz=tz)
+
+            self.parentHandler().occurrences.append(occurrence)
+
+
 class AgendaItemVersionHandler(xmlimport.SilvaBaseHandler):
     grok.baseclass()
 
     def getOverrides(self):
-        return {(NS_NEWS_URI, 'body'): NewsItemVersionBodyHandler}
+        return {(NS_NEWS_URI, 'body'): NewsItemVersionBodyHandler,
+                (NS_NEWS_URI, 'occurrence'): AgendaItemOccurrenceHandler}
 
     def startElementNS(self, name, qname, attrs):
         if name == (xmlimport.NS_SILVA_URI, 'content'):
@@ -105,19 +126,12 @@ class AgendaItemVersionHandler(xmlimport.SilvaBaseHandler):
             version = self.result()
             helpers.set_as_list(version, 'target_audiences', attrs)
             helpers.set_as_list(version, 'subjects', attrs)
-            helpers.set(version, 'location', attrs)
-            helpers.set(version, 'recurrence', attrs)
-            tz_name = helpers.set(version, 'timezone_name', attrs)
-            tz = None
-            if tz_name:
-                tz = get_timezone(tz_name)
-            helpers.set_as_bool(version, 'all_day', attrs)
-            helpers.set_as_datetime(version, 'start_datetime', attrs, tz=tz)
-            helpers.set_as_datetime(version, 'end_datetime', attrs, tz=tz)
             helpers.set_as_naive_datetime(version, 'display_datetime', attrs)
+            self.occurrences = []
 
     def endElementNS(self, name, qname):
         if name == (xmlimport.NS_SILVA_URI, 'content'):
+            self.result().set_occurrences(self.occurrences)
             xmlimport.updateVersionCount(self)
             self.storeMetadata()
             self.storeWorkflow()

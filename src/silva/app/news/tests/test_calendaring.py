@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 from zope.component import getUtility
 from zope.intid.interfaces import IIntIds
 
+from silva.core.services.interfaces import ICatalogingAttributes
 from silva.app.news.tests.SilvaNewsTestCase import (SilvaNewsTestCase,
     NewsBaseTestCase)
 from silva.app.news.datetimeutils import (local_timezone,
@@ -18,19 +19,20 @@ class TestEvent(SilvaNewsTestCase):
 
     def test_event_indexing(self):
         start = datetime.now(local_timezone)
-        self.add_published_agenda_item(self.root, 'ai1',
+        event = self.add_published_agenda_item(self.root, 'ai1',
             'Agenda Item', start, start + timedelta(60))
 
-        version = getattr(self.root.ai1, '0')
+        version = event.get_viewable()
         # make sure it does not raise
-        version.get_timestamp_ranges()
+        self.assertNotEquals(
+            ICatalogingAttributes(version).timestamp_ranges(), [])
 
         start_index = datetime_to_unixtimestamp(start)
         end_index = datetime_to_unixtimestamp(start + timedelta(30))
         brains = self.root.service_catalog(
             {'timestamp_ranges': {'query': [start_index, end_index]}})
         l = [brain.getObject() for brain in brains]
-        self.assertEqual(l, [self.root.ai1])
+        self.assertEqual(l, [version])
 
         start_index = datetime_to_unixtimestamp(start - timedelta(30))
         end_index = datetime_to_unixtimestamp(start - timedelta(20))
@@ -40,6 +42,7 @@ class TestEvent(SilvaNewsTestCase):
 
 
 class TestAgendaViewerLookup(NewsBaseTestCase):
+
     def setUp(self):
         super(TestAgendaViewerLookup, self).setUp()
         self.tz = get_timezone('Europe/Amsterdam')
@@ -109,7 +112,7 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         agenda = self.root.agenda_viewer
 
         def normalize(results):
-            return set(map(lambda x: x.get_viewable(), items))
+            return set(map(lambda x: x.getObject(), items))
 
         items = agenda.get_items_by_date(11, 2010)
         self.assertEquals(versions, normalize(items))
@@ -134,21 +137,16 @@ class TestCalendar(NewsBaseTestCase):
         self.agenda = self.add_agenda_viewer(self.root, 'agenda', 'Agenda')
         self.agenda.set_filters([self.root.afilter])
         self.agenda.set_timezone_name('Europe/Amsterdam')
-        sdt = datetime(2010, 9, 4, 10, 20, tzinfo=self.agenda.get_timezone())
+
+        sdt = datetime(2012, 6, 4, 10, 20, tzinfo=self.agenda.get_timezone())
         self.event1 = self.add_published_agenda_item(
-            self.source1, 'event', u'Event héhé“π”',
+            self.source1, 'event1', u'Event héhé“π”',
             sdt, sdt + relativedelta(hours=+1))
-        version = self.event1.get_viewable()
-        version.set_subjects(['sub'])
-        version.set_target_audiences(['ta'])
-        sdt = datetime(2010, 9, 10, 10, 20, tzinfo=self.agenda.get_timezone())
+
+        sdt = datetime(2012, 6, 10, 10, 20, tzinfo=self.agenda.get_timezone())
         self.event2 = self.add_published_agenda_item(
             self.source1, 'event2', u'Event2',
-            sdt, sdt + relativedelta(days=+1))
-        version = self.event2.get_viewable()
-        version.set_all_day(True)
-        version.set_subjects(['sub'])
-        version.set_target_audiences(['ta'])
+            sdt, sdt + relativedelta(days=+1), all_day=True)
 
     def get_intid(self, obj):
         return getUtility(IIntIds).getId(obj)
@@ -159,8 +157,8 @@ class TestCalendar(NewsBaseTestCase):
 
     def test_calendar_view_for_event(self):
         status = self.browser.open('http://localhost/root/agenda',
-                                   query={'year' : '2010',
-                                          'month': '9',
+                                   query={'year' : '2012',
+                                          'month': '6',
                                           'day'  : '4'})
         self.assertEquals(200, status)
 
@@ -183,30 +181,30 @@ class TestCalendar(NewsBaseTestCase):
         status = self.browser.open(
             'http://localhost/root/agenda/calendar.ics')
         self.assertEquals(200, status)
-        intids = getUtility(IIntIds)
-        uids = [intids.getId(self.event1), intids.getId(self.event2)]
+        get_id = getUtility(IIntIds).register
+        uids = (get_id(self.event2.get_viewable()),
+                get_id(self.event1.get_viewable()))
         data = """BEGIN:VCALENDAR
 PRODID:-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN
 VERSION:2.0
 X-WR-CALNAME:Agenda
 X-WR-TIMEZONE:Europe/Amsterdam
 BEGIN:VEVENT
-DTEND;VALUE=DATE:20100912
-DTSTART;VALUE=DATE:20100910
+DTEND;VALUE=DATE:20120612
+DTSTART;VALUE=DATE:20120610
 SUMMARY:Event2
-UID:%d@silvanews
-URL:http://localhost/root/agenda/++newsitems++%d-%s
+UID:%d@0@silvanews
+URL:http://localhost/root/source1/event2
 END:VEVENT
 BEGIN:VEVENT
-DTEND:20100904T092000Z
-DTSTART:20100904T082000Z
+DTEND:20120604T092000Z
+DTSTART:20120604T082000Z
 SUMMARY:Event héhé“π”
-UID:%d@silvanews
-URL:http://localhost/root/agenda/++newsitems++%d-%s
+UID:%d@0@silvanews
+URL:http://localhost/root/source1/event1
 END:VEVENT
 END:VCALENDAR
-""".replace("\n", "\r\n") % (
-            uids[1], uids[1], self.event2.id, uids[0], uids[0], self.event1.id)
+""".replace("\n", "\r\n") % uids
         self.assert_no_udiff(data, self.browser.contents, term="\r\n")
 
     def assert_no_udiff(self, s1, s2, term="\n"):

@@ -20,8 +20,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
         catalog = self.catalog
         indexes = [
             ('parent_path', 'FieldIndex'),
-            ('start_datetime', 'DateIndex'),
-            ('end_datetime', 'DateIndex'),
+            ('sort_index', 'FieldIndex'),
             ('display_datetime', 'DateIndex'),
             ('subjects', 'KeywordIndex'),
             ('target_audiences', 'KeywordIndex'),

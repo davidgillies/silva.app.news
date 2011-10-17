@@ -61,12 +61,12 @@ InitializeClass(NewsCategorization)
 
 class INewsCategorizationSchema(Interface):
     subjects = Tree(
-        title=_(u"subjects"),
+        title=_(u"Subjects"),
         value_type=schema.Choice(source=subjects_source),
         tree=get_subjects_tree,
         required=True)
     target_audiences = Tree(
-        title=_(u"target audiences"),
+        title=_(u"Target audiences"),
         value_type=schema.Choice(source=target_audiences_source),
         tree=get_target_audiences_tree,
         required=True)

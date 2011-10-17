@@ -26,14 +26,8 @@ class TestViewerPublicViews(NewsBaseTestCase):
         self.assertEquals(len(self.browser.inspect.news_items), 2)
 
     def test_archive(self):
-        status = self.browser.open('http://localhost/root/newsviewer/archives')
-        self.assertEquals(200, status)
-        self.assertEquals(len(self.browser.inspect.news_items), 2)
-
-    def test_search(self):
         status = self.browser.open(
-            'http://localhost/root/newsviewer/search',
-            query={'query': 'Article'})
+            'http://localhost/root/newsviewer/archives.html')
         self.assertEquals(200, status)
         self.assertEquals(len(self.browser.inspect.news_items), 2)
 
@@ -77,7 +71,7 @@ class TestAgendaViewerPublicViews(SilvaNewsTestCase):
 
     def test_archives(self):
         status = self.browser.open(
-            'http://localhost/root/agenda_viewer/archives',
+            'http://localhost/root/agenda_viewer/archives.html',
             query={'form.field.year': '2010', 'form.field.month': '12'})
         self.assertEquals(200, status)
         self.assertEquals(len(self.browser.inspect.news_items), 2)

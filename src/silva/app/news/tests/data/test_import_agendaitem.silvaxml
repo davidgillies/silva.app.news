@@ -72,15 +72,9 @@
                 <expiration_datetime/>
               </version>
             </workflow>
-            <content all_day="True"
-                     display_datetime="2010-09-30T08:00:00Z"
-                     end_datetime="2010-09-01T09:00:00Z"
-                     location="Long Long Island"
-                     recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
-                     start_datetime="2010-09-01T08:00:00Z"
+            <content display_datetime="2010-09-30T08:00:00Z"
                      subjects="all"
                      target_audiences="generic"
-                     timezone_name="America/New York"
                      version_id="0">
               <metadata>
                 <set id="silva-content">
@@ -124,6 +118,14 @@
                   </html:div>
                 </silva-core-editor:text>
               </silva-app-news:body>
+              <silva-app-news:occurrence
+                 all_day="True"
+                 end_datetime="2010-09-01T09:00:00Z"
+                 location="Long Long Island"
+                 recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
+                 start_datetime="2010-09-01T08:00:00Z"
+                 timezone_name="America/New York">
+              </silva-app-news:occurrence>
             </content>
           </silva-app-news:agenda_item>
         </content>

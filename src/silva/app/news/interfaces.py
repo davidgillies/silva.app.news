@@ -77,13 +77,6 @@ class INewsItemVersion(IDocumentVersion, INewsCategorization):
     This contains the real content for a news item.
     """
 
-    def is_private():
-        """Returns true if the item is private.
-
-        Private items are picked up only by news filters in the same
-        container as the source.
-        """
-
     def fulltext():
         """Returns a string containing all the words of all content.
 
@@ -95,8 +88,11 @@ class IAgendaItem(INewsItem):
     """Agenda item
     """
 
+class IAgendaItemOccurrence(Interface):
+    """Occurrence of an Agenda Item
 
-class IAgendaItemVersion(INewsItemVersion):
+    Where and when it will happens.
+    """
 
     def get_start_datetime():
         """Returns start_datetime
@@ -110,6 +106,30 @@ class IAgendaItemVersion(INewsItemVersion):
         """Returns location
         """
 
+    def get_timezone_name():
+        """Return the name of the timezone where the event will happens.
+        """
+
+    def get_recurrence():
+        """Rethrn the current recurrence setting.
+        """
+
+    def get_all_day():
+        """Return a boolean that indicates if the event is all day long.
+        """
+
+    def set_recurrence(recurrence):
+        """Set the event recurrence (using a rrule).
+        """
+
+    def set_all_day(value):
+        """Set a boolean that indicates if the event is all day long.
+        """
+
+    def set_timezone_name(name):
+        """Set the name of the timze where the event will happens.
+        """
+
     def set_start_datetime(value):
         """Sets the start datetime to value (DateTime)"""
 
@@ -118,6 +138,21 @@ class IAgendaItemVersion(INewsItemVersion):
 
     def set_location(value):
         """Sets the location"""
+
+
+class IAgendaItemVersion(INewsItemVersion):
+    """Version of an Agenda item
+    """
+
+    def set_occurrences(occurrences):
+        """Set the list of occurrences objects that describes when and
+        where the item will happens.
+        """
+
+    def get_occurrences():
+        """Return the list of occurrences of where and when the agenda
+        item will happen.
+        """
 
 
 class INewsPublication(IPublication):
@@ -366,10 +401,6 @@ class INewsViewer(IViewer):
 
     def search_items(keywords):
         """Search the items in the filters.
-        """
-
-    def set_proxy(item, force=False):
-        """ Set the news viewer as parent of the item if proxy mode enabled.
         """
 
 

@@ -114,15 +114,9 @@
                 <expiration_datetime/>
               </version>
             </workflow>
-            <content all_day="True"
-                     display_datetime="YYYY-MM-DDTHH:MM:SS"
-                     end_datetime="YYYY-MM-DDTHH:MM:SS"
-                     location="Rotterdam"
-                     recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
-                     start_datetime="YYYY-MM-DDTHH:MM:SS"
+            <content display_datetime="YYYY-MM-DDTHH:MM:SS"
                      subjects="all"
                      target_audiences="generic"
-                     timezone_name="Europe/Amsterdam"
                      version_id="0">
               <metadata>
                 <set id="silva-content">
@@ -159,6 +153,14 @@
                   </html:h1>
                 </silva-core-editor:text>
               </silva-app-news:body>
+              <silva-app-news:occurrence
+                 all_day="True"
+                 end_datetime="YYYY-MM-DDTHH:MM:SS"
+                 location="Rotterdam"
+                 recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
+                 start_datetime="YYYY-MM-DDTHH:MM:SS"
+                 timezone_name="Europe/Amsterdam">
+              </silva-app-news:occurrence>
             </content>
           </silva-app-news:agenda_item>
           <silva-app-news:news_filter id="filter"

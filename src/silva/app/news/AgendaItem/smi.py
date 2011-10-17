@@ -27,25 +27,25 @@ _ = MessageFactory('silva_news')
 class IAgendaItemOccurrenceSchema(interface.Interface):
     timezone_name = schema.Choice(
         source=timezone_source,
-        title=_(u"timezone"),
+        title=_(u"Timezone"),
         description=_(u"Defines the time zone for dates"),
         required=True)
     start_datetime = schema.Datetime(
-        title=_(u"start date/time"),
+        title=_(u"Start date/time"),
         required=True)
     end_datetime = schema.Datetime(
-        title=_(u"end date/time"),
+        title=_(u"End date/time"),
         required=False)
     all_day = schema.Bool(
-        title=_(u"all day"))
-    recurrence = Recurrence(title=_("recurrence"), required=False)
+        title=_(u"All day"))
+    recurrence = Recurrence(title=_("Recurrence"), required=False)
     end_recurrence_datetime = schema.Datetime(
-        title=_(u"recurrence end date"),
+        title=_(u"Recurrence end date"),
         description=_(u"Date on which the recurrence stops. Required if "
                       u"any recurrence is set"),
         required=False)
     location = schema.TextLine(
-        title=_(u"location"),
+        title=_(u"Location"),
         description=_(u"The location where the event is taking place."),
         required=False)
 
@@ -93,8 +93,8 @@ grok.global_utility(
 
 class IAgendaItemSchema(INewsCategorizationSchema):
     occurrences = schema.List(
-        title=_(u"occurrences"),
-        description=_(u"when and where the event will happens."),
+        title=_(u"Occurrences"),
+        description=_(u"When and where the event will happens."),
         value_type=schema.Object(schema=IAgendaItemOccurrenceSchema),
         min_length=1)
 
