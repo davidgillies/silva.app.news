@@ -35,6 +35,8 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
     grok.implements(INewsItemVersion)
     meta_type = "Silva Article Version"
 
+    _external_url = None
+
     def __init__(self, id):
         super(NewsItemVersion, self).__init__(id)
         self._display_datetime = None
@@ -51,6 +53,11 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         self._display_datetime = DateTime(ddt)
 
     security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_external_url')
+    def set_external_url(self, url):
+        self._external_url = url
+
+    security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_display_datetime')
     def get_display_datetime(self):
         """returns the display datetime
@@ -58,6 +65,11 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
             see 'set_display_datetime'
         """
         return self._display_datetime
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_external_url')
+    def get_external_url(self):
+        return self._external_url
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'fulltext')

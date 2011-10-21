@@ -77,6 +77,15 @@ class INewsItemVersion(IDocumentVersion, INewsCategorization):
     This contains the real content for a news item.
     """
 
+    def set_external_url(url):
+        """Set an external URL associated with this news item.
+        """
+
+    def get_external_url():
+        """Return the external URL associated with the news item if
+        any.
+        """
+
     def fulltext():
         """Returns a string containing all the words of all content.
 
