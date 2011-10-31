@@ -1,6 +1,6 @@
 (function ($) {
 
-    function load_trees(event) {
+    function create_trees() {
         var $trees = $(this).find(".field-tree-widget");
 
         $trees.each(function () {
@@ -26,7 +26,11 @@
         });
     };
 
-    $('form').live('load-smiform', load_trees);
-    $(document).ready(load_trees);
+    $('.form-fields-container').live('loadwidget-smiform', function(event) {
+        $(this).invoke(create_trees);
+        event.stopPropagation();
+    });
+
+    $(document).ready(create_trees);
 
 })(jQuery);

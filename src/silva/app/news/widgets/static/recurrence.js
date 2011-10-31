@@ -1,4 +1,4 @@
-(function($) {
+(function($, infrae) {
 
     function parse_recurrence_data(value) {
         var items = value.split(';');
@@ -917,19 +917,9 @@
 
     // ------------------------------------------------------------------------
 
-    $('form').live('load-smiform', function(event){
-        $(this).find('.recurrence-widget').each(function() {
-            var $widget = $(this);
-            var $input = $widget.find('input.recurrence-data');
-            var value = String($input.val());
-            $widget.find('.recurrence-sentence').text(
-                humanize(parse_recurrence_data(value),
-                         humanize_translations));
-        });
-    });
 
     $('.recurrence-popup-button').live('click', function() {
-        var widget = $(this).parent('.recurrence-widget');
+        var widget = $(this).closest('.recurrence-widget');
         var input = widget.find('input.recurrence-data');
 
         function updateInputWidget() {
@@ -940,20 +930,20 @@
                          humanize_translations));
         }
 
-        var popup = $("#" + widget.attr('id') + '-popup').clone();
+        var $popup = $("#" + widget.attr('id') + '-popup').clone();
         // initialize widget value from input value
         widget.data('recurrence-value', String(input.val()));
-        popup.find('.sentence-val').text(
+        $popup.find('.sentence-val').text(
             humanize(parse_recurrence_data(String(input.val())),
                      humanize_translations));
         updateInputWidget();
 
-        var select = popup.find('select');
+        var select = $popup.find('select');
 
-        var daily = popup.find("div.daily-widget");
-        var weekly = popup.find("div.weekly-widget");
-        var monthly = popup.find("div.monthly-widget");
-        var yearly = popup.find("div.yearly-widget");
+        var daily = $popup.find("div.daily-widget");
+        var weekly = $popup.find("div.weekly-widget");
+        var monthly = $popup.find("div.monthly-widget");
+        var yearly = $popup.find("div.yearly-widget");
 
         // create widgets
         daily.dailyrecurrence();
@@ -972,7 +962,7 @@
             widget.data('recurrence-value', data['freq']);
             var sentence = humanize(parse_recurrence_data(String(data['freq'])),
                                     humanize_translations);
-            popup.find('.sentence-val').text(sentence);
+            $popup.find('.sentence-val').text(sentence);
         };
 
         daily.bind('dailyrecurrencefreqchange', handler);
@@ -982,17 +972,17 @@
 
         select.change(function(event){
             var widget_class = String(select.val());
-            $.each(popup.find('.widget'), function(index, element){
+            $.each($popup.find('.widget'), function(index, element){
                 $(element).hide();
             });
             if (widget_class != ''){
-                var el = popup.find('div.' + widget_class);
+                var el = $popup.find('div.' + widget_class);
                 el.show();
                 el.trigger($.Event('freqsync'));
             }
         });
 
-        $.each(popup.find('.widget'), function(index, element){
+        $.each($popup.find('.widget'), function(index, element){
             $(element).hide();
         });
 
@@ -1023,7 +1013,7 @@
             select.val('');
         };
 
-        popup.dialog({
+        $popup.dialog({
             autoOpen: false,
             modal: false,
             width: 300,
@@ -1043,12 +1033,29 @@
                 }
             }
         });
-        popup.bind('dialogclose', function() {
-            popup.remove();
+        $popup.bind('dialogclose', function() {
+            $popup.remove();
         });
-
-        popup.dialog('open');
-
+        infrae.ui.ShowDialog($popup);
     });
 
-})(jQuery);
+
+    var create_recurrence = function () {
+        $(this).find('.recurrence-widget').each(function() {
+            var $widget = $(this);
+            var $input = $widget.find('input.recurrence-data');
+            var value = String($input.val());
+            $widget.find('.recurrence-sentence').text(
+                humanize(parse_recurrence_data(value),
+                         humanize_translations));
+        });
+    };
+
+    $('.form-fields-container').live('loadwidget-smiform', function(event) {
+        $(this).invoke(create_recurrence);
+        event.stopPropagation();
+    });
+
+    $(document).ready(create_recurrence);
+
+})(jQuery, infrae);
