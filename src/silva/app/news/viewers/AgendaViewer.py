@@ -10,7 +10,6 @@ import localdatetime
 from five import grok
 from zope.cachedescriptors.property import CachedProperty
 from zope.component import getMultiAdapter
-from zope.interface import alsoProvides
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.browser import absoluteURL
 
@@ -23,6 +22,7 @@ from Products.Silva import SilvaPermissions
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
+from silva.fanstatic import need
 from zeam.form import silva as silvaforms
 
 from js import jquery
@@ -228,7 +228,7 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
         return absoluteURL(self.context, self.request)
 
     def update(self):
-        alsoProvides(self.request, ICalendarResources)
+        need(ICalendarResources)
         now = datetime.now(self.context.get_timezone())
         self.month = int(self.request.get('month', now.month))
         self.year = int(self.request.get('year', now.year))
@@ -305,7 +305,7 @@ class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
     grok.name('year')
 
     def update(self):
-        alsoProvides(self.request, ICalendarResources)
+        need(ICalendarResources)
         timezone = self.context.get_timezone()
         now = datetime.now()
         self.year = int(self.request.get('year', now.year))
@@ -318,7 +318,7 @@ class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
         return self.calendar.formatyear(self.year)
 
 
-class IViewResources(IDefaultBrowserLayer):
+class IJSCalendarResources(IDefaultBrowserLayer):
     silvaconf.resource(jquery.jquery)
     silvaconf.resource('fullcalendar/fullcalendar.js')
     silvaconf.resource('calendar.js')
@@ -333,7 +333,7 @@ class AgendaViewerJSCalendar(silvaviews.Page):
     grok.name('calendar.html')
 
     def update(self):
-        alsoProvides(self.request, IViewResources)
+        need(IJSCalendarResources)
 
     @property
     def events_json_url(self):
