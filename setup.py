@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.0dev'
+version = '3.0b1'
 
 tests_require = [
     'Products.Silva [test]',
@@ -34,9 +34,9 @@ setup(name='silva.app.news',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-        'Products.Formulator',
         'Products.Silva',
-        'feedparser',
+        'Products.SilvaExternalSources',
+        'Products.SilvaMetadata',
         'feedparser',
         'five.grok',
         'icalendar',
@@ -47,12 +47,14 @@ setup(name='silva.app.news',
         'setuptools',
         'silva.app.document',
         'silva.core.conf',
+        'silva.core.editor',
         'silva.core.interfaces',
         'silva.core.references',
         'silva.core.services',
         'silva.core.smi',
         'silva.core.upgrade',
         'silva.core.views',
+        'silva.fanstatic',
         'silva.ui',
         'z3locales',
         'zeam.form.base',
@@ -65,7 +67,6 @@ setup(name='silva.app.news',
         'zope.interface',
         'zope.intid',
         'zope.lifecycleevent',
-        'zope.location',
         'zope.publisher',
         'zope.schema',
         'zope.traversing',

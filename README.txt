@@ -1,6 +1,6 @@
-==================
-Silva News Network
-==================
+==========
+Silva News
+==========
 
 Silva is a Zope-based web application designed for the creation and
 management of structured, textual content. Silva allows users to enter
@@ -11,12 +11,11 @@ Silva News Network is an extension to Silva to allow authors to place
 articles and agendaitems on the Silva site and show them on a page.
 
 There are versions for older Silva versions available for download as
-well.  No other products are required to use Silva News Network from
-Silva, besides the products required to run Silva itself.
+well.  No other products are required to use Silva News from Silva,
+besides the products required to run Silva itself.
 
-
-Using Silva News Network
-========================
+Using Silva News
+================
 
 The first thing to do is add subjects and target audiences to the
 service_news object in the Silva root in the ZMI. This object is used
