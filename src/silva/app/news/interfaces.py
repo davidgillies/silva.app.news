@@ -375,15 +375,15 @@ class INewsViewer(IViewer):
         """
 
     # accessors
-    def number_to_show():
+    def get_number_to_show():
         """Amount of news items to show.
         """
 
-    def number_to_show_archive():
+    def get_number_to_show_archive():
         """Number of items per page to show in the archive.
         """
 
-    def number_is_days():
+    def get_number_is_days():
         """If number_is_days is True, the number_to_show will control
         days back to show instead of number of items.
         """

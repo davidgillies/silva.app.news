@@ -1,12 +1,14 @@
 # Copyright (c) 2002-2010 Infrae. All rights reserved.
 # See also LICENSE.txt
+
 import unittest
 
 from zope.component import queryUtility
 from zope.interface.verify import verifyObject
+
 from silva.app.news.interfaces import IServiceNews
 from silva.app.news.Tree import DuplicateIdError, IReadableRoot
-from silva.app.news.tests.SilvaNewsTestCase import FunctionalLayer
+from silva.app.news.testing import FunctionalLayer
 
 
 class ServiceNewsTestCase(unittest.TestCase):
@@ -24,8 +26,17 @@ class ServiceNewsTestCase(unittest.TestCase):
         self.assertTrue('service_news' in self.root.objectIds())
         self.assertEqual(self.root.service_news, service)
 
+    def test_find_all_sources(self):
+        self.add_news_publication(self.root, 'source1', 'News Pub 1')
+
+
+        service = queryUtility(IServiceNews)
+        self.assertItemsEqual(
+            [self.root.source1, self.root.source2],
+            list(service.get_all_sources()))
+
     def test_subjects(self):
-        service = self.root.service_news
+        service = queryUtility(IServiceNews)
         self.assertTrue(
             verifyObject(IReadableRoot, service.get_subjects_tree()))
 
@@ -61,7 +72,7 @@ class ServiceNewsTestCase(unittest.TestCase):
              ('root', 'root')])
 
     def test_target_audiences(self):
-        service = self.root.service_news
+        service = queryUtility(IServiceNews)
         self.assertTrue(
             verifyObject(IReadableRoot, service.get_target_audiences_tree()))
 

@@ -109,7 +109,6 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
 
     fields = silvaforms.Fields(IAgendaItemSchema)
     fields['occurrences'].mode = 'input-list'
-    fields['occurrences'].allowOrdering = False
     fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
     fields['occurrences'].valueField.objectFields[
         'timezone_name'].defaultValue = get_default_tz_name
@@ -121,7 +120,6 @@ class AgendaItemDetailsForm(NewsItemDetailsForm):
     label = _(u"Agenda item details")
     fields = silvaforms.Fields(IAgendaItemSchema).omit('id')
     fields['occurrences'].mode = 'input-list'
-    fields['occurrences'].allowOrdering = False
     fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
     fields['occurrences'].valueField.objectFields[
         'timezone_name'].defaultValue = get_default_tz_name

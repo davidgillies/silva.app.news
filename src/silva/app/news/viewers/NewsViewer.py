@@ -82,36 +82,26 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         return first_weekday
 
     security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'number_to_show')
-    def number_to_show(self):
+        SilvaPermissions.AccessContentsInformation, 'get_number_to_show')
+    def get_number_to_show(self):
         """Returns number of items to show
         """
         return self._number_to_show
 
     security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'get_number_to_show')
-    get_number_to_show = number_to_show
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                                'number_to_show_archive')
-    def number_to_show_archive(self):
+        SilvaPermissions.AccessContentsInformation, 'get_number_to_show_archive')
+    def get_number_to_show_archive(self):
         """returns the number of items to show per page in the archive"""
         return self._number_to_show_archive
 
-    get_number_to_show_archive = number_to_show_archive
-
     security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'number_is_days')
-    def number_is_days(self):
+        SilvaPermissions.AccessContentsInformation, 'get_number_is_days')
+    def get_number_is_days(self):
         """
         Returns the value of number_is_days (which controls whether
         the filter should show <n> items or items of <n> days back)
         """
         return self._number_is_days
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_number_is_days')
-    get_number_is_days = number_is_days
 
     def _get_filters_reference_set(self):
         if hasattr(self, '_v_filter_reference_set'):

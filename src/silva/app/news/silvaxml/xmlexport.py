@@ -155,10 +155,10 @@ class NewsViewerProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
             NS_NEWS_URI,
             'news_viewer',
             {'id': self.context.id,
-             'number_to_show': str(self.context.number_to_show()),
+             'number_to_show': str(self.context.get_number_to_show()),
              'number_to_show_archive': str(
-                    self.context.number_to_show_archive()),
-             'number_is_days': str(self.context.number_is_days())})
+                    self.context.get_number_to_show_archive()),
+             'number_is_days': str(self.context.get_number_is_days())})
         self.metadata()
         self.startElement('content')
         self.filters()

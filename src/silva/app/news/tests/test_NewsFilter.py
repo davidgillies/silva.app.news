@@ -9,13 +9,6 @@ from silva.app.news.tests import SilvaNewsTestCase
 class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
     """Test the NewsFilter interface.
     """
-    def test_find_sources(self):
-        res = self.newsfilter.get_all_sources()
-        ids = [i.id for i in res]
-        self.assertTrue('source1' in ids)
-        self.assertTrue('source2' in ids)
-        self.assertTrue('source3' not in ids)
-        self.assertEquals(2, len(res))
 
     def test_sources(self):
         self.assertTrue(self.newsfilter.get_sources() == [self.source1])
