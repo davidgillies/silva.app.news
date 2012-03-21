@@ -5,4 +5,4 @@
 from .content import AgendaItemOccurrence
 from .content import AgendaItemVersion, AgendaItem
 from .content import AgendaItemContentVersion, AgendaItemContent
-
+from .smi import IAgendaItemSchema

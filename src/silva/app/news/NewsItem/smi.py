@@ -25,7 +25,7 @@ from ..NewsCategorization import INewsCategorizationSchema
 _ = MessageFactory('silva_news')
 
 
-class INewsItemSchema(ITitledContent, INewsCategorizationSchema):
+class INewsItemSchema(INewsCategorizationSchema):
     external_url = schema.URI(
         title=_(u"External URL"),
         description=_(u"external URL with more information "
@@ -37,7 +37,7 @@ class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
     grok.name(u"Silva Article")
 
-    fields = silvaforms.Fields(INewsItemSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsItemSchema)
 
 
 class NewsItemDetailsForm(silvaforms.SMIEditForm):
@@ -45,7 +45,7 @@ class NewsItemDetailsForm(silvaforms.SMIEditForm):
     grok.name('details')
 
     label = _(u"Article details")
-    fields = silvaforms.Fields(INewsItemSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, INewsItemSchema).omit('id')
 
 
 class NewsItemDetailsMenu(MenuItem):

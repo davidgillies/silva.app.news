@@ -125,7 +125,7 @@ class NewsItem(NewsItemContent, DocumentContent):
     security = ClassSecurityInfo()
     meta_type = "Silva Article"
     silvaconf.icon("www/news_item.png")
-    silvaconf.priority(3.7)
+    silvaconf.priority(-7)
     silvaconf.version_class(NewsItemVersion)
 
 

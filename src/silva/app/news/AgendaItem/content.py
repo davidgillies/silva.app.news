@@ -200,7 +200,7 @@ class AgendaItem(AgendaItemContent, DocumentContent):
     grok.implements(IAgendaItem)
     meta_type = "Silva Agenda Item"
     silvaconf.icon("www/agenda_item.png")
-    silvaconf.priority(3.8)
+    silvaconf.priority(-6)
     silvaconf.version_class(AgendaItemVersion)
 
 

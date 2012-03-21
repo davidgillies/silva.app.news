@@ -90,7 +90,7 @@ grok.global_utility(
     name=IAgendaItemOccurrenceSchema.__identifier__, direct=True)
 
 
-class IAgendaItemSchema(ITitledContent, INewsCategorizationSchema):
+class IAgendaItemSchema(INewsCategorizationSchema):
     occurrences = schema.List(
         title=_(u"Occurrences"),
         description=_(u"When and where the event will happens."),
@@ -106,7 +106,7 @@ class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
-    fields = silvaforms.Fields(IAgendaItemSchema)
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
     fields['occurrences'].mode = 'input-list'
     fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
     fields['occurrences'].valueField.objectFields[
@@ -117,7 +117,7 @@ class AgendaItemDetailsForm(NewsItemDetailsForm):
     grok.context(IAgendaItem)
 
     label = _(u"Agenda item details")
-    fields = silvaforms.Fields(IAgendaItemSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema).omit('id')
     fields['occurrences'].mode = 'input-list'
     fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
     fields['occurrences'].valueField.objectFields[
