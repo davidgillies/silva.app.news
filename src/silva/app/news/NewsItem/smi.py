@@ -6,11 +6,9 @@ from zope import schema
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface
 
-# Zope
 from DateTime import DateTime
 from datetime import datetime
 
-# Silva
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.smi.content import ContentEditMenu
 from silva.core.smi.content.publish import IPublicationFields
@@ -20,8 +18,8 @@ from silva.ui.menu import MenuItem
 from zeam.form import silva as silvaforms
 from zeam.form import autofields
 
-from silva.app.news.interfaces import INewsItem
-from silva.app.news.NewsCategorization import INewsCategorizationSchema
+from ..interfaces import INewsItem, INewsItemContent
+from ..NewsCategorization import INewsCategorizationSchema
 
 
 _ = MessageFactory('silva_news')
@@ -51,7 +49,7 @@ class NewsItemDetailsForm(silvaforms.SMIEditForm):
 
 
 class NewsItemDetailsMenu(MenuItem):
-    grok.adapts(ContentEditMenu, INewsItem)
+    grok.adapts(ContentEditMenu, INewsItemContent)
     grok.require('silva.ChangeSilvaContent')
     grok.order(15)
 
@@ -60,7 +58,7 @@ class NewsItemDetailsMenu(MenuItem):
 
 
 class NewsItemPublicationPortlet(silvaviews.Viewlet):
-    grok.context(INewsItem)
+    grok.context(INewsItemContent)
     grok.view(Publish)
     grok.viewletmanager(silvaforms.SMIFormPortlets)
     grok.order(20)
@@ -81,7 +79,7 @@ class INewsItemPublicationFields(Interface):
 
 
 class NewsItemPublication(grok.Adapter):
-    grok.context(INewsItem)
+    grok.context(INewsItemContent)
     grok.provides(INewsItemPublicationFields)
 
     @apply
@@ -101,7 +99,7 @@ class NewsItemPublication(grok.Adapter):
 
 
 class NewsItemPublicationFields(autofields.AutoFields):
-    autofields.context(INewsItem)
+    autofields.context(INewsItemContent)
     autofields.group(IPublicationFields)
     autofields.order(20)
     fields = silvaforms.Fields(INewsItemPublicationFields)

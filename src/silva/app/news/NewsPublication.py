@@ -5,17 +5,23 @@
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 
-from silva.app.news.interfaces import INewsPublication
-from silva.app.news.interfaces import IServiceNewsCategorization
-from Products.SilvaMetadata.interfaces import IMetadataService
-from Products.Silva.Publication import Publication
-from Products.Silva.cataloging import CatalogingAttributes
-
 from five import grok
-from silva.core import conf as silvaconf
 from zope.component import getUtility
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
+
+
+from Products.SilvaMetadata.interfaces import IMetadataService
+from Products.Silva.Publication import Publication
+from Products.Silva.Folder.addables import AddableContents
+from Products.Silva.cataloging import CatalogingAttributes
+
+from silva.core import conf as silvaconf
+from silva.core.interfaces import IFolder
 from zeam.form import silva as silvaforms
+
+from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter
+from .interfaces import INewsViewer, IServiceNewsCategorization
+
 
 
 class NewsPublication(Publication):
@@ -30,16 +36,15 @@ class NewsPublication(Publication):
     silvaconf.icon("www/news_source.png")
     silvaconf.priority(3)
 
-    def __init__(self, id):
-        super(NewsPublication, self).__init__(id)
-        self._addables_allowed_in_container = [
-            'Silva Article', 'Silva Agenda Item',
-            'Silva Publication', 'Silva Folder',
-            'Silva News Viewer', 'Silva Agenda Viewer',
-            'Silva News Filter', 'Silva Agenda Filter']
-
 
 InitializeClass(NewsPublication)
+
+
+class NewsAddableContents(AddableContents):
+    grok.context(INewsPublication)
+    REQUIRES = [
+        INewsItemContent, INewsItemFilter,
+        INewsViewer, INewsPublication]
 
 
 class NewsPublicationCatalogingAttributes(CatalogingAttributes):

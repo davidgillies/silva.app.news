@@ -1,3 +1,4 @@
 
-from silva.app.news.NewsItem.content import NewsItem, NewsItemVersion
-from silva.app.news.NewsItem.content import NewsItemVersionCatalogingAttributes
+from .content import NewsItem, NewsItemVersion
+from .content import NewsItemContent, NewsItemContentVersion
+from .content import NewsItemVersionCatalogingAttributes

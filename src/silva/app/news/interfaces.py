@@ -10,11 +10,13 @@ from zope.intid.interfaces import IIntIds
 from zope.schema.interfaces import IContextSourceBinder
 from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
-from silva.app.document.interfaces import IDocument, IDocumentVersion
+from silva.app.document.interfaces import IDocumentContentVersion
+from silva.app.document.interfaces import IDocumentContent
+from silva.app.news.datetimeutils import local_timezone
 from silva.app.news.datetimeutils import zone_names
 from silva.core.interfaces import INonPublishable, IPublication, IContent
+from silva.core.interfaces import IVersionedContent, IVersion
 from silva.core.interfaces import ISilvaService
-from silva.app.news.datetimeutils import local_timezone
 
 _ = MessageFactory('silva_news')
 
@@ -65,37 +67,6 @@ class INewsCategorization(Interface):
     def set_target_audiences(target_audiences):
         """Updates the list of target_audiences"""
 
-
-class INewsItem(IDocument):
-    """News item
-    """
-
-
-class INewsItemVersion(IDocumentVersion, INewsCategorization):
-    """Silva news item version.
-
-    This contains the real content for a news item.
-    """
-
-    def set_external_url(url):
-        """Set an external URL associated with this news item.
-        """
-
-    def get_external_url():
-        """Return the external URL associated with the news item if
-        any.
-        """
-
-    def fulltext():
-        """Returns a string containing all the words of all content.
-
-        For fulltext ZCatalog search.
-        XXX This should really be on an interface in the Silva core"""
-
-
-class IAgendaItem(INewsItem):
-    """Agenda item
-    """
 
 class IAgendaItemOccurrence(Interface):
     """Occurrence of an Agenda Item
@@ -149,8 +120,34 @@ class IAgendaItemOccurrence(Interface):
         """Sets the location"""
 
 
-class IAgendaItemVersion(INewsItemVersion):
-    """Version of an Agenda item
+class INewsItemContent(IVersionedContent):
+    """Basic news item feature
+    """
+
+
+class INewsItemContentVersion(IVersion, INewsCategorization):
+    """News item version feature
+
+    This contains the real content for a news item.
+    """
+
+    def set_external_url(url):
+        """Set an external URL associated with this news item.
+        """
+
+    def get_external_url():
+        """Return the external URL associated with the news item if
+        any.
+        """
+
+
+class IAgendaItemContent(INewsItemContent):
+    """Basic agenda item feature
+    """
+
+
+class IAgendaItemContentVersion(INewsItemContentVersion):
+    """Basic agenda item version feature
     """
 
     def set_occurrences(occurrences):
@@ -162,6 +159,27 @@ class IAgendaItemVersion(INewsItemVersion):
         """Return the list of occurrences of where and when the agenda
         item will happen.
         """
+
+
+
+class INewsItem(INewsItemContent, IDocumentContent):
+    """News item
+    """
+
+
+class INewsItemVersion(INewsItemContentVersion, IDocumentContentVersion):
+    """News item version
+    """
+
+
+class IAgendaItem(IAgendaItemContent, IDocumentContent):
+    """Agenda item
+    """
+
+
+class IAgendaItemVersion(IAgendaItemContentVersion, IDocumentContentVersion):
+    """Agenda item version
+    """
 
 
 class INewsPublication(IPublication):

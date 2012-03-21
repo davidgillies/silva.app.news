@@ -13,11 +13,10 @@ from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
 
 # SilvaNews
-from silva.app.news.interfaces import IAgendaItem, get_default_tz_name
 from silva.app.news.AgendaItem import AgendaItemOccurrence
-from silva.app.news.NewsItem.smi import NewsItemDetailsForm
 from silva.app.news.NewsCategorization import INewsCategorizationSchema
-
+from silva.app.news.NewsItem.smi import NewsItemDetailsForm
+from silva.app.news.interfaces import IAgendaItem, get_default_tz_name
 from silva.app.news.interfaces import timezone_source
 from silva.app.news.widgets.recurrence import Recurrence
 

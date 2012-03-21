@@ -9,37 +9,35 @@ from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from DateTime import DateTime
 
-# Silva
 from Products.Silva import SilvaPermissions
+from Products.Silva.Version import Version
+from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.cataloging import CatalogingAttributesVersion
 
-from silva.app.document import document
+from silva.app.document.document import DocumentContent
+from silva.app.document.document import DocumentContentVersion
 from silva.core import conf as silvaconf
 from silva.core.interfaces import IRoot
 from silva.core.interfaces.events import IContentPublishedEvent
 from silva.core.services.interfaces import ICataloging
 
-from silva.app.news.interfaces import INewsItem, INewsItemVersion
-from silva.app.news.interfaces import INewsPublication, INewsViewer
-from silva.app.news.datetimeutils import (datetime_to_unixtimestamp,
-    CalendarDatetime)
-from silva.app.news.NewsCategorization import NewsCategorization
+from ..NewsCategorization import NewsCategorization
+from ..datetimeutils import datetime_to_unixtimestamp, CalendarDatetime
+from ..interfaces import INewsItem, INewsItemVersion
+from ..interfaces import INewsItemContent, INewsItemContentVersion
+from ..interfaces import INewsPublication, INewsViewer
 
 _ = MessageFactory('silva_news')
 
 
-class NewsItemVersion(NewsCategorization, document.DocumentVersion):
-    """Base class for news item versions.
-    """
+# We cannot inherit from Version here, its __init__ is buggy (use Zope 2)
+class NewsItemContentVersion(NewsCategorization):
+    grok.baseclass()
+    grok.implements(INewsItemContentVersion)
     security = ClassSecurityInfo()
-    grok.implements(INewsItemVersion)
-    meta_type = "Silva Article Version"
 
     _external_url = None
-
-    def __init__(self, id):
-        super(NewsItemVersion, self).__init__(id)
-        self._display_datetime = None
+    _display_datetime = None
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_display_datetime')
@@ -78,24 +76,25 @@ class NewsItemVersion(NewsCategorization, document.DocumentVersion):
         """
         keywords = list(self._subjects)
         keywords.extend(self._target_audiences)
-        keywords.extend(super(NewsItemVersion, self).fulltext())
+        keywords.extend(super(NewsItemContentVersion, self).fulltext())
         return keywords
 
 
-InitializeClass(NewsItemVersion)
+InitializeClass(NewsItemContentVersion)
 
 
-class NewsItem(document.Document):
-    """A News item that appears as an individual page. By adjusting
-       settings the Author can determine which subjects, and
-       for which audiences the Article should be presented.
+class NewsItemVersion(NewsItemContentVersion, DocumentContentVersion):
+    """Base class for news item versions.
     """
-    grok.implements(INewsItem)
+    grok.implements(INewsItemVersion)
+    meta_type = "Silva Article Version"
+
+
+# We cannot inherit from VersionedContent here (__init__ buggy)
+class NewsItemContent(object):
+    grok.baseclass()
+    grok.implements(INewsItemContent)
     security = ClassSecurityInfo()
-    meta_type = "Silva Article"
-    silvaconf.icon("www/news_item.png")
-    silvaconf.priority(3.7)
-    silvaconf.version_class(NewsItemVersion)
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
                               'set_unapproved_version_display_datetime')
@@ -112,6 +111,23 @@ class NewsItem(document.Document):
         """
         version = getattr(self, self.get_unapproved_version())
         version.get_display_datetime()
+
+
+InitializeClass(NewsItemContent)
+
+
+class NewsItem(NewsItemContent, DocumentContent):
+    """A News item that appears as an individual page. By adjusting
+       settings the Author can determine which subjects, and
+       for which audiences the Article should be presented.
+    """
+    grok.implements(INewsItem)
+    security = ClassSecurityInfo()
+    meta_type = "Silva Article"
+    silvaconf.icon("www/news_item.png")
+    silvaconf.priority(3.7)
+    silvaconf.version_class(NewsItemVersion)
+
 
 InitializeClass(NewsItem)
 

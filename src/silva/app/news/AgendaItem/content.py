@@ -10,23 +10,23 @@ from five import grok
 from zope.i18nmessageid import MessageFactory
 from zope.component import getUtility
 
-# Zope
 from AccessControl import ClassSecurityInfo
 from Acquisition import Explicit
 from App.class_init import InitializeClass
 
-# Silva
-from silva.core import conf as silvaconf
 from Products.Silva import SilvaPermissions
 
-# SilvaNews
-from silva.app.news.interfaces import IAgendaItem, IAgendaItemVersion
-from silva.app.news.interfaces import IServiceNews, IAgendaItemOccurrence
-from silva.app.news.NewsItem import NewsItem, NewsItemVersion
-from silva.app.news.NewsItem import NewsItemVersionCatalogingAttributes
+from silva.app.document.document import DocumentContent
+from silva.app.document.document import DocumentContentVersion
+from silva.core import conf as silvaconf
 
-from silva.app.news.datetimeutils import (datetime_with_timezone,
-    CalendarDatetime, datetime_to_unixtimestamp, get_timezone, RRuleData, UTC)
+from ..NewsItem import NewsItemContent, NewsItemContentVersion
+from ..NewsItem import NewsItemVersionCatalogingAttributes
+from ..datetimeutils import CalendarDatetime, get_timezone, RRuleData, UTC
+from ..datetimeutils import datetime_with_timezone, datetime_to_unixtimestamp
+from ..interfaces import IAgendaItem, IAgendaItemVersion
+from ..interfaces import IAgendaItemContent, IAgendaItemContentVersion
+from ..interfaces import IServiceNews, IAgendaItemOccurrence
 
 
 _marker = object()
@@ -160,14 +160,11 @@ class AgendaItemOccurrence(Explicit):
     get_all_day = is_all_day
 
 
-class AgendaItemVersion(NewsItemVersion):
-    """Silva News AgendaItemVersion
-    """
-    grok.implements(IAgendaItemVersion)
+class AgendaItemContentVersion(NewsItemContentVersion):
+    grok.baseclass()
+    grok.implements(IAgendaItemContentVersion)
 
     security = ClassSecurityInfo()
-    meta_type = "Silva Agenda Item Version"
-
     _occurrences = []
 
     security.declareProtected(
@@ -180,15 +177,26 @@ class AgendaItemVersion(NewsItemVersion):
     def get_occurrences(self):
         return map(lambda o: o.__of__(self), self._occurrences)
 
+InitializeClass(AgendaItemContentVersion)
 
-InitializeClass(AgendaItemVersion)
+
+class AgendaItemVersion(AgendaItemContentVersion, DocumentContentVersion):
+    """Silva News AgendaItemVersion
+    """
+    grok.implements(IAgendaItemVersion)
+    meta_type = "Silva Agenda Item Version"
 
 
-class AgendaItem(NewsItem):
+
+class AgendaItemContent(NewsItemContent):
+    grok.baseclass()
+    grok.implements(IAgendaItemContent)
+
+
+class AgendaItem(AgendaItemContent, DocumentContent):
     """A News item for events. Includes date and location
        metadata, as well settings for subjects and audiences.
     """
-    security = ClassSecurityInfo()
     grok.implements(IAgendaItem)
     meta_type = "Silva Agenda Item"
     silvaconf.icon("www/agenda_item.png")
@@ -196,12 +204,10 @@ class AgendaItem(NewsItem):
     silvaconf.version_class(AgendaItemVersion)
 
 
-InitializeClass(AgendaItem)
-
 
 class AgendaItemVersionCatalogingAttributes(
     NewsItemVersionCatalogingAttributes):
-    grok.context(IAgendaItemVersion)
+    grok.context(IAgendaItemContentVersion)
 
     def sort_index(self):
         occurrences = self.context.get_occurrences()

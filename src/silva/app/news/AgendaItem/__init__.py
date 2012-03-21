@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
-from silva.app.news.AgendaItem.content import AgendaItemOccurrence
-from silva.app.news.AgendaItem.content import AgendaItemVersion
-from silva.app.news.AgendaItem.content import AgendaItem
+from .content import AgendaItemOccurrence
+from .content import AgendaItemVersion, AgendaItem
+from .content import AgendaItemContentVersion, AgendaItemContent
 
