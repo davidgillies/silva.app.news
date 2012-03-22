@@ -109,7 +109,7 @@ def get_global_target_audiences_tree(form):
     return service.get_target_audiences_tree()
 
 
-class INewsCategorizationSchema(Interface):
+class INewsCategorizationFields(Interface):
     _local_subjects = Tree(
         title=_(u"subjects"),
         description=_("select subjects that should appear in SMI"),
@@ -130,7 +130,7 @@ class ManageNewsCategorization(silvaforms.ZMIForm):
     label = _(u"Restrict categories for editors")
     description = _(u"You can from here restrict all subjects and "
                     "target audiences usable for news and agenda items.")
-    fields = silvaforms.Fields(INewsCategorizationSchema)
+    fields = silvaforms.Fields(INewsCategorizationFields)
     actions = silvaforms.Actions(
         silvaforms.EditAction())
     ignoreContent = False

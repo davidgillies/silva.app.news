@@ -16,7 +16,7 @@ from zeam.utils import batch
 
 # SilvaNews
 from ..interfaces import IAgendaFilter, IAgendaItemContentVersion
-from .Filter import Filter, IFilterSchema
+from .Filter import Filter, IFilterFields
 from .NewsFilter import NewsFilterItems
 
 _ = MessageFactory('silva_news')
@@ -48,14 +48,14 @@ class AgendaFilterAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaFilter)
     grok.name(u"Silva Agenda Filter")
 
-    fields = silvaforms.Fields(ITitledContent, IFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, IFilterFields)
 
 
 class AgendaFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(IAgendaFilter)
 
-    fields = silvaforms.Fields(ITitledContent, IFilterSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, IFilterFields).omit('id')
 
 
 class AgendaFilterItems(NewsFilterItems):

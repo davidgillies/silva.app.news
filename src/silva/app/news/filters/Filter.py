@@ -25,7 +25,7 @@ from silva.core.services.interfaces import ICatalogService
 
 from ..interfaces import INewsItemFilter, IServiceNews, news_source
 from ..interfaces import INewsItemContentVersion
-from ..NewsCategorization import NewsCategorization, INewsCategorizationSchema
+from ..NewsCategorization import NewsCategorization, INewsCategorizationFields
 from silva.app.news import datetimeutils
 from silva.app.news.datetimeutils import local_timezone
 
@@ -302,7 +302,7 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
 InitializeClass(Filter)
 
 
-class IFilterSchema(INewsCategorizationSchema):
+class IFilterFields(INewsCategorizationFields):
     sources = schema.Set(
         value_type=schema.Choice(source=news_source),
         title=_(u"sources"),

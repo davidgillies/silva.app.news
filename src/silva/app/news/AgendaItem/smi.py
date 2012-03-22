@@ -13,17 +13,17 @@ from silva.core.conf.interfaces import ITitledContent
 from zeam.form import silva as silvaforms
 
 # SilvaNews
+from ..interfaces import IAgendaItem, IAgendaItemContent
+from ..interfaces import timezone_source, get_default_tz_name
 from silva.app.news.AgendaItem import AgendaItemOccurrence
-from silva.app.news.NewsCategorization import INewsCategorizationSchema
+from silva.app.news.NewsCategorization import INewsCategorizationFields
 from silva.app.news.NewsItem.smi import NewsItemDetailsForm
-from silva.app.news.interfaces import IAgendaItem, get_default_tz_name
-from silva.app.news.interfaces import timezone_source
 from silva.app.news.widgets.recurrence import Recurrence
 
 _ = MessageFactory('silva_news')
 
 
-class IAgendaItemOccurrenceSchema(interface.Interface):
+class IAgendaItemOccurrenceFields(interface.Interface):
     timezone_name = schema.Choice(
         source=timezone_source,
         title=_(u"Timezone"),
@@ -87,14 +87,14 @@ class IAgendaItemOccurrenceSchema(interface.Interface):
 
 grok.global_utility(
     AgendaItemOccurrence, provides=IFactory,
-    name=IAgendaItemOccurrenceSchema.__identifier__, direct=True)
+    name=IAgendaItemOccurrenceFields.__identifier__, direct=True)
 
 
-class IAgendaItemSchema(INewsCategorizationSchema):
+class IAgendaItemFields(INewsCategorizationFields):
     occurrences = schema.List(
         title=_(u"Occurrences"),
         description=_(u"When and where the event will happens."),
-        value_type=schema.Object(schema=IAgendaItemOccurrenceSchema),
+        value_type=schema.Object(schema=IAgendaItemOccurrenceFields),
         min_length=1)
     external_url = schema.URI(
         title=_(u"External URL"),
@@ -102,26 +102,26 @@ class IAgendaItemSchema(INewsCategorizationSchema):
         required=False)
 
 
+AgendaItemFields = silvaforms.Fields(IAgendaItemFields)
+AgendaItemFields['occurrences'].mode = 'input-list'
+AgendaItemFields['occurrences'].valueField.dataManager = \
+    silvaforms.SilvaDataManager
+AgendaItemFields['occurrences'].valueField.objectFields[
+    'timezone_name'].defaultValue = get_default_tz_name
+
+
 class AgendaItemAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaItem)
     grok.name(u"Silva Agenda Item")
 
-    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema)
-    fields['occurrences'].mode = 'input-list'
-    fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
-    fields['occurrences'].valueField.objectFields[
-        'timezone_name'].defaultValue = get_default_tz_name
+    fields = silvaforms.Fields(ITitledContent, AgendaItemFields)
 
 
 class AgendaItemDetailsForm(NewsItemDetailsForm):
-    grok.context(IAgendaItem)
+    grok.context(IAgendaItemContent)
 
     label = _(u"Agenda item details")
-    fields = silvaforms.Fields(ITitledContent, IAgendaItemSchema).omit('id')
-    fields['occurrences'].mode = 'input-list'
-    fields['occurrences'].valueField.dataManager = silvaforms.SilvaDataManager
-    fields['occurrences'].valueField.objectFields[
-        'timezone_name'].defaultValue = get_default_tz_name
+    fields = silvaforms.Fields(ITitledContent, AgendaItemFields).omit('id')
     actions = silvaforms.Actions(
         silvaforms.CancelAction(),
         silvaforms.EditAction())

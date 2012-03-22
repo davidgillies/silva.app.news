@@ -59,7 +59,7 @@ InitializeClass(NewsCategorization)
 
 
 
-class INewsCategorizationSchema(Interface):
+class INewsCategorizationFields(Interface):
     subjects = Tree(
         title=_(u"Subjects"),
         value_type=schema.Choice(source=subjects_source),

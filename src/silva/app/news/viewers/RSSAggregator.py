@@ -111,7 +111,7 @@ class RSSAggregator(Content, SimpleItem):
 InitializeClass(RSSAggregator)
 
 
-class IRSSAggregatorSchema(Interface):
+class IRSSAggregatorFields(Interface):
     feeds = schema.List(
         value_type=schema.TextLine(),
         title=_(u'feeds'),
@@ -123,7 +123,7 @@ class RSSAggregatorAddForm(silvaforms.SMIAddForm):
     grok.context(IRSSAggregator)
     grok.name(u'Silva RSS Aggregator')
 
-    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorSchema)
+    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorFields)
     fields['feeds'].allowOrdering = False
 
 
@@ -131,7 +131,7 @@ class RSSAggregatorEditForm(silvaforms.SMIEditForm):
     """ Edit form for RSS aggregators
     """
     grok.context(IRSSAggregator)
-    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, IRSSAggregatorFields).omit('id')
     fields['feeds'].allowOrdering = False
 
 

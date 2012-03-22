@@ -238,7 +238,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 InitializeClass(NewsViewer)
 
 
-class INewsViewerSchema(Interface):
+class INewsViewerFields(Interface):
     """ Fields description for use in forms only
     """
     filters = schema.Set(
@@ -286,7 +286,7 @@ class NewsViewerAddForm(silvaforms.SMIAddForm):
     grok.context(INewsViewer)
     grok.name('Silva News Viewer')
 
-    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields)
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
 
@@ -295,7 +295,7 @@ class NewsViewerEditForm(silvaforms.SMIEditForm):
     """ Edit form for news viewer
     """
     grok.context(INewsViewer)
-    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields).omit('id')
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
 

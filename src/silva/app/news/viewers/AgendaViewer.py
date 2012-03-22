@@ -31,7 +31,7 @@ from js import jquery
 from silva.app.news import datetimeutils
 from silva.app.news.interfaces import IAgendaViewer
 from silva.app.news.interfaces import get_default_tz_name
-from silva.app.news.viewers.NewsViewer import NewsViewer, INewsViewerSchema
+from silva.app.news.viewers.NewsViewer import NewsViewer, INewsViewerFields
 from silva.app.news.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
 
@@ -98,7 +98,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaViewer)
     grok.name(u"Silva Agenda Viewer")
 
-    fields = silvaforms.Fields(ITitledContent, INewsViewerSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields)
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
 

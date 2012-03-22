@@ -19,13 +19,13 @@ from zeam.form import silva as silvaforms
 from zeam.form import autofields
 
 from ..interfaces import INewsItem, INewsItemContent
-from ..NewsCategorization import INewsCategorizationSchema
+from ..NewsCategorization import INewsCategorizationFields
 
 
 _ = MessageFactory('silva_news')
 
 
-class INewsItemSchema(INewsCategorizationSchema):
+class INewsItemFields(INewsCategorizationFields):
     external_url = schema.URI(
         title=_(u"External URL"),
         description=_(u"external URL with more information "
@@ -33,19 +33,22 @@ class INewsItemSchema(INewsCategorizationSchema):
         required=False)
 
 
+NewsItemFields = silvaforms.Fields(INewsItemFields)
+
+
 class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
     grok.name(u"Silva News Item")
 
-    fields = silvaforms.Fields(ITitledContent, INewsItemSchema)
+    fields = silvaforms.Fields(ITitledContent, NewsItemFields)
 
 
 class NewsItemDetailsForm(silvaforms.SMIEditForm):
-    grok.context(INewsItem)
+    grok.context(INewsItemContent)
     grok.name('details')
 
     label = _(u"News item details")
-    fields = silvaforms.Fields(ITitledContent, INewsItemSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, NewsItemFields).omit('id')
 
 
 class NewsItemDetailsMenu(MenuItem):

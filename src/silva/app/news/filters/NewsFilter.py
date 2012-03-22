@@ -22,7 +22,7 @@ from zeam.form.base.datamanager import BaseDataManager
 from ..interfaces import INewsFilter, INewsItemFilter
 from ..interfaces import INewsItemContentVersion, IAgendaItemContentVersion
 from ..widgets.path import Path
-from .Filter import Filter, IFilterSchema
+from .Filter import Filter, IFilterFields
 
 _ = MessageFactory('silva_news')
 
@@ -91,7 +91,7 @@ class NewsFilter(Filter):
 InitializeClass(NewsFilter)
 
 
-class INewsFilterSchema(IFilterSchema):
+class INewsFilterFields(IFilterFields):
     _show_agenda_items = schema.Bool(
         title=_(u"show agenda items"))
 
@@ -100,14 +100,14 @@ class NewsFilterAddForm(silvaforms.SMIAddForm):
     grok.context(INewsFilter)
     grok.name(u'Silva News Filter')
 
-    fields = silvaforms.Fields(ITitledContent, INewsFilterSchema)
+    fields = silvaforms.Fields(ITitledContent, INewsFilterFields)
 
 
 class NewsFilterEditForm(silvaforms.SMIEditForm):
     """ Base form for filters """
     grok.context(INewsFilter)
 
-    fields = silvaforms.Fields(ITitledContent, INewsFilterSchema).omit('id')
+    fields = silvaforms.Fields(ITitledContent, INewsFilterFields).omit('id')
 
 
 class ExcludeAction(silvaforms.Action):
