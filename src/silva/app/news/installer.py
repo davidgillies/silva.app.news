@@ -15,7 +15,7 @@ class IExtension(Interface):
 class SilvaNewsInstaller(DefaultInstaller):
     """Installer for the Silva News Service
     """
-    not_globally_addables = ['Silva Article', 'Silva Agenda Item']
+    not_globally_addables = ['Silva News Item', 'Silva Agenda Item']
 
     def install_custom(self, root):
         self.setup_catalog(root)

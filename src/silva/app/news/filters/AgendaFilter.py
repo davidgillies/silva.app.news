@@ -15,10 +15,9 @@ from zeam.form import silva as silvaforms
 from zeam.utils import batch
 
 # SilvaNews
-from silva.app.news.filters.Filter import Filter
-from silva.app.news.filters.Filter import IFilterSchema
-from silva.app.news.filters.NewsFilter import NewsFilterItems
-from silva.app.news.interfaces import IAgendaFilter
+from ..interfaces import IAgendaFilter, IAgendaItemContentVersion
+from .Filter import Filter, IFilterSchema
+from .NewsFilter import NewsFilterItems
 
 _ = MessageFactory('silva_news')
 
@@ -29,19 +28,17 @@ class AgendaFilter(Filter):
        you can choose which NewsFolders you want to channel items for and
        filter the items on several criteria (as well as individually).
     """
+    grok.implements(IAgendaFilter)
+    meta_type = "Silva Agenda Filter"
     security = ClassSecurityInfo()
 
-    meta_type = "Silva Agenda Filter"
-    grok.implements(IAgendaFilter)
     silvaconf.icon("www/agenda_filter.png")
     silvaconf.priority(3.4)
 
-    _allowed_meta_types = ['Silva Agenda Item Version']
-
-    security.declarePrivate('get_allowed_meta_types')
-    def get_allowed_meta_types(self):
+    security.declarePrivate('get_allowed_types')
+    def get_allowed_types(self):
         """Returns the allowed meta_types for this filter"""
-        return self._allowed_meta_types
+        return {'requires': [IAgendaItemContentVersion,]}
 
 
 InitializeClass(AgendaFilter)

@@ -4,6 +4,7 @@
 
 from datetime import datetime
 import logging
+import operator
 
 from five import grok
 from zope import schema
@@ -18,13 +19,13 @@ from OFS.SimpleItem import SimpleItem
 
 from Products.Silva import SilvaPermissions
 from Products.Silva.Publishable import NonPublishable
+from Products.Silva.ExtensionRegistry import extensionRegistry
 from silva.core.references.reference import ReferenceSet
 from silva.core.services.interfaces import ICatalogService
 
-from silva.app.news.interfaces import INewsItemFilter, IServiceNews
-from silva.app.news.interfaces import news_source
-from silva.app.news.NewsCategorization import NewsCategorization
-from silva.app.news.NewsCategorization import INewsCategorizationSchema
+from ..interfaces import INewsItemFilter, IServiceNews, news_source
+from ..interfaces import INewsItemContentVersion
+from ..NewsCategorization import NewsCategorization, INewsCategorizationSchema
 from silva.app.news import datetimeutils
 from silva.app.news.datetimeutils import local_timezone
 
@@ -136,6 +137,10 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
         resolve = getUtility(IIntIds).getObject
         return map(resolve, self._excluded_items)
 
+    security.declarePrivate('get_allowed_types')
+    def get_allowed_types(self):
+        return {'requires': [INewsItemContentVersion,]}
+
     # HELPERS
 
     def _collect_subjects(self, service):
@@ -173,7 +178,10 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
             'query': self._collect_target_audiences(service),
             'operator': 'or'}
         if not meta_types:
-            meta_types = self.get_allowed_meta_types()
+            meta_types = map(
+                operator.itemgetter('name'),
+                extensionRegistry.get_contents(
+                    **self.get_allowed_types()))
         query['meta_type'] = meta_types
         query['sort_on'] = 'sort_index'
         query['sort_order'] = 'descending'

@@ -16,7 +16,6 @@ from Products.Silva.Folder.addables import AddableContents
 from Products.Silva.cataloging import CatalogingAttributes
 
 from silva.core import conf as silvaconf
-from silva.core.interfaces import IFolder
 from zeam.form import silva as silvaforms
 
 from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter

@@ -87,8 +87,11 @@ class NewsItemVersion(NewsItemContentVersion, DocumentContentVersion):
     """Base class for news item versions.
     """
     grok.implements(INewsItemVersion)
-    meta_type = "Silva Article Version"
+    meta_type = "Silva News Item Version"
+    security = ClassSecurityInfo()
 
+
+InitializeClass(NewsItemVersion)
 
 # We cannot inherit from VersionedContent here (__init__ buggy)
 class NewsItemContent(object):
@@ -123,7 +126,7 @@ class NewsItem(NewsItemContent, DocumentContent):
     """
     grok.implements(INewsItem)
     security = ClassSecurityInfo()
-    meta_type = "Silva Article"
+    meta_type = "Silva News Item"
     silvaconf.icon("www/news_item.png")
     silvaconf.priority(-7)
     silvaconf.version_class(NewsItemVersion)

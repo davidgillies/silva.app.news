@@ -19,12 +19,10 @@ from zeam.form import silva as silvaforms
 from zeam.form import table as tableforms
 from zeam.form.base.datamanager import BaseDataManager
 
-# SilvaNews
-from silva.app.news.widgets.path import Path
-from silva.app.news.interfaces import INewsFilter
-from silva.app.news.filters.Filter import Filter
-from silva.app.news.filters.Filter import IFilterSchema
-from silva.app.news import interfaces
+from ..interfaces import INewsFilter, INewsItemFilter
+from ..interfaces import INewsItemContentVersion, IAgendaItemContentVersion
+from ..widgets.path import Path
+from .Filter import Filter, IFilterSchema
 
 _ = MessageFactory('silva_news')
 
@@ -35,15 +33,12 @@ class NewsFilter(Filter):
         you can choose which NewsFolders you want to channel items for and
         filter the items on several criteria (as well as individually).
     """
+    grok.implements(INewsFilter)
+    meta_type = "Silva News Filter"
     security = ClassSecurityInfo()
 
-    meta_type = "Silva News Filter"
-    grok.implements(INewsFilter)
     silvaconf.icon("www/news_filter.png")
     silvaconf.priority(3.2)
-
-    _article_meta_types = ['Silva Article Version']
-    _agenda_item_meta_types = ['Silva Agenda Item Version']
 
     def __init__(self, id):
         super(NewsFilter, self).__init__(id)
@@ -72,13 +67,13 @@ class NewsFilter(Filter):
         return super(NewsFilter, self).get_next_items(
             numdays, meta_types=meta_types)
 
-    security.declarePrivate('get_allowed_meta_types')
-    def get_allowed_meta_types(self):
+    security.declarePrivate('get_allowed_types')
+    def get_allowed_types(self):
         """Returns the allowed meta_types for this filter"""
-        allowed = self._article_meta_types[:]
-        if self.show_agenda_items():
-            allowed += self._agenda_item_meta_types[:]
-        return allowed
+        types = {'requires': [INewsItemContentVersion,]}
+        if not self.show_agenda_items():
+            types['excepts'] = [IAgendaItemContentVersion,]
+        return types
 
     # MANIPULATORS
 
@@ -183,7 +178,7 @@ class ItemSelection(BaseDataManager):
 
 
 class NewsFilterItems(silvaforms.SMITableForm):
-    grok.context(interfaces.INewsItemFilter)
+    grok.context(INewsItemFilter)
     grok.require('silva.ChangeSilvaContent')
     grok.name('items')
     label = _('Items')
@@ -214,7 +209,7 @@ class NewsFilterItems(silvaforms.SMITableForm):
 
 
 class ItemsMenu(MenuItem):
-    grok.adapts(ContentMenu, interfaces.INewsItemFilter)
+    grok.adapts(ContentMenu, INewsItemFilter)
     grok.require('silva.ChangeSilvaContent')
     grok.order(30)
     name = _('Items')

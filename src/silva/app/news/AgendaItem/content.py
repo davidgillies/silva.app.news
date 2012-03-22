@@ -185,12 +185,19 @@ class AgendaItemVersion(AgendaItemContentVersion, DocumentContentVersion):
     """
     grok.implements(IAgendaItemVersion)
     meta_type = "Silva Agenda Item Version"
+    security = ClassSecurityInfo()
 
+
+InitializeClass(AgendaItemVersion)
 
 
 class AgendaItemContent(NewsItemContent):
     grok.baseclass()
     grok.implements(IAgendaItemContent)
+    security = ClassSecurityInfo()
+
+
+InitializeClass(AgendaItemContent)
 
 
 class AgendaItem(AgendaItemContent, DocumentContent):
@@ -199,10 +206,13 @@ class AgendaItem(AgendaItemContent, DocumentContent):
     """
     grok.implements(IAgendaItem)
     meta_type = "Silva Agenda Item"
+    security = ClassSecurityInfo()
     silvaconf.icon("www/agenda_item.png")
     silvaconf.priority(-6)
     silvaconf.version_class(AgendaItemVersion)
 
+
+InitializeClass(AgendaItem)
 
 
 class AgendaItemVersionCatalogingAttributes(

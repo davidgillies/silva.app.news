@@ -35,7 +35,7 @@ class INewsItemSchema(INewsCategorizationSchema):
 
 class NewsItemAddForm(silvaforms.SMIAddForm):
     grok.context(INewsItem)
-    grok.name(u"Silva Article")
+    grok.name(u"Silva News Item")
 
     fields = silvaforms.Fields(ITitledContent, INewsItemSchema)
 
@@ -44,7 +44,7 @@ class NewsItemDetailsForm(silvaforms.SMIEditForm):
     grok.context(INewsItem)
     grok.name('details')
 
-    label = _(u"Article details")
+    label = _(u"News item details")
     fields = silvaforms.Fields(ITitledContent, INewsItemSchema).omit('id')
 
 
