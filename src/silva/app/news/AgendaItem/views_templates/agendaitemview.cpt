@@ -5,7 +5,7 @@
      tal:define="here_url path:context/@@absolute_url"
      i18n:domain="silva_news">
   <h1 class="heading newsitemheading"
-      tal:content="content.get_title()" />
+      tal:content="view.title" />
   <p class="eventactions">
     <a i18n:translate=""
        i18n:attributes="title"
@@ -16,9 +16,9 @@
     </a>
   </p>
   <div class="newsiteminfo">
-    <div class="publicationdate" tal:condition="view.article_date">
+    <div class="publicationdate" tal:condition="view.publication_date">
       <span class="label" i18n:translate="">Publication date: </span>
-      <span class="value" tal:content="view.article_date" />
+      <span class="value" tal:content="view.publication_date" />
     </div>
     <div class="occurrence" tal:repeat="occurrence view.occurrences()">
       <div class="location" tal:condition="occurrence.location">
@@ -35,5 +35,5 @@
       </div>
     </div>
   </div>
-  <div class="newsitemcontent" tal:content="structure view.article" />
+  <div class="newsitemcontent" tal:content="structure view.document" />
 </div>

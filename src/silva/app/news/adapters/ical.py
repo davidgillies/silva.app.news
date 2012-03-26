@@ -13,8 +13,8 @@ from zope.intid.interfaces import IIntIds
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.traversing.browser import absoluteURL
 
-from silva.app.news.interfaces import IAgendaItemVersion, IAgendaViewer
-from silva.app.news.datetimeutils import UTC
+from ..interfaces import IAgendaItemContentVersion, IAgendaViewer
+from ..datetimeutils import UTC
 
 
 def asdatetime(date):
@@ -41,7 +41,7 @@ class AgendaItemInfo(object):
 
 
 class AgendaFactoryEvent(grok.MultiAdapter):
-    grok.adapts(IAgendaItemVersion, IBrowserRequest)
+    grok.adapts(IAgendaItemContentVersion, IBrowserRequest)
     grok.implements(IEvent)
     grok.provides(IEvent)
 

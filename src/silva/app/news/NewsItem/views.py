@@ -2,41 +2,57 @@
 # See also LICENSE.txt
 
 from five import grok
-from zope.component import getUtility
+from zope.component import getUtility, queryMultiAdapter
 from zope.cachedescriptors.property import CachedProperty
 
 from Products.SilvaMetadata.interfaces import IMetadataService
-from silva.app.news.interfaces import IServiceNews, INewsItem
+from ..interfaces import IServiceNews, INewsItem, INewsItemContent
 
+from silva.app.document.interfaces import IDocumentDetails
 from silva.core.views import views as silvaviews
 
 
-class NewsItemView(silvaviews.View):
-    """View on a News Item (either Article / Agenda)
+class NewsItemBaseView(silvaviews.View):
+    """Base view on a news or agenda item.
+    """
+    grok.context(INewsItemContent)
+    grok.baseclass()
+
+    @CachedProperty
+    def title(self):
+        return self.content.get_title()
+
+    @CachedProperty
+    def publication_date(self):
+        date = self.content.get_display_datetime()
+        if not date:
+            date =  getUtility(IMetadataService).getMetadataValue(
+                self.content, 'silva-extra', 'publicationtime')
+        if date:
+            return getUtility(IServiceNews).format_date(date)
+        return u''
+
+
+
+class NewsItemView(NewsItemBaseView):
+    """Base view for an agenda item.
     """
     grok.context(INewsItem)
 
     @CachedProperty
-    def article_date(self):
-        article_date = self.content.get_display_datetime()
-        if not article_date:
-            article_date =  getUtility(IMetadataService).getMetadataValue(
-                self.content, 'silva-extra', 'publicationtime')
-        if article_date:
-            news_service = getUtility(IServiceNews)
-            return news_service.format_date(article_date)
-        return u''
-
-    @CachedProperty
-    def article(self):
+    def document(self):
         if self.content is not None:
             return self.content.body.render(self.content, self.request)
         return u''
 
 
-class NewsItemListItemView(NewsItemView):
+class NewsItemListItemView(NewsItemBaseView):
     """ Render as a list items (search results)
     """
-    grok.context(INewsItem)
+    grok.context(INewsItemContent)
     grok.name('search_result')
+
+    @CachedProperty
+    def details(self):
+        return queryMultiAdapter((self.content, self.request), IDocumentDetails)
 

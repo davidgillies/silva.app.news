@@ -13,15 +13,15 @@ from zope.component import getUtility, getMultiAdapter
 from silva.core.views import views as silvaviews
 
 # SilvaNews
-from silva.app.document.interfaces import IDocumentDetails
-from silva.app.news.interfaces import INewsViewer, IAgendaItem
-from silva.app.news.interfaces import IServiceNews
-from silva.app.news.NewsItem.views import NewsItemView
+from ..interfaces import IServiceNews, INewsViewer
+from ..interfaces import IAgendaItem, IAgendaItemContent
+from ..NewsItem.views import NewsItemListItemView, NewsItemView
 
 
-class AgendaItemView(NewsItemView):
+class AgendaItemBaseView(silvaviews.View):
     """ Index view for agenda items """
     grok.context(IAgendaItem)
+    grok.baseclass()
 
     def occurrences(self):
         format = getUtility(IServiceNews).format_date
@@ -34,28 +34,35 @@ class AgendaItemView(NewsItemView):
                    'location': occurrence.get_location()}
 
 
-class AgendaItemListItemView(AgendaItemView):
-    """ Render as a list items (search results)
+class AgendaItemView(NewsItemView, AgendaItemBaseView):
+    """Render a agenda item as a content.
     """
     grok.context(IAgendaItem)
+
+
+
+class AgendaItemListItemView(NewsItemListItemView, AgendaItemBaseView):
+    """ Render as a list items (search results)
+    """
+    grok.context(IAgendaItemContent)
     grok.name('search_result')
 
 
-class AgendaItemInlineView(silvaviews.View):
+class AgendaItemInlineView(NewsItemListItemView):
     """ Inline rendering for calendar event tooltip """
-    grok.context(IAgendaItem)
+    grok.context(IAgendaItemContent)
     grok.name('tooltip.html')
 
     def render(self):
-        details = getMultiAdapter(
-            (self.content, self.request), IDocumentDetails)
-        return u'<div>' + details.get_introduction() + u"</div>"
+        if self.details:
+            return u'<div>' + self.details.get_introduction() + u"</div>"
+        return u''
 
 
 class AgendaItemICS(silvaviews.View):
     """ Render an ICS event.
     """
-    grok.context(IAgendaItem)
+    grok.context(IAgendaItemContent)
     grok.require('zope2.View')
     grok.name('event.ics')
 
