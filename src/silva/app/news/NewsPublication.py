@@ -16,6 +16,7 @@ from Products.Silva.Folder.addables import AddableContents
 from Products.Silva.cataloging import CatalogingAttributes
 
 from silva.core import conf as silvaconf
+from silva.core.interfaces import IAsset
 from zeam.form import silva as silvaforms
 
 from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter
@@ -43,7 +44,7 @@ class NewsAddableContents(AddableContents):
     grok.context(INewsPublication)
     REQUIRES = [
         INewsItemContent, INewsItemFilter,
-        INewsViewer, INewsPublication]
+        INewsViewer, INewsPublication, IAsset]
 
 
 class NewsPublicationCatalogingAttributes(CatalogingAttributes):
