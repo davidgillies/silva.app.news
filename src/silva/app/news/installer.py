@@ -3,8 +3,10 @@ from os import path
 
 from App.Common import package_home
 
+from silva.core.editor.interfaces import ICKEditorService
 from silva.core.conf.installer import DefaultInstaller
 from zope.interface import Interface
+from zope.component import getUtility, queryUtility
 
 
 class IExtension(Interface):
@@ -20,6 +22,14 @@ class SilvaNewsInstaller(DefaultInstaller):
     def install_custom(self, root):
         self.setup_catalog(root)
         self.configure_extra_metadata(root)
+
+        if queryUtility(ICKEditorService) is None:
+            factory = root.manage_addProduct['silva.core.editor']
+            factory.manage_addCKEditorService()
+
+        declare = getUtility(ICKEditorService).declare_configuration
+        declare('Silva News Item', ['Silva Document'])
+        declare('Silva Agenda Item', ['Silva News Item', 'Silva Document'])
 
         if 'service_news' not in root.objectIds():
             factory = root.manage_addProduct['silva.app.news']
