@@ -8,7 +8,10 @@ import silva.app.news
 
 
 class SilvaNewsLayer(SilvaLayer):
-    default_packages = SilvaLayer.default_packages + ['silva.app.news',]
+    default_packages = SilvaLayer.default_packages + [
+        'silva.core.editor',
+        'silva.app.news'
+        ]
 
     def _install_application(self, app):
         super(SilvaNewsLayer, self)._install_application(app)

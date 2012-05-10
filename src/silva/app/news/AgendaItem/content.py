@@ -21,7 +21,7 @@ from silva.app.document.document import DocumentContentVersion
 from silva.core import conf as silvaconf
 
 from ..NewsItem import NewsItemContent, NewsItemContentVersion
-from ..NewsItem import NewsItemVersionCatalogingAttributes
+from ..NewsItem import NewsItemContentVersionCatalogingAttributes
 from ..datetimeutils import CalendarDatetime, get_timezone, RRuleData, UTC
 from ..datetimeutils import datetime_with_timezone, datetime_to_unixtimestamp
 from ..interfaces import IAgendaItem, IAgendaItemVersion
@@ -215,8 +215,8 @@ class AgendaItem(AgendaItemContent, DocumentContent):
 InitializeClass(AgendaItem)
 
 
-class AgendaItemVersionCatalogingAttributes(
-    NewsItemVersionCatalogingAttributes):
+class AgendaItemContentVersionCatalogingAttributes(
+    NewsItemContentVersionCatalogingAttributes):
     grok.context(IAgendaItemContentVersion)
 
     def sort_index(self):

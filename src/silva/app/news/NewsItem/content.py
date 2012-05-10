@@ -10,8 +10,6 @@ from App.class_init import InitializeClass
 from DateTime import DateTime
 
 from Products.Silva import SilvaPermissions
-from Products.Silva.Version import Version
-from Products.Silva.VersionedContent import VersionedContent
 from Products.Silva.cataloging import CatalogingAttributesVersion
 
 from silva.app.document.document import DocumentContent
@@ -135,8 +133,8 @@ class NewsItem(NewsItemContent, DocumentContent):
 InitializeClass(NewsItem)
 
 
-class NewsItemVersionCatalogingAttributes(CatalogingAttributesVersion):
-    grok.context(INewsItemVersion)
+class NewsItemContentVersionCatalogingAttributes(CatalogingAttributesVersion):
+    grok.context(INewsItemContentVersion)
 
     def sort_index(self):
         dt = self.context.get_display_datetime()
@@ -160,7 +158,7 @@ class NewsItemVersionCatalogingAttributes(CatalogingAttributesVersion):
         return self.context.get_target_audiences()
 
 
-@grok.subscribe(INewsItemVersion, IContentPublishedEvent)
+@grok.subscribe(INewsItemContentVersion, IContentPublishedEvent)
 def news_item_published(version, event):
     if version.get_display_datetime() is None:
         version.set_display_datetime(DateTime())

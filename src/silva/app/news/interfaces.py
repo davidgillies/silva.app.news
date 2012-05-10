@@ -161,7 +161,6 @@ class IAgendaItemContentVersion(INewsItemContentVersion):
         """
 
 
-
 class INewsItem(INewsItemContent, IDocumentContent):
     """News item
     """
