@@ -28,8 +28,8 @@ class NewsCategorization(object):
 
     def __init__(self, id):
         super(NewsCategorization, self).__init__(id)
-        self._subjects = set()
-        self._target_audiences = set()
+        self._subjects = set(['root'])
+        self._target_audiences = set(['root'])
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_subjects')
