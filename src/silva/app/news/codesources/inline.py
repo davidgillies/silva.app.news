@@ -65,9 +65,7 @@ class NewsViewerNewsProvider(grok.Adapter):
     def get_items(self, request, number):
         results = self.context.get_items()
         for item in results[:number]:
-            newsitem = item.get_viewable()
-            if newsitem is None:
-                continue
+            newsitem = item.getObject()
             yield NewsItemReference(newsitem, self.context, request)
 
 
