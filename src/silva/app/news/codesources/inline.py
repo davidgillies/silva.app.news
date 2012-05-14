@@ -76,22 +76,23 @@ class NewsItemReference(object):
     __allow_access_to_unprotected_subobjects__ = 1
 
     def __init__(self, item, context, request):
-        self._item = item
+        self._version_item = item
+        self._content_item = item.get_content()
         self._context = context
         self._request = request
         self._details = queryMultiAdapter(
-            (self._item, self._request), IDocumentDetails)
+            (self._version_item, self._request), IDocumentDetails)
 
     def id(self):
-        return self._item.id
+        return self._content_item.id
 
     def title(self):
-        return self._item.get_title()
+        return self._version_item.get_title()
 
     def description(self, maxchars=1024):
         # we can be sure there is no markup here, so just limit
-        desc = self._item.service_metadata.getMetadataValue(
-            self._item, 'silva-extra', 'content_description')
+        desc = self._version_item.service_metadata.getMetadataValue(
+            self._version_item, 'silva-extra', 'content_description')
         if desc is None:
             return ''
         if maxchars > 0:
@@ -99,7 +100,7 @@ class NewsItemReference(object):
         return desc
 
     def link(self):
-        return absoluteURL(self._item, self._request)
+        return absoluteURL(self._content_item, self._request)
 
     def thumbnail(self):
         if self._details is not None:
@@ -112,25 +113,25 @@ class NewsItemReference(object):
         return None
 
     def creation_datetime(self):
-        datetime = self._item.get_display_datetime()
+        datetime = self._version_item.get_display_datetime()
         if datetime is not None:
             return datetime
         return self._context.service_metadata.getMetadataValue(
-            self._item, 'silva-extra', 'publicationtime')
+            self._version_item, 'silva-extra', 'publicationtime')
 
     def start_datetime(self):
-        if IAgendaItemVersion.providedBy(self._item):
-            return self._item.get_start_datetime()
+        if IAgendaItemVersion.providedBy(self._version_item):
+            return self._version_item.get_start_datetime()
         return None
 
     def end_datetime(self):
-        if IAgendaItemVersion.providedBy(self._item):
-            return self._item.get_end_datetime()
+        if IAgendaItemVersion.providedBy(self._version_item):
+            return self._version_item.get_end_datetime()
         return None
 
     def location(self):
-        if IAgendaItemVersion.providedBy(self._item):
-            return self._item.get_location()
+        if IAgendaItemVersion.providedBy(self._version_item):
+            return self._version_item.get_location()
         return None
 
 
