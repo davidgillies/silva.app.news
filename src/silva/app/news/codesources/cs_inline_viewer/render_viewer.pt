@@ -135,7 +135,7 @@
            title="Get the source...."
            i18n:attributes="title;
                             value">
-          <img tal:replace="structure here/rss10/tag | nothing" />
+          <img tal:replace="structure here/rss10.gif/tag | nothing" />
           <tal:i18n i18n:translate="">Subscribe to feed</tal:i18n>
         </a>
       </p>
