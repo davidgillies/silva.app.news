@@ -223,10 +223,13 @@ class NewsItemVersionProducer(xmlexport.SilvaProducer):
              'display_datetime': iso_datetime(
                     self.context.get_display_datetime())})
         self.metadata()
+        self.extra_content()
+        self.endElement('content')
+
+    def extra_content(self):
         self.startElementNS(NS_NEWS_URI, 'body')
         TextProducerProxy(self.context, self.context.body).sax(self)
         self.endElementNS(NS_NEWS_URI, 'body')
-        self.endElement('content')
 
 
 class AgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
@@ -258,9 +261,6 @@ class AgendaItemVersionProducer(xmlexport.SilvaProducer):
              'display_datetime': iso_datetime(
                 self.context.get_display_datetime())})
         self.metadata()
-        self.startElementNS(NS_NEWS_URI, 'body')
-        TextProducerProxy(self.context, self.context.body).sax(self)
-        self.endElementNS(NS_NEWS_URI, 'body')
         for occurrence in self.context.get_occurrences():
             self.startElementNS(
                 NS_NEWS_URI, 'occurrence',
@@ -273,6 +273,10 @@ class AgendaItemVersionProducer(xmlexport.SilvaProducer):
                  'all_day': str(occurrence.is_all_day()),
                  'timezone_name': occurrence.get_timezone_name()})
             self.endElementNS(NS_NEWS_URI, 'occurrence')
+        self.extra_content()
         self.endElement('content')
 
-
+    def extra_content(self):
+        self.startElementNS(NS_NEWS_URI, 'body')
+        TextProducerProxy(self.context, self.context.body).sax(self)
+        self.endElementNS(NS_NEWS_URI, 'body')
