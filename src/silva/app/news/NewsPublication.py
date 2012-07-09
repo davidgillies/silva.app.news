@@ -66,7 +66,7 @@ def news_publication_created(publication, event):
        'hide'.  This can be done after they are added
     """
     binding = getUtility(IMetadataService).getMetadata(publication)
-    binding.setValues('silva-extra', {'hide_from_tocs': 'hide'}, reindex=1)
+    binding.setValues('silva-settings', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
 
     factory = publication.manage_addProduct['silva.app.news']
