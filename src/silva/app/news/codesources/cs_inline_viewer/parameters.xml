@@ -26,6 +26,7 @@
             <interface type="interface">silva.app.news.interfaces.IViewer</interface>
             <multiple type="int">0</multiple>
             <required type="int">1</required>
+            <show_container_index type="int">1</show_container_index>
             <title>Viewer</title>
           </values>
           <tales>
