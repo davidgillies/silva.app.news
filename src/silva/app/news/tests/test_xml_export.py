@@ -8,7 +8,6 @@ from datetime import datetime
 from Products.Silva.silvaxml import xmlexport
 from Products.Silva.tests.helpers import publish_object
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
-from silva.app.news.datetimeutils import get_timezone
 from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.testing import FunctionalLayer
 
@@ -109,7 +108,8 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addAgendaItem('event', 'Some event')
 
         version = self.root.export.news.event.get_editable()
-        self.assertTrue(version)
+        self.assertIsNot(version, None)
+        version.body.save_raw_text('<p>Good news!</p><p>I fixed the tests.</p>')
         version.set_occurrences([
                 AgendaItemOccurrence(
                     location='Rotterdam',

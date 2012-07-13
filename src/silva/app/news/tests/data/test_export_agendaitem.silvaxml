@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<silva xmlns="http://infrae.com/namespace/silva"
-       {namespaces} silva_version="{version}">
+<silva xmlns="http://infrae.com/namespace/silva" {namespaces} silva_version="{version}">
   <folder id="export">
     <metadata>
       <set id="silva-content">
@@ -16,7 +15,6 @@
           YYYY-MM-DDTHH:MM:SS
         </silva-extra:creationtime>
         <silva-extra:creator>author</silva-extra:creator>
-        <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
         <silva-extra:keywords/>
         <silva-extra:language/>
         <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -24,6 +22,11 @@
           YYYY-MM-DDTHH:MM:SS
         </silva-extra:modificationtime>
         <silva-extra:subject/>
+      </set>
+      <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+        <silvasettings:hide_from_tocs>
+          do not hide
+      </silvasettings:hide_from_tocs>
       </set>
     </metadata>
     <content>
@@ -42,7 +45,6 @@
               YYYY-MM-DDTHH:MM:SS
             </silva-extra:creationtime>
             <silva-extra:creator>author</silva-extra:creator>
-            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
             <silva-extra:keywords/>
             <silva-extra:language/>
             <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -50,6 +52,11 @@
               YYYY-MM-DDTHH:MM:SS
             </silva-extra:modificationtime>
             <silva-extra:subject/>
+          </set>
+          <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+            <silvasettings:hide_from_tocs>
+              hide
+            </silvasettings:hide_from_tocs>
           </set>
           <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
             <snn-np-settings:is_private>no</snn-np-settings:is_private>
@@ -81,9 +88,6 @@
                   <silva-extra:creator>
                     author
                   </silva-extra:creator>
-                  <silva-extra:hide_from_tocs>
-                    do not hide
-                  </silva-extra:hide_from_tocs>
                   <silva-extra:keywords>
                   </silva-extra:keywords>
                   <silva-extra:language>
@@ -96,6 +100,11 @@
                   </silva-extra:modificationtime>
                   <silva-extra:subject>
                   </silva-extra:subject>
+                </set>
+                <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+                  <silvasettings:hide_from_tocs>
+                    do not hide
+                  </silvasettings:hide_from_tocs>
                 </set>
               </metadata>
               <content>
@@ -134,9 +143,6 @@
                   <silva-extra:creator>
                     author
                   </silva-extra:creator>
-                  <silva-extra:hide_from_tocs>
-                    do not hide
-                  </silva-extra:hide_from_tocs>
                   <silva-extra:keywords/>
                   <silva-extra:language/>
                   <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -145,22 +151,30 @@
                   </silva-extra:modificationtime>
                   <silva-extra:subject/>
                 </set>
+                <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+                  <silvasettings:hide_from_tocs>
+                    do not hide
+                  </silvasettings:hide_from_tocs>
+                </set>
               </metadata>
+              <silva-app-news:occurrence
+                  all_day="True"
+                  end_datetime="YYYY-MM-DDTHH:MM:SS"
+                  location="Rotterdam"
+                  recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
+                  start_datetime="YYYY-MM-DDTHH:MM:SS"
+                  timezone_name="Europe/Amsterdam">
+              </silva-app-news:occurrence>
               <silva-app-news:body>
                 <silva-core-editor:text>
-                  <html:h1>
-                    Some event
-                  </html:h1>
+                  <html:p>
+                    Good news!
+                  </html:p>
+                  <html:p>
+                    I fixed the tests.
+                  </html:p>
                 </silva-core-editor:text>
               </silva-app-news:body>
-              <silva-app-news:occurrence
-                 all_day="True"
-                 end_datetime="YYYY-MM-DDTHH:MM:SS"
-                 location="Rotterdam"
-                 recurrence="FREQ=DAILY;UNTIL=20100910T123212Z"
-                 start_datetime="YYYY-MM-DDTHH:MM:SS"
-                 timezone_name="Europe/Amsterdam">
-              </silva-app-news:occurrence>
             </content>
           </silva-app-news:agenda_item>
           <silva-app-news:news_filter id="filter"
@@ -190,9 +204,6 @@
                 <silva-extra:creator>
                   author
                 </silva-extra:creator>
-                <silva-extra:hide_from_tocs>
-                  do not hide
-                </silva-extra:hide_from_tocs>
                 <silva-extra:keywords>
                 </silva-extra:keywords>
                 <silva-extra:language>

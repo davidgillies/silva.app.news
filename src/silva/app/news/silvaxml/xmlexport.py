@@ -186,7 +186,7 @@ class AgendaViewerProducer(NewsViewerProducer):
             {'id': self.context.id,
              'days_to_show': str(self.context.days_to_show()),
              'number_to_show_archive': str(
-                    self.context.number_to_show_archive())})
+                    self.context.get_number_to_show_archive())})
         self.metadata()
         self.startElement('content')
         self.filters()

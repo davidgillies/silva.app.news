@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<silva xmlns="http://infrae.com/namespace/silva"
-       {namespaces} silva_version="{version}">
+<silva xmlns="http://infrae.com/namespace/silva" {namespaces} silva_version="{version}">
   <folder id="export">
     <metadata>
       <set id="silva-content">
@@ -16,7 +15,6 @@
           YYYY-MM-DDTHH:MM:SS
         </silva-extra:creationtime>
         <silva-extra:creator>author</silva-extra:creator>
-        <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
         <silva-extra:keywords/>
         <silva-extra:language/>
         <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -24,6 +22,11 @@
           YYYY-MM-DDTHH:MM:SS
         </silva-extra:modificationtime>
         <silva-extra:subject/>
+      </set>
+      <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+        <silvasettings:hide_from_tocs>
+          do not hide
+        </silvasettings:hide_from_tocs>
       </set>
     </metadata>
     <content>
@@ -44,7 +47,6 @@
               YYYY-MM-DDTHH:MM:SS
             </silva-extra:creationtime>
             <silva-extra:creator>author</silva-extra:creator>
-            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
             <silva-extra:keywords/>
             <silva-extra:language/>
             <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -52,6 +54,11 @@
               YYYY-MM-DDTHH:MM:SS
             </silva-extra:modificationtime>
             <silva-extra:subject/>
+          </set>
+          <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+            <silvasettings:hide_from_tocs>
+              hide
+            </silvasettings:hide_from_tocs>
           </set>
           <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
             <snn-np-settings:is_private>no</snn-np-settings:is_private>
@@ -83,9 +90,6 @@
                   <silva-extra:creator>
                     author
                   </silva-extra:creator>
-                  <silva-extra:hide_from_tocs>
-                    do not hide
-                  </silva-extra:hide_from_tocs>
                   <silva-extra:keywords>
                   </silva-extra:keywords>
                   <silva-extra:language>
@@ -98,6 +102,11 @@
                   </silva-extra:modificationtime>
                   <silva-extra:subject>
                   </silva-extra:subject>
+                </set>
+                <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+                  <silvasettings:hide_from_tocs>
+                    do not hide
+                  </silvasettings:hide_from_tocs>
                 </set>
               </metadata>
               <content>
@@ -117,10 +126,10 @@
               </version>
             </workflow>
             <content
-               display_datetime="YYYY-MM-DDTHH:MM:SS"
-               subjects="all"
-               target_audiences="generic"
-               version_id="0">
+                display_datetime="YYYY-MM-DDTHH:MM:SS"
+                subjects="all"
+                target_audiences="generic"
+                version_id="0">
               <metadata>
                 <set id="silva-content">
                   <silva-content:maintitle>
@@ -137,9 +146,6 @@
                     YYYY-MM-DDTHH:MM:SS
                   </silva-extra:creationtime>
                   <silva-extra:creator>author</silva-extra:creator>
-                  <silva-extra:hide_from_tocs>
-                    do not hide
-                  </silva-extra:hide_from_tocs>
                   <silva-extra:keywords/>
                   <silva-extra:language/>
                   <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -148,12 +154,16 @@
                   </silva-extra:modificationtime>
                   <silva-extra:subject/>
                 </set>
+                <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+                  <silvasettings:hide_from_tocs>
+                    do not hide
+                  </silvasettings:hide_from_tocs>
+                </set>
               </metadata>
               <silva-app-news:body>
                 <silva-core-editor:text>
-                  <html:h1>
-                    Some news
-                  </html:h1>
+                  <html:p>
+                  </html:p>
                 </silva-core-editor:text>
               </silva-app-news:body>
             </content>
@@ -185,9 +195,6 @@
                 <silva-extra:creator>
                   author
                 </silva-extra:creator>
-                <silva-extra:hide_from_tocs>
-                  do not hide
-                </silva-extra:hide_from_tocs>
                 <silva-extra:keywords>
                 </silva-extra:keywords>
                 <silva-extra:language>

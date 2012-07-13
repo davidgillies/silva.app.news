@@ -250,9 +250,10 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
            This is _only_ used by News Viewers.
         """
 
-    def get_allowed_meta_types():
-        """Return allowed meta_type for items that the filter should
-        return.
+    def get_allowed_types():
+        """Return a dictionnary, with two keys, ``requires`` and
+        ``excepts`` that would a list of interfaces that items should
+        implement in order to be collected.
         """
 
 

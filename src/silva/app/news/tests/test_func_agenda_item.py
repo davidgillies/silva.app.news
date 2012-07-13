@@ -16,7 +16,7 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
         transaction.commit()
 
     def test_agenda_item_add_form(self):
-        with self.layer.get_selenium_browser(settings=smi_settings) as browser:
+        with self.layer.get_web_browser(settings=smi_settings) as browser:
             browser.login('manager')
             browser.options.handle_errors = False
 

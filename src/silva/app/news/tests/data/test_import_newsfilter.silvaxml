@@ -18,7 +18,6 @@
         <silva-extra:creationtime>2010-10-23T10:20:42Z</silva-extra:creationtime>
         <silva-extra:creator>author</silva-extra:creator>
         <silva-extra:expirationtime/>
-        <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
         <silva-extra:keywords/>
         <silva-extra:language/>
         <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -42,7 +41,6 @@
             <silva-extra:creationtime>2010-10-23T10:20:58Z</silva-extra:creationtime>
             <silva-extra:creator>author</silva-extra:creator>
             <silva-extra:expirationtime/>
-            <silva-extra:hide_from_tocs>hide</silva-extra:hide_from_tocs>
             <silva-extra:keywords/>
             <silva-extra:language/>
             <silva-extra:lastauthor>author</silva-extra:lastauthor>
@@ -74,7 +72,6 @@
             <silva-extra:creationtime>2010-10-23T10:20:42Z</silva-extra:creationtime>
             <silva-extra:creator>author</silva-extra:creator>
             <silva-extra:expirationtime/>
-            <silva-extra:hide_from_tocs>do not hide</silva-extra:hide_from_tocs>
             <silva-extra:keywords/>
             <silva-extra:language/>
             <silva-extra:lastauthor>author</silva-extra:lastauthor>
