@@ -16,7 +16,7 @@ from Products.Silva.Folder.addables import AddableContents
 from Products.Silva.cataloging import CatalogingAttributes
 
 from silva.core import conf as silvaconf
-from silva.core.interfaces import IAsset
+from silva.core.interfaces import IAsset, IAddableContents
 from zeam.form import silva as silvaforms
 
 from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter
@@ -68,6 +68,9 @@ def news_publication_created(publication, event):
     binding = getUtility(IMetadataService).getMetadata(publication)
     binding.setValues('silva-settings', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
+
+    publication.set_silva_addables_allowed_in_container(
+        IAddableContents(publication).get_all_addables())
 
     factory = publication.manage_addProduct['silva.app.news']
     factory.manage_addNewsViewer(
