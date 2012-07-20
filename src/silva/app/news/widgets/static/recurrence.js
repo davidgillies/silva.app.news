@@ -3,7 +3,7 @@
     function parse_recurrence_data(value) {
         var items = value.split(';');
         var data = {};
-        $.each(items, function(index, item) {
+        $.each(items || [], function(index, item) {
             var pair = item.split('=');
             data[pair[0]] = pair[1];
         });
@@ -432,7 +432,7 @@
                 if (handler.options.mode == 'onthe')
                     return;
                 var target = $(event.target);
-                if (target.attr('tagName') == 'TD') {
+                if (target.data('ui-mr:day')) {
                     var value = target.data('ui-mr:day');
                     handler.dayChanged.apply(handler, [event, target, value]);
                 }
@@ -463,11 +463,11 @@
                     el.removeClass('ui-state-active');
                 }
             });
-            $.each(this.select_on.attr('options'), function(index, element) {
+            $.each(this.select_on.attr('options') || [], function(index, element) {
                 var opt = $(element);
                 opt.attr('selected', opt.val() == self.options.on);
             });
-            $.each(this.select_pos.attr('options'), function(index, element) {
+            $.each(this.select_pos.attr('options') || [], function(index, element) {
                 var opt = $(element);
                 opt.attr('selected', opt.val() == self.options.pos);
             });
@@ -655,7 +655,7 @@
             var handler = this;
             this.monthes_table.click(function(event){
                 var target = $(event.target);
-                if(target.attr('tagName') == 'TD') {
+                if(target.data('ui-yr:month')) {
                     var value = target.data('ui-yr:month');
                     handler.monthChanged.apply(handler, [event, target, value]);
                 }
@@ -764,11 +764,11 @@
                     el.removeClass('ui-state-active');
                 }
             });
-            $.each(this.select_on.attr('options'), function(index, element) {
+            $.each(this.select_on.attr('options') || [], function(index, element) {
                 var opt = $(element);
                 opt.attr('selected', opt.val() == self.options.on);
             });
-            $.each(this.select_pos.attr('options'), function(index, element) {
+            $.each(this.select_pos.attr('options') || [], function(index, element) {
                 var opt = $(element);
                 opt.attr('selected', opt.val() == self.options.pos);
             });
