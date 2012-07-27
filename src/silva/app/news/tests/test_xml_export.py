@@ -6,8 +6,9 @@ import unittest
 from datetime import datetime
 
 from Products.Silva.silvaxml import xmlexport
-from Products.Silva.tests.helpers import publish_object
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
+
+from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.testing import FunctionalLayer
 
@@ -120,7 +121,8 @@ class XMLExportTestCase(SilvaXMLTestCase):
         version.set_subjects(['all'])
         version.set_target_audiences(['generic'])
         version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
-        publish_object(self.root.export.news.event)
+        self.layer.login('editor')
+        IPublicationWorkflow(self.root.export.news.event).publish()
 
         xml, info = xmlexport.exportToString(self.root.export)
         self.assertExportEqual(
@@ -142,7 +144,6 @@ class XMLExportTestCase(SilvaXMLTestCase):
             xml, 'test_export_rssaggregator.silvaxml', globs=globals())
         self.assertEqual(info.getZexpPaths(), [])
         self.assertEqual(info.getAssetPaths(), [])
-
 
 
 def test_suite():

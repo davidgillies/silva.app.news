@@ -4,13 +4,14 @@ from silva.app.news.datetimeutils import local_timezone
 def set(content, name, attrs, extract=None, ns=None):
     ns_name = (ns, name)
     if attrs.has_key(ns_name):
-        if extract is not None:
-            value = extract(attrs[ns_name])
-        else:
-            value = attrs[ns_name]
-        setter = getattr(content, "set_%s" % name)
-        setter(value)
-        return value
+        value = attrs[ns_name]
+        if len(value):
+            # If we got an empty string, we just ignore the value.
+            if extract is not None:
+                value = extract(value)
+            setter = getattr(content, "set_%s" % name)
+            setter(value)
+            return value
 
 def set_as_list(content, name, attrs, ns=None, sep=","):
     return set(

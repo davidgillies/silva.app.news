@@ -34,10 +34,8 @@ class NewsViewerFeedEntryProvider(grok.MultiAdapter):
         self.request = request
 
     def entries(self):
-        items = self.context.get_items()
-        for item in items:
-            if item.get_viewable() is None:
-                continue
+        for brain in self.context.get_items():
+            item = brain.getObject()
             entry = queryMultiAdapter((item, self.request), IFeedEntry)
             if not entry is None:
                 yield entry

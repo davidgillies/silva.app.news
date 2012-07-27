@@ -1,26 +1,66 @@
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id$
+
 import unittest
 from DateTime import DateTime
-from silva.app.news.tests import SilvaNewsTestCase
+
+from zope.interface.verify import verifyObject
+
+from silva.app.news.interfaces import INewsFilter
+from silva.app.news.testing import FunctionalLayer
 
 
-class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
+class NewsFilterTestCase(unittest.TestCase):
     """Test the NewsFilter interface.
     """
+    layer = FunctionalLayer
+
+    def setUp(self):
+        self.root = self.layer.get_application()
+        self.layer.login('editor')
+
+    def test_filter(self):
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsFilter('news_filter', 'News Filter')
+        news_filter = self.root._getOb('news_filter', None)
+        self.assertTrue(verifyObject(INewsFilter, news_filter))
+
+
+class SourcesNewsFilterTestCase(unittest.TestCase):
+    """Test the NewsFilter content.
+    """
+    layer = FunctionalLayer
+
+
+    def setUp(self):
+        self.root = self.layer.get_application()
+        self.layer.login('editor')
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News')
+        factory.manage_addNewsPublication('events', 'Events')
+        factory.manage_addNewsFilter('news_filter', 'Filter')
+
+        factory = self.root.news.manage_addProduct['silva.app.news']
+        factory.manage_addNewsItem('article1', 'First Article')
+        factory.manage_addNewsItem('article2', 'Second Article')
+        factory.manage_addNewsItem('article3', 'Third Article')
 
     def test_sources(self):
-        self.assertTrue(self.newsfilter.get_sources() == [self.source1])
-        self.assert_(self.newsfilter.get_sources() == [self.source1])
-        self.newsfilter.set_sources([self.source1, self.source2])
-        self.assertTrue(self.source1 in self.newsfilter.get_sources())
-        self.assertTrue(self.source2 in self.newsfilter.get_sources())
-        self.assertEquals(2, len(self.newsfilter.get_sources()))
-        parent = self.source2.aq_parent
-        parent.manage_delObjects([self.source2.id])
-        self.assertEquals(1, len(self.newsfilter.get_sources()))
-        self.assertTrue(self.source2 not in self.newsfilter.get_sources())
+        news_filter = self.root.news_filter
+        self.assertItemsEqual(
+            news_filter.get_sources(),
+            [])
+
+        news_filter.set_sources([self.root.news, self.root.events])
+        self.assertItemsEqual(
+            news_filter.get_sources(),
+            [self.root.news, self.root.events])
+
+        self.root.manage_delObjects(['events'])
+        self.assertItemsEqual(
+            news_filter.get_sources(),
+            [self.root.news])
 
     def test_items(self):
         self.newsfilter.set_subjects(['sub'])
@@ -66,4 +106,5 @@ class NewsFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NewsFilterTestCase))
+    suite.addTest(unittest.makeSuite(SourcesNewsFilterTestCase))
     return suite

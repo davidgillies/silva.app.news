@@ -19,7 +19,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
     layer = FunctionalLayer
 
     def test_news_filter(self):
-        self.import_file('test_import_newsfilter.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_newsfilter.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -43,7 +45,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.news)])
 
     def test_agenda_filter(self):
-        self.import_file('test_import_agendafilter.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_agendafilter.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -69,7 +73,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.news), aq_chain(export.events)])
 
     def test_news_viewer(self):
-        self.import_file('test_import_newsviewer.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_newsviewer.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -96,7 +102,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.filter)])
 
     def test_agenda_viewer(self):
-        self.import_file('test_import_agendaviewer.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_agendaviewer.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -122,7 +130,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.filter)])
 
     def test_news_item(self):
-        self.import_file('test_import_newsitem.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_newsitem.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -160,7 +170,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
 """, unicode(version.body))
 
     def test_agenda_item(self):
-        self.import_file('test_import_agendaitem.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_agendaitem.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -212,7 +224,9 @@ class XMLImportTestCase(SilvaXMLTestCase):
 """, unicode(version.body))
 
     def test_rss_aggregator(self):
-        self.import_file('test_import_rssaggregator.silvaxml', globs=globals())
+        self.import_file(
+            'test_import_rssaggregator.silvaxml',
+            globs=globals())
         self.assertEventsAre(
             ['ContentImported for /root/export',
              'ContentImported for /root/export/news',
@@ -233,15 +247,23 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertEqual(rss_empty.get_title(), 'Nothing to see here')
         self.assertEqual(rss_empty.get_feeds(), [])
 
-    def test_full(self):
+    def test_news_publication(self):
         # A news pub with a viewer (index) a filter (filter) customized
-        # A news item, an agenda item, and an another one excluded
-        self.import_file('test_import_full.silvaxml', globs=globals())
+        # A news item, an agenda item, agenda viewer and agenda filter.
+        self.import_file(
+            'test_import_newspublication.silvaxml',
+            globs=globals())
         self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/empty'],
+            ['ContentImported for /root/news/index',
+             'ContentImported for /root/news/the_empire_falls',
+             'ContentImported for /root/news/lolcats_attacks',
+             'ContentImported for /root/news/events',
+             'ContentImported for /root/news/filter',
+             'ContentImported for /root/news/filter_events',
+             'ContentImported for /root/news'],
             IContentImported)
+
+        assert False, "TBD"
 
 def test_suite():
     suite = unittest.TestSuite()

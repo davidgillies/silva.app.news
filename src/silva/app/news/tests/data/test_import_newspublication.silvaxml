@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<silva xmlns="http://infrae.com/namespace/silva" xmlns:contentlayout="http://infrae.com/namespace/silva/silva-core-contentlayout" xmlns:doc="http://infrae.com/namespace/silva-document" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:silva-app-document="http://infrae.com/namespace/silva-app-document" xmlns:silva-app-news="http://infrae.com/namespace/silva-app-news" xmlns:silva-content="http://infrae.com/namespace/metadata/silva-content" xmlns:silva-core-editor="http://infrae.com/namespace/silva-core-editor" xmlns:silva-external-sources="http://infrae.com/namespace/silva-external-sources" xmlns:silva-extra="http://infrae.com/namespace/metadata/silva-extra" xmlns:silva-find="http://infrae.com/namespace/silva-find" xmlns:silvanews="http://infrae.com/namespace/silva-news-network" silva_version="Silva 3.0c1">
+  <silva-app-news:news_publication id="news">
+    <metadata>
+      <set id="silva-content">
+        <silva-content:maintitle>News</silva-content:maintitle><silva-content:shorttitle/>
+      </set>
+      <set id="silva-extra">
+        <silva-extra:comment/><silva-extra:contactemail/>
+        <silva-extra:contactname/>
+        <silva-extra:content_description/>
+        <silva-extra:creationtime>2012-07-27T14:23:00Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+        <silva-extra:language/>
+        <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:31:37Z</silva-extra:modificationtime><silva-extra:subject/>
+      </set>
+      <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+        <silvasettings:hide_from_tocs>hide</silvasettings:hide_from_tocs>
+      </set>
+      <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
+        <snn-np-settings:is_private>no</snn-np-settings:is_private>
+      </set>
+    </metadata>
+    <content>
+      <default>
+        <silva-app-news:news_viewer id="index" number_is_days="0" number_to_show="25" number_to_show_archive="10">
+          <metadata>
+            <set id="silva-content">
+              <silva-content:maintitle>News</silva-content:maintitle><silva-content:shorttitle/>
+            </set>
+            <set id="silva-extra">
+              <silva-extra:comment/><silva-extra:contactemail/>
+              <silva-extra:contactname/>
+              <silva-extra:content_description/>
+              <silva-extra:creationtime>2012-07-27T14:23:00Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+              <silva-extra:language/>
+              <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:23:00Z</silva-extra:modificationtime><silva-extra:subject/>
+            </set>
+            <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+              <silvasettings:hide_from_tocs>do not hide</silvasettings:hide_from_tocs>
+            </set>
+          </metadata>
+          <content>
+            <silva-app-news:filters>
+              <silva-app-news:filter target="news/filter"/>
+            </silva-app-news:filters>
+          </content>
+        </silva-app-news:news_viewer>
+      </default>
+      <silva-app-news:news_item id="the_empire_falls">
+        <workflow>
+          <version id="1">
+            <status>unapproved</status><publication_datetime/>
+            <expiration_datetime/>
+          </version>
+          <version id="0">
+            <status>public</status><publication_datetime>2012-07-27T14:30:08Z</publication_datetime><expiration_datetime/>
+          </version>
+        </workflow>
+        <content display_datetime="2012-07-27T14:30:08Z" subjects="generic" target_audiences="all" version_id="0">
+          <metadata>
+            <set id="silva-content">
+              <silva-content:maintitle>The Empire Falls</silva-content:maintitle><silva-content:shorttitle/>
+            </set>
+            <set id="silva-extra">
+              <silva-extra:comment/><silva-extra:contactemail/>
+              <silva-extra:contactname/>
+              <silva-extra:content_description/>
+              <silva-extra:creationtime>2012-07-27T14:23:29Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+              <silva-extra:language/>
+              <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:30:03Z</silva-extra:modificationtime><silva-extra:subject/>
+            </set>
+            <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+              <silvasettings:hide_from_tocs>do not hide</silvasettings:hide_from_tocs>
+            </set>
+          </metadata>
+          <silva-app-news:body>
+            <silva-core-editor:text><html:p>
+              The empire falls after the assination of its leaders. In a bloodlust, the king of a minor border realm sent an army of <html:a class="link" reference="news/lolcats_attacks" reference-type="body link" target="_self" title="The lolcats are invading the empire.">lolcats to attack</html:a> the central planet of the empire.
+            </html:p>
+            </silva-core-editor:text>
+          </silva-app-news:body>
+        </content>
+        <content display_datetime="2012-07-27T14:30:08Z" subjects="generic" target_audiences="all" version_id="1">
+          <metadata>
+            <set id="silva-content">
+              <silva-content:maintitle>The Empire Falls</silva-content:maintitle><silva-content:shorttitle/>
+            </set>
+            <set id="silva-extra">
+              <silva-extra:comment/><silva-extra:contactemail/>
+              <silva-extra:contactname/>
+              <silva-extra:content_description/>
+              <silva-extra:creationtime>2012-07-27T14:30:11Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+              <silva-extra:language/>
+              <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:30:03Z</silva-extra:modificationtime><silva-extra:subject/>
+            </set>
+            <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+              <silvasettings:hide_from_tocs>do not hide</silvasettings:hide_from_tocs>
+            </set>
+          </metadata>
+          <silva-app-news:body>
+            <silva-core-editor:text><html:p>
+              The empire falls after the assination of its leaders. In a bloodlust, the king of a minor border realm sent an army of <html:a class="link" reference="news/lolcats_attacks" reference-type="body link" target="_self" title="The lolcats are invading the empire.">lolcats to attack</html:a> the central planet of the empire.
+            </html:p>
+            </silva-core-editor:text>
+          </silva-app-news:body>
+        </content>
+      </silva-app-news:news_item>
+      <silva-app-news:agenda_item id="lolcats_attacks">
+        <workflow>
+          <version id="0">
+            <status>public</status><publication_datetime>2012-07-27T14:28:59Z</publication_datetime><expiration_datetime/>
+          </version>
+        </workflow>
+        <content display_datetime="2012-07-27T14:28:59Z" subjects="generic" target_audiences="all" version_id="0">
+          <metadata>
+            <set id="silva-content">
+              <silva-content:maintitle>The Lolcat attacks</silva-content:maintitle><silva-content:shorttitle/>
+            </set>
+            <set id="silva-extra">
+              <silva-extra:comment/><silva-extra:contactemail/>
+              <silva-extra:contactname/>
+              <silva-extra:content_description/>
+              <silva-extra:creationtime>2012-07-27T14:26:58Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+              <silva-extra:language/>
+              <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:28:24Z</silva-extra:modificationtime><silva-extra:subject/>
+            </set>
+            <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+              <silvasettings:hide_from_tocs>do not hide</silvasettings:hide_from_tocs>
+            </set>
+          </metadata>
+          <silva-app-news:occurrence all_day="True" end_datetime="2012-07-13T03:00:00Z" location="Central Planet" recurrence="" start_datetime="2012-07-13T02:00:00Z" timezone_name="Australia/Sydney"/>
+          <silva-app-news:body>
+            <silva-core-editor:text>
+
+            <html:p>
+              An army of lolcats were sent to attack the central planet of the empire. More information on youtube.
+            </html:p>
+
+            <html:div class="external-source default" source-identifier="cs_you_tube">
+              <silva-external-sources:fields>
+                <silva-external-sources:field id="youtube_url">http://www.youtube.com/watch?v=W-Nog6T6iuY</silva-external-sources:field><silva-external-sources:field id="youtube_height">480</silva-external-sources:field><silva-external-sources:field id="youtube_width">640</silva-external-sources:field>
+              </silva-external-sources:fields>
+            </html:div>
+
+            <html:br/>
+            </silva-core-editor:text>
+          </silva-app-news:body>
+        </content>
+      </silva-app-news:agenda_item>
+      <silva-app-news:agenda_viewer days_to_show="31" id="events" number_to_show_archive="10">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Events</silva-content:maintitle><silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/><silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>2012-07-27T14:31:37Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:31:37Z</silva-extra:modificationtime><silva-extra:subject/>
+          </set>
+          <set xmlns:silvasettings="http://infrae.com/namespace/metadata/silva-settings" id="silva-settings">
+            <silvasettings:hide_from_tocs>do not hide</silvasettings:hide_from_tocs>
+          </set>
+        </metadata>
+        <content>
+          <silva-app-news:filters>
+            <silva-app-news:filter target="news/filter_events"/>
+          </silva-app-news:filters>
+        </content>
+      </silva-app-news:agenda_viewer>
+      <silva-app-news:news_filter id="filter" show_agenda_items="True" subjects="generic,root" target_audiences="all,root">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Filter for News</silva-content:maintitle><silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/><silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>2012-07-27T14:23:00Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:30:28Z</silva-extra:modificationtime><silva-extra:subject/>
+          </set>
+        </metadata>
+        <content>
+          <silva-app-news:sources>
+            <silva-app-news:source target="news"/>
+          </silva-app-news:sources>
+          <silva-app-news:excludes/>
+        </content>
+      </silva-app-news:news_filter>
+      <silva-app-news:agenda_filter id="filter_events" subjects="generic" target_audiences="all">
+        <metadata>
+          <set id="silva-content">
+            <silva-content:maintitle>Filter for Events</silva-content:maintitle><silva-content:shorttitle/>
+          </set>
+          <set id="silva-extra">
+            <silva-extra:comment/><silva-extra:contactemail/>
+            <silva-extra:contactname/>
+            <silva-extra:content_description/>
+            <silva-extra:creationtime>2012-07-27T14:31:16Z</silva-extra:creationtime><silva-extra:creator>admin</silva-extra:creator><silva-extra:keywords/>
+            <silva-extra:language/>
+            <silva-extra:lastauthor>admin</silva-extra:lastauthor><silva-extra:modificationtime>2012-07-27T14:32:06Z</silva-extra:modificationtime><silva-extra:subject/>
+          </set>
+        </metadata>
+        <content>
+          <silva-app-news:sources>
+            <silva-app-news:source target="news"/>
+          </silva-app-news:sources>
+          <silva-app-news:excludes/>
+        </content>
+      </silva-app-news:agenda_filter>
+    </content>
+  </silva-app-news:news_publication>
+</silva>

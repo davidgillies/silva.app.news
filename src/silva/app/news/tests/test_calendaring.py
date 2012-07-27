@@ -1,8 +1,8 @@
 # coding=utf-8
 
-from difflib import unified_diff
-from os import linesep
 from datetime import datetime, timedelta
+import unittest
+
 from dateutil.relativedelta import relativedelta
 
 from zope.component import getUtility
@@ -15,30 +15,35 @@ from silva.app.news.datetimeutils import (local_timezone,
     datetime_to_unixtimestamp, get_timezone)
 
 
-class TestEvent(SilvaNewsTestCase):
+class CalendaringTestCase(SilvaNewsTestCase):
 
     def test_event_indexing(self):
         start = datetime.now(local_timezone)
-        event = self.add_published_agenda_item(self.root, 'ai1',
-            'Agenda Item', start, start + timedelta(60))
+        self.add_published_agenda_item(
+            self.root, 'weekend', 'Agenda Item', start, start + timedelta(60))
 
-        version = event.get_viewable()
+        version = self.root.weekend.get_viewable()
         # make sure it does not raise
         self.assertNotEquals(
-            ICatalogingAttributes(version).timestamp_ranges(), [])
+            ICatalogingAttributes(version).timestamp_ranges(),
+            [])
 
         start_index = datetime_to_unixtimestamp(start)
         end_index = datetime_to_unixtimestamp(start + timedelta(30))
         brains = self.root.service_catalog(
             {'timestamp_ranges': {'query': [start_index, end_index]}})
-        l = [brain.getObject() for brain in brains]
-        self.assertEqual(l, [version])
+        self.assertEqual(
+            [brain.getObject() for brain in brains],
+            [version])
 
         start_index = datetime_to_unixtimestamp(start - timedelta(30))
         end_index = datetime_to_unixtimestamp(start - timedelta(20))
         brains = self.root.service_catalog(
             {'timestamp_ranges': {'query': [start_index, end_index]}})
-        self.assertFalse(brains)
+        self.assertEqual(
+            [brain.getObject() for brain in brains],
+            [])
+
 
 
 class TestAgendaViewerLookup(NewsBaseTestCase):
@@ -123,68 +128,79 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         self.assertEquals(versions, normalize(items))
 
 
+def get_identifier(content):
+    return getUtility(IIntIds).getId(content)
+
+
 class TestCalendar(NewsBaseTestCase):
 
     def setUp(self):
         super(TestCalendar, self).setUp()
-        self.browser = self.layer.get_browser()
-        self.browser.options.handle_errors = False
-        self.filter = self.add_agenda_filter(
-            self.root, 'afilter', 'Agenda Filter')
-        self.filter.set_subjects(['sub'])
-        self.filter.set_target_audiences(['ta'])
-        self.filter.set_sources([self.source1])
-        self.agenda = self.add_agenda_viewer(self.root, 'agenda', 'Agenda')
-        self.agenda.set_filters([self.root.afilter])
-        self.agenda.set_timezone_name('Europe/Amsterdam')
+        # Publication
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('source', 'Publication')
+        # Filter
+        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+        self.root.filter.set_subjects(['sub'])
+        self.root.filter.set_target_audiences(['ta'])
+        self.root.filter.set_sources([self.root.source])
+        # Viewer
+        factory.manage_addAgendaViewer('agenda', 'Agenda')
+        self.root.agenda.add_filter(self.root.filter)
+        self.root.agenda.set_timezone_name('Europe/Amsterdam')
 
-        sdt = datetime(2012, 6, 4, 10, 20, tzinfo=self.agenda.get_timezone())
-        self.event1 = self.add_published_agenda_item(
-            self.source1, 'event1', u'Event héhé“π”',
+        timezone = self.root.agenda.get_timezone()
+        sdt = datetime(2012, 6, 4, 10, 20, tzinfo=timezone)
+        self.add_published_agenda_item(
+            self.root.source, 'saturday', u'Saturday “π” aka Disco',
             sdt, sdt + relativedelta(hours=+1))
 
-        sdt = datetime(2012, 6, 10, 10, 20, tzinfo=self.agenda.get_timezone())
+        sdt = datetime(2012, 6, 10, 10, 20, tzinfo=timezone)
         self.event2 = self.add_published_agenda_item(
-            self.source1, 'event2', u'Event2',
+            self.root.source, 'sunday', u'Sunday pépère héhé!',
             sdt, sdt + relativedelta(days=+1), all_day=True)
 
-    def get_intid(self, obj):
-        return getUtility(IIntIds).getId(obj)
+    def test_functional_calendar_view(self):
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open('http://localhost/root/agenda'),
+                200)
 
-    def test_calendar_view(self):
-        status = self.browser.open('http://localhost/root/agenda')
-        self.assertEquals(200, status)
+    def test_functional_calendar_view_for_event(self):
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open(
+                    'http://localhost/root/agenda',
+                    query={'year': '2012', 'month': '6', 'day': '4'}),
+                200)
 
-    def test_calendar_view_for_event(self):
-        status = self.browser.open('http://localhost/root/agenda',
-                                   query={'year' : '2012',
-                                          'month': '6',
-                                          'day'  : '4'})
-        self.assertEquals(200, status)
+            nodes = browser.html.xpath(
+                '//div[@id="event_%s"]' % get_identifier(
+                    self.root.source.saturday.get_viewable()))
+            self.assertTrue(len(nodes), 1)
 
-        xpath = '//div[@id="event_%s"]' % self.get_intid(
-            self.event1.get_viewable())
-        nodes = self.browser.html.xpath(xpath)
-        self.assertTrue(1, len(nodes))
+    def test_functional_external_source_view(self):
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open('http://localhost/root/agenda/external_source'),
+                200)
 
-    def test_external_source_view(self):
-        status = self.browser.open(
-            'http://localhost/root/agenda/external_source')
-        self.assertEquals(200, status)
+    def test_functional_subscribe_view(self):
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open('http://localhost/root/agenda/subscribe.html'),
+                200)
 
-    def test_subscribe_view(self):
-        status = self.browser.open(
-            'http://localhost/root/agenda/subscribe.html')
-        self.assertEquals(200, status)
-
-    def test_ics_view(self):
-        status = self.browser.open(
-            'http://localhost/root/agenda/calendar.ics')
-        self.assertEquals(200, status)
-        get_id = getUtility(IIntIds).register
-        uids = (get_id(self.event2.get_viewable()),
-                get_id(self.event1.get_viewable()))
-        data = """BEGIN:VCALENDAR
+    def test_functional_ics_view(self):
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open('http://localhost/root/agenda/calendar.ics'),
+                200)
+            uids = (get_identifier(self.root.source.sunday.get_viewable()),
+                    get_identifier(self.root.source.saturday.get_viewable()))
+            self.assertEqual(
+                browser.contents.replace("\r\n", "\n"),
+                """BEGIN:VCALENDAR
 PRODID:-//Infrae SilvaNews Calendaring//NONSGML Calendar//EN
 VERSION:2.0
 X-WR-CALNAME:Agenda
@@ -204,20 +220,12 @@ UID:%d@0@silvanews
 URL:http://localhost/root/source1/event1
 END:VEVENT
 END:VCALENDAR
-""".replace("\n", "\r\n") % uids
-        self.assert_no_udiff(data, self.browser.contents, term="\r\n")
-
-    def assert_no_udiff(self, s1, s2, term="\n"):
-        diff = list(unified_diff(s1.split(term), s2.split(term)))
-        if len(diff) > 0:
-            raise AssertionError(linesep.join(diff))
-        return True
+""" % uids)
 
 
-import unittest
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestEvent))
+    suite.addTest(unittest.makeSuite(CalendaringTestCase))
     suite.addTest(unittest.makeSuite(TestCalendar))
     suite.addTest(unittest.makeSuite(TestAgendaViewerLookup))
     return suite

@@ -3,7 +3,7 @@
 
 from five import grok
 from zope.component import getUtility, queryMultiAdapter
-from zope.cachedescriptors.property import CachedProperty
+from zope.cachedescriptors.property import Lazy
 
 from Products.SilvaMetadata.interfaces import IMetadataService
 from ..interfaces import IServiceNews, INewsItem, INewsItemContent
@@ -18,11 +18,11 @@ class NewsItemBaseView(silvaviews.View):
     grok.context(INewsItemContent)
     grok.baseclass()
 
-    @CachedProperty
+    @Lazy
     def title(self):
         return self.content.get_title()
 
-    @CachedProperty
+    @Lazy
     def publication_date(self):
         date = self.content.get_display_datetime()
         if not date:
@@ -39,7 +39,7 @@ class NewsItemView(NewsItemBaseView):
     """
     grok.context(INewsItem)
 
-    @CachedProperty
+    @Lazy
     def document(self):
         if self.content is not None:
             return self.content.body.render(self.content, self.request)
@@ -52,7 +52,7 @@ class NewsItemListItemView(NewsItemBaseView):
     grok.context(INewsItemContent)
     grok.name('search_result')
 
-    @CachedProperty
+    @Lazy
     def details(self):
         return queryMultiAdapter((self.content, self.request), IDocumentDetails)
 

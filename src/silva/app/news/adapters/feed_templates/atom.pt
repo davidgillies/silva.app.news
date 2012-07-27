@@ -26,9 +26,10 @@
     <author tal:repeat="author item/authors">
       <name tal:content="author"/>
     </author>
-    <category
-      tal:repeat="keyword item/keywords"
-      tal:attributes="term keyword" />
+    <tal:repeat repeat="keyword item/keywords">
+     <category tal:condition="keyword"
+       tal:attributes="term keyword" />
+    </tal:repeat>
     <summary type="xhtml">
       <div tal:content="structure item/html_description" />
     </summary>

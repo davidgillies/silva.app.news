@@ -8,14 +8,17 @@ from icalendar.interfaces import IEvent
 # ztk
 from five import grok
 from zope.component import getUtility, getMultiAdapter
+from zope.component import queryMultiAdapter
+from zope.cachedescriptors.property import Lazy
 
 # Silva
 from silva.core.views import views as silvaviews
+from silva.app.document.interfaces import IDocumentDetails
 
 # SilvaNews
 from ..interfaces import IServiceNews, INewsViewer
 from ..interfaces import IAgendaItem, IAgendaItemContent
-from ..NewsItem.views import NewsItemListItemView, NewsItemView
+from ..NewsItem.views import NewsItemBaseView, NewsItemView, NewsItemListItemView
 
 
 class AgendaItemBaseView(silvaviews.View):
@@ -48,10 +51,14 @@ class AgendaItemListItemView(NewsItemListItemView, AgendaItemBaseView):
     grok.name('search_result')
 
 
-class AgendaItemInlineView(NewsItemListItemView):
+class AgendaItemInlineView(NewsItemBaseView):
     """ Inline rendering for calendar event tooltip """
     grok.context(IAgendaItemContent)
     grok.name('tooltip.html')
+
+    @Lazy
+    def details(self):
+        return queryMultiAdapter((self.content, self.request), IDocumentDetails)
 
     def render(self):
         if self.details:

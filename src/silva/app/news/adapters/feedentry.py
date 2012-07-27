@@ -2,34 +2,50 @@
 # See also LICENSE.txt
 
 from five import grok
-from zope.interface import Interface
+from zope.publisher.interfaces.http import IHTTPRequest
+from zope.cachedescriptors.property import Lazy
+
 from silva.app.document import feed
-from silva.app.news.interfaces import INewsItem, IAgendaItem
+from silva.app.news.interfaces import INewsItemVersion, IAgendaItemVersion
 
 
 class NewsItemFeedEntryAdapter(feed.DocumentFeedEntry):
     """Adapter for Silva News Items (article, agenda) to get an
     atom/rss feed entry representation.
     """
-    grok.adapts(INewsItem, Interface)
+    grok.adapts(INewsItemVersion, IHTTPRequest)
 
     def date_published(self):
         """ This field is used for ordering.
         """
-        return self.version.get_display_datetime()
+        return self.context.get_display_datetime()
 
 
 class AgendaItemFeedEntryAdapter(NewsItemFeedEntryAdapter):
-    grok.adapts(IAgendaItem, Interface)
+    grok.adapts(IAgendaItemVersion, IHTTPRequest)
+
+    @Lazy
+    def occurrence(self):
+        occurrences = self.context.get_occurrences()
+        if len(occurrences):
+            return occurrences[0]
+        return None
 
     def location(self):
-        return self.version.get_location()
+        if self.occurrence is not None:
+            return self.occurrence.get_location()
+        return None
 
     def start_datetime(self):
-        return self.version.get_start_datetime().isoformat()
+        if self.occurrence is not None:
+            return self.occurrence.get_start_datetime().isoformat()
+        return None
 
     def end_datetime(self):
-        edt = self.version.get_end_datetime()
-        return (edt and edt.isoformat()) or edt
+        if self.occurrence is not None:
+            time = self.occurrence.get_end_datetime()
+            if time:
+                return time.isoformat()
+        return None
 
 
