@@ -12,6 +12,7 @@ from zope.cachedescriptors.property import CachedProperty
 from zope.component import getMultiAdapter
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.traversing.browser import absoluteURL
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 # Zope
 from AccessControl import ClassSecurityInfo
@@ -22,6 +23,7 @@ from Products.Silva import SilvaPermissions
 from silva.core import conf as silvaconf
 from silva.core.conf.interfaces import ITitledContent
 from silva.core.views import views as silvaviews
+from silva.core.views.httpheaders import ResponseHeaders
 from silva.fanstatic import need
 from zeam.form import silva as silvaforms
 
@@ -302,7 +304,7 @@ class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):
     """ Year Calendar representation
     """
     grok.context(IAgendaViewer)
-    grok.name('year')
+    grok.name('year.html')
 
     def update(self):
         need(ICalendarResources)
@@ -346,14 +348,17 @@ class AgendaViewerICSCalendar(silvaviews.View):
     grok.context(IAgendaViewer)
     grok.name('calendar.ics')
 
-    def update(self):
-        self.response.setHeader(
-            'Content-Type', 'text/calendar; charset=UTF-8')
-        self.calendar = getMultiAdapter(
-            (self.context, self.request,), ICalendar)
-
     def render(self):
-        return self.calendar.as_string()
+        calendar = getMultiAdapter((self.context, self.request,), ICalendar)
+        return calendar.as_string()
+
+
+class AgendaViewerICSCalendarResponseHeaders(ResponseHeaders):
+    grok.adapts(IBrowserRequest, AgendaViewerICSCalendar)
+
+    def other_headers(self, headers):
+        self.response.setHeader(
+            'Content-Type', 'text/calendar;charset=utf-8')
 
 
 class AgendaViewerSubscribeView(silvaviews.Page):
@@ -366,3 +371,4 @@ class AgendaViewerSubscribeView(silvaviews.Page):
 
     def calendar_url(self):
         return "%s/calendar.ics" % absoluteURL(self.context, self.request)
+

@@ -4,7 +4,7 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news">
 
-  <h1 class="heading" tal:content="context.get_title()">View News</h1>
+  <h1 tal:content="context.get_title()">View News</h1>
 
   <div class="calendar_actions">
     <a tal:attributes="href view.url('subscribe.html')" class="next">
@@ -13,7 +13,7 @@
   </div>
 
   <div class="calendar" tal:content="structure view.render_calendar()" />
-  <h3 class="calendar_intro" tal:content="view.intro()" />
+  <h2 class="calendar_intro" tal:content="view.intro()" />
 
   <div class="newsitem" tal:repeat="event view.day_events">
     <div tal:attributes="class python:repeat['event'].odd and 'odd' or 'even'">

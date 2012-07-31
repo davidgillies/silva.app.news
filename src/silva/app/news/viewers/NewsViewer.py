@@ -158,8 +158,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def get_items(self):
         """Gets the items from the filters
         """
-        results = self._get_items(
-            lambda x: x.get_last_items(
+        results = self._get_items(lambda x: x.get_last_items(
                 self._number_to_show, self._number_is_days))
 
         if not self._number_is_days:
@@ -172,8 +171,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def get_items_by_date(self, month, year):
         """Gets the items from the filters
         """
-        return self._get_items(
-            lambda x: x.get_items_by_date(
+        return self._get_items(lambda x: x.get_items_by_date(
                 month,year, timezone=self.get_timezone()))
 
     security.declareProtected(
@@ -181,16 +179,14 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def get_items_by_date_range(self, start, end):
         """Gets the items from the filters
         """
-        return self._get_items(
-            lambda x: x.get_items_by_date_range(start, end))
+        return self._get_items(lambda x: x.get_items_by_date_range(start, end))
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'search_items')
     def search_items(self, keywords):
         """Search the items in the filters
         """
-        return self._get_items(
-            lambda x: x.search_items(keywords))
+        return self._get_items(lambda x: x.search_items(keywords))
 
     # MANIPULATORS
 

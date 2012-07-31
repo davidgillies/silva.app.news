@@ -10,9 +10,11 @@ from five import grok
 from zope.component import getUtility, getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.cachedescriptors.property import Lazy
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 # Silva
 from silva.core.views import views as silvaviews
+from silva.core.views.httpheaders import ResponseHeaders
 from silva.app.document.interfaces import IDocumentDetails
 
 # SilvaNews
@@ -82,6 +84,12 @@ class AgendaItemICS(silvaviews.View):
         cal.add('version', '2.0')
         for event in factory(viewer):
             cal.add_component(event)
-        self.response.setHeader(
-            'Content-Type', 'text/calendar; charset=UTF-8')
         return cal.as_string()
+
+
+class AgendaItemICSResponseHeaders(ResponseHeaders):
+    grok.adapts(IBrowserRequest, AgendaItemICS)
+
+    def other_headers(self, headers):
+        self.response.setHeader(
+            'Content-Type', 'text/calendar;charset=utf-8')

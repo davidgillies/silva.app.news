@@ -107,14 +107,14 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         self.root.filter.set_sources([self.root.news])
 
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_all_items()),
+           [b.getPath() for b in self.root.filter.get_all_items()],
             ['/root/news/snowing/0', '/root/news/snowing/1',
              '/root/news/rain/0', '/root/news/rain/1'])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_next_items(10)),
+           [b.getPath() for b in self.root.filter.get_next_items(10)],
            [])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_last_items(10)),
+           [b.getPath() for b in self.root.filter.get_last_items(10)],
             ['/root/news/snowing/0', '/root/news/rain/0'])
 
     def test_get_items_excluded(self):
@@ -124,14 +124,14 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         self.root.filter.add_excluded_item(self.root.news.rain)
 
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_all_items()),
+           [b.getPath() for b in self.root.filter.get_all_items()],
             ['/root/news/snowing/0', '/root/news/snowing/1',
              '/root/news/rain/0', '/root/news/rain/1'])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_next_items(10)),
+           [b.getPath() for b in self.root.filter.get_next_items(10)],
            [])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_last_items(10)),
+           [b.getPath() for b in self.root.filter.get_last_items(10)],
             ['/root/news/snowing/0'])
 
     def test_get_items_with_agenda(self):
@@ -143,15 +143,15 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         self.assertTrue(self.root.filter.show_agenda_items())
 
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_all_items()),
+           [b.getPath() for b in self.root.filter.get_all_items()],
             ['/root/news/snowing/0', '/root/news/snowing/1',
              '/root/news/rain/0', '/root/news/rain/1',
              '/root/news/sun/0', '/root/news/sun/1'])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_next_items(10)),
+           [b.getPath() for b in self.root.filter.get_next_items(10)],
            ['/root/news/snowing/0', '/root/news/rain/0'])
         self.assertItemsEqual(
-           map(lambda b: b.getPath(), self.root.filter.get_last_items(10)),
+           [b.getPath() for b in self.root.filter.get_last_items(10)],
             ['/root/news/snowing/0', '/root/news/rain/0', '/root/news/sun/0'])
 
     def test_search_items(self):
@@ -195,7 +195,7 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
 
     def test_display_datetime(self):
         self.root.filter.set_sources([self.root.news])
-        items = self.newsfilter.get_last_items(2)
+        items = self.root.filter.get_last_items(2)
         itemids = [item.id for item in items]
         """first test to see the order of the articles"""
         self.assertEquals(itemids, ['art1', 'art2'])

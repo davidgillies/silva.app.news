@@ -27,7 +27,7 @@ class AgendaItemInfo(object):
 
     def __init__(self, item, request):
         self.summary = item.get_title()
-        self.url = absoluteURL(item, request)
+        self.url = absoluteURL(item.get_silva_object(), request)
         self.description = None # document details
         self.created = asdatetime(item.get_creation_datetime())
         self.last_modified = asdatetime(item.get_modification_datetime())

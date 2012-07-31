@@ -5,6 +5,11 @@
 from Products.Silva.testing import SilvaLayer
 import transaction
 import silva.app.news
+from zope.component import getUtility
+from zope.intid.interfaces import IIntIds
+
+def get_identifier(content):
+    return getUtility(IIntIds).getId(content)
 
 
 class SilvaNewsLayer(SilvaLayer):

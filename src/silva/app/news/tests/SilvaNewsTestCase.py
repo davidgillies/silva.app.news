@@ -57,7 +57,7 @@ class SilvaNewsTestCase(unittest.TestCase):
         version = item.get_editable()
         version.set_subjects(['sub'])
         version.set_target_audiences(['ta'])
-        version.set_display_datetime(DateTime())
+        #version.set_display_datetime(DateTime())
         IPublicationWorkflow(item).publish()
         return item
 

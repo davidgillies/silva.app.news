@@ -4,7 +4,7 @@
   xmlns:i18n="http://xml.zope.org/namespaces/i18n"
   i18n:domain="silva_news">
 
-  <h1 class="heading" tal:content="context.get_title()">Viewer</h1>
+  <h1 tal:content="context.get_title()">Viewer</h1>
 
   <p>
     To subscribe to the calendar <span tal:replace="context.get_title()"/>

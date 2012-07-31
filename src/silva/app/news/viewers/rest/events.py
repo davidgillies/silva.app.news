@@ -37,17 +37,17 @@ class Events(rest.REST):
                 ranges = cal_datetime.get_unixtimestamp_ranges(
                     after=start, before=end)
                 title = event.get_title()
-                url = absoluteURL(event, self.request)
+                url = absoluteURL(event.get_silva_object(), self.request)
                 all_day = occurrence.is_all_day()
                 id = "agenda-item-%d-%d" % (get_id(event), index)
                 for start_timestamp, end_timestamp in ranges:
-                    yield {'title'      : title,
-                           'start'      : start_timestamp,
-                           'end'        : end_timestamp,
-                           'url'        : url,
-                           'allDay'     : all_day,
-                           'className'  : 'fullcalendar-agenda-item',
-                           'id'         : id }
+                    yield {'title': title,
+                           'start': start_timestamp,
+                           'end': end_timestamp,
+                           'url': url,
+                           'allDay': all_day,
+                           'className': 'fullcalendar-agenda-item',
+                           'id': id }
 
     def GET(self, **kw):
         self.timezone = self.context.get_timezone()
