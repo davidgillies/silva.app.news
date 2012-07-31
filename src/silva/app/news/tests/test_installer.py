@@ -4,11 +4,18 @@
 
 import unittest
 
-from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
+from silva.app.news.testing import FunctionalLayer
+from silva.core.services.interfaces import ICatalogService
+from zope.component import getUtility
+
 from Products.Silva.roleinfo import AUTHOR_ROLES
 
 
-class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
+class InstallerTestCase(unittest.TestCase):
+    layer = FunctionalLayer
+
+    def setUp(self):
+        self.root = self.layer.get_application()
 
     def test_installation(self):
         self.assertEqual(
@@ -17,7 +24,7 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
 
     def test_catalog_indexes(self):
         #ensure catalog indexes are setup
-        catalog = self.catalog
+        catalog = getUtility(ICatalogService)
         indexes = [
             ('parent_path', 'FieldIndex'),
             ('sort_index', 'FieldIndex'),
@@ -59,24 +66,23 @@ class SilvaNewsInstallerTestCase(SilvaNewsTestCase):
             if perm in possible_permissions:
                 roles = [ r['name'] for r in root.rolesOfPermission(perm)
                           if r['selected'] == 'SELECTED' ]
-                self.assertEqual(a_roles,roles)
+                self.assertEqual(a_roles, roles)
 
     def test_addables(self):
         # make sure the root addables doesn't include
         # news/agenda items
         addables = self.root.get_silva_addables_allowed_in_container()
         allowed_snn_types = ['Silva Agenda Filter','Silva Agenda Viewer',
-                             'Silva News Category Filter',
                              'Silva News Filter', 'Silva News Publication',
                              'Silva News Viewer', 'Silva RSS Aggregator']
         for allowed in allowed_snn_types:
-            self.assert_(allowed in addables)
+            self.assertIn(allowed, addables)
         disallowed_snn_types = ['Silva Article', 'Silva Agenda Item']
         for dis in disallowed_snn_types:
-            self.assert_(dis not in addables)
+            self.assertNotIn(dis, addables)
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(SilvaNewsInstallerTestCase))
+    suite.addTest(unittest.makeSuite(InstallerTestCase))
     return suite
