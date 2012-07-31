@@ -125,9 +125,9 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
         return intid in self._excluded_items
 
     security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'remove_excluded_item')
-    def set_excluded_item(self, excluded_set):
-        self._excluded_items = set(excluded_set)
+                              'set_excluded_items')
+    def set_excluded_items(self, items):
+        self._excluded_items = set(items)
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'get_excluded_items')
@@ -193,7 +193,7 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
             # Local catalog optimization
             query['sort_limit'] = max_items
 
-        logger.info('query %s', repr(query))
+        logger.debug('Query filter %r', query)
         for brain in getUtility(ICatalogService)(query):
             if max_items is not None and count > max_items:
                 break

@@ -55,18 +55,14 @@ class TestAgendaViewerLookup(NewsBaseTestCase):
         factory = root.manage_addProduct['silva.app.news']
         factory.manage_addAgendaFilter('agenda_filter', 'Agenda Filter')
         factory.manage_addAgendaViewer('agenda_viewer', 'Agenda Viewer')
-        self.root.agenda_viewer.set_timezone_name('Europe/Amsterdam')
         factory.manage_addNewsPublication(
             'news_publication', 'News Publication')
 
         self.root.agenda_filter.set_sources([self.root.news_publication])
         self.root.agenda_filter.set_subjects(['sub'])
         self.root.agenda_filter.set_target_audiences(['ta'])
-
+        self.root.agenda_viewer.set_timezone_name('Europe/Amsterdam')
         self.root.agenda_viewer.set_filters([self.root.agenda_filter])
-
-        self.news_pub_factory = \
-            self.root.news_publication.manage_addProduct['SilvaNews']
 
     def test_month_lookup(self):
         self.add_published_agenda_item(

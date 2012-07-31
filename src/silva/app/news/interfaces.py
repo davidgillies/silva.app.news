@@ -198,16 +198,31 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     """
 
     def get_sources():
-        """return the source list of this newsitemfilter"""
+        """Return a list of all the sources where the filter looks for
+        items.
+        """
 
-    def set_sources(sources_list):
-        """set the source list of this newsitemfilter"""
+    def set_sources(sources):
+        """Set the list of all the soures where the filter looks for
+        items.
+        """
 
     def add_source(source):
-        """add a"""
+        """Add a source to the list of all sources where the filter
+        looks for items.
+        """
+
+    def has_sources():
+        """Return True of the filter as at least one source to look
+        items in.
+        """
+
+    def set_excluded_items(items):
+        """Set a list of all excluded items.
+        """
 
     def get_excluded_items():
-        """Returns a list of all excluded items
+        """Returns a list of all excluded items.
         """
 
     def add_excluded_item(target):

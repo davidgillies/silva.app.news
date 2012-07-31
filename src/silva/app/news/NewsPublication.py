@@ -9,7 +9,6 @@ from five import grok
 from zope.component import getUtility
 from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 
-
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva.Folder.addables import AddableContents
