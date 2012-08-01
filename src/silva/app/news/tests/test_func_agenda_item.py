@@ -1,9 +1,10 @@
 import unittest
 from datetime import datetime
 from silva.app.news.datetimeutils import get_timezone
-from silva.app.news.tests.SilvaNewsTestCase import FunctionalLayer
+from silva.app.news.testing import FunctionalLayer
 from Products.Silva.ftesting import smi_settings
 import transaction
+
 
 class TestAgendaItemAddTestCase(unittest.TestCase):
 

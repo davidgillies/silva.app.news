@@ -7,6 +7,7 @@ from DateTime import DateTime
 
 from zope.interface.verify import verifyObject
 
+from silva.core.services.interfaces import ICataloging
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.interfaces import INewsFilter
 from silva.app.news.testing import FunctionalLayer
@@ -42,13 +43,14 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         factory.manage_addNewsPublication('events', 'Events')
         factory.manage_addNewsFilter('filter', 'Filter')
 
+        now = DateTime()
         factory = self.root.news.manage_addProduct['silva.app.news']
         factory.manage_addNewsItem('snowing', 'It is snowing')
         factory.manage_addNewsItem('rain', 'It rained')
         factory.manage_addAgendaItem('sun', 'Sun hours')
-        IPublicationWorkflow(self.root.news.rain).publish()
+        IPublicationWorkflow(self.root.news.rain).approve(now - 10)
         IPublicationWorkflow(self.root.news.rain).new_version()
-        IPublicationWorkflow(self.root.news.snowing).publish()
+        IPublicationWorkflow(self.root.news.snowing).approve(now - 5)
         IPublicationWorkflow(self.root.news.snowing).new_version()
         IPublicationWorkflow(self.root.news.sun).publish()
         IPublicationWorkflow(self.root.news.sun).new_version()
@@ -194,18 +196,40 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
             ['/root/news/sun/0'])
 
     def test_display_datetime(self):
+        """Verify that the items should be sorted on their display
+        datetime.
+        """
         self.root.filter.set_sources([self.root.news])
-        items = self.root.filter.get_last_items(2)
-        itemids = [item.id for item in items]
-        """first test to see the order of the articles"""
-        self.assertEquals(itemids, ['art1', 'art2'])
-        """now change the display datetime of the second article
-           to be ahead of the first article, the order
-           should change"""
-        self.item1_2.get_viewable().set_display_datetime(DateTime() + 1)
-        items = self.newsfilter.get_last_items(2)
-        itemids = [item.id for item in items]
-        self.assertEquals(set(itemids), set(['art2', 'art1']))
+        rain = self.root.news.rain.get_viewable()
+        snowing = self.root.news.snowing.get_viewable()
+
+        # We can change the display_datetime.
+        rain.set_display_datetime(DateTime() + 10)
+        snowing.set_display_datetime(DateTime() - 10)
+        self.assertGreater(
+            rain.get_display_datetime(),
+            snowing.get_display_datetime())
+
+        # Snowing should be after rain.
+        self.assertEqual(
+           [b.getPath() for b in self.root.filter.get_last_items(10)],
+            ['/root/news/rain/0', '/root/news/snowing/0'])
+
+        rain.set_display_datetime(DateTime() - 10)
+        snowing.set_display_datetime(DateTime() + 10)
+        self.assertGreater(
+            snowing.get_display_datetime(),
+            rain.get_display_datetime())
+
+        # Reindex the changes.
+        ICataloging(rain).reindex()
+        ICataloging(snowing).reindex()
+
+        # This should invert the sort order.
+        self.assertEqual(
+           [b.getPath() for b in self.root.filter.get_last_items(10)],
+            ['/root/news/snowing/0', '/root/news/rain/0'])
+
 
 
 def test_suite():

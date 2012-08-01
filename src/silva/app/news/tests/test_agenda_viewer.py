@@ -6,7 +6,6 @@ import unittest
 from dateutil.relativedelta import relativedelta
 
 from zope.component import getUtility
-from zope.intid.interfaces import IIntIds
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
@@ -147,8 +146,6 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
         factory.manage_addAgendaFilter('filter', 'Agenda Filter')
         factory.manage_addAgendaViewer('agenda', 'Agenda')
 
-        self.root.filter.set_subjects(['sub'])
-        self.root.filter.set_target_audiences(['ta'])
         self.root.filter.set_sources([self.root.source])
         self.root.agenda.add_filter(self.root.filter)
         self.root.agenda.set_timezone_name('Europe/Amsterdam')

@@ -1,47 +1,62 @@
+# coding=utf-8
 # Copyright (c) 2002-2008 Infrae. All rights reserved.
 # See also LICENSE.txt
 # $Id$
 
-import SilvaNewsTestCase
+import unittest
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from zope.interface.verify import verifyObject
 
-class AgendaFilterTestCase(SilvaNewsTestCase.NewsBaseTestCase):
+from silva.app.news.interfaces import IAgendaFilter
+from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
+
+
+class AgendaFilterTestCase(SilvaNewsTestCase):
     """Test the AgendaFilter interfaces
     """
-    def test_get_next_items(self):
-        # add an Agenda Filter to the root
 
-        self.af = self.add_agenda_filter(self.root, 'af','af')
-        self.af.set_subjects(['sub'])
-        self.af.set_target_audiences(['ta'])
-        self.af.set_sources([self.source1])
+    def test_filter(self):
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+        nfilter = self.root._getOb('filter', None)
+        self.assertTrue(verifyObject(IAgendaFilter, nfilter))
+
+    def test_get_next_items(self):
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News')
+        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+
+        self.root.filter.set_sources([self.root.news])
 
         now = datetime.now()
         #add an item that ends in the range
-        self.add_published_agenda_item(self.source1,
-                                       'ai1','ai1',
-                                       sdt=now - relativedelta(hours=5),
-                                       edt=now + relativedelta(hours=1))
-        #add an item that starts in the range (but ends
-        # after the range
-        self.add_published_agenda_item(self.source1,
-                                       'ai2','ai2',
-                                       sdt=now + relativedelta(1),
-                                       edt=now + relativedelta(5))
-        # add an item that starts before and ends after
-        # the rangep
-        self.add_published_agenda_item(self.source1,
-                                       'ai3','ai3',
-                                       sdt=now - relativedelta(5),
-                                       edt=now + relativedelta(5))
-        results = self.af.get_next_items(2)
+        self.add_published_agenda_item(
+            self.root.news,
+            'sport', 'Sport competition',
+            sdt=now - relativedelta(hours=5),
+            edt=now + relativedelta(hours=1))
+        #add an item that starts in the range (but ends after the
+        # range)
+        self.add_published_agenda_item(
+            self.root.news,
+            'poetry', 'Poetry competition',
+            sdt=now + relativedelta(1),
+            edt=now + relativedelta(5))
+        # add an item that starts before and ends after the range
+        self.add_published_agenda_item(
+            self.root.news,
+            'petanque', u'Pétanque competition',
+            sdt=now - relativedelta(5),
+            edt=now + relativedelta(5))
 
-        self.assertEquals(len(list(results)),3)
+        self.assertItemsEqual(
+           [b.getPath() for b in self.root.filter.get_next_items(10)],
+           ['/root/news/poetry/0', '/root/news/petanque/0',
+            '/root/news/sport/0'])
 
 
-import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(AgendaFilterTestCase))

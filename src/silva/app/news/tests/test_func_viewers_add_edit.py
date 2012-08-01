@@ -1,5 +1,6 @@
 import unittest
-from silva.app.news.tests.SilvaNewsTestCase import FunctionalLayer
+
+from silva.app.news.testing import FunctionalLayer
 from Products.Silva.ftesting import smi_settings
 
 

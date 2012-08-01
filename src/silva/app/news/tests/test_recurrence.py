@@ -1,15 +1,15 @@
 import unittest
-from icalendar import vDatetime
-from DateTime import DateTime
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
+from DateTime import DateTime
 from zope.component import getUtility
 
 from silva.app.news.AgendaItem import AgendaItemOccurrence
+from silva.app.news.testing import FunctionalLayer
 from silva.app.news.datetimeutils import (
     datetime_to_unixtimestamp, get_timezone)
-from silva.app.news.tests.SilvaNewsTestCase import FunctionalLayer
 from silva.core.services.interfaces import ICatalogService
 
 

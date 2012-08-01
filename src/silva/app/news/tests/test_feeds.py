@@ -23,15 +23,13 @@ class TestFeeds(SilvaNewsTestCase):
         # Publication
         factory = self.root.manage_addProduct['silva.app.news']
         factory.manage_addNewsPublication('source', 'Publication')
-        # Filter
         factory.manage_addNewsFilter('filter', 'Filter')
-        self.root.filter.set_target_audiences(['ta'])
-        self.root.filter.set_subjects(['sub'])
+        factory.manage_addNewsViewer('viewer', 'Viewer')
+
         self.root.filter.set_show_agenda_items(True)
         self.root.filter.add_source(self.root.source)
-        # Viewer
-        factory.manage_addNewsViewer('viewer', 'Viewer')
         self.root.viewer.add_filter(self.root.filter)
+
         # Items
         self.add_published_news_item(
             self.root.source, 'raining', 'The rain is coming')
