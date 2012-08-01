@@ -144,7 +144,7 @@ class XMLImportTestCase(SilvaXMLTestCase):
             ['news'])
         self.assertEqual(
             self.root.export.news.objectIds(),
-            ['index', 'filter', 'whatsup'])
+            ['whatsup'])
 
         news = self.root.export.news.whatsup
         self.assertTrue(verifyObject(interfaces.INewsItem, news))
@@ -184,7 +184,7 @@ class XMLImportTestCase(SilvaXMLTestCase):
             ['news'])
         self.assertEqual(
             self.root.export.news.objectIds(),
-            ['index', 'filter', 'event'])
+            ['event'])
 
         event = self.root.export.news.event
         self.assertTrue(verifyObject(interfaces.IAgendaItem, event))
@@ -263,7 +263,37 @@ class XMLImportTestCase(SilvaXMLTestCase):
              'ContentImported for /root/news'],
             IContentImported)
 
-        assert False, "TBD"
+        news = self.root._getOb('news', None)
+        self.assertTrue(verifyObject(interfaces.INewsPublication, news))
+        self.assertEqual(
+            self.root.news.objectIds(),
+            ['index',
+             'the_empire_falls',
+             'lolcats_attacks',
+             'events',
+             'filter',
+             'filter_events'])
+        # Verify content
+        self.assertTrue(verifyObject(interfaces.INewsViewer, news.index))
+        self.assertTrue(verifyObject(interfaces.INewsFilter, news.filter))
+        self.assertTrue(verifyObject(interfaces.IAgendaViewer, news.events))
+        self.assertTrue(verifyObject(interfaces.IAgendaFilter, news.filter_events))
+
+        # Verify setup
+        self.assertItemsEqual(news.filter.get_sources(), [news])
+        self.assertItemsEqual(news.index.get_filters(), [news.filter])
+        self.assertItemsEqual(news.filter_events.get_sources(), [news])
+        self.assertItemsEqual(news.events.get_filters(), [news.filter_events])
+        self.assertItemsEqual(
+            [b.getPath() for b in news.index.get_items()],
+            ['/root/news/the_empire_falls/0', '/root/news/lolcats_attacks/0'])
+        self.assertItemsEqual(
+            [b.getPath() for b in news.events.get_items_by_date(7, 2012)],
+            ['/root/news/lolcats_attacks/0'])
+        self.assertItemsEqual(
+            [b.getPath() for b in news.events.get_items()],
+            [])
+
 
 def test_suite():
     suite = unittest.TestSuite()

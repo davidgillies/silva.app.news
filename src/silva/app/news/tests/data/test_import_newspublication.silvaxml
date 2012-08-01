@@ -17,7 +17,7 @@
         <silvasettings:hide_from_tocs>hide</silvasettings:hide_from_tocs>
       </set>
       <set xmlns:snn-np-settings="http://infrae.com/namespace/metadata/snn-np-settings" id="snn-np-settings">
-        <snn-np-settings:is_private>no</snn-np-settings:is_private>
+        <snn-np-settings:is_private>yes</snn-np-settings:is_private>
       </set>
     </metadata>
     <content>

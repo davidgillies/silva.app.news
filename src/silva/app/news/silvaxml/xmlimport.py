@@ -144,7 +144,7 @@ class NewsPublicationHandler(xmlimport.SilvaBaseHandler):
         if name == (NS_NEWS_URI, grok.name.bind(self).get(self)):
             uid = self.generateOrReplaceId(attrs[(None, 'id')].encode('utf-8'))
             factory = self.parent().manage_addProduct['silva.app.news']
-            factory.manage_addNewsPublication(uid, '')
+            factory.manage_addNewsPublication(uid, '', no_default_content=True)
             self.setResultId(uid)
 
     def endElementNS(self, name, qname):

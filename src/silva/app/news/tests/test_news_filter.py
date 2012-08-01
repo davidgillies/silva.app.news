@@ -235,7 +235,6 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
             ['/root/news/snowing/0', '/root/news/rain/0'])
 
 
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(NewsFilterTestCase))

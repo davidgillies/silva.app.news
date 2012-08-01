@@ -7,7 +7,6 @@ from App.class_init import InitializeClass
 
 from five import grok
 from zope.component import getUtility
-from zope.lifecycleevent.interfaces import IObjectCreatedEvent
 
 from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
@@ -16,6 +15,7 @@ from Products.Silva.cataloging import CatalogingAttributes
 
 from silva.core import conf as silvaconf
 from silva.core.interfaces import IAsset, IAddableContents
+from silva.core.interfaces.events import IContentCreatedEvent
 from zeam.form import silva as silvaforms
 
 from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter
@@ -59,11 +59,14 @@ class NewsPublicationAddForm(silvaforms.SMIAddForm):
     grok.name(u"Silva News Publication")
 
 
-@silvaconf.subscribe(INewsPublication, IObjectCreatedEvent)
+@silvaconf.subscribe(INewsPublication, IContentCreatedEvent)
 def news_publication_created(publication, event):
     """news publications should have their 'hide_from_tocs' set to
        'hide'.  This can be done after they are added
     """
+    if event.no_default_content:
+        return
+
     binding = getUtility(IMetadataService).getMetadata(publication)
     binding.setValues('silva-settings', {'hide_from_tocs': 'hide'}, reindex=1)
     binding.setValues('snn-np-settings', {'is_private': 'no'}, reindex=1)
