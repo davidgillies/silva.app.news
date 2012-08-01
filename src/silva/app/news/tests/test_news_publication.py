@@ -13,6 +13,7 @@ from Products.SilvaMetadata.interfaces import IMetadataService
 from silva.core.interfaces import IAddableContents
 from silva.app.news.testing import FunctionalLayer
 from silva.app.news.interfaces import INewsPublication
+from silva.app.news.interfaces import INewsFilter, INewsViewer
 
 
 class NewsPublicationTestCase(unittest.TestCase):
@@ -26,7 +27,7 @@ class NewsPublicationTestCase(unittest.TestCase):
 
     def test_publication(self):
         """Verify a news publication publication and its default
-        metadata.
+        metadata and contents.
         """
         factory = self.root.manage_addProduct['silva.app.news']
         with assertTriggersEvents('ContentCreatedEvent'):
@@ -34,6 +35,7 @@ class NewsPublicationTestCase(unittest.TestCase):
         publication = self.root._getOb('news', None)
         self.assertTrue(verifyObject(INewsPublication, publication))
 
+        # Default settings
         get_metadata = getUtility(IMetadataService).getMetadataValue
         self.assertEqual(
             get_metadata(publication, 'silva-settings', 'hide_from_tocs'),
@@ -41,6 +43,11 @@ class NewsPublicationTestCase(unittest.TestCase):
         self.assertEqual(
             get_metadata(publication, 'snn-np-settings', 'is_private'),
             'no')
+
+        # Default content
+        self.assertItemsEqual(publication.objectIds(), ['index', 'filter'])
+        self.assertTrue(verifyObject(INewsViewer, publication.index))
+        self.assertTrue(verifyObject(INewsFilter, publication.filter))
 
     def test_addables(self):
         """Verify that the addable content is restricted inside a news
