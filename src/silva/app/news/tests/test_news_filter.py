@@ -210,6 +210,10 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
             rain.get_display_datetime(),
             snowing.get_display_datetime())
 
+        # Reindex the changes.
+        ICataloging(rain).reindex()
+        ICataloging(snowing).reindex()
+
         # Snowing should be after rain.
         self.assertEqual(
            [b.getPath() for b in self.root.filter.get_last_items(10)],
