@@ -9,6 +9,7 @@ from zope.component import getUtility
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
+from Products.Silva.testing import assertTriggersEvents
 
 from silva.core.services.interfaces import ICatalogService
 from silva.core.services.interfaces import ICatalogingAttributes
@@ -31,7 +32,8 @@ class AgendaViewerTestCase(SilvaNewsTestCase):
 
     def test_viewer(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
+        with assertTriggersEvents('ContentCreatedEvent'):
+            factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
         viewer = self.root._getOb('viewer', None)
         self.assertTrue(verifyObject(IAgendaViewer, viewer))
 

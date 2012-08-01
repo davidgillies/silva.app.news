@@ -4,6 +4,7 @@ import unittest
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
+from Products.Silva.testing import assertTriggersEvents
 
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.interfaces import INewsItem, INewsItemVersion
@@ -21,7 +22,8 @@ class NewsItemTestCase(unittest.TestCase):
 
     def test_item(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsItem('item', 'News Item')
+        with assertTriggersEvents('ContentCreatedEvent'):
+            factory.manage_addNewsItem('item', 'News Item')
         item = self.root._getOb('item', None)
         self.assertTrue(verifyObject(INewsItem, item))
         version = item.get_editable()

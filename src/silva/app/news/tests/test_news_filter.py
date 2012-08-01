@@ -5,6 +5,8 @@
 import unittest
 from DateTime import DateTime
 
+from Products.Silva.testing import assertTriggersEvents
+
 from zope.interface.verify import verifyObject
 
 from silva.core.services.interfaces import ICataloging
@@ -24,7 +26,8 @@ class NewsFilterTestCase(unittest.TestCase):
 
     def test_filter(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsFilter('filter', 'News Filter')
+        with assertTriggersEvents('ContentCreatedEvent'):
+            factory.manage_addNewsFilter('filter', 'News Filter')
         nfilter = self.root._getOb('filter', None)
         self.assertTrue(verifyObject(INewsFilter, nfilter))
 

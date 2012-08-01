@@ -7,6 +7,7 @@ import unittest
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
+from Products.Silva.testing import assertTriggersEvents
 
 from silva.app.news.interfaces import INewsViewer
 from silva.app.news.testing import FunctionalLayer
@@ -32,7 +33,8 @@ class NewsViewerTestCase(unittest.TestCase):
 
     def test_viewer(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsViewer('viewer', 'News Viewer')
+        with assertTriggersEvents('ContentCreatedEvent'):
+            factory.manage_addNewsViewer('viewer', 'News Viewer')
         viewer = self.root._getOb('viewer', None)
         self.assertTrue(verifyObject(INewsViewer, viewer))
 

@@ -7,6 +7,7 @@ from zope.component import getUtility
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
+from Products.Silva.testing import assertTriggersEvents
 
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.interfaces import IAgendaItem, IAgendaItemVersion
@@ -29,7 +30,8 @@ class AgendaItemTestCase(unittest.TestCase):
 
     def test_item(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaItem('event', 'Testing event')
+        with assertTriggersEvents('ContentCreatedEvent'):
+            factory.manage_addAgendaItem('event', 'Testing event')
         event = self.root._getOb('event', None)
         self.assertTrue(verifyObject(IAgendaItem, event))
         version = event.get_editable()
