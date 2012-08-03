@@ -515,6 +515,52 @@ class IServiceNews(IServiceNewsCategorization):
         """Return all sources for News Item, global, or below the given item.
         """
 
+class INewsItemReference(Interface):
+    """Generic abstraction on top of news and agenda items, used
+    mostly with the code source inline news viewer.
+    """
+
+    def id():
+        """Get the ID of this reference.
+        """
+
+    def title():
+        """Get the title of this reference.
+        """
+
+    def description(maxchars=1024):
+        """Get the description (from metadata) of this reference.
+        """
+
+    def thumbnail():
+        """Get the thumbnail.
+        """
+
+    def introduction(maxchars=1024):
+        """Get the introduction of this reference.
+        """
+
+    def link():
+        """Get the url of this reference.
+        """
+
+    def creation_datetime():
+        """Get the creation datetime of this reference.
+        """
+
+    def start_datetime():
+        """Get the start datetime of this reference.
+        """
+
+    def end_datetime():
+        """Get the end datetime of this reference.
+        """
+
+    def location():
+        """Get the location of this reference.
+        """
+
+
 
 ### BBB
 from silva.app.news.installer import IExtension as ISilvaNewsExtension

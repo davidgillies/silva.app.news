@@ -3,18 +3,29 @@
 # $Id: newsprovider.py,v 1.3 2005/05/02 14:22:52 guido Exp $
 #
 from AccessControl import ModuleSecurityInfo
-
+from AccessControl import ClassSecurityInfo
+from Acquisition import Explicit
+from App.class_init import InitializeClass
 from DateTime import DateTime
+
 from five import grok
-from silva.app.document.interfaces import IDocumentDetails
-from silva.app.news.interfaces import IAgendaItemVersion
-from silva.app.news.interfaces import INewsViewer, IRSSAggregator
-from zope.component import queryMultiAdapter
+from zope.component import queryMultiAdapter, getMultiAdapter
+from zope.component import getUtility
 from zope.interface import Interface
 from zope.traversing.browser import absoluteURL
+from zope.cachedescriptors.property import Lazy
+
+from Products.Silva import SilvaPermissions
+from Products.SilvaMetadata.interfaces import IMetadataService
+from silva.app.document.interfaces import IDocumentDetails
+from silva.app.news.interfaces import IAgendaItemContentVersion
+from silva.app.news.interfaces import INewsItemContentVersion
+from silva.app.news.interfaces import INewsItemReference
+from silva.app.news.interfaces import INewsViewer, IRSSAggregator
 
 
-module_security = ModuleSecurityInfo('silva.app.news.codesources.inline')
+module_security = ModuleSecurityInfo(
+    'silva.app.news.codesources.inline')
 
 
 class INewsProvider(Interface):
@@ -22,39 +33,6 @@ class INewsProvider(Interface):
 
     def get_items(self, number, request):
         """returns a set of the most current items"""
-
-
-class INewsItemReference(Interface):
-
-    def id(self):
-        """get the ID of this reference"""
-
-    def title(self):
-        """get the title of this reference"""
-
-    def description(self, maxchars):
-        """get the description (from metadata) of this reference"""
-
-    def thumbnail(self):
-        """get the thumbnail"""
-
-    def introduction(self, maxchars):
-        """get the intro of this reference"""
-
-    def link(self):
-        """get the link(url) of this reference"""
-
-    def creation_datetime(self):
-        """get the creationdatetime of this reference"""
-
-    def start_datetime(self):
-        """get the sdt of this reference"""
-
-    def end_datetime(self):
-        """get the edt of this reference"""
-
-    def location(self):
-        """get the  of this reference"""
 
 
 class NewsViewerNewsProvider(grok.Adapter):
@@ -65,117 +43,200 @@ class NewsViewerNewsProvider(grok.Adapter):
     def get_items(self, request, number):
         results = self.context.get_items()
         for item in results[:number]:
-            newsitem = item.getObject()
-            yield NewsItemReference(newsitem, self.context, request)
+            info = getMultiAdapter(
+                (item.getObject(), request),
+                INewsItemReference)
+            info.__parent__ = self.context
+            yield info
 
 
-class NewsItemReference(object):
+class NewsItemReference(grok.MultiAdapter):
     """a temporary object to wrap a newsitem"""
+    grok.adapts(INewsItemContentVersion, Interface)
     grok.implements(INewsItemReference)
+    grok.provides(INewsItemReference)
 
-    __allow_access_to_unprotected_subobjects__ = 1
+    security = ClassSecurityInfo()
 
-    def __init__(self, item, context, request):
-        self._version_item = item
-        self._content_item = item.get_content()
-        self._context = context
-        self._request = request
-        self._details = queryMultiAdapter(
-            (self._version_item, self._request), IDocumentDetails)
+    def __init__(self, context, request):
+        self.context = context
+        self.content = context.get_content()
+        self.request = request
+        self.details = queryMultiAdapter(
+            (self.context, self.request), IDocumentDetails)
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'id')
     def id(self):
-        return self._content_item.id
+        return self.content.id
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'title')
     def title(self):
-        return self._version_item.get_title()
+        return self.context.get_title()
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'description')
     def description(self, maxchars=1024):
         # we can be sure there is no markup here, so just limit
-        desc = self._version_item.service_metadata.getMetadataValue(
-            self._version_item, 'silva-extra', 'content_description')
+        desc = getUtility(IMetadataService).getMetadataValue(
+            self.context, 'silva-extra', 'content_description')
         if desc is None:
             return ''
         if maxchars > 0:
           desc = desc[:maxchars]
         return desc
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'link')
     def link(self):
-        return absoluteURL(self._content_item, self._request)
+        return absoluteURL(self.content, self.request)
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'thumbnail')
     def thumbnail(self):
-        if self._details is not None:
-            return self._details.get_thumbnail()
-        return None
+        if self.details is not None:
+            thumbnail = self.details.get_thumbnail()
+            if thumbnail:
+                return """<div class="inv_thumbnail">
+  <a class="newsitemthumbnaillink" href="%s">
+    %s
+  </a>
+</div>""" % (self.link(), thumbnail)
+        return ''
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'introduction')
     def introduction(self, maxchars=1024):
-        if self._details is not None:
-            return self._details.get_introduction(length=maxchars)
+        if self.details is not None:
+            return self.details.get_introduction(length=maxchars)
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'creation_datetime')
     def creation_datetime(self):
-        datetime = self._version_item.get_display_datetime()
+        datetime = self.context.get_display_datetime()
         if datetime is not None:
             return datetime
-        return self._context.service_metadata.getMetadataValue(
-            self._version_item, 'silva-extra', 'publicationtime')
+        return getUtility(IMetadataService).getMetadataValue(
+            self.context, 'silva-extra', 'publicationtime')
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'start_datetime')
     def start_datetime(self):
-        if IAgendaItemVersion.providedBy(self._version_item):
-            return self._version_item.get_start_datetime()
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'end_datetime')
     def end_datetime(self):
-        if IAgendaItemVersion.providedBy(self._version_item):
-            return self._version_item.get_end_datetime()
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'location')
     def location(self):
-        if IAgendaItemVersion.providedBy(self._version_item):
-            return self._version_item.get_location()
         return None
+
+InitializeClass(NewsItemReference)
+
+
+class AgendaItemReference(NewsItemReference):
+    grok.adapts(IAgendaItemContentVersion, Interface)
+
+    security = ClassSecurityInfo()
+
+    @Lazy
+    def occurrence(self):
+        occurrences = self.context.get_occurrences()
+        if len(occurrences):
+            return occurrences[0]
+        return None
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'start_datetime')
+    def start_datetime(self):
+        if self.occurrence is not None:
+            return self.occurrence.get_start_datetime()
+        return None
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'end_datetime')
+    def end_datetime(self):
+        if self.occurrence is not None:
+            return self.occurrence.get_end_datetime()
+        return None
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'location')
+    def location(self):
+        if self.occurrence is not None:
+            return self.occurrence.get_location()
+        return None
+
+
+InitializeClass(AgendaItemReference)
 
 
 class RSSItemReference(object):
     """a temporary object to wrap a newsitem"""
     grok.implements(INewsItemReference)
 
-    __allow_access_to_unprotected_subobjects__ = 1
+    security = ClassSecurityInfo()
 
     def __init__(self, item, context, request):
         self._item = item
         self._context = context
         self._request = request
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'id')
     def id(self):
         return self._item['title']
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'title')
     def title(self):
         return self._item['title']
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'description')
     def description(self, maxchars=1024):
         # XXX we're not so sure about the type of content, so let's not
         # try to limit it for now...
         return self._item['description']
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'link')
     def link(self):
         return self._item['link']
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'thumbnail')
     def thumbnail(self):
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'introduction')
     def introduction(self, maxchars=1024):
         return self.description(maxchars)
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'creation_datetime')
     def creation_datetime(self):
         return (self._toDateTime(self._item.get('created')) or
                 self._toDateTime(self._item.get('date')) or None)
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'start_datetime')
     def start_datetime(self):
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'end_datetime')
     def end_datetime(self):
         return None
 
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'location')
     def location(self):
         return getattr(self._item, 'location', None)
 
@@ -195,6 +256,9 @@ class RSSItemReference(object):
         return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
 
 
+InitializeClass(AgendaItemReference)
+
+
 class RSSAggregatorNewsProvider(grok.Adapter):
     grok.implements(INewsProvider)
     grok.context(IRSSAggregator)
@@ -207,7 +271,9 @@ class RSSAggregatorNewsProvider(grok.Adapter):
         """
         items = self.context.get_merged_feed_contents()
         for item in items[:number]:
-            yield RSSItemReference(item, self.context, request)
+            info = RSSItemReference(item, self.context, request)
+            info.__parent__ =  self.context
+            yield info
 
 
 module_security.declarePublic('get_items')
