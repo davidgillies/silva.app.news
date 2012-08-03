@@ -6,8 +6,7 @@ import unittest
 from zope.component import getUtility, queryAdapter
 from zope.interface.verify import verifyObject
 
-from Products.Silva.testing import CatalogTransaction
-from Products.Silva.testing import assertTriggersEvents
+from Products.Silva.testing import tests, CatalogTransaction
 from Products.SilvaMetadata.interfaces import IMetadataService
 
 from silva.core.interfaces import IAddableContents
@@ -30,7 +29,7 @@ class NewsPublicationTestCase(unittest.TestCase):
         metadata and contents.
         """
         factory = self.root.manage_addProduct['silva.app.news']
-        with assertTriggersEvents('ContentCreatedEvent'):
+        with tests.assertTriggersEvents('ContentCreatedEvent'):
             factory.manage_addNewsPublication('news', 'News')
         publication = self.root._getOb('news', None)
         self.assertTrue(verifyObject(INewsPublication, publication))

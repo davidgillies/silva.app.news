@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from zope.interface.verify import verifyObject
 
-from Products.Silva.testing import assertTriggersEvents
+from Products.Silva.testing import tests
 
 from silva.app.news.interfaces import IAgendaFilter
 from silva.app.news.tests.SilvaNewsTestCase import SilvaNewsTestCase
@@ -21,7 +21,7 @@ class AgendaFilterTestCase(SilvaNewsTestCase):
 
     def test_filter(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        with assertTriggersEvents('ContentCreatedEvent'):
+        with tests.assertTriggersEvents('ContentCreatedEvent'):
             factory.manage_addAgendaFilter('filter', 'Agenda Filter')
         nfilter = self.root._getOb('filter', None)
         self.assertTrue(verifyObject(IAgendaFilter, nfilter))

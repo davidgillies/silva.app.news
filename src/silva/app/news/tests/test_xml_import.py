@@ -7,6 +7,7 @@ from datetime import datetime
 
 from Acquisition import aq_chain
 from DateTime import DateTime
+from Products.Silva.testing import tests
 from Products.Silva.tests.test_xml_import import SilvaXMLTestCase
 
 from silva.app.news.testing import FunctionalLayer
@@ -280,10 +281,18 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertTrue(verifyObject(interfaces.IAgendaFilter, news.filter_events))
 
         # Verify setup
-        self.assertItemsEqual(news.filter.get_sources(), [news])
-        self.assertItemsEqual(news.index.get_filters(), [news.filter])
-        self.assertItemsEqual(news.filter_events.get_sources(), [news])
-        self.assertItemsEqual(news.events.get_filters(), [news.filter_events])
+        tests.assertContentItemsEqual(
+            news.filter.get_sources(),
+            [news])
+        tests.assertContentItemsEqual(
+            news.index.get_filters(),
+            [news.filter])
+        tests.assertContentItemsEqual(
+            news.filter_events.get_sources(),
+            [news])
+        tests.assertContentItemsEqual(
+            news.events.get_filters(),
+            [news.filter_events])
         self.assertItemsEqual(
             [b.getPath() for b in news.index.get_items()],
             ['/root/news/the_empire_falls/0', '/root/news/lolcats_attacks/0'])

@@ -5,7 +5,7 @@
 import unittest
 from DateTime import DateTime
 
-from Products.Silva.testing import assertTriggersEvents
+from Products.Silva.testing import tests
 
 from zope.interface.verify import verifyObject
 
@@ -26,7 +26,7 @@ class NewsFilterTestCase(unittest.TestCase):
 
     def test_filter(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        with assertTriggersEvents('ContentCreatedEvent'):
+        with tests.assertTriggersEvents('ContentCreatedEvent'):
             factory.manage_addNewsFilter('filter', 'News Filter')
         nfilter = self.root._getOb('filter', None)
         self.assertTrue(verifyObject(INewsFilter, nfilter))
@@ -66,26 +66,26 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         """Test get_sources, set_sources and has_sources.
         """
         self.assertFalse(self.root.filter.has_sources())
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_sources(),
             [])
 
         self.root.filter.set_sources([self.root.news, self.root.events])
         self.assertTrue(self.root.filter.has_sources())
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_sources(),
             [self.root.news, self.root.events])
 
         self.root.manage_delObjects(['events'])
         self.assertTrue(self.root.filter.has_sources())
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_sources(),
             [self.root.news])
 
     def test_excluded_items(self):
         """Test methods to manage excluded items.
         """
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_excluded_items(),
             [])
 
@@ -95,14 +95,14 @@ class SourcesNewsFilterTestCase(unittest.TestCase):
         # Add the element to the list of excluded items.
         self.root.filter.add_excluded_item(excluded)
         self.assertTrue(self.root.filter.is_excluded_item(excluded))
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_excluded_items(),
             [excluded])
 
         # Remove the element from the list of excluded items
         self.root.filter.remove_excluded_item(excluded)
         self.assertFalse(self.root.filter.is_excluded_item(excluded))
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.filter.get_excluded_items(),
             [])
 

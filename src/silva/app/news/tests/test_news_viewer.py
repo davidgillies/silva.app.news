@@ -7,7 +7,7 @@ import unittest
 from zope.interface.verify import verifyObject
 
 from Products.Silva.ftesting import public_settings
-from Products.Silva.testing import assertTriggersEvents
+from Products.Silva.testing import tests
 
 from silva.app.news.interfaces import INewsViewer
 from silva.app.news.testing import FunctionalLayer
@@ -33,7 +33,7 @@ class NewsViewerTestCase(unittest.TestCase):
 
     def test_viewer(self):
         factory = self.root.manage_addProduct['silva.app.news']
-        with assertTriggersEvents('ContentCreatedEvent'):
+        with tests.assertTriggersEvents('ContentCreatedEvent'):
             factory.manage_addNewsViewer('viewer', 'News Viewer')
         viewer = self.root._getOb('viewer', None)
         self.assertTrue(verifyObject(INewsViewer, viewer))
@@ -65,20 +65,20 @@ class FilterNewsViewerTestCase(unittest.TestCase):
         """Test methods to manage filters.
         """
         self.assertTrue(self.root.viewer.has_filter())
-        self.assertEqual(
+        tests.assertContentItemsEqual(
             self.root.viewer.get_filters(),
             [self.root.private])
         self.root.viewer.add_filter(self.root.public)
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             self.root.viewer.get_filters(),
             [self.root.public, self.root.private])
         self.root.manage_delObjects(['private'])
         self.assertTrue(self.root.viewer.has_filter())
-        self.assertEquals(
+        tests.assertContentItemsEqual(
             self.root.viewer.get_filters(),
             [self.root.public])
         self.root.viewer.set_filters([])
-        self.assertEquals(
+        tests.assertContentItemsEqual(
             self.root.viewer.get_filters(),
             [])
         self.assertFalse(self.root.viewer.has_filter())
@@ -96,7 +96,7 @@ class FilterNewsViewerTestCase(unittest.TestCase):
         """
         self.root.private.add_excluded_item(self.root.news.rain)
 
-        self.assertEqual(
+        self.assertItemsEqual(
             [b.getPath() for b in self.root.viewer.get_items()],
             ['/root/news/snowing/0'],)
 

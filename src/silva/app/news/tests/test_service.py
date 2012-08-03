@@ -6,6 +6,7 @@ import unittest
 from zope.component import queryUtility, getUtility
 from zope.interface.verify import verifyObject
 
+from Products.Silva.testing import tests
 from Products.SilvaMetadata.interfaces import IMetadataService
 
 from silva.app.news.interfaces import IServiceNews
@@ -33,7 +34,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         """
         service = getUtility(IServiceNews)
         # By default there are no filters.
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_filters()),
             [])
 
@@ -47,7 +48,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         factory.manage_addAgendaFilter('agenda_filter', 'Agenda Filter')
 
         # We should now find all the agenda and news filters we added
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_filters()),
             [self.root.news_filter, self.root.agenda_filter,
              self.root.info.agenda_filter])
@@ -57,7 +58,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         """
         service = getUtility(IServiceNews)
         # By default there are no sources.
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources()),
             [])
 
@@ -65,7 +66,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         factory.manage_addNewsPublication('news', 'News')
 
         # We should now see the soure we added.
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources()),
             [self.root.news])
 
@@ -75,7 +76,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         factory.manage_addNewsPublication('news', 'Section News')
 
         # We should now see all the sources we added.
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources()),
             [self.root.news, self.root.section.news])
 
@@ -99,22 +100,22 @@ class ServiceNewsTestCase(unittest.TestCase):
 
         # Globally, or somewhere else we should only see the global folder.
         service = getUtility(IServiceNews)
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources()),
             [self.root.news])
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources(self.root)),
             [self.root.news])
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources(self.root.documentation)),
             [self.root.news])
 
         # Inside section, or in a sub folder of it we should see the
         # local folder.
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources(self.root.section)),
             [self.root.news, self.root.section.local])
-        self.assertItemsEqual(
+        tests.assertContentItemsEqual(
             list(service.get_all_sources(self.root.section.documentation)),
             [self.root.news, self.root.section.local])
 
@@ -136,7 +137,7 @@ class ServiceNewsTestCase(unittest.TestCase):
              ('root', 'root')])
 
         # Add duplicate
-        with self.assertRaises(DuplicateIdError):
+        with tests.assertRaises(DuplicateIdError):
             service.add_subject('test1', 'Test 1')
 
         # Remove
