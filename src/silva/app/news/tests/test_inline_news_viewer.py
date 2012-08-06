@@ -3,7 +3,6 @@ import unittest
 from datetime import datetime
 
 from Products.Silva.testing import TestRequest, tests
-from Products.Silva.tests.helpers import open_test_file
 from Products.SilvaMetadata.interfaces import IMetadataService
 from zope.component import getUtility
 from zope.interface.verify import verifyObject
@@ -24,7 +23,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.layer.login('editor')
         # Test image
         factory = self.root.manage_addProduct['Silva']
-        with open_test_file('content-listing.png', globals()) as image:
+        with self.layer.open_fixture('content-listing.png', globals()) as image:
             factory.manage_addImage('listing', 'Listing', image)
         # Test news contents
         factory = self.root.manage_addProduct['silva.app.news']
@@ -114,7 +113,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(item.id(), 'testing')
         self.assertEqual(
             item.title(),
-            'Today is the day of the Internet!')
+            'Testing of a code source')
         self.assertEqual(
             item.description(),
             'This is an exciting news item about the Interwebs.')
