@@ -99,7 +99,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
             'silva-extra',
             {'content_description':
                  'This is an exciting news item about the Interwebs.'})
-                               
+
 
         # Publish news item so we see it.
         IPublicationWorkflow(self.root.news.testing).publish()
@@ -124,13 +124,14 @@ class InlineNewsViewerTestCase(unittest.TestCase):
             item.thumbnail(),
             u"""<div class="inv_thumbnail">
    <a class="newsitemthumbnaillink" href="http://localhost/root/news/testing">
-      <img src="http://localhost/root/listing?thumbnail" class="thumbnail" />
+      <img src="http://localhost/root/listing?thumbnail"
+           width="120" height="75" class="thumbnail" />
    </a>
 </div>""")
         tests.assertXMLEqual(
             item.introduction(),
             u"""
-<p> 
+<p>
   This the day of free internet ! The Internet is a global system of
   interconnected computer networks that use the standard Internet
   protocol suite (often called TCP/IP, although not all applications
@@ -146,7 +147,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         tests.assertXMLEqual(
             item.introduction(128),
             u"""
-<p> 
+<p>
   This the day of free internet ! The Internet is a global system of interconnected computer networks that use the standard Inter&#8230;
 </p>""")
         self.assertEqual(item.link(), 'http://localhost/root/news/testing')
