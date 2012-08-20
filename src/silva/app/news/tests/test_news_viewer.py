@@ -147,7 +147,7 @@ class RenderNewsViewerTestCase(unittest.TestCase):
     def test_rendering(self):
         with self.layer.get_browser(news_settings) as browser:
             self.assertEqual(browser.open('/root/viewer'), 200)
-            self.assertIn('News Viewer', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, ['News Viewer'])
             self.assertItemsEqual(
                 browser.inspect.newsitems,
                 ['It is snowing', 'It rained'])

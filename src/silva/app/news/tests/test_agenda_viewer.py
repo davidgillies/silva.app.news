@@ -166,7 +166,7 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
     def test_rendering(self):
         with self.layer.get_browser(calendar_settings) as browser:
             self.assertEqual(browser.open('/root/agenda'), 200)
-            self.assertIn('Agenda', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(browser.inspect.newsitems, [])
 
     def test_rendering_with_event(self):
@@ -176,7 +176,7 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
                     '/root/agenda',
                     query={'year': '2012', 'month': '6', 'day': '4'}),
                 200)
-            self.assertIn('Agenda', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(
                 browser.inspect.newsitems,
                 [u'Saturday “π” aka Disco'])
@@ -204,14 +204,14 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
             self.assertEqual(
                 browser.open('/root/agenda/calendar.html'),
                 200)
-            self.assertIn('Agenda', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, ['Agenda'])
 
     def test_subscribe(self):
         with self.layer.get_browser(calendar_settings) as browser:
             self.assertEqual(
                 browser.open('/root/agenda/subscribe.html'),
                 200)
-            self.assertIn('Agenda', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, ['Agenda'])
 
     def test_ics(self):
         events = self.root.source

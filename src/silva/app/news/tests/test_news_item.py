@@ -36,7 +36,7 @@ class NewsItemTestCase(unittest.TestCase):
 
         with self.layer.get_browser(public_settings) as browser:
             self.assertEqual(browser.open('/root/item'), 200)
-            self.assertIn('News Item', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, [u'News Item'])
 
 
 def test_suite():

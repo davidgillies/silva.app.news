@@ -61,7 +61,7 @@ class RenderAgendaItemTestCase(unittest.TestCase):
     def test_rendering(self):
         with self.layer.get_browser(public_settings) as browser:
             self.assertEqual(browser.open('/root/testing'), 200)
-            self.assertIn(u'Test aléatoire', browser.inspect.title)
+            self.assertEqual(browser.inspect.title, [u'Test aléatoire', ])
 
     def test_ics(self):
         with self.layer.get_browser(public_settings) as browser:
