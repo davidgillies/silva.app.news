@@ -4,15 +4,17 @@ from DateTime import DateTime
 
 from zope.interface import Interface
 from zope.component import queryMultiAdapter
+from Products.Silva.Folder import feeds
 
 from silva.core.interfaces.adapters import IFeedEntry, IFeedEntryProvider
-from Products.Silva.browser import feed
 from silva.app.news.interfaces import INewsViewer, IRSSAggregator
 from silva.app.news.interfaces import INewsPublication
 
 
-class NewsPublicationFeedEntryProvider(feed.ContainerFeedProvider):
+class NewsPublicationFeedEntryProvider(grok.MultiAdapter):
     grok.adapts(INewsPublication, Interface)
+    grok.provides(IFeedEntryProvider)
+    grok.implements(IFeedEntryProvider)
 
     def entries(self):
         default = self.context.get_default()
@@ -41,14 +43,14 @@ class NewsViewerFeedEntryProvider(grok.MultiAdapter):
                 yield entry
 
 
-class RSS(feed.RSS):
+class RSS(feeds.RSS):
     """ Rss feed
     """
     grok.context(INewsViewer)
     grok.template('rss')
 
 
-class Atom(feed.Atom):
+class Atom(feeds.Atom):
     """ Atom feed
     """
     grok.context(INewsViewer)
