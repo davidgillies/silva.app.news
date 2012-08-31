@@ -72,7 +72,9 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         version.body.save(
             version,
             TestRequest(),
-            u"""<h2>Today is the day of the Internet!</h2>
+            u"""
+<h1>Testing of a code source</h1>
+<h2>Today is the day of the Internet!</h2>
 <h3>Yes it is</h3>
 <p>
   This the day of free internet ! The Internet is a global system of
