@@ -4,7 +4,6 @@
 #
 from AccessControl import ModuleSecurityInfo
 from AccessControl import ClassSecurityInfo
-from Acquisition import Explicit
 from App.class_init import InitializeClass
 from DateTime import DateTime
 
@@ -256,7 +255,7 @@ class RSSItemReference(object):
         return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
 
 
-InitializeClass(AgendaItemReference)
+InitializeClass(RSSItemReference)
 
 
 class RSSAggregatorNewsProvider(grok.Adapter):
