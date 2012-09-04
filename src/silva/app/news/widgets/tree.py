@@ -65,19 +65,19 @@ CHECKED = 1 << 2
 UNDETERMINED = NOTCHECKED | CHECKED
 
 
-def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
+def build_html_tree(node, vocabulary, value,
+        selected_only=False, _depth=0, _force_checked=False):
     status = NOTCHECKED
     if node.id() == 'root':
         html = ''
         for child in node.children():
             child_status, child_html = build_html_tree(
-                child, vocabulary, value, _depth=1)
+                child, vocabulary, value, selected_only=selected_only, _depth=1)
             status |= child_status
             html += child_html
         return status, html
 
     item = vocabulary.getTerm(node.id())
-
     if _force_checked or item.value in value:
         status = CHECKED
 
@@ -85,11 +85,18 @@ def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     if node.children():
         html_children = "<ul>"
         for child in node.children():
-            child_status, child_html = build_html_tree(child, vocabulary, value,
-                _depth=_depth+1, _force_checked=(status==CHECKED))
+            child_status, child_html = build_html_tree(child,
+                vocabulary,
+                value,
+                selected_only=selected_only,
+                _depth=_depth+1,
+                _force_checked=(status==CHECKED))
             status |= child_status
             html_children += child_html
         html_children += "</ul>"
+
+    if selected_only and not status & CHECKED:
+        return status, ""
 
     classes = set()
 
@@ -103,8 +110,9 @@ def build_html_tree(node, vocabulary, value, _depth=0, _force_checked=False):
     if (UNDETERMINED == status or _depth <= 0) and node.children():
         classes.add('jstree-open')
 
+    title = escape(node.title())
     html = '<li id="%s" class="%s"><a href="#">%s</a>' % (
-        escape(node.id(), True), " ".join(classes), escape(node.title()))
+        escape(node.id(), True), " ".join(classes), title)
     html += html_children
     html += "</li>"
     return status, html
@@ -118,6 +126,10 @@ class TreeWidgetInput(SchemaFieldWidget):
     grok.adapts(TreeSchemaField, Interface, Interface)
     grok.name(str(INPUT))
 
+    @property
+    def selected_only(self):
+        return grok.name.bind().get(self) == str(DISPLAY)
+
     def update(self):
         need(ITreeResources)
         super(TreeWidgetInput, self).update()
@@ -128,7 +140,8 @@ class TreeWidgetInput(SchemaFieldWidget):
         vocabulary = field.value_type.vocabulary(self.form.context)
         status, html = build_html_tree(tree,
             vocabulary,
-            self.inputValue().split('|'))
+            self.inputValue().split('|'),
+            selected_only=self.selected_only)
         return html
 
     def valueToUnicode(self, value):

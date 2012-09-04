@@ -4,7 +4,8 @@
          class="${widget.htmlClass()}"
          name="${widget.identifier}"
          value="${widget.inputValue()}"
-         id="${id}-input" />
+         id="${id}-input"
+         tal:attributes="readonly widget.selected_only and 'readonly'" />
 
   <div class="field-tree-widget">
     <ul tal:content="structure widget.HTMLTree()" />
