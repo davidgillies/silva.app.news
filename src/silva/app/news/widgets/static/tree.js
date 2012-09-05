@@ -20,36 +20,15 @@
                 plugins: plugins
             });
 
-            $tree.delegate('jstree')
+            $tree.delegate('a', 'click', function() {
+                var values = [];
 
-            if (!readonly) {
-                $tree.delegate('a', 'click', function() {
-                    $nodeElement = $(this).closest('li');
-                    if ($nodeElement.length != 1) {
-                        return;
-                    }
-
-                    var id = $nodeElement.attr('id');
-                    var values = $input.val().split('|');
-
-                    if ($tree.jstree('is_checked', $nodeElement)) {
-                        if ($.inArray(values, id) < 0) {
-                            values.push(id);
-                        }
-                    } else {
-                        var ids = $nodeElement.find('li').map(function(){
-                            return $(this).attr('id')
-                        });
-                        ids.push(id);
-                        values = $.grep(values, function(val){
-                            return $.inArray(val, ids) < 0;
-                        });
-                    }
-
-                    $input.val(values.join('|'));
-                    $input.change();
+                $.each($tree.jstree('get_checked'), function() {
+                    values.push($(this).attr('id'));
                 });
-            }
+                $input.val(values.join('|'));
+                $input.change();
+            });
         });
     };
 
