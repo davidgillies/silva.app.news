@@ -6,7 +6,7 @@
         $trees.each(function () {
             var $tree = $(this);
             var $input = $tree.siblings('input.field-tree');
-            var readonly = $input.attr('readonly') != undefined;
+            var readonly = $input.attr('readonly') !== undefined;
             var plugins = ["html_data", "ui"];
 
             if (!readonly) {
@@ -20,15 +20,17 @@
                 plugins: plugins
             });
 
-            $tree.delegate('a', 'click', function() {
-                var values = [];
+            if (!readonly) {
+                $tree.delegate('a', 'click', function() {
+                    var values = [];
 
-                $.each($tree.jstree('get_checked'), function() {
-                    values.push($(this).attr('id'));
+                    $.each($tree.jstree('get_checked'), function() {
+                        values.push($(this).attr('id'));
+                    });
+                    $input.val(values.join('|'));
+                    $input.change();
                 });
-                $input.val(values.join('|'));
-                $input.change();
-            });
+            };
         });
     };
 
