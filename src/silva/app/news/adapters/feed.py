@@ -16,14 +16,17 @@ class NewsPublicationFeedEntryProvider(grok.MultiAdapter):
     grok.provides(IFeedEntryProvider)
     grok.implements(IFeedEntryProvider)
 
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
     def entries(self):
         default = self.context.get_default()
-        if default and INewsViewer.providedBy(default):
+        if INewsViewer.providedBy(default):
             provider = queryMultiAdapter(
                 (default, self.request), IFeedEntryProvider)
-            if provider is not None:
-                return provider.entries()
-        return super(self.__class__, self).entries()
+            for entry in provider.entries():
+                yield entry
 
 
 class NewsViewerFeedEntryProvider(grok.MultiAdapter):

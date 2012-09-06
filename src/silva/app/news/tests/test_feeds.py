@@ -71,9 +71,10 @@ class TestFeeds(SilvaNewsTestCase):
         self.assertEqual(entry.keywords(), [])
         self.assertEqual(entry.html_description(), "<p></p>")
 
-    def test_functional_rss_feed(self):
+    def test_functional_rss_feed_from_viewer(self):
+        """Test that you can get a rss feeds from a news viewer.
+        """
         with self.layer.get_browser() as browser:
-            browser.options.handle_errors = False
             self.assertEqual(
                 browser.open('http://localhost/root/viewer/rss.xml'),
                 200)
@@ -83,11 +84,13 @@ class TestFeeds(SilvaNewsTestCase):
 
             items = browser.xml.xpath(
                 '//rss:item', namespaces={'rss': "http://purl.org/rss/1.0/"})
+            # We have two news items, and one agenda item.
             self.assertEquals(3, len(items))
 
-    def test_functional_atom_feed(self):
+    def test_functional_atom_feed_from_viewer(self):
+        """Test that you can get an atom from a news viewer.
+        """
         with self.layer.get_browser() as browser:
-            browser.options.handle_errors = False
             self.assertEqual(
                 browser.open('http://localhost/root/viewer/atom.xml'),
                 200)
@@ -97,7 +100,53 @@ class TestFeeds(SilvaNewsTestCase):
 
             items = browser.xml.xpath(
                 '//atom:entry', namespaces={'atom': "http://www.w3.org/2005/Atom"})
+            # We have two news items, and one agenda item.
             self.assertEquals(3, len(items))
+
+    def test_functional_rss_feed_from_publication(self):
+        """Test that you can get a rss feeds from a default news publication.
+        """
+        with self.layer.get_browser() as browser:
+            # Feeds are disabled by default (container settings)
+            self.assertEqual(
+                browser.open('http://localhost/root/source/rss.xml'),
+                404)
+            # If you enable them when they should work
+            self.root.source.set_allow_feeds(True)
+            self.assertEqual(
+                browser.open('http://localhost/root/source/rss.xml'),
+                200)
+            self.assertEqual(
+                browser.content_type,
+                'text/xml;charset=UTF-8')
+
+            items = browser.xml.xpath(
+                '//rss:item', namespaces={'rss': "http://purl.org/rss/1.0/"})
+            # We only have two items, since the feed is only enabled
+            # for news and not agenda items
+            self.assertEquals(2, len(items))
+
+    def test_functional_atom_feed_from_publication(self):
+        """Test that you can get an atom from a default news publication.
+        """
+        with self.layer.get_browser() as browser:
+            self.assertEqual(
+                browser.open('http://localhost/root/source/atom.xml'),
+                404)
+            # If you enable them when they should work
+            self.root.source.set_allow_feeds(True)
+            self.assertEqual(
+                browser.open('http://localhost/root/source/atom.xml'),
+                200)
+            self.assertEqual(
+                browser.content_type,
+                'text/xml;charset=UTF-8')
+
+            items = browser.xml.xpath(
+                '//atom:entry', namespaces={'atom': "http://www.w3.org/2005/Atom"})
+            # We only have two items, since the feed is only enabled
+            # for news and not agenda items
+            self.assertEquals(2, len(items))
 
 
 def test_suite():
