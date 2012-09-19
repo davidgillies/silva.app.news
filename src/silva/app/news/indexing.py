@@ -2,11 +2,10 @@ from zope.interface import implements
 from Products.PluginIndexes.interfaces import IPluggableIndex
 from Products.PluginIndexes.common.util import parseIndexRequest
 from Products.PluginIndexes.common import safe_callable
-from BTrees.IIBTree import (IISet, multiunion, difference,
-    intersection, union)
+from BTrees.IIBTree import IISet, multiunion, difference, intersection, union
 from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
-from BTrees.Length import Length
+import BTrees
 from OFS.SimpleItem import SimpleItem
 
 _marker = []
@@ -55,8 +54,8 @@ class IntegerRangesIndex(SimpleItem):
         self._reverse_range_mapping = OIBTree() # {range: rangeid}
         self._since_index = IOBTree() # {since: [rangeid,...]}
         self._until_index = IOBTree() # {until: [rangeid,...]}
-        self._length = Length()
-        self._unique_values_length = Length()
+        self._length = BTrees.Length.Length()
+        self._unique_values_length = BTrees.Length.Length()
 
     def __get_range_id(self, range_):
         return self._reverse_range_mapping.get(range_, None)
@@ -200,6 +199,10 @@ class IntegerRangesIndex(SimpleItem):
             qstart, qend = record.keys
         except TypeError:
             return None
+        qstart = min(BTrees.IOBTree.family.maxint,
+                     max(BTrees.IOBTree.family.minint, qstart))
+        qend = max(BTrees.IOBTree.family.minint,
+                   min(BTrees.IOBTree.family.maxint, qend))
         # start in inside range
         start = multiunion(self._since_index.values(max=qstart))
         end = multiunion(self._until_index.values(min=qstart))
