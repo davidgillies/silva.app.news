@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 # $Id$
 
+from datetime import datetime, timedelta
 from logging import getLogger
 import operator
 
@@ -321,7 +322,14 @@ class NewsViewerArchivesView(silvaviews.Page):
         def getter(date):
             return self.context.get_items_by_date(date.month, date.year)
 
-        items = batch.DateBatch(getter, request=self.request)
+        today = datetime.today()
+        # Limit the scope of the batch to 5 years in the future, 20 in the past.
+        # This should be configurable.
+        items = batch.DateBatch(
+            getter,
+            request=self.request,
+            min=today - timedelta(days=20 * 365),
+            max=today + timedelta(days=5 * 365))
         self.batch = getMultiAdapter(
             (self, items, self.request), batch.IBatching)()
         self.items = map(lambda b: b.getObject().get_content(), items)
