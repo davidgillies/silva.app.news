@@ -58,7 +58,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(item.description(), '')
         self.assertEqual(item.thumbnail(), '')
         # XXX Later empty introduction should return an empty string.
-        self.assertEqual(item.introduction(), '<p></p>')
+        self.assertEqual(item.introduction(), '<p/>')
         self.assertEqual(item.link(), 'http://localhost/root/news/testing')
         self.assertEqual(item.creation_datetime(), version.get_display_datetime())
         self.assertEqual(item.start_datetime(), None)
