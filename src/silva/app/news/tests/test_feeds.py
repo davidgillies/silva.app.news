@@ -52,7 +52,7 @@ class TestFeeds(SilvaNewsTestCase):
         self.assertEqual(entry.authors(), ['manager'])
         self.assertEqual(entry.description(), '')
         self.assertEqual(entry.keywords(), [])
-        self.assertEqual(entry.html_description(), "<p/>")
+        self.assertEqual(entry.html_description(), "<p></p>")
         self.assertEqual(entry.location(), '')
         self.assertEqual(entry.start_datetime(), '2010-10-09T08:20:00+02:00')
         self.assertEqual(entry.end_datetime(), '2010-10-09T10:20:00+02:00')
@@ -69,7 +69,7 @@ class TestFeeds(SilvaNewsTestCase):
         self.assertEqual(entry.authors(), ['manager'])
         self.assertEqual(entry.description(), '')
         self.assertEqual(entry.keywords(), [])
-        self.assertEqual(entry.html_description(), "<p/>")
+        self.assertEqual(entry.html_description(), "<p></p>")
 
     def test_functional_rss_feed_from_viewer(self):
         """Test that you can get a rss feeds from a news viewer.
