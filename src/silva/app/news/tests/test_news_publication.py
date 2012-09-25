@@ -1,13 +1,13 @@
-# Copyright (c) 2002-2008 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Id$
 
 import unittest
 from zope.component import getUtility, queryAdapter
 from zope.interface.verify import verifyObject
 
 from Products.Silva.testing import tests, CatalogTransaction
-from Products.SilvaMetadata.interfaces import IMetadataService
+from silva.core.services.interfaces import IMetadataService
 
 from silva.core.interfaces import IAddableContents
 from silva.app.news.testing import FunctionalLayer

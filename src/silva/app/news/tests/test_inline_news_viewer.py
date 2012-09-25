@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2012  Infrae. All rights reserved.
+# See also LICENSE.txt
 
 import unittest
 from datetime import datetime
 
 from Products.Silva.testing import TestRequest, tests
-from Products.SilvaMetadata.interfaces import IMetadataService
 from zope.component import getUtility
 from zope.interface.verify import verifyObject
 
@@ -13,6 +15,7 @@ from silva.app.news.interfaces import INewsItemReference
 from silva.app.news.testing import FunctionalLayer
 from silva.core.interfaces import IPublicationWorkflow
 from silva.core.references.reference import get_content_id
+from silva.core.services.interfaces import IMetadataService
 
 
 class InlineNewsViewerTestCase(unittest.TestCase):

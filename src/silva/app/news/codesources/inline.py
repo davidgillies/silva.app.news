@@ -1,6 +1,6 @@
-# Copyright (c) 2002-2009 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Id: newsprovider.py,v 1.3 2005/05/02 14:22:52 guido Exp $
 #
 from AccessControl import ModuleSecurityInfo
 from AccessControl import ClassSecurityInfo
@@ -15,7 +15,7 @@ from zope.traversing.browser import absoluteURL
 from zope.cachedescriptors.property import Lazy
 
 from Products.Silva import SilvaPermissions
-from Products.SilvaMetadata.interfaces import IMetadataService
+from silva.core.services.interfaces import IMetadataService
 from silva.app.document.interfaces import IDocumentDetails
 from silva.app.news.interfaces import IAgendaItemContentVersion
 from silva.app.news.interfaces import INewsItemContentVersion

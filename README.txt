@@ -156,3 +156,9 @@ aggregator instance.
 
 All the other functionality is the same as for News Viewers.
 
+
+Code repository
+===============
+
+You can find the code of this extension in Mercurial:
+https://hg.infrae.com/silva.app.news/.

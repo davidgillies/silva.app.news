@@ -1,11 +1,11 @@
-# Copyright (c) 2002-2011 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
-# $Id$
 
 from setuptools import setup, find_packages
 import os
 
-version = '3.0dev'
+version = '3.0c1'
 
 tests_require = [
     'Products.Silva [test]',
@@ -36,7 +36,6 @@ setup(name='silva.app.news',
       install_requires=[
         'Products.Silva',
         'Products.SilvaExternalSources',
-        'Products.SilvaMetadata',
         'feedparser',
         'five.grok',
         'icalendar',

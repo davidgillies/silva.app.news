@@ -1,4 +1,5 @@
-# Copyright (c) 2002-2010 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
 
 import unittest
@@ -7,7 +8,7 @@ from zope.component import queryUtility, getUtility
 from zope.interface.verify import verifyObject
 
 from Products.Silva.testing import tests
-from Products.SilvaMetadata.interfaces import IMetadataService
+from silva.core.services.interfaces import IMetadataService
 
 from silva.app.news.interfaces import IServiceNews
 from silva.app.news.Tree import DuplicateIdError, IReadableRoot

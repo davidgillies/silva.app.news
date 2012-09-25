@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2012  Infrae. All rights reserved.
+# See also LICENSE.txt
 from zope.interface import implements
 from Products.PluginIndexes.interfaces import IPluggableIndex
 from Products.PluginIndexes.common.util import parseIndexRequest

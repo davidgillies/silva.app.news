@@ -1,4 +1,5 @@
-# Copyright (c) 2002-2011 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
 
 # Zope
@@ -8,7 +9,6 @@ from App.class_init import InitializeClass
 from five import grok
 from zope.component import getUtility
 
-from Products.SilvaMetadata.interfaces import IMetadataService
 from Products.Silva.Publication import Publication
 from Products.Silva.Folder.addables import AddableContents
 from Products.Silva.cataloging import CatalogingAttributes
@@ -16,6 +16,7 @@ from Products.Silva.cataloging import CatalogingAttributes
 from silva.core import conf as silvaconf
 from silva.core.interfaces import IAsset, IAddableContents
 from silva.core.interfaces.events import IContentCreatedEvent
+from silva.core.services.interfaces import IMetadataService
 from zeam.form import silva as silvaforms
 
 from .interfaces import INewsPublication, INewsItemContent, INewsItemFilter

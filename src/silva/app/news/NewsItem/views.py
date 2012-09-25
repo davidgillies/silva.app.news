@@ -1,15 +1,16 @@
-# Copyright (c) 2002-2011 Infrae. All rights reserved.
+# -*- coding: utf-8 -*-
+# Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
 
 from five import grok
 from zope.component import getUtility, queryMultiAdapter
 from zope.cachedescriptors.property import Lazy
 
-from Products.SilvaMetadata.interfaces import IMetadataService
 from ..interfaces import IServiceNews, INewsItem, INewsItemContent
 
 from silva.app.document.interfaces import IDocumentDetails
 from silva.core.views import views as silvaviews
+from silva.core.services.interfaces import IMetadataService
 
 
 class NewsItemBaseView(silvaviews.View):
