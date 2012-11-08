@@ -16,7 +16,7 @@ from silva.app.news.datetimeutils import local_timezone
 from silva.app.news.datetimeutils import zone_names
 from silva.core.interfaces import INonPublishable, IPublication, IContent
 from silva.core.interfaces import IVersionedContent, IVersion
-from silva.core.interfaces import ISilvaService
+from silva.core.interfaces import ISilvaService, ISilvaObject
 
 _ = MessageFactory('silva_news')
 
@@ -181,7 +181,13 @@ class IAgendaItemVersion(IAgendaItemContentVersion, IDocumentContentVersion):
     """
 
 
-class INewsPublication(IPublication):
+# inherit ISilvaObject so it is groked as an utility
+class INewsInliner(ISilvaObject):
+    """ Renderable by inline news viewers.
+    """
+
+
+class INewsPublication(IPublication, INewsInliner):
     """Publication that contains agenda and news items
     """
 
@@ -292,7 +298,7 @@ class IAgendaFilter(INewsItemFilter):
     """
 
 
-class IViewer(IContent):
+class IViewer(IContent, INewsInliner):
     """Base interface for SilvaNews Viewers
     """
 
@@ -559,7 +565,6 @@ class INewsItemReference(Interface):
     def location():
         """Get the location of this reference.
         """
-
 
 
 ### BBB

@@ -2,6 +2,8 @@
 # Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
 #
+from itertools import islice
+
 from AccessControl import ModuleSecurityInfo
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
@@ -13,14 +15,17 @@ from zope.component import getUtility
 from zope.interface import Interface
 from zope.traversing.browser import absoluteURL
 from zope.cachedescriptors.property import Lazy
+from zope.intid.interfaces import IIntIds
 
 from Products.Silva import SilvaPermissions
+from silva.core.interfaces import IOrderManager
 from silva.core.services.interfaces import IMetadataService
 from silva.app.document.interfaces import IDocumentDetails
 from silva.app.news.interfaces import IAgendaItemContentVersion
 from silva.app.news.interfaces import INewsItemContentVersion
 from silva.app.news.interfaces import INewsItemReference
 from silva.app.news.interfaces import INewsViewer, IRSSAggregator
+from silva.app.news.interfaces import INewsPublication, INewsItem
 
 
 module_security = ModuleSecurityInfo(
@@ -32,6 +37,28 @@ class INewsProvider(Interface):
 
     def get_items(self, number, request):
         """returns a set of the most current items"""
+
+
+class NewsPublicationNewsProvider(grok.Adapter):
+    grok.context(INewsPublication)
+    grok.implements(INewsProvider)
+
+    def publication_items(self, request):
+        # XXX:
+        intids = getUtility(IIntIds)
+        for id_ in IOrderManager(self.context).order:
+            content = intids.queryObject(id_)
+            if content is not None and INewsItem.providedBy(content):
+                version = content.get_viewable()
+                if version is not None:
+                    info = getMultiAdapter(
+                            (version, request),
+                            INewsItemReference)
+                    info.__parent__ = self.context
+                    yield info
+
+    def get_items(self, request, number):
+        return list(islice(self.publication_items(request), number))
 
 
 class NewsViewerNewsProvider(grok.Adapter):
