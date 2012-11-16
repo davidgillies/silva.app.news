@@ -70,7 +70,7 @@ class AgendaItemOccurrence(Explicit):
             self.set_display_time(display_time)
         if location is not _marker:
             self.set_location(location)
-        if recurrence is not _marker:
+        if recurrence is not _marker and recurrence:
             recurrence = RRuleData(recurrence)
             if end_recurrence_datetime is not _marker:
                 recurrence['UNTIL'] = vDatetime(
