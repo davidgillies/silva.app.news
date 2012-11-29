@@ -296,6 +296,16 @@ END:VCALENDAR
             self.assertFalse(browser.inspect.prev_link)
             self.assertTrue(browser.inspect.next_link)
 
+    def test_invalid_and_empty_params(self):
+         with self.layer.get_browser(calendar_settings) as browser:
+            browser.options.handle_errors = False
+            self.assertEqual(200, browser.open('/root/agenda?year=&month=23&day=x12'))
+
+    def test_31_february(self):
+         with self.layer.get_browser(calendar_settings) as browser:
+            browser.options.handle_errors = False
+            self.assertEqual(200, browser.open('/root/agenda?month=2&day=30'))
+
 
 def test_suite():
     suite = unittest.TestSuite()

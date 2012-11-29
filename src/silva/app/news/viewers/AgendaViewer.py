@@ -244,12 +244,21 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     def context_absolute_url(self):
         return absoluteURL(self.context, self.request)
 
+    def get_int_param(self, name, default=None):
+        try:
+            value = self.request.get(name, default)
+            if value:
+                return int(value)
+            return default
+        except (TypeError, ValueError):
+            return default
+
     def get_current_day(self, now=None):
         if now is None:
             now = datetime.now(self.context.get_timezone())
-        day = self.request.get('day', _marker)
-        if day is not _marker:
-            return int(day)
+        day = self.get_int_param('day')
+        if day is not None:
+            return day
 
         if (self.request.get('month', _marker) is _marker and
                 self.request.get('year', _marker) is _marker):
@@ -259,13 +268,20 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     def update(self):
         need(ICalendarResources)
         self.now = datetime.now(self.context.get_timezone())
-        self.month = int(self.request.get('month', self.now.month))
-        self.year = int(self.request.get('year', self.now.year))
+        self.month = self.get_int_param('month', self.now.month)
+        self.year = self.get_int_param('year', self.now.year)
         self.day = self.get_current_day(self.now)
+        try:
+            self.day_datetime = datetime(self.year, self.month, self.day,
+                                     tzinfo=self.context.get_timezone())
+        except ValueError:
+            self.day_datetime = self.now
+            self.year = self.now.year
+            self.month = self.now.month
+            self.day = self.now.day
+
         (first_weekday, lastday,) = calendar.monthrange(
             self.year, self.month)
-        self.day_datetime = datetime(self.year, self.month, self.day,
-                                     tzinfo=self.context.get_timezone())
 
         self.start = datetimeutils.start_of_month(self.day_datetime)
         self.end = datetimeutils.end_of_month(self.day_datetime)
