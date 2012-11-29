@@ -49,6 +49,13 @@ class TestDateTime(unittest.TestCase):
         self.assertEquals(u(dt), u(dt_local))
         self.assertEquals(u(dt_local), u(dt_utc))
 
+    def test_unixtimestamp_in_the_past(self):
+        dt = datetime(1812, 11, 29, 16, 31, 0, tzinfo=UTC)
+        datetime_to_unixtimestamp(dt) == -4610158140
+
+    def test_unixtimestamp_in_the_future(self):
+        dt = datetime(2024, 3, 12, 16, 31, 0, tzinfo=UTC)
+        datetime_to_unixtimestamp(dt) == 1710261060
 
 class TestCalendarDatetime(unittest.TestCase):
 

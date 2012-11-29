@@ -29,7 +29,12 @@ def calendar_settings(browser):
         'newsitems',
         css=".newsitemheading",
         type='text')
-
+    browser.inspect.add(
+        'next_link',
+        css='a.nextmonth')
+    browser.inspect.add(
+        'prev_link',
+        css='a.prevmonth')
 
 class AgendaViewerTestCase(SilvaNewsTestCase):
 
@@ -256,6 +261,40 @@ END:VCALENDAR
        'saturday_created': format_date(events.saturday.get_creation_datetime()),
        'saturday_modified': format_date(events.saturday.get_modification_datetime())
        })
+
+    def test_calendar_in_the_future(self):
+        future = datetime.now() + relativedelta(years=+10)
+        with self.layer.get_browser() as browser:
+            self.assertEqual(400, browser.open(
+                '/root/agenda?year=%d' % future.year))
+
+    def test_calendar_in_the_past(self):
+        past = datetime.now() + relativedelta(years=-10)
+        with self.layer.get_browser() as browser:
+            self.assertEqual(400, browser.open(
+                '/root/agenda?year=%d' % past.year))
+
+    def test_calendar_today(self):
+        with self.layer.get_browser(calendar_settings) as browser:
+            self.assertEqual(200, browser.open('/root/agenda'))
+            self.assertTrue(browser.inspect.prev_link)
+            self.assertTrue(browser.inspect.next_link)
+
+    def test_calendar_near_up_boundary(self):
+        now = datetime.now()
+        url = '/root/agenda?year=%d&month=%d' % (now.year + 5, 12)
+        with self.layer.get_browser(calendar_settings) as browser:
+            self.assertEqual(200, browser.open(url))
+            self.assertTrue(browser.inspect.prev_link)
+            self.assertFalse(browser.inspect.next_link)
+
+    def test_calendar_near_down_boundary(self):
+        now = datetime.now()
+        url = '/root/agenda?year=%d&month=%d' % (now.year - 5, 1)
+        with self.layer.get_browser(calendar_settings) as browser:
+            self.assertEqual(200, browser.open(url))
+            self.assertFalse(browser.inspect.prev_link)
+            self.assertTrue(browser.inspect.next_link)
 
 
 def test_suite():

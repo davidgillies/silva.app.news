@@ -17,6 +17,7 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 # Zope
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
+from zExceptions import BadRequest
 
 # Silva
 from Products.Silva import SilvaPermissions
@@ -117,7 +118,15 @@ class CalendarView(object):
     day are available in the index.
     """
 
+    YEAR_MAX_DELTA = 5
+
     _events_index = {}
+
+    def validate_boundaries(self, now, year):
+        min_year = now.year - self.YEAR_MAX_DELTA
+        max_year = now.year + self.YEAR_MAX_DELTA
+        if max_year < year or min_year > year:
+            raise BadRequest('Invalid year.')
 
     @staticmethod
     def serialize_date(date):
@@ -135,7 +144,10 @@ class CalendarView(object):
         or just the fact that a event is present.
         """
         self._store_events_in_index = store_events_in_index
-        today = today or datetime.now(self.context.get_timezone()).date()
+        now = datetime.now(self.context.get_timezone())
+        today = today or now.date()
+        self.validate_boundaries(now, start.year)
+        self.validate_boundaries(now, end.year)
 
         acalendar = HTMLCalendar(
             self.context.get_first_weekday(),
@@ -220,6 +232,9 @@ class AgendaViewerExternalSourceView(silvaviews.View, CalendarView):
         return self.calendar.formatmonth(self.year, self.month)
 
 
+_marker = object()
+
+
 class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     """ View with month calendar and listing of event registered of the
     selected day"""
@@ -229,14 +244,26 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     def context_absolute_url(self):
         return absoluteURL(self.context, self.request)
 
+    def get_current_day(self, now=None):
+        if now is None:
+            now = datetime.now(self.context.get_timezone())
+        day = self.request.get('day', _marker)
+        if day is not _marker:
+            return int(day)
+
+        if (self.request.get('month', _marker) is _marker and
+                self.request.get('year', _marker) is _marker):
+            return now.day
+        return 1
+
     def update(self):
         need(ICalendarResources)
-        now = datetime.now(self.context.get_timezone())
-        self.month = int(self.request.get('month', now.month))
-        self.year = int(self.request.get('year', now.year))
+        self.now = datetime.now(self.context.get_timezone())
+        self.month = int(self.request.get('month', self.now.month))
+        self.year = int(self.request.get('year', self.now.year))
+        self.day = self.get_current_day(self.now)
         (first_weekday, lastday,) = calendar.monthrange(
             self.year, self.month)
-        self.day = int(self.request.get('day', now.day)) or 1
         self.day_datetime = datetime(self.year, self.month, self.day,
                                      tzinfo=self.context.get_timezone())
 
@@ -245,7 +272,7 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
 
         self._day_events = self._selected_day_events()
         self.calendar = self.build_calendar(
-            self.day_datetime.date(), self.start, self.end, now.date())
+            self.day_datetime.date(), self.start, self.end, self.now.date())
 
         self._set_calendar_nav()
 
@@ -290,14 +317,29 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
             self.context.get_items_by_date_range(
                 datetimeutils.start_of_day(self.day_datetime),
                 datetimeutils.end_of_day(self.day_datetime)))
+ 
+    def should_display_next_link(self):
+        inc, month = divmod(self.start.month, 12)
+        year = self.start.year + inc
+        return year - self.now.year <= self.YEAR_MAX_DELTA
+
+    def should_display_prev_link(self):
+        month = self.start.month - 1
+        year = self.start.year
+        if month <= 0:
+            month = 12
+            year -= 1
+        return self.now.year - year <= self.YEAR_MAX_DELTA
 
     def _set_calendar_nav(self):
-        self.calendar.prev_link = \
-            '<a class="prevmonth caljump" href="%s">&lt;</a>' % \
-                self.prev_month_url()
-        self.calendar.next_link = \
-            '<a class="nextmonth caljump" href="%s">&gt</a>' % \
-                self.next_month_url()
+        if self.should_display_prev_link():
+            self.calendar.prev_link = \
+                '<a class="prevmonth caljump" href="%s">&lt;</a>' % \
+                    self.prev_month_url()
+        if self.should_display_next_link():
+            self.calendar.next_link = \
+                '<a class="nextmonth caljump" href="%s">&gt</a>' % \
+                    self.next_month_url()
 
 
 class AgendaViewerYearCalendar(silvaviews.Page, CalendarView):

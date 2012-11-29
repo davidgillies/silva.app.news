@@ -95,12 +95,14 @@ def datetime_with_timezone(dt, tz=local_timezone):
         new_dt = dt.replace(tzinfo=tz)
     return new_dt
 
+epoch = datetime(1970, 1, 1, 0, 0, 0, 0, tzinfo=UTC)
 def datetime_to_unixtimestamp(dt):
     """ Workaround a bug in python : unix time is wrong if not in the system
     timezone
     """
-    return int(utc_datetime(dt).astimezone(system_timezone).\
-        strftime("%s"))
+    delta = utc_datetime(dt) - epoch
+    return (delta.microseconds +
+        (delta.seconds + delta.days * 24 * 3600) * 10**6) / 10**6
 
 def end_of_day(dt):
     return dt.replace(hour=23, minute=59, second=59)
