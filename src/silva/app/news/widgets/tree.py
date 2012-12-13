@@ -144,7 +144,7 @@ class TreeWidgetInput(SchemaFieldWidget):
         return html
 
     def valueToUnicode(self, value):
-        if value is not NO_VALUE:
+        if value and value is not NO_VALUE:
             return u'|'.join(value)
         return u''
 
@@ -160,7 +160,10 @@ class TreeWidgetExtractor(WidgetExtractor):
             self.form.context)
         choices = set()
         for choice in value.split('|'):
-            choices.add(vocabulary.getTerm(choice).value)
+            if choice:
+                choices.add(vocabulary.getTerm(choice).value)
+        if not choices:
+            return NO_VALUE, error
         return choices, error
 
 

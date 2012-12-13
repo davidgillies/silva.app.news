@@ -3,11 +3,20 @@
 # See also LICENSE.txt
 
 import unittest
-from silva.app.news.Tree import Root, Node, create_filtered_tree
-from silva.app.news.Tree import DuplicateIdError
-from silva.app.news.Tree import IWritableRoot, IWritableNode
-from silva.app.news.Tree import IReadableRoot, IReadableNode
+
+from infrae.wsgi.testing import TestRequest
 from zope.interface.verify import verifyObject
+from zope import component
+
+from zeam.form import silva as silvaforms
+
+from silva.app.news.interfaces import IServiceNews
+from silva.app.news.NewsItem.smi import NewsItemAddForm
+from silva.app.news.testing import FunctionalLayer
+from silva.app.news.Tree import DuplicateIdError
+from silva.app.news.Tree import IReadableRoot, IReadableNode
+from silva.app.news.Tree import IWritableRoot, IWritableNode
+from silva.app.news.Tree import Root, Node, create_filtered_tree
 
 
 class TreeTestCase(unittest.TestCase):
@@ -114,8 +123,52 @@ class TreeTestCase(unittest.TestCase):
         self.assertEqual(filtered_node, None)
 
 
+class TestTreeFormWidget(unittest.TestCase):
+    layer = FunctionalLayer
+
+    def setUp(self):
+        self.root = self.layer.get_application()
+        service = component.getUtility(IServiceNews)
+        subjects = Root()
+        subjects.add_child(Node('comics', 'comics'))
+        subjects.add_child(Node('books', 'books'))
+        service._subjects = subjects
+
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News')
+        self.news = self.root._getOb('news')
+        self.assertTrue(self.news)
+
+    def test_widget_empty(self):
+        form = NewsItemAddForm(self.news, TestRequest())
+        form.update()
+        data, errors = form.extractData()
+        self.assertEqual(silvaforms.NO_VALUE, data['subjects'])
+        self.assertEqual('Missing required value.',
+            errors['addform.field.subjects'].title)
+
+    def test_widget_empty_string(self):
+        form = NewsItemAddForm(self.news,
+            TestRequest(form={'addform.field.subjects': ''}))
+        form.update()
+        data, errors = form.extractData()
+        self.assertEqual(silvaforms.NO_VALUE, data['subjects'])
+        self.assertEqual('Missing required value.',
+            errors['addform.field.subjects'].title)
+
+    def test_widget_valid_data(self):
+        form = NewsItemAddForm(self.news,
+            TestRequest(form={'addform.field.subjects': 'comics|books'}))
+        form.update()
+        data, errors = form.extractData()
+        self.assertEqual(set(['comics', 'books']), data['subjects'])
+        self.assertEqual(None, errors.get('addform.field.subjects', None))
+
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TreeTestCase))
+    suite.addTest(unittest.makeSuite(TestTreeFormWidget))
     return suite
 
