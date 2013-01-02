@@ -11,6 +11,7 @@ from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.testing import FunctionalLayer
+from silva.core.interfaces.errors import ExternalReferenceError
 
 
 class XMLExportTestCase(SilvaXMLTestCase):
@@ -35,6 +36,19 @@ class XMLExportTestCase(SilvaXMLTestCase):
             xml, 'test_export_newsfilter.silvaxml', globs=globals())
         self.assertEqual(info.getZexpPaths(), [])
         self.assertEqual(info.getAssetPaths(), [])
+
+    def test_news_filter_external_reference(self):
+        """Add a filter and a news publication and export only the
+        filter.
+        """
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News Publication')
+        factory = self.root.export.manage_addProduct['silva.app.news']
+        factory.manage_addNewsFilter('filter', 'News Filter')
+        self.root.export.filter.set_sources([self.root.news])
+
+        with self.assertRaises(ExternalReferenceError):
+            xml, info = xmlexport.exportToString(self.root.export)
 
     def test_agenda_filter(self):
         """Add a filter and a news publication at root level and export

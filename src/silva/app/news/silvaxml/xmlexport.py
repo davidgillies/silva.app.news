@@ -15,9 +15,9 @@ from silva.core.references.utils import is_inside_container
 from silva.core.references.utils import relative_path
 from silva.core.references.utils import canonical_path
 from silva.core.editor.transform.silvaxml.xmlexport import TextProducerProxy
+from silva.core.interfaces.errors import ExternalReferenceError
 
 from Products.Silva.silvaxml import xmlexport
-from Products.Silva.silvaxml.xmlexport import ExternalReferenceError
 
 
 xmlexport.registerNamespace('silva-app-news', NS_NEWS_URI)
@@ -33,7 +33,7 @@ def iso_datetime(dt):
 
 class ReferenceSupportExporter(object):
 
-    def reference_set_paths(self, name):
+    def get_reference_set_paths(self, name):
         ref_set = ReferenceSet(self.context, name)
         settings = self.getSettings()
         info = self.getInfo()
@@ -45,6 +45,7 @@ class ReferenceSupportExporter(object):
                     yield ""
                 if not reference.is_target_inside_container(root):
                     raise ExternalReferenceError(
+                        u"Reference outside of the export container",
                         self.context, reference.target, root)
                 # Add root path id as it is always mentioned in exports
                 path = [root.getId()] + reference.relative_path_to(root)
@@ -105,10 +106,9 @@ class NewsFilterProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
 
     def sources(self):
         self.startElementNS(NS_NEWS_URI, "sources")
-        for source_path in self.reference_set_paths("sources"):
-            if source_path:
-                self.startElementNS(
-                    NS_NEWS_URI, 'source', {'target': source_path})
+        for path in self.get_reference_set_paths("sources"):
+            if path:
+                self.startElementNS(NS_NEWS_URI, 'source', {'target': path})
                 self.endElementNS(NS_NEWS_URI, 'source')
         self.endElementNS(NS_NEWS_URI, "sources")
 
@@ -168,10 +168,9 @@ class NewsViewerProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
 
     def filters(self):
         self.startElementNS(NS_NEWS_URI, "filters")
-        for filter_path in self.reference_set_paths("filters"):
-            if filter_path:
-                self.startElementNS(
-                    NS_NEWS_URI, 'filter', {'target': filter_path})
+        for path in self.get_reference_set_paths("filters"):
+            if path:
+                self.startElementNS(NS_NEWS_URI, 'filter', {'target': path})
                 self.endElementNS(NS_NEWS_URI, 'filter')
         self.endElementNS(NS_NEWS_URI, "filters")
 
