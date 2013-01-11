@@ -5,13 +5,11 @@
 import unittest
 from datetime import datetime
 
-from Products.Silva.silvaxml import xmlexport
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.AgendaItem import AgendaItemOccurrence
 from silva.app.news.testing import FunctionalLayer
-from silva.core.interfaces.errors import ExternalReferenceError
 
 
 class XMLExportTestCase(SilvaXMLTestCase):
@@ -31,11 +29,12 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addNewsFilter('filter', 'News Filter')
         self.root.export.filter.set_sources([self.root.export.news])
 
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_newsfilter.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_newsfilter.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_news_filter_external_reference(self):
         """Add a filter and a news publication and export only the
@@ -46,9 +45,7 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory = self.root.export.manage_addProduct['silva.app.news']
         factory.manage_addNewsFilter('filter', 'News Filter')
         self.root.export.filter.set_sources([self.root.news])
-
-        with self.assertRaises(ExternalReferenceError):
-            xml, info = xmlexport.exportToString(self.root.export)
+        self.assertExportFail(self.root.export)
 
     def test_agenda_filter(self):
         """Add a filter and a news publication at root level and export
@@ -59,11 +56,12 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addAgendaFilter('filter', 'Agenda Filter')
         self.root.export.filter.add_source(self.root.export.news)
 
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_agendafilter.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_agendafilter.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_news_viewer(self):
         """Export a news viewer.
@@ -74,11 +72,13 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addNewsViewer('viewer', 'News Viewer')
         self.root.export.filter.set_sources([self.root.export.news])
         self.root.export.viewer.set_filters([self.root.export.filter])
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_newsviewer.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_newsviewer.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_agenda_viewer(self):
         """Export an agenda viewer.
@@ -89,11 +89,13 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
         self.root.export.filter.set_sources([self.root.export.news])
         self.root.export.viewer.set_filters([self.root.export.filter])
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_agendaviewer.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_agendaviewer.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_news_item(self):
         """Export a news item.
@@ -108,11 +110,13 @@ class XMLExportTestCase(SilvaXMLTestCase):
         version.set_subjects(['all'])
         version.set_target_audiences(['generic'])
         version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_newsitem.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_newsitem.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_agenda_item(self):
         """Export an agenda item.
@@ -138,11 +142,12 @@ class XMLExportTestCase(SilvaXMLTestCase):
         self.layer.login('editor')
         IPublicationWorkflow(self.root.export.news.event).publish()
 
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_agendaitem.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_agendaitem.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
     def test_rss_aggregator(self):
         """Export an RSS agregator.
@@ -153,11 +158,12 @@ class XMLExportTestCase(SilvaXMLTestCase):
                 'http://infrae.com/news/atom.xml',
                 'http://pypi.python.org/pypi?%3Aaction=rss'])
 
-        xml, info = xmlexport.exportToString(self.root.export)
-        self.assertExportEqual(
-            xml, 'test_export_rssaggregator.silvaxml', globs=globals())
-        self.assertEqual(info.getZexpPaths(), [])
-        self.assertEqual(info.getAssetPaths(), [])
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_rssaggregator.silvaxml')
+        self.assertEqual(exporter.getZexpPaths(), [])
+        self.assertEqual(exporter.getAssetPaths(), [])
+        self.assertEqual(exporter.getProblems(), [])
 
 
 def test_suite():

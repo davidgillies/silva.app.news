@@ -12,7 +12,6 @@ from Products.Silva.tests.test_xml_import import SilvaXMLTestCase
 
 from silva.app.news.testing import FunctionalLayer
 from silva.app.news import interfaces
-from silva.core.interfaces.events import IContentImported
 from zope.interface.verify import verifyObject
 
 
@@ -20,16 +19,14 @@ class XMLImportTestCase(SilvaXMLTestCase):
     layer = FunctionalLayer
 
     def test_news_filter(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_newsfilter.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/filter'],
-            IContentImported)
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/filter'])
+        self.assertEqual(importer.getProblems(), [])
 
-        self.assertEquals(
+        self.assertEqual(
             self.root.export.objectIds(),
             ['news', 'filter'])
         export = self.root.export
@@ -46,17 +43,14 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.news)])
 
     def test_agenda_filter(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_agendafilter.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/events',
-             'ContentImported for /root/export/filter'],
-            IContentImported)
-
-        self.assertEquals(
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/events',
+             '/root/export/filter'])
+        self.assertEqual(importer.getProblems(), [])
+        self.assertEqual(
             self.root.export.objectIds(),
             ['news', 'filter', 'events'])
         export = self.root.export
@@ -74,17 +68,14 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.news), aq_chain(export.events)])
 
     def test_news_viewer(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_newsviewer.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/viewer',
-             'ContentImported for /root/export/filter'],
-            IContentImported)
-
-        self.assertEquals(
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/viewer',
+             '/root/export/filter'])
+        self.assertEqual(importer.getProblems(), [])
+        self.assertEqual(
             self.root.export.objectIds(),
             ['news', 'viewer', 'filter'])
         export = self.root.export
@@ -103,17 +94,14 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.filter)])
 
     def test_agenda_viewer(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_agendaviewer.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/viewer',
-             'ContentImported for /root/export/filter'],
-            IContentImported)
-
-        self.assertEquals(
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/viewer',
+             '/root/export/filter'])
+        self.assertEqual(importer.getProblems(), [])
+        self.assertEqual(
             self.root.export.objectIds(),
             ['news', 'viewer', 'filter'])
         export = self.root.export
@@ -131,15 +119,12 @@ class XMLImportTestCase(SilvaXMLTestCase):
             [aq_chain(export.filter)])
 
     def test_news_item(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_newsitem.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/news/whatsup'],
-            IContentImported)
-
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/news/whatsup'])
+        self.assertEqual(importer.getProblems(), [])
         self.assertEqual(
             self.root.export.objectIds(),
             ['news'])
@@ -171,14 +156,12 @@ class XMLImportTestCase(SilvaXMLTestCase):
 """, unicode(version.body))
 
     def test_agenda_item(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_agendaitem.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/news/event'],
-            IContentImported)
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/news/event'])
+        self.assertEqual(importer.getProblems(), [])
 
         self.assertEqual(
             self.root.export.objectIds(),
@@ -225,15 +208,12 @@ class XMLImportTestCase(SilvaXMLTestCase):
 """, unicode(version.body))
 
     def test_rss_aggregator(self):
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_rssaggregator.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/export',
-             'ContentImported for /root/export/news',
-             'ContentImported for /root/export/empty'],
-            IContentImported)
-
+            ['/root/export',
+             '/root/export/news',
+             '/root/export/empty'])
+        self.assertEqual(importer.getProblems(), [])
         self.assertEqual(
             self.root.export.objectIds(),
             ['news', 'empty'])
@@ -251,18 +231,15 @@ class XMLImportTestCase(SilvaXMLTestCase):
     def test_news_publication(self):
         # A news pub with a viewer (index) a filter (filter) customized
         # A news item, an agenda item, agenda viewer and agenda filter.
-        self.import_file(
+        importer = self.assertImportFile(
             'test_import_newspublication.silvaxml',
-            globs=globals())
-        self.assertEventsAre(
-            ['ContentImported for /root/news/index',
-             'ContentImported for /root/news/the_empire_falls',
-             'ContentImported for /root/news/lolcats_attacks',
-             'ContentImported for /root/news/events',
-             'ContentImported for /root/news/filter',
-             'ContentImported for /root/news/filter_events',
-             'ContentImported for /root/news'],
-            IContentImported)
+            ['/root/news/index',
+             '/root/news/the_empire_falls',
+             '/root/news/lolcats_attacks',
+             '/root/news/events',
+             '/root/news/filter',
+             '/root/news/filter_events',
+             '/root/news'])
 
         news = self.root._getOb('news', None)
         self.assertTrue(verifyObject(interfaces.INewsPublication, news))
@@ -279,6 +256,10 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertTrue(verifyObject(interfaces.INewsFilter, news.filter))
         self.assertTrue(verifyObject(interfaces.IAgendaViewer, news.events))
         self.assertTrue(verifyObject(interfaces.IAgendaFilter, news.filter_events))
+        self.assertEqual(
+            importer.getProblems(),
+            [(u'Broken source in import: External Source cs_you_tube is not available.',
+              news.lolcats_attacks.get_viewable())])
 
         # Verify setup
         tests.assertContentItemsEqual(

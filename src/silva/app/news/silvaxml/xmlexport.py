@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 # Copyright (c) 2002-2012 Infrae. All rights reserved.
 # See also LICENSE.txt
@@ -5,22 +6,15 @@
 from five import grok
 from zope.interface import Interface
 
-# reference management (will move somewhere else)
-from zope.traversing.browser import absoluteURL
-from silva.core.references.reference import ReferenceSet
 from silva.app.news import interfaces
 from silva.app.news.datetimeutils import utc_datetime
 from silva.app.news.silvaxml import NS_NEWS_URI
+from silva.core.editor.transform.silvaxml.xmlexport import TextProducerProxy
+from silva.core.references.utils import canonical_path
 from silva.core.references.utils import is_inside_container
 from silva.core.references.utils import relative_path
-from silva.core.references.utils import canonical_path
-from silva.core.editor.transform.silvaxml.xmlexport import TextProducerProxy
-from silva.core.interfaces.errors import ExternalReferenceError
+from silva.core.xml import producers
 
-from Products.Silva.silvaxml import xmlexport
-
-
-xmlexport.registerNamespace('silva-app-news', NS_NEWS_URI)
 
 def iso_datetime(dt):
     if dt:
@@ -31,31 +25,7 @@ def iso_datetime(dt):
     return ''
 
 
-class ReferenceSupportExporter(object):
-
-    def get_reference_set_paths(self, name):
-        ref_set = ReferenceSet(self.context, name)
-        settings = self.getSettings()
-        info = self.getInfo()
-        root = info.root
-        for reference in ref_set.get_references():
-            if not settings.externalRendering():
-                if not reference.target_id:
-                    # The reference is broken. Return an empty path.
-                    yield ""
-                if not reference.is_target_inside_container(root):
-                    raise ExternalReferenceError(
-                        u"Reference outside of the export container",
-                        self.context, reference.target, root)
-                # Add root path id as it is always mentioned in exports
-                path = [root.getId()] + reference.relative_path_to(root)
-                yield canonical_path('/'.join(path))
-            else:
-                # Return url to the target
-                yield absoluteURL(reference.target, info.request)
-
-
-class NewsPublicationProducer(xmlexport.SilvaContainerProducer):
+class NewsPublicationProducer(producers.SilvaContainerProducer):
     """Export a News Publication object to XML.
     """
     grok.adapts(interfaces.INewsPublication, Interface)
@@ -63,12 +33,12 @@ class NewsPublicationProducer(xmlexport.SilvaContainerProducer):
     def sax(self):
         self.startElementNS(
             NS_NEWS_URI, 'news_publication', {'id': self.context.id})
-        self.metadata()
-        self.contents()
+        self.sax_metadata()
+        self.sax_contents()
         self.endElementNS(NS_NEWS_URI,'news_publication')
 
 
-class RSSAggregatorProducer(xmlexport.SilvaProducer):
+class RSSAggregatorProducer(producers.SilvaProducer):
      """Export a RSSAggregator object to XML.
      """
      grok.adapts(interfaces.IRSSAggregator, Interface)
@@ -76,15 +46,15 @@ class RSSAggregatorProducer(xmlexport.SilvaProducer):
      def sax(self):
          self.startElementNS(
              NS_NEWS_URI, 'rss_aggregator', {'id': self.context.id})
-         self.metadata()
+         self.sax_metadata()
          for feed in self.context.get_feeds():
              self.startElementNS(NS_NEWS_URI, 'url')
-             self.handler.characters(feed)
+             self.characters(feed)
              self.endElementNS(NS_NEWS_URI, 'url')
          self.endElementNS(NS_NEWS_URI, 'rss_aggregator')
 
 
-class NewsFilterProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
+class NewsFilterProducer(producers.SilvaProducer):
     """Export a NewsFilter object to XML.
     """
     grok.adapts(interfaces.INewsFilter, Interface)
@@ -97,32 +67,35 @@ class NewsFilterProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
              'target_audiences': ','.join(self.context.get_target_audiences()),
              'subjects': ','.join(self.context.get_subjects()),
              'show_agenda_items': str(self.context.show_agenda_items())})
-        self.metadata()
+        self.sax_metadata()
         self.startElement('content')
-        self.sources()
-        self.excludes()
+        self.sax_sources()
+        self.sax_excludes()
         self.endElement('content')
         self.endElementNS(NS_NEWS_URI,'news_filter')
 
-    def sources(self):
+    def sax_sources(self):
         self.startElementNS(NS_NEWS_URI, "sources")
-        for path in self.get_reference_set_paths("sources"):
-            if path:
-                self.startElementNS(NS_NEWS_URI, 'source', {'target': path})
-                self.endElementNS(NS_NEWS_URI, 'source')
+        for path in self.get_references("sources"):
+            self.startElementNS(NS_NEWS_URI, 'source', {'target': path})
+            self.endElementNS(NS_NEWS_URI, 'source')
         self.endElementNS(NS_NEWS_URI, "sources")
 
-    def excludes(self):
+    def sax_excludes(self):
         self.startElementNS(NS_NEWS_URI, "excludes")
-        root = self.getInfo().root
+        exported = self.getExported()
         for item in self.context.get_excluded_items():
-            if is_inside_container(root, item):
-                path = [root.getId()] + relative_path(
-                    root.getPhysicalPath(), item.getPhysicalPath())
+            if is_inside_container(exported.root, item):
+                path = [exported.root.getId()] + relative_path(
+                    exported.rootPath, item.getPhysicalPath())
                 path = canonical_path('/'.join(path))
                 self.startElementNS(
                     NS_NEWS_URI, 'exclude', {'target': path})
                 self.endElementNS(NS_NEWS_URI, 'exclude')
+            else:
+                exported.reportProblem(
+                    'Content excluded from the filter was not exported',
+                    content=self.context)
         self.endElementNS(NS_NEWS_URI, "excludes")
 
 
@@ -138,15 +111,15 @@ class AgendaFilterProducer(NewsFilterProducer):
             {'id': self.context.id,
              'target_audiences': ','.join(self.context.get_target_audiences()),
              'subjects': ','.join(self.context.get_subjects())})
-        self.metadata()
+        self.sax_metadata()
         self.startElement('content')
-        self.sources()
-        self.excludes()
+        self.sax_sources()
+        self.sax_excludes()
         self.endElement('content')
         self.endElementNS(NS_NEWS_URI,'agenda_filter')
 
 
-class NewsViewerProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
+class NewsViewerProducer(producers.SilvaProducer):
     """Export a NewsViewer object to XML.
     """
     grok.adapts(interfaces.INewsViewer, Interface)
@@ -160,18 +133,17 @@ class NewsViewerProducer(xmlexport.SilvaProducer, ReferenceSupportExporter):
              'number_to_show_archive': str(
                     self.context.get_number_to_show_archive()),
              'number_is_days': str(self.context.get_number_is_days())})
-        self.metadata()
+        self.sax_metadata()
         self.startElement('content')
-        self.filters()
+        self.sax_filters()
         self.endElement('content')
         self.endElementNS(NS_NEWS_URI,'news_viewer')
 
-    def filters(self):
+    def sax_filters(self):
         self.startElementNS(NS_NEWS_URI, "filters")
-        for path in self.get_reference_set_paths("filters"):
-            if path:
-                self.startElementNS(NS_NEWS_URI, 'filter', {'target': path})
-                self.endElementNS(NS_NEWS_URI, 'filter')
+        for path in self.get_references("filters"):
+            self.startElementNS(NS_NEWS_URI, 'filter', {'target': path})
+            self.endElementNS(NS_NEWS_URI, 'filter')
         self.endElementNS(NS_NEWS_URI, "filters")
 
 
@@ -187,14 +159,14 @@ class AgendaViewerProducer(NewsViewerProducer):
              'days_to_show': str(self.context.days_to_show()),
              'number_to_show_archive': str(
                     self.context.get_number_to_show_archive())})
-        self.metadata()
+        self.sax_metadata()
         self.startElement('content')
-        self.filters()
+        self.sax_filters()
         self.endElement('content')
         self.endElementNS(NS_NEWS_URI,'agenda_viewer')
 
 
-class NewsItemProducer(xmlexport.SilvaVersionedContentProducer):
+class NewsItemProducer(producers.SilvaVersionedContentProducer):
     """Export a NewsItem object to XML.
     """
     grok.adapts(interfaces.INewsItem, Interface)
@@ -203,12 +175,12 @@ class NewsItemProducer(xmlexport.SilvaVersionedContentProducer):
         """sax"""
         self.startElementNS(
             NS_NEWS_URI, 'news_item', {'id': self.context.id})
-        self.workflow()
-        self.versions()
+        self.sax_workflow()
+        self.sax_versions()
         self.endElementNS(NS_NEWS_URI,'news_item')
 
 
-class NewsItemVersionProducer(xmlexport.SilvaProducer):
+class NewsItemVersionProducer(producers.SilvaProducer):
     """Export a version of a NewsItem object to XML.
     """
     grok.adapts(interfaces.INewsItemVersion, Interface)
@@ -222,17 +194,17 @@ class NewsItemVersionProducer(xmlexport.SilvaProducer):
              'target_audiences': ','.join(self.context.get_target_audiences()),
              'display_datetime': iso_datetime(
                     self.context.get_display_datetime())})
-        self.metadata()
-        self.extra_content()
+        self.sax_metadata()
+        self.sax_content()
         self.endElement('content')
 
-    def extra_content(self):
+    def sax_content(self):
         self.startElementNS(NS_NEWS_URI, 'body')
         TextProducerProxy(self.context, self.context.body).sax(self)
         self.endElementNS(NS_NEWS_URI, 'body')
 
 
-class AgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
+class AgendaItemProducer(producers.SilvaVersionedContentProducer):
     """Export an AgendaItem object to XML.
     """
     grok.adapts(interfaces.IAgendaItem, Interface)
@@ -241,12 +213,12 @@ class AgendaItemProducer(xmlexport.SilvaVersionedContentProducer):
         """sax"""
         self.startElementNS(
             NS_NEWS_URI, 'agenda_item', {'id': self.context.id})
-        self.workflow()
-        self.versions()
+        self.sax_workflow()
+        self.sax_versions()
         self.endElementNS(NS_NEWS_URI,'agenda_item')
 
 
-class AgendaItemVersionProducer(xmlexport.SilvaProducer):
+class AgendaItemVersionProducer(producers.SilvaProducer):
     """Export a version of an AgendaItem object to XML.
     """
     grok.adapts(interfaces.IAgendaItemVersion, Interface)
@@ -260,7 +232,7 @@ class AgendaItemVersionProducer(xmlexport.SilvaProducer):
              'target_audiences': ','.join(self.context.get_target_audiences()),
              'display_datetime': iso_datetime(
                 self.context.get_display_datetime())})
-        self.metadata()
+        self.sax_metadata()
         for occurrence in self.context.get_occurrences():
             self.startElementNS(
                 NS_NEWS_URI, 'occurrence',
@@ -273,10 +245,10 @@ class AgendaItemVersionProducer(xmlexport.SilvaProducer):
                  'all_day': str(occurrence.is_all_day()),
                  'timezone_name': occurrence.get_timezone_name()})
             self.endElementNS(NS_NEWS_URI, 'occurrence')
-        self.extra_content()
+        self.sax_content()
         self.endElement('content')
 
-    def extra_content(self):
+    def sax_content(self):
         self.startElementNS(NS_NEWS_URI, 'body')
         TextProducerProxy(self.context, self.context.body).sax(self)
         self.endElementNS(NS_NEWS_URI, 'body')
