@@ -80,6 +80,53 @@ class XMLExportTestCase(SilvaXMLTestCase):
         self.assertEqual(exporter.getAssetPaths(), [])
         self.assertEqual(exporter.getProblems(), [])
 
+    def test_news_viewer_external(self):
+        """Export a news viewer that refer a filter that is outside of
+        the export folder.
+        """
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsFilter('filter', 'News Filter')
+        factory = self.root.export.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News Publication')
+        factory.manage_addNewsFilter('filter', 'News Filter')
+        factory.manage_addNewsViewer('viewer', 'News Viewer')
+        self.root.export.filter.set_sources(
+            [self.root.export.news])
+        self.root.export.viewer.set_filters(
+            [self.root.export.filter, self.root.filter])
+
+        self.assertExportFail(self.root.export)
+
+    def test_news_viewer_external_force(self):
+        """Export a news viewer that refer a filter that is outside of
+        the export folder, with the option external_references set to True.
+        """
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsFilter('filter', 'News Filter')
+        factory = self.root.export.manage_addProduct['silva.app.news']
+        factory.manage_addNewsPublication('news', 'News Publication')
+        factory.manage_addNewsFilter('filter', 'News Filter')
+        factory.manage_addNewsViewer('viewer', 'News Viewer')
+        self.root.export.filter.set_sources(
+            [self.root.export.news])
+        self.root.export.viewer.set_filters(
+            [self.root.export.filter, self.root.filter])
+
+        exporter = self.assertExportEqual(
+            self.root.export,
+            'test_export_newsviewer_external.silvaxml',
+            options={'external_references': True})
+        self.assertEqual(
+            exporter.getZexpPaths(),
+            [])
+        self.assertEqual(
+            exporter.getAssetPaths(),
+            [])
+        self.assertEqual(
+            exporter.getProblems(),
+            [(u'Content contains 1 reference(s) pointing outside of the export.',
+              self.root.export.viewer)])
+
     def test_agenda_viewer(self):
         """Export an agenda viewer.
         """
