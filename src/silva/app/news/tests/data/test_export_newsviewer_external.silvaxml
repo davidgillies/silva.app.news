@@ -238,7 +238,7 @@
       </silva-app-news:news_filter>
     </content>
   </folder>
- <problem path="viewer">
+ <problem path="export/viewer">
   Content contains 1 reference(s) pointing outside of the export.
  </problem>
 </silva>
