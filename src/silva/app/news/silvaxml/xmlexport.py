@@ -1,7 +1,7 @@
-
 # -*- coding: utf-8 -*-
-# Copyright (c) 2002-2012 Infrae. All rights reserved.
+# Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
+
 
 from five import grok
 from zope.interface import Interface
