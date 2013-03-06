@@ -5,7 +5,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '3.0.1dev'
+version = '3.0.1'
 
 tests_require = [
     'Products.Silva [test]',
@@ -53,6 +53,7 @@ setup(name='silva.app.news',
         'silva.core.smi',
         'silva.core.upgrade',
         'silva.core.views',
+        'silva.core.xml',
         'silva.fanstatic',
         'silva.ui',
         'z3locales',
