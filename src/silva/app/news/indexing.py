@@ -6,7 +6,6 @@ from Products.PluginIndexes.interfaces import IPluggableIndex
 from Products.PluginIndexes.common.util import parseIndexRequest
 from Products.PluginIndexes.common import safe_callable
 from BTrees.IIBTree import IISet, multiunion, difference, intersection, union
-from BTrees.IOBTree import IOBTree
 from BTrees.OIBTree import OIBTree
 import BTrees
 from OFS.SimpleItem import SimpleItem
@@ -51,6 +50,9 @@ class IntegerRangesIndex(SimpleItem):
 
     def clear(self):
         """Empty the index"""
+        
+        IOBTree = BTrees.family64.IO.BTree
+
         self._index = IOBTree() # {rangeid: [document_id, ...]}
         self._unindex = IOBTree() # {document_id: [rangeid, ...]}
         self._range_mapping = IOBTree() # {rangeid: range}
@@ -202,10 +204,13 @@ class IntegerRangesIndex(SimpleItem):
             qstart, qend = record.keys
         except TypeError:
             return None
-        qstart = min(BTrees.IOBTree.family.maxint,
-                     max(BTrees.IOBTree.family.minint, qstart))
-        qend = max(BTrees.IOBTree.family.minint,
-                   min(BTrees.IOBTree.family.maxint, qend))
+
+        minint = BTrees.family64.minint
+        maxint = BTrees.family64.maxint
+
+        qstart = min(maxint, max(minint, qstart))
+        qend = max(minint, min(maxint, qend))
+
         # start in inside range
         start = multiunion(self._since_index.values(max=qstart))
         end = multiunion(self._until_index.values(min=qstart))
