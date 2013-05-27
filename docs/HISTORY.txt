@@ -1,10 +1,10 @@
 ChangeLog
 =========
 
-3.0.2 (unreleased)
+3.0.2 (2013/05/27)
 ------------------
 
-- ...
+- Force date index to use a 64-bit BTree to store its value.
 
 3.0.1 (2013/03/06)
 ------------------
