@@ -90,6 +90,12 @@ class FilterNewsViewerTestCase(unittest.TestCase):
             [b.getPath() for b in self.root.viewer.get_items()],
             ['/root/news/snowing/0', '/root/news/rain/0'])
 
+        # Try to configure two filters
+        self.root.viewer.add_filter(self.root.public)
+        self.assertItemsEqual(
+            [b.getPath() for b in self.root.viewer.get_items()],
+            ['/root/news/snowing/0', '/root/news/rain/0'])
+
     def test_get_items_excluded(self):
         """Test that get_items family methods works when an item is
         ignored.
