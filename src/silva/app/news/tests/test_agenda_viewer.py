@@ -160,16 +160,18 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
         self.root.agenda.add_filter(self.root.filter)
         self.root.agenda.set_timezone_name('Europe/Amsterdam')
 
+        year = datetime.today().year
         timezone = self.root.agenda.get_timezone()
-        sdt = datetime(2012, 6, 4, 10, 20, tzinfo=timezone)
+        sdt = datetime(year, 6, 4, 10, 20, tzinfo=timezone)
         self.add_published_agenda_item(
             self.root.source, 'saturday', u'Saturday “π” aka Disco',
             sdt, sdt + relativedelta(hours=+1))
 
-        sdt = datetime(2012, 6, 10, 10, 20, tzinfo=timezone)
+        sdt = datetime(year, 6, 10, 10, 20, tzinfo=timezone)
         self.add_published_agenda_item(
             self.root.source, 'sunday', u'Sunday pépère héhé!',
             sdt, sdt + relativedelta(days=+1), all_day=True)
+        self.year = str(year)
 
     def test_rendering(self):
         with self.layer.get_browser(calendar_settings) as browser:
@@ -182,7 +184,7 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
             self.assertEqual(
                 browser.open(
                     '/root/agenda',
-                    query={'year': '2012', 'month': '6', 'day': '4'}),
+                    query={'year': self.year, 'month': '6', 'day': '4'}),
                 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(
@@ -237,8 +239,8 @@ X-WR-CALNAME:Agenda
 X-WR-TIMEZONE:Europe/Amsterdam
 BEGIN:VEVENT
 CREATED:%(sunday_created)s
-DTEND;VALUE=DATE:20120612
-DTSTART;VALUE=DATE:20120610
+DTEND;VALUE=DATE:%(year)s0612
+DTSTART;VALUE=DATE:%(year)s0610
 LAST-MODIFIED:%(sunday_modified)s
 SUMMARY:Sunday pépère héhé!
 UID:%(sunday_id)s@0@silvanews
@@ -246,15 +248,16 @@ URL:http://localhost/root/source/sunday
 END:VEVENT
 BEGIN:VEVENT
 CREATED:%(saturday_created)s
-DTEND:20120604T092000Z
-DTSTART:20120604T082000Z
+DTEND:%(year)s0604T092000Z
+DTSTART:%(year)s0604T082000Z
 LAST-MODIFIED:%(saturday_modified)s
 SUMMARY:Saturday “π” aka Disco
 UID:%(saturday_id)s@0@silvanews
 URL:http://localhost/root/source/saturday
 END:VEVENT
 END:VCALENDAR
-""" % {'sunday_id': get_identifier(events.sunday.get_viewable()),
+""" % {'year': self.year,
+       'sunday_id': get_identifier(events.sunday.get_viewable()),
        'sunday_created': format_date(events.sunday.get_creation_datetime()),
        'sunday_modified': format_date(events.sunday.get_modification_datetime()),
        'saturday_id': get_identifier(events.saturday.get_viewable()),
