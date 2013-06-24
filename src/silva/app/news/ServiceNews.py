@@ -112,12 +112,12 @@ class ServiceNews(SilvaService, TimezoneMixin):
         self.add_subject(u'generic', u'Generic')
         self.add_target_audience(u'all', u'All')
 
-    def get_all_filters(self):
+    def get_all_filters(self, require=INewsItemFilter):
         catalog = getUtility(ICatalogService)
         query = {
             'meta_type': {
                 'operator': 'or',
-                'query': meta_types_for_interface(INewsItemFilter)}}
+                'query': meta_types_for_interface(require)}}
         return (brain.getObject() for brain in catalog(query))
 
     def get_all_sources(self, item=None):

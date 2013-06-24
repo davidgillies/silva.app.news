@@ -372,17 +372,23 @@ def get_default_tz_name(form):
     util = getUtility(IServiceNews)
     return util.get_timezone_name()
 
-@grok.provider(IContextSourceBinder)
-def filters_source(context):
-    terms = []
-    get_token = getUtility(IIntIds).register
-    get_filters = getUtility(IServiceNews).get_all_filters
-    for filter in get_filters():
-        path = "/".join(filter.getPhysicalPath())
-        terms.append(SimpleTerm(value=filter,
-                                title="%s (%s)" % (filter.get_title(), path),
-                                token=str(get_token(filter))))
-    return SimpleVocabulary(terms)
+
+def make_filters_source(require=INewsItemFilter):
+
+    @grok.provider(IContextSourceBinder)
+    def filters_source(context):
+        terms = []
+        get_token = getUtility(IIntIds).register
+        get_filters = getUtility(IServiceNews).get_all_filters
+        for filter in get_filters(require):
+            path = "/".join(filter.getPhysicalPath())
+            terms.append(SimpleTerm(
+                    value=filter,
+                    title="%s (%s)" % (filter.get_title(), path),
+                    token=str(get_token(filter))))
+        return SimpleVocabulary(terms)
+
+    return filters_source
 
 @grok.provider(IContextSourceBinder)
 def news_source(context):
@@ -513,8 +519,10 @@ class IServiceNews(IServiceNewsCategorization):
         """
 
     # ACCESSORS
-    def get_all_filters():
-        """Return all the Silva News Filter contents from the site.
+    def get_all_filters(require=INewsItemFilter):
+        """Return all the Silva News Filter contents from the
+        site. The optional require option let you restrict the type of
+        filter you want to get.
         """
 
     def get_all_sources(item=None):

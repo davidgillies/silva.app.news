@@ -31,7 +31,7 @@ from zeam.utils import batch
 # SilvaNews
 from silva.app.news.interfaces import get_default_tz_name, timezone_source
 from silva.app.news.interfaces import (INewsViewer, IServiceNews,
-    show_source, week_days_source, filters_source)
+    show_source, week_days_source, make_filters_source)
 from silva.app.news.ServiceNews import TimezoneMixin
 
 
@@ -239,7 +239,7 @@ class INewsViewerFields(Interface):
     """ Fields description for use in forms only
     """
     filters = schema.Set(
-        value_type=schema.Choice(source=filters_source),
+        value_type=schema.Choice(source=make_filters_source()),
         title=_(u"filters"),
         description=_(u"Use predefined filters."))
 

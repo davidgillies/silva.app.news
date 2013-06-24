@@ -10,7 +10,7 @@ from zope.interface.verify import verifyObject
 from Products.Silva.testing import tests
 from silva.core.services.interfaces import IMetadataService
 
-from silva.app.news.interfaces import IServiceNews
+from silva.app.news.interfaces import IServiceNews, IAgendaFilter
 from silva.app.news.Tree import DuplicateIdError, IReadableRoot
 from silva.app.news.testing import FunctionalLayer
 
@@ -52,6 +52,12 @@ class ServiceNewsTestCase(unittest.TestCase):
         tests.assertContentItemsEqual(
             list(service.get_all_filters()),
             [self.root.news_filter, self.root.agenda_filter,
+             self.root.info.agenda_filter])
+
+        # We should now find all the agenda and news filters we added
+        tests.assertContentItemsEqual(
+            list(service.get_all_filters(IAgendaFilter)),
+            [self.root.agenda_filter,
              self.root.info.agenda_filter])
 
     def test_find_all_sources(self):

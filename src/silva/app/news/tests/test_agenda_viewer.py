@@ -174,12 +174,31 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
         self.year = str(year)
 
     def test_rendering(self):
+        """Render an empty agenda viewer.
+        """
         with self.layer.get_browser(calendar_settings) as browser:
             self.assertEqual(browser.open('/root/agenda'), 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(browser.inspect.newsitems, [])
 
+    def test_rendering_with_news_items(self):
+        """Render an agenda viewer that includes news items. This used
+        to be possible but is no longer.
+        """
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addNewsFilter('news', 'News Filter')
+        self.root.news.set_sources([self.root.source])
+        self.root.agenda.add_filter(self.root.news)
+        self.add_published_news_item(self.root.source, 'lost', u'I am lost')
+        with self.layer.get_browser(calendar_settings) as browser:
+            browser.options.handle_errors = False
+            self.assertEqual(browser.open('/root/agenda'), 200)
+            self.assertEqual(browser.inspect.title, ['Agenda'])
+            self.assertEqual(browser.inspect.newsitems, [u'I am lost'])
+
     def test_rendering_with_event(self):
+        """Render an agenda viewer with events.
+        """
         with self.layer.get_browser(calendar_settings) as browser:
             self.assertEqual(
                 browser.open(

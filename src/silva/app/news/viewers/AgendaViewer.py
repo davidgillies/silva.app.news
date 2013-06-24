@@ -32,8 +32,9 @@ from js import jquery
 
 # SilvaNews
 from silva.app.news import datetimeutils
-from silva.app.news.interfaces import IAgendaViewer
+from silva.app.news.interfaces import IAgendaViewer, IAgendaFilter, IAgendaItemContent
 from silva.app.news.interfaces import get_default_tz_name
+from silva.app.news.interfaces import make_filters_source
 from silva.app.news.viewers.NewsViewer import NewsViewer, INewsViewerFields
 from silva.app.news.htmlcalendar import HTMLCalendar
 from Products.SilvaExternalSources.ExternalSource import ExternalSource
@@ -93,10 +94,6 @@ class AgendaViewer(NewsViewer, ExternalSource):
 InitializeClass(AgendaViewer)
 
 
-class ICalendarResources(IDefaultBrowserLayer):
-    silvaconf.resource('calendar.css')
-
-
 class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaViewer)
     grok.name(u"Silva Agenda Viewer")
@@ -104,6 +101,22 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
     fields = silvaforms.Fields(ITitledContent, INewsViewerFields)
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
+    fields['filters'].valueField.source = make_filters_source(IAgendaFilter)
+
+
+class AgendaViewerEditForm(silvaforms.SMIEditForm):
+    """ Edit form for news viewer
+    """
+    grok.context(IAgendaViewer)
+
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields).omit('id')
+    fields['number_is_days'].mode = u'radio'
+    fields['timezone_name'].defaultValue = get_default_tz_name
+    fields['filters'].valueField.source = make_filters_source(IAgendaFilter)
+
+
+class ICalendarResources(IDefaultBrowserLayer):
+    silvaconf.resource('calendar.css')
 
 
 class CalendarView(object):
@@ -155,7 +168,9 @@ class CalendarView(object):
             current_day=current_day or today,
             day_render_callback=self._render_day_callback)
         for brain in self.context.get_items_by_date_range(start, end):
-            self._register_event(acalendar, brain.getObject(), start, end)
+            item = brain.getObject()
+            if IAgendaItemContent.providedBy(item):
+                self._register_event(acalendar, item, start, end)
         return acalendar
 
     def _register_event(self, acalendar, event, start, end):
