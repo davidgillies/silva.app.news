@@ -20,7 +20,7 @@
           <td width="50%" valign="top">
 
             <div class="form-title">Subjects</div><br />
-            <form method="POST" action="#"
+            <form method="POST" action="#" enctype="multipart/form-data"
                   tal:attributes="action request/URL">
               <tal:repeat repeat="subjecttuple view/subject_tree">
                 <tal:define define="subject python:subjecttuple[0];
@@ -51,6 +51,8 @@
                           </tal:define>
                         </tal:repeat>
                       </select>
+                      <div class="form-text">or upload tree:</div>
+                      <input type="file" name="subjects_json"><br />
                       <input type="submit" value="Add" name="manage_add_subject" class="form-element">
             </form>
             <form method="POST" action="#"
@@ -64,7 +66,7 @@
 
           <td valign="top">
             <div class="form-title">Target audiences</div><br />
-            <form method="POST" action="#"
+            <form method="POST" action="#" enctype="multipart/form-data"
                   tal:attributes="action request/URL">
               <tal:repeat repeat="tatuple target_audience_tree">
                 <tal:define define="target_audience python:tatuple[0]; title python: tatuple[1]; depth python:int(tatuple[2])">
@@ -91,6 +93,8 @@
                           </tal:define>
                         </tal:repeat>
                       </select>
+                      <div class="form-text">or upload tree:</div>
+                      <input type="file" name="target_audiences_json"><br />
                       <input type="submit" name="manage_add_target_audience"
                              value="Add" class="form-element">
             </form>

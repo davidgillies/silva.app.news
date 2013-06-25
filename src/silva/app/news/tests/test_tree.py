@@ -16,13 +16,13 @@ from silva.app.news.testing import FunctionalLayer
 from silva.app.news.Tree import DuplicateIdError
 from silva.app.news.Tree import IReadableRoot, IReadableNode
 from silva.app.news.Tree import IWritableRoot, IWritableNode
-from silva.app.news.Tree import Tree, Node, create_filtered_tree
+from silva.app.news.Tree import Root, Node, create_filtered_tree
 
 
 class TreeTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.root = Tree()
+        self.root = Root()
 
         self.child1 = child1 = Node('child1', 'Child1')
         self.root.add_child(child1)
@@ -92,7 +92,7 @@ class TreeTestCase(unittest.TestCase):
         self.assertTrue('grand1child2' not in self.root.get_ids())
 
     def test_from_dict(self):
-        root = Tree.from_dict({
+        root = Root.from_dict({
                 'id': 'root', 'title': 'root',
                 'children':[{'id': 'a', 'title': 'A',
                              'children': [{'id': 'a1', 'title': 'A1'}]},
@@ -162,7 +162,7 @@ class TestTreeFormWidget(unittest.TestCase):
     def setUp(self):
         self.root = self.layer.get_application()
         service = component.getUtility(IServiceNews)
-        subjects = Tree()
+        subjects = Root()
         subjects.add_child(Node('comics', 'comics'))
         subjects.add_child(Node('books', 'books'))
         service._subjects = subjects

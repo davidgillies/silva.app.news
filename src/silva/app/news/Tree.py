@@ -147,7 +147,7 @@ class Node:
                 'children': map(lambda c: c.as_dict(), self._children)}
 
 
-class Tree(Node):
+class Root(Node):
     implements(IWritableRoot)
 
     def __init__(self):
@@ -200,7 +200,7 @@ class Tree(Node):
         return root
 
 # BBB
-Root = Tree
+Tree = Root
 
 
 class FilteredNode(object):

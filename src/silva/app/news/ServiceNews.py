@@ -300,9 +300,19 @@ class ManageServiceNews(silvaviews.ZMIView):
 
     def manage_add_subject(self):
         """Add a subject"""
-        if (not self.request.has_key('subject') or not
-            self.request.has_key('parent') or self.request['subject'] == ''
-            or not self.request.has_key('title') or self.request['title'] == ''):
+        if 'subjects_json' in self.request.form:
+            data = self.request.form['subjects_json'].read()
+            if data:
+                try:
+                    self.context._subjects = Tree.Root.from_dict(
+                        json.loads(data))
+                except:
+                    self.status = 'Invalid upload'
+                return
+        if ('subject' not in self.request.form or
+            'parent' not in self.request.form or
+            'title' not in self.request.form or
+            self.request['subject'] == '' or self.request['title'] == ''):
             self.status ='Missing id or title'
             return
 
@@ -342,11 +352,20 @@ class ManageServiceNews(silvaviews.ZMIView):
 
     def manage_add_target_audience(self):
         """Add a target_audience"""
-        if (not self.request.has_key('target_audience') or
-                not self.request.has_key('parent') or
-                self.request['target_audience'] == '' or
-                not self.request.has_key('title') or
-                self.request['title'] == ''):
+        if 'target_audiences_json' in self.request.form:
+            data = self.request.form['target_audiences_json'].read()
+            if data:
+                try:
+                    self.context._target_audiences = Tree.Root.from_dict(
+                        json.loads(data))
+                except:
+                    self.status = 'Invalid upload'
+                return
+        if ('target_audience' not in self.request.form or
+            'parent' not in self.request.form or
+            'title' not in self.request.form or
+            self.request['target_audience'] == '' or
+            self.request['title'] == ''):
             self.status ='Missing id or title'
             return
 
