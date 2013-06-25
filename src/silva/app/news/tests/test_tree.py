@@ -16,13 +16,13 @@ from silva.app.news.testing import FunctionalLayer
 from silva.app.news.Tree import DuplicateIdError
 from silva.app.news.Tree import IReadableRoot, IReadableNode
 from silva.app.news.Tree import IWritableRoot, IWritableNode
-from silva.app.news.Tree import Root, Node, create_filtered_tree
+from silva.app.news.Tree import Tree, Node, create_filtered_tree
 
 
 class TreeTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.root = Root()
+        self.root = Tree()
 
         self.child1 = child1 = Node('child1', 'Child1')
         self.root.add_child(child1)
@@ -91,6 +91,29 @@ class TreeTestCase(unittest.TestCase):
         self.assertTrue('child2' not in self.root.get_ids())
         self.assertTrue('grand1child2' not in self.root.get_ids())
 
+    def test_from_dict(self):
+        root = Tree.from_dict({
+                'id': 'root', 'title': 'root',
+                'children':[{'id': 'a', 'title': 'A',
+                             'children': [{'id': 'a1', 'title': 'A1'}]},
+                            {'id': 'b', 'title': 'B',
+                             'children': [{'id': 'b1', 'title': 'B1'},
+                                          {'id': 'b2', 'title': 'B2'}]},
+                            {'id': 'c', 'title': 'C',
+                             'children': []}]})
+        self.assertTrue(verifyObject(IWritableNode, root))
+        self.assertTrue(verifyObject(IWritableRoot, root))
+        self.assertItemsEqual(root.get_ids(),
+                              ['root', 'a', 'b', 'c', 'a1', 'b1', 'b2'])
+
+        b = root.get_element('b')
+        self.assertTrue(verifyObject(IWritableNode, b))
+        self.assertEqual(b.id(), 'b')
+        self.assertEqual(b.title(), 'B')
+        self.assertEqual(len(b.children()), 2)
+        self.assertIs(b.parent(), root)
+        self.assertItemsEqual(b.get_ids(), ['b', 'b1', 'b2'])
+
     def test_root(self):
         self.assertTrue(verifyObject(IWritableNode, self.root))
         self.assertTrue(verifyObject(IWritableRoot, self.root))
@@ -103,6 +126,16 @@ class TreeTestCase(unittest.TestCase):
         self.assertItemsEqual(
             [x.id() for x in self.root.get_elements()],
             ['child1', 'child2', 'grand1child2', 'root'])
+        self.assertEqual(
+            self.root.as_dict(),
+            {'children': [{'children': [], 'id': 'child1', 'title': 'Child1'},
+              {'children': [{'children': [],
+                             'id': 'grand1child2',
+                             'title': 'Grand1child2'}],
+               'id': 'child2',
+               'title': 'Child2'}],
+             'id': 'root',
+             'title': 'root'})
 
     def test_filtered_root(self):
         filtered_root = create_filtered_tree(self.root, ['child1'])
@@ -129,7 +162,7 @@ class TestTreeFormWidget(unittest.TestCase):
     def setUp(self):
         self.root = self.layer.get_application()
         service = component.getUtility(IServiceNews)
-        subjects = Root()
+        subjects = Tree()
         subjects.add_child(Node('comics', 'comics'))
         subjects.add_child(Node('books', 'books'))
         service._subjects = subjects
@@ -163,7 +196,6 @@ class TestTreeFormWidget(unittest.TestCase):
         data, errors = form.extractData()
         self.assertEqual(set(['comics', 'books']), data['subjects'])
         self.assertEqual(None, errors.get('addform.field.subjects', None))
-
 
 
 def test_suite():

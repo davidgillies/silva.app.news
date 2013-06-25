@@ -62,6 +62,11 @@ class IWritableNode(IReadableNode):
         """Remove a child from this node.
         """
 
+    def as_dict():
+        """Return node as a dictionnary.
+        """
+
+
 class IWritableRoot(IReadableRoot, IWritableNode):
     pass
 
@@ -134,8 +139,15 @@ class Node:
                 results.extend(node.get_ids(max(depth - 1, -1)))
         return results
 
+    def as_dict(self):
+        """Return the tree as a serialized dictionnary.
+        """
+        return {'id': self._id,
+                'title': self._title,
+                'children': map(lambda c: c.as_dict(), self._children)}
 
-class Root(Node):
+
+class Tree(Node):
     implements(IWritableRoot)
 
     def __init__(self):
@@ -144,20 +156,51 @@ class Root(Node):
         self._root = self
 
     def get_element(self, id):
-        """returns an element by id"""
+        """Returns an element by id
+        """
         return self._references[id]
 
     def get_elements(self):
         return self._references.values()
 
     def get_ids(self, depth=-1):
-        """returns list of all used ids"""
+        """Eeturns list of all used ids
+        """
         if depth != -1:
             return Node.get_ids(self, depth=depth)
         return self._references.keys()
 
     def _del_element(self, child):
         del self._references[child.id()]
+
+    @classmethod
+    def from_dict(cls, values):
+        root = cls()
+        root._id = values['id']
+        root._title = values['title']
+
+        def create_child(node, value):
+            if value['id'] in root._references.keys():
+                raise DuplicateIdError(
+                    u'identifier already in use - %s' % value['id'])
+            child = Node(value['id'], value['title'])
+            child._parent = node
+            child._root = root
+            root._references[value['id']] = child
+            grandchildren = value.get('children', [])
+            if len(grandchildren):
+                child._children = map(
+                    lambda v: create_child(child, v),
+                    grandchildren)
+            return child
+
+        root._children = map(
+            lambda v: create_child(root, v),
+            values.get('children', []))
+        return root
+
+# BBB
+Root = Tree
 
 
 class FilteredNode(object):
