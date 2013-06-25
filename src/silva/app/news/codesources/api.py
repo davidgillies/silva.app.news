@@ -212,6 +212,22 @@ class NewsItemReference(grok.MultiAdapter):
 InitializeClass(NewsItemReference)
 
 
+def _toDateTime(dt):
+    """converts a Python datetime object to a localized Zope
+       DateTime one"""
+    if dt is None:
+        return None
+    if type(dt) in [str, unicode]:
+        # string
+        dt = DateTime(dt)
+        return dt.toZone(dt.localZone())
+    elif type(dt) == tuple:
+        # tuple
+        return DateTime(*dt)
+    # datetime?
+    return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
+
+
 class AgendaItemReference(NewsItemReference):
     grok.adapts(IAgendaItemContentVersion, Interface)
 
@@ -229,7 +245,7 @@ class AgendaItemReference(NewsItemReference):
     @memoize
     def start_datetime(self):
         if self.occurrence is not None:
-            return self.occurrence.get_start_datetime()
+            return _toDateTime(self.occurrence.get_start_datetime())
         return None
 
     security.declareProtected(
@@ -237,7 +253,7 @@ class AgendaItemReference(NewsItemReference):
     @memoize
     def end_datetime(self):
         if self.occurrence is not None:
-            return self.occurrence.get_end_datetime()
+            return _toDateTime(self.occurrence.get_end_datetime())
         return None
 
     security.declareProtected(
@@ -250,23 +266,6 @@ class AgendaItemReference(NewsItemReference):
 
 
 InitializeClass(AgendaItemReference)
-
-
-def _toDateTime(dt):
-    """converts a Python datetime object to a localized Zope
-       DateTime one"""
-    if dt is None:
-        return None
-    if type(dt) in [str, unicode]:
-        # string
-        dt = DateTime(dt)
-        return dt.toZone(dt.localZone())
-    elif type(dt) == tuple:
-        # tuple
-        return DateTime(*dt)
-    # datetime?
-    return DateTime(dt.year, dt.month, dt.day, dt.hour, dt.minute)
-
 
 
 class RSSItemReference(object):

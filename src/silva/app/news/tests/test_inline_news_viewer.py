@@ -4,6 +4,7 @@
 
 import unittest
 from datetime import datetime
+from DateTime import DateTime
 
 from Products.Silva.testing import TestRequest, tests
 from zope.component import getUtility
@@ -174,7 +175,6 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         """
         IPublicationWorkflow(self.root.news.debugging).publish()
         version = self.root.news.debugging.get_viewable()
-        timezone = self.root.news.index.default_timezone()
 
         items = get_items(self.root.news.index, TestRequest(), 10)
         self.assertEqual(len(items), 1)
@@ -185,10 +185,10 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(item.title(), 'Debugging of a code source')
         self.assertEqual(
             item.start_datetime(),
-            datetime(2012, 7, 10, 8, 0, tzinfo=timezone))
+            DateTime('2012/07/10 08:00:00 GMT+2'))
         self.assertEqual(
             item.end_datetime(),
-            datetime(2012, 07, 15, 18, 0, 0, tzinfo=timezone))
+            DateTime('2012/07/15 18:00:00 GMT+2'))
         self.assertEqual(
             item.location(), u'Rotterdam')
 
