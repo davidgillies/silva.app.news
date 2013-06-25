@@ -52,8 +52,13 @@
                         </tal:repeat>
                       </select>
                       <input type="submit" value="Add" name="manage_add_subject" class="form-element">
-                        <br /><br />
             </form>
+            <form method="POST" action="#"
+                  tal:attributes="action string:${context/@@absolute_url}/manage_news_export_tree">
+              <input type="submit" name="subjects"
+                     value="Download" class="form-element">
+            </form>
+            <br /><br />
 
           </td>
 
@@ -88,8 +93,13 @@
                       </select>
                       <input type="submit" name="manage_add_target_audience"
                              value="Add" class="form-element">
-                        <br /><br />
             </form>
+            <form method="POST" action="#"
+                  tal:attributes="action string:${context/@@absolute_url}/manage_news_export_tree">
+              <input type="submit" name="target_audiences"
+                     value="Download" class="form-element">
+            </form>
+            <br /><br />
 
           </td>
         </tr>

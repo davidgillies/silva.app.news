@@ -164,6 +164,25 @@ class ServiceNewsTestCase(unittest.TestCase):
             [('test1', 'Test 1'),
              ('root', 'root')])
 
+        # Export
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(
+                browser.open('/root/service_news/manage_news_export_tree',
+                             query=[('subjects', '1')]),
+                200)
+            self.assertEqual(
+                browser.headers['Content-Disposition'],
+                'inline;filename=subjects.json')
+            self.assertEqual(
+                browser.headers['Content-Type'],
+                'application/json')
+            self.assertEqual(
+                browser.json,
+                {u'children': [{u'children': [], u'id': u'test1', u'title': u'Test 1'}],
+                 u'id': u'root',
+                 u'title': u'root'})
+
     def test_target_audiences(self):
         """Test the target audience management.
         """
@@ -203,6 +222,24 @@ class ServiceNewsTestCase(unittest.TestCase):
             service.get_target_audiences(),
             [('test1', 'Test 1'),
              ('root', 'root')])
+
+        # Export
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(
+                browser.open('/root/service_news/manage_news_export_tree'),
+                200)
+            self.assertEqual(
+                browser.headers['Content-Disposition'],
+                'inline;filename=target_audiences.json')
+            self.assertEqual(
+                browser.headers['Content-Type'],
+                'application/json')
+            self.assertEqual(
+                browser.json,
+                {u'children': [{u'children': [], u'id': u'test1', u'title': u'Test 1'}],
+                 u'id': u'root',
+                 u'title': u'root'})
 
 
 def test_suite():

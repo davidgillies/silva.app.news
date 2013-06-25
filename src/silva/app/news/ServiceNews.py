@@ -3,9 +3,9 @@
 # See also LICENSE.txt
 
 from datetime import datetime
-
 from five import grok
 from zope.component import getUtility
+import json
 import localdatetime
 
 from App.class_init import InitializeClass
@@ -244,6 +244,28 @@ def flatten_tree_helper(tree, ret, depth=0):
     for el in els:
         ret.append((el.id(), el.title(), depth))
         flatten_tree_helper(el, ret, depth+1)
+
+
+class ExportTreeServiceNews(silvaviews.ZMIView):
+    grok.name('manage_news_export_tree')
+    grok.context(ServiceNews)
+
+    def update(self, subjects=None):
+        if subjects:
+            self.values = self.context._subjects.as_dict()
+            self.filename = 'subjects.json'
+        else:
+            self.values = self.context._target_audiences.as_dict()
+            self.filename = 'target_audiences.json'
+
+    def render(self):
+        self.response.setHeader(
+            'Content-Disposition',
+            'inline;filename=%s' % self.filename)
+        self.response.setHeader(
+            'Content-Type',
+            'application/json')
+        return json.dumps(self.values)
 
 
 class ManageServiceNews(silvaviews.ZMIView):
