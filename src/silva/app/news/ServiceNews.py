@@ -247,7 +247,7 @@ def flatten_tree_helper(tree, ret, depth=0):
 
 
 class ExportTreeServiceNews(silvaviews.ZMIView):
-    grok.name('manage_news_export_tree')
+    grok.name('manage_tree')
     grok.context(ServiceNews)
 
     def update(self, subjects=None):

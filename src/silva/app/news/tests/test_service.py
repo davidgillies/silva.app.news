@@ -168,7 +168,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         with self.layer.get_browser() as browser:
             browser.login('manager')
             self.assertEqual(
-                browser.open('/root/service_news/manage_news_export_tree',
+                browser.open('/root/service_news/manage_tree',
                              query=[('subjects', '1')]),
                 200)
             self.assertEqual(
@@ -227,7 +227,7 @@ class ServiceNewsTestCase(unittest.TestCase):
         with self.layer.get_browser() as browser:
             browser.login('manager')
             self.assertEqual(
-                browser.open('/root/service_news/manage_news_export_tree'),
+                browser.open('/root/service_news/manage_tree'),
                 200)
             self.assertEqual(
                 browser.headers['Content-Disposition'],

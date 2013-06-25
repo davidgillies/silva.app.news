@@ -54,7 +54,7 @@
                       <input type="submit" value="Add" name="manage_add_subject" class="form-element">
             </form>
             <form method="POST" action="#"
-                  tal:attributes="action string:${context/@@absolute_url}/manage_news_export_tree">
+                  tal:attributes="action string:${context/@@absolute_url}/manage_tree">
               <input type="submit" name="subjects"
                      value="Download" class="form-element">
             </form>
@@ -95,7 +95,7 @@
                              value="Add" class="form-element">
             </form>
             <form method="POST" action="#"
-                  tal:attributes="action string:${context/@@absolute_url}/manage_news_export_tree">
+                  tal:attributes="action string:${context/@@absolute_url}/manage_tree">
               <input type="submit" name="target_audiences"
                      value="Download" class="form-element">
             </form>
