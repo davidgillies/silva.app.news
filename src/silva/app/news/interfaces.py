@@ -558,7 +558,7 @@ class INewsItemReference(Interface):
         """Get the thumbnail.
         """
 
-    def introduction(maxchars=1024):
+    def introduction(maxchars=1024, maxwords=None):
         """Get the introduction of this reference.
         """
 

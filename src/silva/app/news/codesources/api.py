@@ -165,9 +165,10 @@ class NewsItemReference(grok.MultiAdapter):
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'introduction')
-    def introduction(self, maxchars=1024):
+    def introduction(self, maxchars=1024, maxwords=None):
         if self.details is not None:
-            return self.details.get_introduction(length=maxchars)
+            return self.details.get_introduction(
+                length=maxchars, words=maxwords)
         return None
 
     security.declareProtected(
