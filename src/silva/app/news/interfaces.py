@@ -546,6 +546,14 @@ class INewsItemReference(Interface):
         """Get the description (from metadata) of this reference.
         """
 
+    def image_url():
+        """Get the image URL.
+        """
+
+    def thumbnail_url():
+        """Get the thumbnail URL.
+        """
+
     def thumbnail():
         """Get the thumbnail.
         """
@@ -572,6 +580,14 @@ class INewsItemReference(Interface):
 
     def location():
         """Get the location of this reference.
+        """
+
+    def target_audiences():
+        """Get the target audiences.
+        """
+
+    def subjects():
+        """Get the subjects.
         """
 
 

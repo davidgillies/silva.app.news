@@ -60,6 +60,8 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(item.title(), 'Testing of a code source')
         self.assertEqual(item.description(), '')
         self.assertEqual(item.thumbnail(), '')
+        self.assertEqual(item.thumbnail_url(), '')
+        self.assertEqual(item.image_url(), '')
         # XXX Later empty introduction should return an empty string.
         self.assertEqual(item.introduction(), '<p></p>')
         self.assertEqual(item.link(), 'http://localhost/root/news/testing')
@@ -125,6 +127,12 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(
             item.description(10),
             'This is an')
+        self.assertEqual(
+            item.thumbnail_url(),
+            'http://localhost/root/listing?thumbnail')
+        self.assertEqual(
+            item.image_url(),
+            'http://localhost/root/listing')
         tests.assertXMLEqual(
             item.thumbnail(),
             u"""<div class="inv_thumbnail">

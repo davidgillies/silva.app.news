@@ -20,7 +20,7 @@
   <tal:viewer tal:condition="python: viewer is not None"
     tal:define="
       viewer_url viewer/@@absolute_url;
-      items python:modules['silva.app.news.codesources.inline'].get_items(viewer, request, limit);
+      items python:modules['silva.app.news.codesources.api].get_items(viewer, request, limit);
       formatdate nocall:here/service_news/format_date"
     >
     <div tal:omit-tag="python:options['inv_div'] == '' and options['inv_div_id'] == ''"
