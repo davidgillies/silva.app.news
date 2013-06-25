@@ -353,7 +353,6 @@ class RSSItemReference(object):
         return set([])
 
 
-
 InitializeClass(RSSItemReference)
 
 
@@ -376,4 +375,7 @@ class RSSAggregatorNewsProvider(grok.Adapter):
 
 module_security.declarePublic('get_items')
 def get_items(viewer, request, limit):
-    return list(INewsProvider(viewer).get_items(request, limit))
+    provider = INewsProvider(viewer, None)
+    if provider is not None:
+        return list(provider.get_items(request, limit))
+    return []

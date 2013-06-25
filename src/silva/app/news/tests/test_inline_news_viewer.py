@@ -192,6 +192,16 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         self.assertEqual(
             item.location(), u'Rotterdam')
 
+    def test_broken_get_items_calls(self):
+        """Test that invalid calls to get_items doesn't fail.
+        """
+        self.assertEqual(
+            get_items(None, TestRequest(), 10),
+            [])
+        self.assertEqual(
+            get_items('viewer', TestRequest(), 10),
+            [])
+
 
 def test_suite():
     suite = unittest.TestSuite()
