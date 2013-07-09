@@ -55,32 +55,8 @@ class AgendaViewer(NewsViewer, ExternalSource):
     silvaconf.icon("www/agenda_viewer.png")
     silvaconf.priority(3.3)
 
-    def __init__(self, id):
-        super(AgendaViewer, self).__init__(id)
-        self._days_to_show = 31
-        self._number_is_days = True
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'days_to_show')
-    def days_to_show(self):
-        """Returns number of days to show
-        """
-        return self._days_to_show
-
-    security.declareProtected(SilvaPermissions.ChangeSilvaContent,
-                              'set_days_to_show')
-    def set_days_to_show(self, number):
-        """Sets the number of days to show in the agenda
-        """
-        self._days_to_show = number
-
-    security.declareProtected(SilvaPermissions.AccessContentsInformation,
-                              'get_items')
-    def get_items(self):
-        """Gets the items from the filters
-        """
-        return self._get_items(
-            lambda x: x.get_next_items(self._days_to_show))
+    _number_is_days = True
+    _number_to_show = 31
 
     security.declareProtected(SilvaPermissions.AccessContentsInformation,
                               'to_html')

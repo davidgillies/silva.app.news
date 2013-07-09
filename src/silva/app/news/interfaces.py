@@ -462,13 +462,6 @@ class IAgendaViewer(INewsViewer):
     """Viewer for agenda items
     """
 
-    def days_to_show():
-        """Return number of days to show on front page.
-        """
-
-    def set_days_to_show(number):
-        """Sets the number of days to show in the agenda.
-        """
 
 
 class IServiceNewsCategorization(ISilvaService):

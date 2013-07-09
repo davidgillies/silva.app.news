@@ -72,12 +72,32 @@ class AgendaViewerTestCase(SilvaNewsTestCase):
             [b.getPath() for b in brains],
             [])
 
-    def test_get_item_by_date(self):
-        """Test the various methods that get_items by date.
+    def test_get_item_with_number_option(self):
+        """Test get_items when number_is_days is false.
         """
         timezone = get_timezone('Europe/Amsterdam')
-        root = self.layer.get_application()
-        factory = root.manage_addProduct['silva.app.news']
+        today = datetime.now().replace(tzinfo=timezone)
+        factory = self.root.manage_addProduct['silva.app.news']
+        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+        factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
+        factory.manage_addNewsPublication('news', 'News Publication')
+
+        self.root.filter.set_sources([self.root.news])
+        self.root.viewer.set_filters([self.root.filter])
+        self.root.viewer.set_timezone_name('Europe/Amsterdam')
+        self.root.viewer.set_number_is_days(False)
+        self.root.viewer.set_number_to_show(10)
+
+
+    def test_get_item_with_days_option(self):
+        """Test get_items when number_is_days is true.
+        """
+
+    def test_get_item_by_date(self):
+        """Test get_items_by_date and get_items_by_date_range.
+        """
+        timezone = get_timezone('Europe/Amsterdam')
+        factory = self.root.manage_addProduct['silva.app.news']
         factory.manage_addAgendaFilter('filter', 'Agenda Filter')
         factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
         factory.manage_addNewsPublication('news', 'News Publication')

@@ -204,7 +204,6 @@ class AgendaViewerHandler(NewsViewerHandler):
         helpers.set_as_bool(viewer, 'number_is_days', attrs)
         helpers.set_as_int(viewer, 'number_to_show', attrs)
         helpers.set_as_int(viewer, 'number_to_show_archive', attrs)
-        helpers.set_as_int(viewer, 'days_to_show', attrs)
 
 
 class NewsFilterHandler(handlers.SilvaHandler):

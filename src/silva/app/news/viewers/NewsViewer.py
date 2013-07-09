@@ -57,7 +57,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     _number_to_show = 25
     _number_to_show_archive = 10
-    _number_is_days = 0
+    _number_is_days = False
 
     security = ClassSecurityInfo()
 

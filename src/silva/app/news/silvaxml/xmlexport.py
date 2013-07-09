@@ -156,9 +156,10 @@ class AgendaViewerProducer(NewsViewerProducer):
             NS_NEWS_URI,
             'agenda_viewer',
             {'id': self.context.id,
-             'days_to_show': str(self.context.days_to_show()),
+             'number_to_show': str(self.context.get_number_to_show()),
              'number_to_show_archive': str(
-                    self.context.get_number_to_show_archive())})
+                    self.context.get_number_to_show_archive()),
+             'number_is_days': str(self.context.get_number_is_days())})
         self.sax_metadata()
         self.startElement('content')
         self.sax_filters()
