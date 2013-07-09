@@ -65,7 +65,7 @@
         </content>
       </silva-app-news:news_publication>
       <silva-app-news:news_viewer id="viewer"
-                                  number_is_days="0"
+                                  number_is_days="False"
                                   number_to_show="25"
                                   number_to_show_archive="10">
         <metadata>

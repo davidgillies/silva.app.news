@@ -72,6 +72,8 @@ class XMLExportTestCase(SilvaXMLTestCase):
         factory.manage_addNewsViewer('viewer', 'News Viewer')
         self.root.export.filter.set_sources([self.root.export.news])
         self.root.export.viewer.set_filters([self.root.export.filter])
+        self.root.export.viewer.set_number_is_days(True)
+        self.root.export.viewer.set_number_to_show(10)
 
         exporter = self.assertExportEqual(
             self.root.export,

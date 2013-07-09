@@ -209,7 +209,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     def set_number_is_days(self, onoff):
         """Sets the number of items to show
         """
-        self._number_is_days = int(onoff)
+        self._number_is_days = bool(onoff)
 
     security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_filters')

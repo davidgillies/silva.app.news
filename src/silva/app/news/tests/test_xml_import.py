@@ -111,6 +111,8 @@ class XMLImportTestCase(SilvaXMLTestCase):
         self.assertTrue(verifyObject(interfaces.IAgendaViewer, export.viewer))
 
         self.assertEqual(export.viewer.get_title(), 'Agenda Viewer')
+        self.assertEqual(export.viewer.get_number_is_days(), True)
+        self.assertEqual(export.viewer.get_number_to_show(), 365)
         self.assertEqual(
             export.viewer.get_filters(),
             [export.filter])
