@@ -29,6 +29,7 @@ class SilvaNewsTestCase(unittest.TestCase):
         factory.manage_addAgendaItem(id, title)
         item = parent._getOb(id)
         version = item.get_editable()
+        version.set_display_datetime(sdt)
         version.set_occurrences([
                 AgendaItemOccurrence(
                     start_datetime=sdt,

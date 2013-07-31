@@ -31,7 +31,6 @@ class Events(rest.REST):
         for brain in brains:
             yield brain.getObject()
 
-
     def get_events_occurrences(self, start, end):
         get_id = component.getUtility(IIntIds).register
         for event in self.get_events(start, end):

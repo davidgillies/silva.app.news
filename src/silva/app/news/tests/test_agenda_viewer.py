@@ -26,15 +26,21 @@ from silva.app.news.datetimeutils import (local_timezone,
 def calendar_settings(browser):
     public_settings(browser)
     browser.inspect.add(
-        'newsitems',
+        'items',
         css=".newsitemheading",
         type='text')
+    browser.inspect.add(
+        'introduction',
+        css='h2.calendar_intro',
+        type='text',
+        unique=True)
     browser.inspect.add(
         'next_link',
         css='a.nextmonth')
     browser.inspect.add(
         'prev_link',
         css='a.prevmonth')
+
 
 class AgendaViewerTestCase(SilvaNewsTestCase):
 
@@ -72,30 +78,11 @@ class AgendaViewerTestCase(SilvaNewsTestCase):
             [b.getPath() for b in brains],
             [])
 
-    def test_get_item_with_number_option(self):
-        """Test get_items when number_is_days is false.
-        """
-        timezone = get_timezone('Europe/Amsterdam')
-        today = datetime.now().replace(tzinfo=timezone)
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
-        factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
-        factory.manage_addNewsPublication('news', 'News Publication')
 
-        self.root.filter.set_sources([self.root.news])
-        self.root.viewer.set_filters([self.root.filter])
-        self.root.viewer.set_timezone_name('Europe/Amsterdam')
-        self.root.viewer.set_number_is_days(False)
-        self.root.viewer.set_number_to_show(10)
+class AgendaViewerWithItemsTestCase(SilvaNewsTestCase):
 
-
-    def test_get_item_with_days_option(self):
-        """Test get_items when number_is_days is true.
-        """
-
-    def test_get_item_by_date(self):
-        """Test get_items_by_date and get_items_by_date_range.
-        """
+    def setUp(self):
+        super(AgendaViewerWithItemsTestCase, self).setUp()
         timezone = get_timezone('Europe/Amsterdam')
         factory = self.root.manage_addProduct['silva.app.news']
         factory.manage_addAgendaFilter('filter', 'Agenda Filter')
@@ -144,14 +131,47 @@ class AgendaViewerTestCase(SilvaNewsTestCase):
             datetime(2010, 11, 23, 12, 20, tzinfo=timezone),
             datetime(2010, 11, 23, 22, 00, tzinfo=timezone))
 
+    def test_get_item_with_number_option(self):
+        """Test get_items when number_is_days is false.
+        """
+        viewer = self.root.viewer
+        viewer.set_number_is_days(False)
+        viewer.set_number_to_show(2)
+        self.assertEqual(viewer.get_number_is_days(), False)
+        self.assertEqual(viewer.get_number_to_show(), 2)
+
+        self.assertEqual(
+            [b.getPath() for b in viewer.get_items()],
+            ['/root/news/end_after_month/0',
+             '/root/news/within_month/0'])
+
+    def test_get_item_with_days_option(self):
+        """Test get_items when number_is_days is true.
+        """
+        viewer = self.root.viewer
+        viewer.set_number_is_days(True)
+        viewer.set_number_to_show(2)
+        self.assertEqual(viewer.get_number_is_days(), True)
+        self.assertEqual(viewer.get_number_to_show(), 2)
+
+        # There are no items in the last 2 days ...
+        self.assertEqual(
+            [b.getPath() for b in viewer.get_items()],
+            [])
+
+    def test_get_item_by_date(self):
+        """Test get_items_by_date and get_items_by_date_range.
+        """
+        viewer = self.root.viewer
+        timezone = get_timezone('Europe/Amsterdam')
         self.assertEquals(
-            [b.getPath() for b in self.root.viewer.get_items_by_date(11, 2010)],
+            [b.getPath() for b in viewer.get_items_by_date(11, 2010)],
             ['/root/news/end_after_month/0',
              '/root/news/within_month/0',
              '/root/news/start_before_month/0',
              '/root/news/over_month/0'])
         self.assertEquals(
-            [b.getPath() for b in self.root.viewer.get_items_by_date_range(
+            [b.getPath() for b in viewer.get_items_by_date_range(
                     datetime(2010, 11, 1, 00, 00, tzinfo=timezone),
                     datetime(2010, 11, 30, 23, 59, 59, tzinfo=timezone)
                     )],
@@ -159,6 +179,7 @@ class AgendaViewerTestCase(SilvaNewsTestCase):
              '/root/news/within_month/0',
              '/root/news/start_before_month/0',
              '/root/news/over_month/0'])
+
 
 
 def format_date(date):
@@ -199,7 +220,7 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
         with self.layer.get_browser(calendar_settings) as browser:
             self.assertEqual(browser.open('/root/agenda'), 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
-            self.assertEqual(browser.inspect.newsitems, [])
+            self.assertEqual(browser.inspect.items, [])
 
     def test_rendering_with_news_items(self):
         """Render an agenda viewer that includes news items. This used
@@ -214,7 +235,7 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
             browser.options.handle_errors = False
             self.assertEqual(browser.open('/root/agenda'), 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
-            self.assertEqual(browser.inspect.newsitems, [u'I am lost'])
+            self.assertEqual(browser.inspect.items, [u'I am lost'])
 
     def test_rendering_with_event(self):
         """Render an agenda viewer with events.
@@ -227,7 +248,10 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
                 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(
-                browser.inspect.newsitems,
+                browser.inspect.introduction,
+                'Events for Tuesday, June 4, 2013')
+            self.assertEqual(
+                browser.inspect.items,
                 [u'Saturday “π” aka Disco'])
 
     def test_functional_external_source_view(self):
@@ -341,7 +365,9 @@ END:VCALENDAR
     def test_invalid_and_empty_params(self):
          with self.layer.get_browser(calendar_settings) as browser:
             browser.options.handle_errors = False
-            self.assertEqual(200, browser.open('/root/agenda?year=&month=23&day=x12'))
+            self.assertEqual(
+                browser.open('/root/agenda?year=&month=23&day=x12'),
+                200)
 
     def test_31_february(self):
          with self.layer.get_browser(calendar_settings) as browser:
@@ -352,5 +378,6 @@ END:VCALENDAR
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(AgendaViewerTestCase))
+    suite.addTest(unittest.makeSuite(AgendaViewerWithItemsTestCase))
     suite.addTest(unittest.makeSuite(RenderAgendaViewerTestCase))
     return suite
