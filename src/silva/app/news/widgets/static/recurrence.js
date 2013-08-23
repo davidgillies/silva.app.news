@@ -1039,8 +1039,7 @@
         infrae.ui.ShowDialog($popup);
     });
 
-
-    var create_recurrence = function () {
+    $(document).on('loadwidget-smiform', '.form-fields-container', function(event, data) {
         $(this).find('.recurrence-widget').each(function() {
             var $widget = $(this);
             var $input = $widget.find('input.recurrence-data');
@@ -1049,13 +1048,7 @@
                 humanize(parse_recurrence_data(value),
                          humanize_translations));
         });
-    };
-
-    $('.form-fields-container').live('loadwidget-smiform', function(event) {
-        $(this).invoke(create_recurrence);
         event.stopPropagation();
     });
-
-    $(document).ready(create_recurrence);
 
 })(jQuery, infrae);

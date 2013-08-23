@@ -1,6 +1,6 @@
 (function ($) {
 
-    function create_trees() {
+    $(document).on('loadwidget-smiform', '.form-fields-container', function(event, data) {
         var $trees = $(this).find(".field-tree-widget");
 
         $trees.each(function () {
@@ -21,7 +21,7 @@
             });
 
             if (!readonly) {
-                $tree.delegate('a', 'click', function() {
+                $tree.on('click', 'a', function() {
                     var values = [];
 
                     $.each($tree.jstree('get_checked'), function() {
@@ -32,13 +32,8 @@
                 });
             };
         });
-    };
-
-    $('.form-fields-container').live('loadwidget-smiform', function(event) {
-        $(this).invoke(create_trees);
         event.stopPropagation();
     });
 
-    $(document).ready(create_trees);
 
 })(jQuery);

@@ -125,9 +125,7 @@ class TreeWidgetInput(SchemaFieldWidget):
     grok.adapts(TreeSchemaField, Interface, Interface)
     grok.name(str(INPUT))
 
-    @property
-    def selected_only(self):
-        return grok.name.bind().get(self) == str(DISPLAY)
+    selected_only = False
 
     def update(self):
         need(ITreeResources)
@@ -169,3 +167,6 @@ class TreeWidgetExtractor(WidgetExtractor):
 
 class TreeWidgetDisplay(TreeWidgetInput):
     grok.name(str(DISPLAY))
+
+    selected_only = True
+
