@@ -97,7 +97,7 @@ class ServiceNews(SilvaService, TimezoneMixin):
     security = ClassSecurityInfo()
     meta_type = 'Silva News Service'
 
-    silvaconf.icon('www/newsservice.gif')
+    silvaconf.icon('www/newsservice.png')
 
     manage_options = (
         {'label': 'Edit', 'action': 'manage_news'},

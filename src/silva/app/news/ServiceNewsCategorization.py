@@ -32,7 +32,7 @@ class ServiceNewsCategorization(SilvaService):
     grok.name('service_news_categorization')
     security = ClassSecurityInfo()
     meta_type = 'Silva News Categorization Service'
-    silvaconf.icon('www/newsservice.gif')
+    silvaconf.icon('www/newsservice.png')
 
     manage_options = (
         {'label': 'Edit', 'action': 'manage_news'},
