@@ -6,7 +6,7 @@ import unittest
 from zope.component import getUtility, queryAdapter
 from zope.interface.verify import verifyObject
 
-from Products.Silva.testing import tests, CatalogTransaction
+from Products.Silva.testing import tests, Transaction
 from silva.core.services.interfaces import IMetadataService
 
 from silva.core.interfaces import IAddableContents
@@ -28,9 +28,11 @@ class NewsPublicationTestCase(unittest.TestCase):
         """Verify a news publication publication and its default
         metadata and contents.
         """
-        factory = self.root.manage_addProduct['silva.app.news']
-        with tests.assertTriggersEvents('ContentCreatedEvent'):
-            factory.manage_addNewsPublication('news', 'News')
+        with Transaction():
+            factory = self.root.manage_addProduct['silva.app.news']
+            with tests.assertTriggersEvents('ContentCreatedEvent'):
+                factory.manage_addNewsPublication('news', 'News')
+
         publication = self.root._getOb('news', None)
         self.assertTrue(verifyObject(INewsPublication, publication))
 
@@ -44,6 +46,8 @@ class NewsPublicationTestCase(unittest.TestCase):
             'no')
 
         # Default content
+        self.assertNotEqual(publication.get_creation_datetime(), None)
+        self.assertNotEqual(publication.get_modification_datetime(), None)
         self.assertItemsEqual(publication.objectIds(), ['index', 'filter'])
         self.assertTrue(verifyObject(INewsViewer, publication.index))
         self.assertTrue(verifyObject(INewsFilter, publication.filter))
@@ -52,10 +56,11 @@ class NewsPublicationTestCase(unittest.TestCase):
         """Verify that the addable content is restricted inside a news
         publication.
         """
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News')
-        publication = self.root._getOb('news', None)
+        with Transaction():
+            factory = self.root.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News')
 
+        publication = self.root._getOb('news', None)
         addables = queryAdapter(publication, IAddableContents)
         self.assertTrue(verifyObject(IAddableContents, addables))
         self.assertItemsEqual(
@@ -105,7 +110,7 @@ class NewsPublicationTestCase(unittest.TestCase):
                     'snn-np-settingsis_private': 'no'}),
             [])
 
-        with CatalogTransaction():
+        with Transaction(catalog=True):
             factory = self.root.manage_addProduct['silva.app.news']
             factory.manage_addNewsPublication('news', 'News')
 

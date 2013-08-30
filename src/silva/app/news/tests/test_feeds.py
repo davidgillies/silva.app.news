@@ -7,7 +7,7 @@ from datetime import datetime
 
 from zope.component import queryMultiAdapter
 from zope.interface.verify import verifyObject
-from Products.Silva.testing import TestRequest
+from Products.Silva.testing import TestRequest, Transaction
 
 from silva.app.news.interfaces import INewsItem, IAgendaItem
 from silva.app.news.datetimeutils import local_timezone
@@ -22,26 +22,27 @@ class TestFeeds(SilvaNewsTestCase):
     """
 
     def setUp(self):
-        super(TestFeeds, self).setUp()
-        # Publication
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('source', 'Publication')
-        factory.manage_addNewsFilter('filter', 'Filter')
-        factory.manage_addNewsViewer('viewer', 'Viewer')
+        with Transaction():
+            super(TestFeeds, self).setUp()
+            # Publication
+            factory = self.root.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('source', 'Publication')
+            factory.manage_addNewsFilter('filter', 'Filter')
+            factory.manage_addNewsViewer('viewer', 'Viewer')
 
-        self.root.filter.set_show_agenda_items(True)
-        self.root.filter.add_source(self.root.source)
-        self.root.viewer.add_filter(self.root.filter)
+            self.root.filter.set_show_agenda_items(True)
+            self.root.filter.add_source(self.root.source)
+            self.root.viewer.add_filter(self.root.filter)
 
-        # Items
-        self.add_published_news_item(
-            self.root.source, 'raining', 'The rain is coming')
-        self.add_published_news_item(
-            self.root.source, 'cows', 'Cows are moving in town')
-        start_event = datetime(2010, 10, 9, 8, 20, 00, tzinfo=local_timezone)
-        end_event = start_event + relativedelta(hours=+2)
-        self.add_published_agenda_item(
-            self.root.source, 'war', 'This is War', start_event, end_event)
+            # Items
+            self.add_published_news_item(
+                self.root.source, 'raining', 'The rain is coming')
+            self.add_published_news_item(
+                self.root.source, 'cows', 'Cows are moving in town')
+            start_event = datetime(2010, 10, 9, 8, 20, 00, tzinfo=local_timezone)
+            end_event = start_event + relativedelta(hours=+2)
+            self.add_published_agenda_item(
+                self.root.source, 'war', 'This is War', start_event, end_event)
 
     def test_feeds_agenda_item(self):
         entry = queryMultiAdapter(

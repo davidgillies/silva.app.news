@@ -5,6 +5,7 @@
 import unittest
 from datetime import datetime
 
+from Products.Silva.testing import Transaction
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 
 from silva.core.interfaces import IPublicationWorkflow
@@ -16,18 +17,20 @@ class XMLExportTestCase(SilvaXMLTestCase):
     layer = FunctionalLayer
 
     def setUp(self):
-        super(XMLExportTestCase, self).setUp()
-        factory = self.root.manage_addProduct['Silva']
-        factory.manage_addFolder('export', 'Export Folder')
+        with Transaction():
+            super(XMLExportTestCase, self).setUp()
+            factory = self.root.manage_addProduct['Silva']
+            factory.manage_addFolder('export', 'Export Folder')
 
     def test_news_filter(self):
         """Add a filter and a news publication at root level and export
         the filter.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        self.root.export.filter.set_sources([self.root.export.news])
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            self.root.export.filter.set_sources([self.root.export.news])
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -40,21 +43,24 @@ class XMLExportTestCase(SilvaXMLTestCase):
         """Add a filter and a news publication and export only the
         filter.
         """
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        self.root.export.filter.set_sources([self.root.news])
+        with Transaction():
+            factory = self.root.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            self.root.export.filter.set_sources([self.root.news])
+
         self.assertExportFail(self.root.export)
 
     def test_agenda_filter(self):
         """Add a filter and a news publication at root level and export
         the filter.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
-        self.root.export.filter.add_source(self.root.export.news)
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+            self.root.export.filter.add_source(self.root.export.news)
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -66,14 +72,15 @@ class XMLExportTestCase(SilvaXMLTestCase):
     def test_news_viewer(self):
         """Export a news viewer.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        factory.manage_addNewsViewer('viewer', 'News Viewer')
-        self.root.export.filter.set_sources([self.root.export.news])
-        self.root.export.viewer.set_filters([self.root.export.filter])
-        self.root.export.viewer.set_number_is_days(True)
-        self.root.export.viewer.set_number_to_show(10)
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            factory.manage_addNewsViewer('viewer', 'News Viewer')
+            self.root.export.filter.set_sources([self.root.export.news])
+            self.root.export.viewer.set_filters([self.root.export.filter])
+            self.root.export.viewer.set_number_is_days(True)
+            self.root.export.viewer.set_number_to_show(10)
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -86,16 +93,17 @@ class XMLExportTestCase(SilvaXMLTestCase):
         """Export a news viewer that refer a filter that is outside of
         the export folder.
         """
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        factory.manage_addNewsViewer('viewer', 'News Viewer')
-        self.root.export.filter.set_sources(
-            [self.root.export.news])
-        self.root.export.viewer.set_filters(
-            [self.root.export.filter, self.root.filter])
+        with Transaction():
+            factory = self.root.manage_addProduct['silva.app.news']
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            factory.manage_addNewsViewer('viewer', 'News Viewer')
+            self.root.export.filter.set_sources(
+                [self.root.export.news])
+            self.root.export.viewer.set_filters(
+                [self.root.export.filter, self.root.filter])
 
         self.assertExportFail(self.root.export)
 
@@ -103,16 +111,17 @@ class XMLExportTestCase(SilvaXMLTestCase):
         """Export a news viewer that refer a filter that is outside of
         the export folder, with the option external_references set to True.
         """
-        factory = self.root.manage_addProduct['silva.app.news']
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addNewsFilter('filter', 'News Filter')
-        factory.manage_addNewsViewer('viewer', 'News Viewer')
-        self.root.export.filter.set_sources(
-            [self.root.export.news])
-        self.root.export.viewer.set_filters(
-            [self.root.export.filter, self.root.filter])
+        with Transaction():
+            factory = self.root.manage_addProduct['silva.app.news']
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addNewsFilter('filter', 'News Filter')
+            factory.manage_addNewsViewer('viewer', 'News Viewer')
+            self.root.export.filter.set_sources(
+                [self.root.export.news])
+            self.root.export.viewer.set_filters(
+                [self.root.export.filter, self.root.filter])
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -132,12 +141,13 @@ class XMLExportTestCase(SilvaXMLTestCase):
     def test_agenda_viewer(self):
         """Export an agenda viewer.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory.manage_addAgendaFilter('filter', 'Agenda Filter')
-        factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
-        self.root.export.filter.set_sources([self.root.export.news])
-        self.root.export.viewer.set_filters([self.root.export.filter])
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory.manage_addAgendaFilter('filter', 'Agenda Filter')
+            factory.manage_addAgendaViewer('viewer', 'Agenda Viewer')
+            self.root.export.filter.set_sources([self.root.export.news])
+            self.root.export.viewer.set_filters([self.root.export.filter])
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -149,16 +159,17 @@ class XMLExportTestCase(SilvaXMLTestCase):
     def test_news_item(self):
         """Export a news item.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory = self.root.export.news.manage_addProduct['silva.app.news']
-        factory.manage_addNewsItem('news', 'Some news')
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory = self.root.export.news.manage_addProduct['silva.app.news']
+            factory.manage_addNewsItem('news', 'Some news')
 
-        version = self.root.export.news.news.get_editable()
-        self.assertTrue(version)
-        version.set_subjects(['all'])
-        version.set_target_audiences(['generic'])
-        version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
+            version = self.root.export.news.news.get_editable()
+            self.assertTrue(version)
+            version.set_subjects(['all'])
+            version.set_target_audiences(['generic'])
+            version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -170,26 +181,29 @@ class XMLExportTestCase(SilvaXMLTestCase):
     def test_agenda_item(self):
         """Export an agenda item.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addNewsPublication('news', 'News Publication')
-        factory = self.root.export.news.manage_addProduct['silva.app.news']
-        factory.manage_addAgendaItem('event', 'Some event')
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addNewsPublication('news', 'News Publication')
+            factory = self.root.export.news.manage_addProduct['silva.app.news']
+            factory.manage_addAgendaItem('event', 'Some event')
 
-        version = self.root.export.news.event.get_editable()
-        self.assertIsNot(version, None)
-        version.body.save_raw_text('<p>Good news!</p><p>I fixed the tests.</p>')
-        version.set_occurrences([
-                AgendaItemOccurrence(
-                    location='Rotterdam',
-                    recurrence='FREQ=DAILY;UNTIL=20100910T123212Z',
-                    timezone_name='Europe/Amsterdam',
-                    all_day=True,
-                    start_datetime=datetime(2010, 9, 1, 10, 0, 0))])
-        version.set_subjects(['all'])
-        version.set_target_audiences(['generic'])
-        version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
-        self.layer.login('editor')
-        IPublicationWorkflow(self.root.export.news.event).publish()
+            version = self.root.export.news.event.get_editable()
+            self.assertIsNot(version, None)
+            version.body.save_raw_text('<p>Good news!</p><p>I fixed the tests.</p>')
+            version.set_occurrences([
+                    AgendaItemOccurrence(
+                        location='Rotterdam',
+                        recurrence='FREQ=DAILY;UNTIL=20100910T123212Z',
+                        timezone_name='Europe/Amsterdam',
+                        all_day=True,
+                        start_datetime=datetime(2010, 9, 1, 10, 0, 0))])
+            version.set_subjects(['all'])
+            version.set_target_audiences(['generic'])
+            version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
+
+        with Transaction():
+            self.layer.login('editor')
+            IPublicationWorkflow(self.root.export.news.event).publish()
 
         exporter = self.assertExportEqual(
             self.root.export,
@@ -201,11 +215,12 @@ class XMLExportTestCase(SilvaXMLTestCase):
     def test_rss_aggregator(self):
         """Export an RSS agregator.
         """
-        factory = self.root.export.manage_addProduct['silva.app.news']
-        factory.manage_addRSSAggregator('rss', 'RSS Feeds')
-        self.root.export.rss.set_feeds([
-                'http://infrae.com/news/atom.xml',
-                'http://pypi.python.org/pypi?%3Aaction=rss'])
+        with Transaction():
+            factory = self.root.export.manage_addProduct['silva.app.news']
+            factory.manage_addRSSAggregator('rss', 'RSS Feeds')
+            self.root.export.rss.set_feeds([
+                    'http://infrae.com/news/atom.xml',
+                    'http://pypi.python.org/pypi?%3Aaction=rss'])
 
         exporter = self.assertExportEqual(
             self.root.export,

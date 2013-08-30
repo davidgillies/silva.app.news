@@ -8,7 +8,7 @@ from datetime import datetime
 from silva.app.news.datetimeutils import get_timezone
 from silva.app.news.testing import FunctionalLayer
 from Products.Silva.ftesting import smi_settings
-from Products.Silva.testing import CatalogTransaction
+from Products.Silva.testing import Transaction
 
 
 class TestAgendaItemAddTestCase(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestAgendaItemAddTestCase(unittest.TestCase):
 
     def setUp(self):
         self.root = self.layer.get_application()
-        with CatalogTransaction():
+        with Transaction(catalog=True):
             factory = self.root.manage_addProduct['silva.app.news']
             factory.manage_addNewsPublication('news', 'News Publication')
 
