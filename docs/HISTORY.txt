@@ -1,10 +1,20 @@
 ChangeLog
 =========
 
-3.0.3 (unreleased)
+3.0.3 (2013/10/09)
 ------------------
 
-- ...
+- An agenda filter can only used by an agenda viewer. Agenda viewer
+  API have been cleaned.
+
+- Extend API usuable by inline news viewer code sources.
+
+- You can now import and export using JSON files subjects and target
+  audiences inside the news service.
+
+- Javascripts widgets have been updated.
+
+- Improve tests.
 
 3.0.2 (2013/05/27)
 ------------------
