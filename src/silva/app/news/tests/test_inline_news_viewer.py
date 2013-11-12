@@ -37,6 +37,7 @@ class InlineNewsViewerTestCase(unittest.TestCase):
         factory.manage_addNewsItem('testing', 'Testing of a code source')
         factory.manage_addAgendaItem('debugging', 'Debugging of a code source')
         self.root.news.filter.set_show_agenda_items(True)
+        self.root.news.index.set_hide_expired_events(False)
 
         timezone = self.root.news.index.default_timezone()
         version = self.root.news.debugging.get_editable()

@@ -58,7 +58,7 @@
         </metadata>
         <content>
           <default>
-            <silva-app-news:news_viewer id="index" number_is_days="False" number_to_show="25" number_to_show_archive="10">
+            <silva-app-news:news_viewer hide_expired_events="True" id="index" number_is_days="False" number_to_show="25" number_to_show_archive="10">
               <metadata>
                 <set id="silva-content">
                   <silva-content:maintitle>

@@ -167,6 +167,7 @@ class NewsViewerHandler(handlers.SilvaHandler):
         viewer = self.result()
         helpers.set_as_list(viewer, 'target_audiences', attrs)
         helpers.set_as_list(viewer, 'subjects', attrs)
+        helpers.set_as_bool(viewer, 'hide_expired_events', attrs)
         helpers.set_as_bool(viewer, 'number_is_days', attrs)
         helpers.set_as_int(viewer, 'number_to_show', attrs)
         helpers.set_as_int(viewer, 'number_to_show_archive', attrs)
@@ -260,7 +261,7 @@ class RSSAggregatorHandler(handlers.SilvaHandler):
         if name == (NS_NEWS_URI, 'rss_aggregator'):
             uid = self.generateIdentifier(attrs)
             factory = self.parent().manage_addProduct['silva.app.news']
-            factory.manage_addRSSAggregator(uid,'')
+            factory.manage_addRSSAggregator(uid, '')
             self.setResultId(uid)
             self.urls = []
 
@@ -280,4 +281,3 @@ class RSSAggregatorHandler(handlers.SilvaHandler):
             aggregator = self.result()
             aggregator.set_feeds(self.urls)
             self.notifyImport()
-

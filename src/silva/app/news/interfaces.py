@@ -251,7 +251,7 @@ class INewsItemFilter(INonPublishable, INewsCategorization):
     # and viewers, so the viewers can pull from both types of filters
 
     def get_items_by_date(
-        month, year, timezone=local_timezone, meta_types=None):
+            month, year, timezone=local_timezone, meta_types=None):
         """For looking through the archives
         This is different because AgendaFilters search on start/end
         datetime, whereas NewsFilters look at display datetime
@@ -290,7 +290,6 @@ class INewsFilter(INewsItemFilter):
 
     def get_all_items(meta_types=None):
         """Returns all items, only to be used on the back-end"""
-
 
 
 class IAgendaFilter(INewsItemFilter):
@@ -350,6 +349,7 @@ _week_days_list = [
     (_(u'Sunday'),    6)
 ]
 
+
 @grok.provider(IContextSourceBinder)
 def week_days_source(context):
     week_days_terms = []
@@ -359,6 +359,7 @@ def week_days_source(context):
             SimpleTerm(value=value, token=value, title=title))
     return SimpleVocabulary(week_days_terms)
 
+
 @grok.provider(IContextSourceBinder)
 def timezone_source(context):
     terms = []
@@ -367,6 +368,7 @@ def timezone_source(context):
                                 value=zone,
                                 token=zone))
     return SimpleVocabulary(terms)
+
 
 def get_default_tz_name(form):
     util = getUtility(IServiceNews)
@@ -383,12 +385,13 @@ def make_filters_source(require=INewsItemFilter):
         for filter in get_filters(require):
             path = "/".join(filter.getPhysicalPath())
             terms.append(SimpleTerm(
-                    value=filter,
-                    title="%s (%s)" % (filter.get_title(), path),
-                    token=str(get_token(filter))))
+                value=filter,
+                title="%s (%s)" % (filter.get_title(), path),
+                token=str(get_token(filter))))
         return SimpleVocabulary(terms)
 
     return filters_source
+
 
 @grok.provider(IContextSourceBinder)
 def news_source(context):
@@ -419,6 +422,10 @@ class INewsViewer(IViewer):
         """If set to True, the number to show will be by days back, not number.
         """
 
+    def set_hide_expired_events(onoff):
+        """If set to True, the expired events will not be displayed.
+        """
+
     # accessors
     def get_number_to_show():
         """Amount of news items to show.
@@ -431,6 +438,10 @@ class INewsViewer(IViewer):
     def get_number_is_days():
         """If number_is_days is True, the number_to_show will control
         days back to show instead of number of items.
+        """
+
+    def get_hide_expired_events():
+        """Whether expired events have to be displayed or not.
         """
 
     def get_filters():
@@ -461,7 +472,6 @@ class INewsViewer(IViewer):
 class IAgendaViewer(INewsViewer):
     """Viewer for agenda items
     """
-
 
 
 class IServiceNewsCategorization(ISilvaService):
@@ -521,6 +531,7 @@ class IServiceNews(IServiceNewsCategorization):
     def get_all_sources(item=None):
         """Return all sources for News Item, global, or below the given item.
         """
+
 
 class INewsItemReference(Interface):
     """Generic abstraction on top of news and agenda items, used

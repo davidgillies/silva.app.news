@@ -132,6 +132,8 @@ class NewsViewerProducer(producers.SilvaProducer):
              'number_to_show': str(self.context.get_number_to_show()),
              'number_to_show_archive': str(
                     self.context.get_number_to_show_archive()),
+             'hide_expired_events': str(
+                 self.context.get_hide_expired_events()),
              'number_is_days': str(self.context.get_number_is_days())})
         self.sax_metadata()
         self.startElement('content')

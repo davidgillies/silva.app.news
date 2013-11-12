@@ -2,12 +2,14 @@
 # Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
+import localdatetime
+
 from icalendar import Calendar
 from icalendar.interfaces import IEvent
 
 # ztk
 from five import grok
-from zope.component import getUtility, getMultiAdapter
+from zope.component import getMultiAdapter
 from zope.component import queryMultiAdapter
 from zope.cachedescriptors.property import Lazy
 from zope.publisher.interfaces.browser import IBrowserRequest
@@ -18,9 +20,11 @@ from silva.core.views.httpheaders import ResponseHeaders
 from silva.app.document.interfaces import IDocumentDetails
 
 # SilvaNews
-from ..interfaces import IServiceNews, INewsViewer
+from ..interfaces import INewsViewer
 from ..interfaces import IAgendaItem, IAgendaItemContent
-from ..NewsItem.views import NewsItemBaseView, NewsItemView, NewsItemListItemView
+from ..NewsItem.views import (NewsItemBaseView,
+                              NewsItemView, NewsItemListItemView)
+from ..datetimeutils import RRuleData
 
 
 class AgendaItemBaseView(silvaviews.View):
@@ -29,21 +33,61 @@ class AgendaItemBaseView(silvaviews.View):
     grok.baseclass()
 
     def occurrences(self):
-        format = getUtility(IServiceNews).format_date
+        local_months = localdatetime.get_month_names(self.request)
+
         for occurrence in self.content.get_occurrences():
             timezone = occurrence.get_timezone()
-            yield {'start': format(occurrence.get_start_datetime(timezone),
-                                   occurrence.is_all_day()),
-                   'end': format(occurrence.get_end_datetime(timezone),
-                                 occurrence.is_all_day()),
-                   'location': occurrence.get_location()}
+            location = occurrence.get_location()
+            display_time = not occurrence.is_all_day()
+
+            start = occurrence.get_start_datetime(timezone)
+            end = occurrence.get_end_datetime(timezone)
+            rec_til = occurrence.get_end_recurrence_datetime()
+
+            start_str = u'%s.%s.%s' % (start.day,
+                                       local_months[start.month-1],
+                                       start.year)
+
+            end_str = u'%s.%s.%s' % (end.day,
+                                     local_months[end.month-1],
+                                     end.year)
+
+            if display_time:
+                start_str = u'%s, %s:%s' % (start_str,
+                                            '%02d' % (start.hour),
+                                            '%02d' % (start.minute))
+                end_str = u'%s, %s:%s' % (end_str,
+                                          '%02d' % (end.hour),
+                                          '%02d' % (end.minute))
+
+            odi = {
+                'start': start_str,
+                'end': end_str,
+                'location': location,
+                'recurrence_until': rec_til,
+            }
+
+            if rec_til:
+                rec_til_str = u'%s.%s.%s' % (rec_til.day,
+                                             local_months[rec_til.month-1],
+                                             rec_til.year)
+
+                if display_time:
+                    rec_til_str = u'%s, %s:%s' % (rec_til_str,
+                                                  '%02d' % (rec_til.hour),
+                                                  '%02d' % (rec_til.minute))
+
+                odi['recurrence_until'] = rec_til_str
+                recurrence = RRuleData(occurrence.get_recurrence()).get('FREQ')
+                odi['recurrence'] = recurrence
+
+            yield odi
 
 
 class AgendaItemView(NewsItemView, AgendaItemBaseView):
     """Render a agenda item as a content.
     """
     grok.context(IAgendaItem)
-
 
 
 class AgendaItemListItemView(NewsItemListItemView, AgendaItemBaseView):
@@ -60,7 +104,8 @@ class AgendaItemInlineView(NewsItemBaseView):
 
     @Lazy
     def details(self):
-        return queryMultiAdapter((self.content, self.request), IDocumentDetails)
+        return queryMultiAdapter(
+            (self.content, self.request), IDocumentDetails)
 
     def render(self):
         if self.details:

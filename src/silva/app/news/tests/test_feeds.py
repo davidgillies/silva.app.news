@@ -33,6 +33,7 @@ class TestFeeds(SilvaNewsTestCase):
             self.root.filter.set_show_agenda_items(True)
             self.root.filter.add_source(self.root.source)
             self.root.viewer.add_filter(self.root.filter)
+            self.root.viewer.set_hide_expired_events(False)
 
             # Items
             self.add_published_news_item(

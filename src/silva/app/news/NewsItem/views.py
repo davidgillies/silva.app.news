@@ -2,11 +2,14 @@
 # Copyright (c) 2002-2013 Infrae. All rights reserved.
 # See also LICENSE.txt
 
+import localdatetime
+
+from datetime import datetime
 from five import grok
 from zope.component import getUtility, queryMultiAdapter
 from zope.cachedescriptors.property import Lazy
 
-from ..interfaces import IServiceNews, INewsItem, INewsItemContent
+from ..interfaces import INewsItem, INewsItemContent
 
 from silva.app.document.interfaces import IDocumentDetails
 from silva.core.views import views as silvaviews
@@ -27,12 +30,18 @@ class NewsItemBaseView(silvaviews.View):
     def publication_date(self):
         date = self.content.get_display_datetime()
         if not date:
-            date =  getUtility(IMetadataService).getMetadataValue(
+            date = getUtility(IMetadataService).getMetadataValue(
                 self.content, 'silva-extra', 'publicationtime')
         if date:
-            return getUtility(IServiceNews).format_date(date)
+            if not isinstance(date, datetime):
+                date = date.asdatetime()
+            local_months = localdatetime.get_month_names(self.request)
+            return u'%s.%s.%s, %s:%s' % (date.day,
+                                         local_months[date.month-1],
+                                         date.year,
+                                         '%02d' % (date.hour),
+                                         '%02d' % (date.minute))
         return u''
-
 
 
 class NewsItemView(NewsItemBaseView):
@@ -55,5 +64,5 @@ class NewsItemListItemView(NewsItemBaseView):
 
     @Lazy
     def details(self):
-        return queryMultiAdapter((self.content, self.request), IDocumentDetails)
-
+        return queryMultiAdapter(
+            (self.content, self.request), IDocumentDetails)

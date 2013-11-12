@@ -16,6 +16,7 @@ from zope.interface import Interface
 from AccessControl import ClassSecurityInfo
 from App.class_init import InitializeClass
 from OFS.SimpleItem import SimpleItem
+from DateTime import DateTime
 
 # Silva
 from Products.Silva import SilvaPermissions
@@ -30,8 +31,8 @@ from zeam.utils import batch
 
 # SilvaNews
 from silva.app.news.interfaces import get_default_tz_name, timezone_source
-from silva.app.news.interfaces import (INewsViewer, IServiceNews,
-    show_source, week_days_source, make_filters_source)
+from silva.app.news.interfaces import (INewsViewer, IServiceNews, show_source,
+                                       week_days_source, make_filters_source)
 from silva.app.news.ServiceNews import TimezoneMixin
 
 
@@ -58,6 +59,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
     _number_to_show = 25
     _number_to_show_archive = 10
     _number_is_days = False
+    _hide_expired_events = True
 
     security = ClassSecurityInfo()
 
@@ -90,7 +92,8 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         return self._number_to_show
 
     security.declareProtected(
-        SilvaPermissions.AccessContentsInformation, 'get_number_to_show_archive')
+        SilvaPermissions.AccessContentsInformation,
+        'get_number_to_show_archive')
     def get_number_to_show_archive(self):
         """returns the number of items to show per page in the archive"""
         return self._number_to_show_archive
@@ -103,6 +106,13 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         the filter should show <n> items or items of <n> days back)
         """
         return self._number_is_days
+
+    security.declareProtected(
+        SilvaPermissions.AccessContentsInformation, 'get_hide_expired_events')
+    def get_hide_expired_events(self):
+        """Returns whether expired events have to be displayed or not.
+        """
+        return self._hide_expired_events
 
     def _get_filters_reference_set(self):
         if hasattr(self, '_v_filter_reference_set'):
@@ -156,12 +166,44 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_items')
-    def get_items(self):
+    def get_items(self, days_limit_for_events=True):
         """Gets the items from the filters
         """
+        ## We fetch all the NEWS ITEMS limited by number of items
+        ## or by days limit (filtered on display_datetime).
         results = self._get_items(lambda x: x.get_last_items(
-                self._number_to_show, self._number_is_days))
+            self._number_to_show, self._number_is_days,
+            'Silva News Item Version'))
 
+        now = DateTime()
+        days_delta = 9999  # About 28 years.
+        if not self._hide_expired_events:
+            start = now - days_delta
+            until = now + days_delta
+            ## We fetch all the AGENDA ITEMS expired or not.
+            agenda_items = self._get_items(lambda x: x.get_items_by_date_range(
+                start, until, 'Silva Agenda Item Version'))
+        else:
+            ## We fetch all the AGENDA ITEMS that are NOT expired
+            ## this takes into account end datetime
+            ## and recurrence end datetime.
+            agenda_items = self._get_items(lambda x: x.get_next_items(
+                days_delta, 'Silva Agenda Item Version'))
+
+        if agenda_items:
+            if days_limit_for_events and self._number_is_days:
+                ## If days limit is valid also for the AGENDA ITEMS...
+                past_limit = (now.earliestTime() - self._number_to_show)
+                ## We filter the AGENDA ITEMS on the display_datetime too
+                ## as for the NEWS ITEMS.
+                agenda_items = [item for item in agenda_items
+                                if past_limit <= item.display_datetime <= now]
+
+            results = results + agenda_items
+            results.sort(key=operator.attrgetter('sort_index'), reverse=True)
+
+        ## The limit on the number of items is applied for both
+        ## the NEWS ITEMS and the AGENDA ITEMS.
         if not self._number_is_days:
             return results[:self._number_to_show]
 
@@ -173,7 +215,7 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         """Gets the items from the filters
         """
         return self._get_items(lambda x: x.get_items_by_date(
-                month,year, timezone=self.get_timezone()))
+            month, year, timezone=self.get_timezone()))
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_items_by_date_range')
@@ -212,6 +254,13 @@ class NewsViewer(Content, SimpleItem, TimezoneMixin):
         self._number_is_days = bool(onoff)
 
     security.declareProtected(
+        SilvaPermissions.ChangeSilvaContent, 'set_hide_expired_events')
+    def set_hide_expired_events(self, onoff):
+        """Sets whether expired events should be displayed or not.
+        """
+        self._hide_expired_events = bool(onoff)
+
+    security.declareProtected(
         SilvaPermissions.ChangeSilvaContent, 'set_filters')
     def set_filters(self, filters):
         """update filters
@@ -242,6 +291,12 @@ class INewsViewerFields(Interface):
         value_type=schema.Choice(source=make_filters_source()),
         title=_(u"filters"),
         description=_(u"Use predefined filters."))
+
+    hide_expired_events = schema.Bool(
+        title=_(u"hide expired events"),
+        description=_(u'''Whether expired events (Agenda items)
+            have to be displayed or not.'''),
+        default=1)
 
     number_is_days = schema.Choice(
         source=show_source,
@@ -307,7 +362,7 @@ class NewsViewerView(silvaviews.View):
         if self.query:
             brains = self.context.search_items(self.query)
         else:
-            brains = self.context.get_items()
+            brains = self.context.get_items(days_limit_for_events=False)
         self.items = map(lambda b: b.getObject().get_content(), brains)
 
 

@@ -60,6 +60,7 @@ class AgendaViewer(NewsViewer, ExternalSource):
     silvaconf.icon("www/agenda_viewer.png")
     silvaconf.priority(3.3)
 
+    _hide_expired_events=False
     _number_is_days = True
     _number_to_show = 31
 
@@ -79,7 +80,7 @@ class AgendaViewerAddForm(silvaforms.SMIAddForm):
     grok.context(IAgendaViewer)
     grok.name(u"Silva Agenda Viewer")
 
-    fields = silvaforms.Fields(ITitledContent, INewsViewerFields)
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields).omit('hide_expired_events')
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
     fields['filters'].valueField.source = make_filters_source(IAgendaFilter)
@@ -90,7 +91,7 @@ class AgendaViewerEditForm(silvaforms.SMIEditForm):
     """
     grok.context(IAgendaViewer)
 
-    fields = silvaforms.Fields(ITitledContent, INewsViewerFields).omit('id')
+    fields = silvaforms.Fields(ITitledContent, INewsViewerFields).omit('id', 'hide_expired_events')
     fields['number_is_days'].mode = u'radio'
     fields['timezone_name'].defaultValue = get_default_tz_name
     fields['filters'].valueField.source = make_filters_source(IAgendaFilter)
@@ -315,7 +316,7 @@ class AgendaViewerMonthCalendar(silvaviews.View, CalendarView):
     def render_calendar(self):
         return self.calendar.formatmonth(
             self.selected_year, self.selected_month)
- 
+
     def should_display_next_link(self):
         inc, month = divmod(self.start.month, 12)
         year = self.start.year + inc
@@ -401,4 +402,3 @@ class AgendaViewerSubscribeView(silvaviews.Page):
 
     def calendar_url(self):
         return "%s/calendar.ics" % absoluteURL(self.context, self.request)
-
