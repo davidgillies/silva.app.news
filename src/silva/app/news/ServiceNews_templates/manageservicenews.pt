@@ -31,8 +31,6 @@
                     <span tal:replace="structure python: depth * 3 * u'&nbsp'" /><span tal:content="subject" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
                 </tal:define>
               </tal:repeat>
-              <input type="submit" name="manage_rename_start"
-                     value="Rename subject(s)" class="form-element">
                 <input type="submit" name="manage_remove_subject"
                        value="Remove subject(s)" class="form-element">
                   <br /><br />
@@ -54,6 +52,8 @@
                       <div class="form-text">or upload tree:</div>
                       <input type="file" name="subjects_json"><br />
                       <input type="submit" value="Add" name="manage_add_subject" class="form-element">
+				              <input type="submit" name="manage_rename_subject"
+												     value="Rename subject" class="form-element">
             </form>
             <form method="POST" action="#"
                   tal:attributes="action string:${context/@@absolute_url}/manage_tree">
@@ -74,8 +74,6 @@
                     <span tal:replace="structure python: depth * 3 * u'&nbsp'" /><span tal:content="target_audience" class="form-text"></span>&nbsp;-&nbsp;<span tal:content="title" class="form-text" /><br />
                 </tal:define>
               </tal:repeat>
-              <input type="submit" name="manage_rename_start"
-                     value="Rename target audience(s)" class="form-element">
                 <input type="submit" name="manage_remove_target_audience"
                        value="Remove target audience(s)" class="form-element">
                   <br /><br />
@@ -97,6 +95,8 @@
                       <input type="file" name="target_audiences_json"><br />
                       <input type="submit" name="manage_add_target_audience"
                              value="Add" class="form-element">
+			                <input type="submit" name="manage_rename_target_audience"
+			                       value="Rename target audience" class="form-element">
             </form>
             <form method="POST" action="#"
                   tal:attributes="action string:${context/@@absolute_url}/manage_tree">

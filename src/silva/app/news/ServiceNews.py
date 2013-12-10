@@ -19,6 +19,7 @@ from silva.core.services.interfaces import ICatalogService
 from silva.core.views import views as silvaviews
 import Products.Silva.SilvaPermissions as SilvaPermissions
 from Products.Silva.ExtensionRegistry import meta_types_for_interface
+from Products.Silva import mangle
 
 from silva.app.news import Tree
 from silva.app.news.interfaces import IServiceNews, INewsItemFilter
@@ -279,9 +280,8 @@ class ManageServiceNews(silvaviews.ZMIView):
                         'manage_remove_subject',
                         'manage_add_target_audience',
                         'manage_remove_target_audience',
-                        'manage_rename_start',
-                        'manage_rename_subjects',
-                        'manage_rename_target_audiences',
+                        'manage_rename_subject',
+                        'manage_rename_target_audience',
                         'manage_set_locale']:
             if action in self.request:
                 getattr(self, action)()
@@ -316,23 +316,31 @@ class ManageServiceNews(silvaviews.ZMIView):
             self.status ='Missing id or title'
             return
 
+        if not mangle.Id(self.context, self.request['subject']).isValid():
+            self.status ="""Impossible to add: ID is not valid.
+                            It should only contain not accented letters,
+                            digits and '_' or '-' or '.'
+                            Spaces are not allowed and
+                            the id should start with a letter or a digit."""
+            return
+
         if self.request['parent']:
             try:
-                self.context.add_subject(unicode(self.request['subject']),
-                                         unicode(self.request['title']),
-                                         unicode(self.request['parent']))
+                self.context.add_subject(unicode(self.request['subject'], 'UTF-8'),
+                                         unicode(self.request['title'], 'UTF-8'),
+                                         unicode(self.request['parent'], 'UTF-8'))
             except Tree.DuplicateIdError, e:
                 self.status = e
                 return
         else:
             try:
-                self.context.add_subject(unicode(self.request['subject']),
-                                         unicode(self.request['title']))
+                self.context.add_subject(unicode(self.request['subject'], 'UTF-8'),
+                                         unicode(self.request['title'], 'UTF-8'))
             except Tree.DuplicateIdError, e:
                 self.status = e
                 return
 
-        self.status ='Subject %s added' % unicode(self.request['subject'])
+        self.status ='Subject %s added' % unicode(self.request['subject'], 'UTF-8')
 
     def manage_remove_subject(self):
         """Remove a subject"""
@@ -340,7 +348,7 @@ class ManageServiceNews(silvaviews.ZMIView):
             self.status ='No subjects specified'
             return
 
-        subs = [unicode(s) for s in self.request['subjects']]
+        subs = [unicode(s, 'UTF-8') for s in self.request['subjects']]
         for subject in subs:
             try:
                 self.context.remove_subject(subject)
@@ -367,6 +375,14 @@ class ManageServiceNews(silvaviews.ZMIView):
             self.request['target_audience'] == '' or
             self.request['title'] == ''):
             self.status ='Missing id or title'
+            return
+
+        if not mangle.Id(self.context, self.request['target_audience']).isValid():
+            self.status ="""Impossible to add: ID is not valid.
+                            It should only contain not accented letters,
+                            digits and '_' or '-' or '.'
+                            Spaces are not allowed and
+                            the id should start with a letter or a digit."""
             return
 
         if self.request['parent']:
@@ -406,63 +422,119 @@ class ManageServiceNews(silvaviews.ZMIView):
 
         self.status ='Target audiences %s removed' % ', '.join(tas)
 
-    def manage_rename_start(self):
-        """Rename one or more items"""
-        if (not self.request.has_key('subjects') and not
-                self.request.has_key('target_audiences')):
-            self.status ='No items selected to rename'
+    def manage_rename_subject(self):
+        """Rename a subject"""
+        if not self.request.has_key('subjects'):
+            self.status ='No subject specified.'
             return
-        return self.manage_rename_view()
 
-    def manage_rename_subjects(self):
-        """Rename subjects"""
-        illegal = []
-        for name, value in self.request.form.items():
-            if name.startswith('title_'):
-                continue
-            uname = unicode(name, 'UTF-8')
-            uvalue = unicode(value, 'UTF-8')
-            subject = self.context._subjects.get_element(uname)
-            if uvalue != subject.id():
-                try:
-                    subject.set_id(uvalue)
-                except Tree.DuplicateIdError:
-                    illegal.append(uvalue)
-                    continue
-            title = unicode(self.request.form['title_%s' % name], 'UTF-8')
-            subject.set_title(title)
-            self.context._p_changed = 1
-        if illegal:
-            self.status = \
-                'Items %s could not be renamed (name already in use).' % (
-                ', '.join(illegal))
-        else:
-            self.status ='Items renamed'
+        items = [unicode(s, 'UTF-8') for s in self.request['subjects']]
+        if len(items) != 1:
+            self.status ='Please select one subject only.'
+            return
 
-    def manage_rename_target_audiences(self):
-        """Rename target audiences"""
-        illegal = []
-        for name, value in self.request.form.items():
-            if name.startswith('title_'):
-                continue
-            uname = unicode(name, 'UTF-8')
-            uvalue = unicode(value, 'UTF-8')
-            audience = self.context._target_audiences.getElement(uname)
-            if uvalue != audience.id():
-                try:
-                    audience.set_id(uvalue)
-                except Tree.DuplicateIdError:
-                    illegal.append(uvalue)
-                    continue
-            title = unicode(self.request.form['title_%s' % name], 'UTF-8')
-            audience.set_title(title)
-            self.context._p_changed = 1
-        if illegal:
-            self.status = \
-                'Items %s could not be renamed (name already in use).' % (
-                ', '.join(illegal))
-        else:
-            self.status ='Items renamed'
+        if ('subject' not in self.request.form or
+            'title' not in self.request.form or
+                self.request['subject'] == '' or self.request['title'] == ''):
+            self.status ='Missing id or title'
+            return
+
+        try:
+            item = self.context._subjects.get_element(items[0])
+        except KeyError:
+            self.status ='Impossible to rename: subject not found.'
+            return
+
+        item_old_id = item.id()
+        item_old_title = item.title()
+
+        item_new_id = unicode(self.request['subject'], 'UTF-8')
+        item_new_title = unicode(self.request['title'], 'UTF-8')
+
+        if not mangle.Id(self.context, item_new_id).isValid():
+            self.status ="""Impossible to rename: ID is not valid.
+                            It should only contain not accented letters,
+                            digits and '_' or '-' or '.'
+                            Spaces are not allowed and
+                            the id should start with a letter or a digit."""
+            return
+
+        changed = 0
+        if item_new_id != item_old_id:
+            try:
+                item.set_id(item_new_id)
+                changed = 1
+            except Tree.DuplicateIdError:
+                self.status ='Impossible to rename: ID already in use.'
+                return
+
+        if item_new_title != item_old_title:
+            item.set_title(item_new_title)
+            changed = 1
+
+        if not changed:
+            self.status ='Nothing to rename. Both Id and Title are equal to the old ones.'
+            return
+
+        self.context._p_changed = changed
+        self.status ='Subject renamed.'
+
+    def manage_rename_target_audience(self):
+        """Rename target audience"""
+        if not self.request.has_key('target_audiences'):
+            self.status ='No target audience specified'
+            return
+
+        items = [unicode(t, 'UTF-8') for t in self.request['target_audiences']]
+        if len(items) != 1:
+            self.status ='Please select one target audience only.'
+            return
+
+        if ('target_audience' not in self.request.form or
+            'title' not in self.request.form or
+                self.request['target_audience'] == '' or self.request['title'] == ''):
+            self.status ='Missing id or title'
+            return
+
+        try:
+            item = self.context._target_audiences.get_element(items[0])
+        except KeyError:
+            self.status ='Impossible to rename: target audience not found.'
+            return
+
+        item_old_id = item.id()
+        item_old_title = item.title()
+
+        item_new_id = unicode(self.request['target_audience'], 'UTF-8')
+        item_new_title = unicode(self.request['title'], 'UTF-8')
+
+        if not mangle.Id(self.context, item_new_id).isValid():
+            self.status ="""Impossible to rename: ID is not valid.
+                            It should only contain not accented letters,
+                            digits and '_' or '-' or '.'
+                            Spaces are not allowed and
+                            the id should start with a letter or a digit."""
+            return
+
+        changed = 0
+        if item_new_id != item_old_id:
+            try:
+                item.set_id(item_new_id)
+                changed = 1
+            except Tree.DuplicateIdError:
+                self.status ='Impossible to rename: ID already in use.'
+                return
+
+        if item_new_title != item_old_title:
+            item.set_title(item_new_title)
+            changed = 1
+
+        if not changed:
+            self.status ='Nothing to rename. Both Id and Title are equal to the old ones.'
+            return
+
+        self.context._p_changed = changed
+        self.status ='Target audience renamed.'
 
     # XXX we probably want to move these elsewhere, for now however this seems
     # the most logical location
@@ -487,4 +559,3 @@ class ManageServiceNews(silvaviews.ZMIView):
         self.context.set_timezone_name(self.request['timezone_name'])
         self.context.set_first_weekday(int(self.request['first_weekday']))
         self.status ='Locale set'
-
