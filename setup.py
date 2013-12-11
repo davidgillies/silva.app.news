@@ -14,7 +14,7 @@ tests_require = [
 
 setup(name='silva.app.news',
       version=version,
-      description="News extension for Silva 3.x.",
+      description="News extension for Silva 3",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
@@ -26,7 +26,7 @@ setup(name='silva.app.news',
       keywords='news silva zope2',
       author='Infrae',
       author_email='info@infrae.com',
-      url='http://infrae.com/products/silva',
+      url='https://github.com/silvacms/silva.app.news',
       license='BSD',
       package_dir={'': 'src'},
       packages=find_packages('src'),
