@@ -159,7 +159,14 @@ class TreeWidgetExtractor(WidgetExtractor):
         choices = set()
         for choice in value.split('|'):
             if choice:
-                choices.add(vocabulary.getTerm(choice).value)
+                try:
+                    choices.add(vocabulary.getTerm(choice).value)
+                except LookupError:
+                    ## Obsolete value. This can happen when values are deleted
+                    ## or renamed in the service ZMI settings and after
+                    ## the user operates in a previously open SMI page,
+                    ## so the form contains invalid old values.
+                    continue
         if not choices:
             return NO_VALUE, error
         return choices, error
@@ -169,4 +176,3 @@ class TreeWidgetDisplay(TreeWidgetInput):
     grok.name(str(DISPLAY))
 
     selected_only = True
-

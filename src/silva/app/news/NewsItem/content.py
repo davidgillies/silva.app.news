@@ -73,8 +73,8 @@ class NewsItemContentVersion(NewsCategorization):
     def fulltext(self):
         """Returns all data as a flat string for full text-search
         """
-        keywords = list(self._subjects)
-        keywords.extend(self._target_audiences)
+        keywords = list(self.get_subjects())
+        keywords.extend(self.get_target_audiences())
         keywords.extend(super(NewsItemContentVersion, self).fulltext())
         return keywords
 
@@ -91,6 +91,7 @@ class NewsItemVersion(NewsItemContentVersion, DocumentContentVersion):
 
 
 InitializeClass(NewsItemVersion)
+
 
 # We cannot inherit from VersionedContent here (__init__ buggy)
 class NewsItemContent(object):
@@ -182,5 +183,3 @@ def get_default_viewer(context):
             if default and INewsViewer.providedBy(default):
                 return default
     return None
-
-

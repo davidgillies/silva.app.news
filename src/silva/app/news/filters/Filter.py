@@ -147,7 +147,7 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
     def _collect_subjects(self, service):
         result = set()
         tree = service.get_subjects_tree()
-        for sub in self._subjects:
+        for sub in self.get_subjects():
             node = tree.get_element(sub)
             if node is not None:
                 result = result.union(set(node.get_ids()))
@@ -156,7 +156,7 @@ class Filter(NewsCategorization, NonPublishable, SimpleItem):
     def _collect_target_audiences(self, service):
         result = set()
         tree = service.get_target_audiences_tree()
-        for sub in self._target_audiences:
+        for sub in self.get_target_audiences():
             node = tree.get_element(sub)
             if node is not None:
                 result = result.union(set(node.get_ids()))
@@ -308,5 +308,3 @@ class IFilterFields(INewsCategorizationFields):
         value_type=schema.Choice(source=news_source),
         title=_(u"sources"),
         description=_(u"Use predefined sources."))
-
-

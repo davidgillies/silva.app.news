@@ -39,7 +39,7 @@ class ServiceNewsCategorization(SilvaService):
         ) + SilvaService.manage_options
 
     _local_subjects = None
-    _local_audience_targets = None
+    _local_target_audiences = None
 
     def _get_service(self):
         service = getattr(self, '_v_service_news', None)
