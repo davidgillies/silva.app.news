@@ -147,6 +147,45 @@ class ServiceNewsTestCase(unittest.TestCase):
         with tests.assertRaises(DuplicateIdError):
             service.add_subject('test1', 'Test 1')
 
+        # Rename test
+        ## Adding subject to be renamed.
+        service.add_subject('subject_to_be_renamed', 'SubjectToBeRenamed')
+
+        ## Checking the new subject.
+        self.assertEqual(
+            service.get_subjects(),
+            [('generic', 'Generic'),
+             ('test1', 'Test 1'),
+             ('test2', 'Test 2'),
+             ('root', 'root'),
+             ('subject_to_be_renamed', 'SubjectToBeRenamed')])
+
+        ## Renaming the newly created subject.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'subjects:list': 'subject_to_be_renamed',
+                                   'subject': 'new_subject_name',
+                                   'title': 'NewSubjectTitle',
+                                   'manage_rename_subject': 'Rename subject',
+                                   },
+                             form_enctype='multipart/form-data'),
+                             200)
+
+        ## Checking if it has been renamed correctly.
+        self.assertEqual(
+            service.get_subjects(),
+            [('test1', 'Test 1'),
+             (u'generic', u'Generic'),
+             (u'new_subject_name', u'NewSubjectTitle'),
+             ('test2', 'Test 2'),
+             ('root', 'root')])
+
+        ## Cleaning up.
+        service.remove_subject('new_subject_name')
+
         # Remove
         service.remove_subject('generic')
         self.assertEqual(
@@ -203,6 +242,47 @@ class ServiceNewsTestCase(unittest.TestCase):
         # Add duplicate
         with self.assertRaises(DuplicateIdError):
             service.add_target_audience('test1', 'Test 1')
+
+        # Rename test
+        ## Adding target to be renamed.
+        service.add_target_audience('target_to_be_renamed', 'TargetToBeRenamed')
+
+        ## Checking the new target.
+        self.assertEqual(
+            service.get_target_audiences(),
+            [('test1', 'Test 1'),
+             ('target_to_be_renamed', 'TargetToBeRenamed'),
+             ('all', 'All'),
+             ('test2', 'Test 2'),
+             ('root', 'root'),
+             ])
+
+        ## Renaming the newly created target.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'target_audiences:list': 'target_to_be_renamed',
+                                   'target_audience': 'new_target_name',
+                                   'title': 'NewTargetTitle',
+                                   'manage_rename_target_audience': 'Rename target audience',
+                                   },
+                             form_enctype='multipart/form-data'),
+                                   200)
+
+        ## Checking if it has been renamed correctly.
+        self.assertEqual(
+            service.get_target_audiences(),
+            [('test1', 'Test 1'),
+             (u'all', u'All'),
+             ('test2', 'Test 2'),
+             ('root', 'root'),
+             (u'new_target_name', u'NewTargetTitle')
+             ])
+
+        ## Cleaning up.
+        service.remove_target_audience('new_target_name')
 
         # Remove
         service.remove_target_audience('all')
