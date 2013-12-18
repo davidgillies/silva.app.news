@@ -183,6 +183,56 @@ class ServiceNewsTestCase(unittest.TestCase):
              ('test2', 'Test 2'),
              ('root', 'root')])
 
+        ## Trying to rename with an invalid id.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'subjects:list': 'new_subject_name',
+                                   'subject': 'subject_invalid_àccentéd_ìd',
+                                   'title': 'NewSubjectTitle',
+                                   'manage_rename_subject': 'Rename subject',
+                                   },
+                             form_enctype='multipart/form-data'),
+                             200)
+
+        ## Renaming should have failed.
+        ## An ID containing accents is invalid.
+        ## Checking nothing has changed.
+        self.assertEqual(
+            service.get_subjects(),
+            [('test1', 'Test 1'),
+             (u'generic', u'Generic'),
+             (u'new_subject_name', u'NewSubjectTitle'),
+             ('test2', 'Test 2'),
+             ('root', 'root')])
+
+        ## Trying to rename with a Title containing accents.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'subjects:list': 'new_subject_name',
+                                   'subject': 'new_subject_name',
+                                   'title': 'TitleCanContainÀccénts',
+                                   'manage_rename_subject': 'Rename subject',
+                                   },
+                             form_enctype='multipart/form-data'),
+                             200)
+
+        ## Renaming should have been done correctly.
+        ## A Title containing accents is valid.
+        ## Checking the new title is there.
+        self.assertEqual(
+            service.get_subjects(),
+            [('test1', 'Test 1'),
+             (u'generic', u'Generic'),
+             (u'new_subject_name', u'TitleCanContainÀccénts'),
+             ('test2', 'Test 2'),
+             ('root', 'root')])
+
         ## Cleaning up.
         service.remove_subject('new_subject_name')
 
@@ -279,6 +329,58 @@ class ServiceNewsTestCase(unittest.TestCase):
              ('test2', 'Test 2'),
              ('root', 'root'),
              (u'new_target_name', u'NewTargetTitle')
+             ])
+
+        ## Trying to rename with an invalid id.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'target_audiences:list': 'new_target_name',
+                                   'target_audience': 'targeti_nvalid_àccentéd_ìd',
+                                   'title': 'NewTargetTitle',
+                                   'manage_rename_target_audience': 'Rename target audience',
+                                   },
+                             form_enctype='multipart/form-data'),
+                             200)
+
+        ## Renaming should have failed.
+        ## An ID containing accents is invalid.
+        ## Checking nothing has changed.
+        self.assertEqual(
+            service.get_target_audiences(),
+            [('test1', 'Test 1'),
+             (u'all', u'All'),
+             ('test2', 'Test 2'),
+             ('root', 'root'),
+             (u'new_target_name', u'NewTargetTitle')
+             ])
+
+        ## Trying to rename with a Title containing accents.
+        with self.layer.get_browser() as browser:
+            browser.login('manager')
+            self.assertEqual(browser.open(
+                             '/root/service_news/manage_news',
+                             method='POST',
+                             form={'target_audiences:list': 'new_target_name',
+                                   'target_audience': 'new_target_name',
+                                   'title': 'TitleCanContainÀccénts',
+                                   'manage_rename_target_audience': 'Rename target audience',
+                                   },
+                             form_enctype='multipart/form-data'),
+                             200)
+
+        ## Renaming should have been done correctly.
+        ## A Title containing accents is valid.
+        ## Checking the new title is there.
+        self.assertEqual(
+            service.get_target_audiences(),
+            [('test1', 'Test 1'),
+             (u'all', u'All'),
+             ('test2', 'Test 2'),
+             ('root', 'root'),
+             (u'new_target_name', u'TitleCanContainÀccénts')
              ])
 
         ## Cleaning up.
