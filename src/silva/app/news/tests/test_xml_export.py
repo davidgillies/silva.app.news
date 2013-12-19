@@ -8,8 +8,10 @@ from datetime import datetime
 from Products.Silva.testing import Transaction
 from Products.Silva.tests.test_xml_export import SilvaXMLTestCase
 
+from zope.component import getUtility
 from silva.core.interfaces import IPublicationWorkflow
 from silva.app.news.AgendaItem import AgendaItemOccurrence
+from silva.app.news.interfaces import IServiceNews
 from silva.app.news.testing import FunctionalLayer
 
 
@@ -17,10 +19,14 @@ class XMLExportTestCase(SilvaXMLTestCase):
     layer = FunctionalLayer
 
     def setUp(self):
+        super(XMLExportTestCase, self).setUp()
         with Transaction():
-            super(XMLExportTestCase, self).setUp()
             factory = self.root.manage_addProduct['Silva']
             factory.manage_addFolder('export', 'Export Folder')
+            service = getUtility(IServiceNews)
+            service.add_subject('all', 'All')
+            service.add_subject('other', 'Others')
+            service.add_target_audience('generic', 'Generic')
 
     def test_news_filter(self):
         """Add a filter and a news publication at root level and export
@@ -197,7 +203,7 @@ class XMLExportTestCase(SilvaXMLTestCase):
                         timezone_name='Europe/Amsterdam',
                         all_day=True,
                         start_datetime=datetime(2010, 9, 1, 10, 0, 0))])
-            version.set_subjects(['all'])
+            version.set_subjects(['all', 'other', 'invalid'])
             version.set_target_audiences(['generic'])
             version.set_display_datetime(datetime(2010, 9, 30, 10, 0, 0))
 

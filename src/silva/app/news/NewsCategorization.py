@@ -46,44 +46,18 @@ class NewsCategorization(object):
     def get_subjects(self):
         """Returns the subjects
         """
-        return set(self._subjects or [])
-        ## We need to make sure that selected subjects
-        ## in the filter have not been deleted or renamed in the ZMI
-        ## and thus that are still valid.
-        news_service = getUtility(IServiceNews)
-        valid_subs_tree = news_service.get_subjects_tree()
-        invalid_subs = set()
-        for sub in self._subjects:
-            try:
-                if valid_subs_tree.get_element(sub) is None:
-                    invalid_subs.add(sub)
-            except KeyError:
-                invalid_subs.add(sub)
-        ## We set and return only the valid subjects.
-        self._subjects = self._subjects - invalid_subs
-        return set(self._subjects or [])
+        service = getUtility(IServiceNews)
+        all_subjects = set(service.get_subjects_tree().get_ids())
+        return set(self._subjects or []).intersection(all_subjects)
 
     security.declareProtected(
         SilvaPermissions.AccessContentsInformation, 'get_target_audiences')
     def get_target_audiences(self):
         """Returns the target audiences
         """
-        return set(self._target_audiences or [])
-        ## We need to make sure that selected targets
-        ## in the filter have not been deleted or renamed in the ZMI
-        ## and thus that are still valid.
-        news_service = getUtility(IServiceNews)
-        valid_targets_tree = news_service.get_target_audiences_tree()
-        invalid_targets = set()
-        for tar in self._target_audiences:
-            try:
-                if valid_targets_tree.get_element(tar) is None:
-                    invalid_targets.add(tar)
-            except KeyError:
-                invalid_targets.add(tar)
-        ## We set and return only the valid target audiences.
-        self._target_audiences = self._target_audiences - invalid_targets
-        return set(self._target_audiences or [])
+        service = getUtility(IServiceNews)
+        all_targets = set(service.get_target_audiences_tree().get_ids())
+        return set(self._target_audiences or []).intersection(all_targets)
 
 InitializeClass(NewsCategorization)
 

@@ -1,18 +1,12 @@
-==========
-Silva News
-==========
+==============
+silva.app.news
+==============
 
-Silva is a Zope-based web application designed for the creation and
-management of structured, textual content. Silva allows users to enter
-new documents as well as edit existing documents using a web
-interface.
+``silva.app.news`` is an extension to `Silva`_ 3 to allow authors to
+add news articles and agenda items in Silva.
 
-Silva News Network is an extension to Silva to allow authors to place
-articles and agendaitems on the Silva site and show them on a page.
-
-There are versions for older Silva versions available for download as
-well.  No other products are required to use Silva News from Silva,
-besides the products required to run Silva itself.
+For older versions of Silva, please use an older version of
+``Products.SilvaNews``.
 
 Using Silva News
 ================
@@ -150,7 +144,7 @@ The RSSAggregator
 -----------------
 
 The RSSAggregator replaces the old (and now removed) RSSViewer. In the
-tab_edit you'll see a textbox called 'RSS feeds' where you can enter
+edit screen you'll see a textbox called 'RSS feeds' where you can enter
 the complete URLs for the feeds you want to have merged by this
 aggregator instance.
 
@@ -162,3 +156,5 @@ Code repository
 
 You can find the code of this extension in Git:
 https://github.com/silvacms/silva.app.news
+
+.. _Silva: http://silvacms.org

@@ -170,7 +170,7 @@
           </silva-app-news:filters>
         </content>
       </silva-app-news:agenda_viewer>
-      <silva-app-news:news_filter id="filter" show_agenda_items="True" subjects="generic,root" target_audiences="all,root">
+      <silva-app-news:news_filter id="filter" show_agenda_items="True" subjects="generic,root" target_audiences="generic,all,root">
         <metadata>
           <set id="silva-content">
             <silva-content:maintitle>Filter for News</silva-content:maintitle><silva-content:shorttitle/>

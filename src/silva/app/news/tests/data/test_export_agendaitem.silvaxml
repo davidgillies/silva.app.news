@@ -124,7 +124,7 @@
               </version>
             </workflow>
             <content display_datetime="YYYY-MM-DDTHH:MM:SS"
-                     subjects="all"
+                     subjects="all,other"
                      target_audiences="generic"
                      version_id="0">
               <metadata>
@@ -181,8 +181,8 @@
           </silva-app-news:agenda_item>
           <silva-app-news:news_filter id="filter"
                                       show_agenda_items="0"
-                                      subjects="generic,root"
-                                      target_audiences="all,root">
+                                      subjects="generic,all,other,root"
+                                      target_audiences="generic,all,root">
             <metadata>
               <set id="silva-content">
                 <silva-content:maintitle>

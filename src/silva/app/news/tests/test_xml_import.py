@@ -7,16 +7,25 @@ from datetime import datetime
 
 from Acquisition import aq_chain
 from DateTime import DateTime
-from Products.Silva.testing import tests
+from Products.Silva.testing import tests, Transaction
 from Products.Silva.tests.test_xml_import import SilvaXMLTestCase
 
 from silva.app.news.testing import FunctionalLayer
 from silva.app.news import interfaces
+from zope.component import getUtility
 from zope.interface.verify import verifyObject
 
 
 class XMLImportTestCase(SilvaXMLTestCase):
     layer = FunctionalLayer
+
+    def setUp(self):
+        super(XMLImportTestCase, self).setUp()
+        with Transaction():
+            service = getUtility(interfaces.IServiceNews)
+            service.add_subject('all', 'All')
+            service.add_subject('other', 'Others')
+            service.add_target_audience('generic', 'Generic')
 
     def test_news_filter(self):
         importer = self.assertImportFile(

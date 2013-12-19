@@ -39,6 +39,16 @@ class AgendaItemTestCase(unittest.TestCase):
         self.assertTrue(verifyObject(IAgendaItem, event))
         version = event.get_editable()
         self.assertTrue(verifyObject(IAgendaItemVersion, version))
+        version.set_subjects(['invalid', 'other', 'root'])
+        self.assertEqual(version.get_subjects(), set(['root']))
+        version.set_target_audiences(['generic', 'root'])
+        self.assertEqual(version.get_target_audiences(), set(['root']))
+
+        service = getUtility(IServiceNews)
+        service.add_subject('other', 'Other')
+        service.add_target_audience('generic', 'Generic')
+        self.assertEqual(version.get_subjects(), set(['other', 'root']))
+        self.assertEqual(version.get_target_audiences(), set(['generic', 'root']))
 
 
 class RenderAgendaItemTestCase(unittest.TestCase):
