@@ -32,56 +32,41 @@ class AgendaItemBaseView(silvaviews.View):
     grok.context(IAgendaItem)
     grok.baseclass()
 
-    def occurrences(self):
-        local_months = localdatetime.get_month_names(self.request)
+    @Lazy
+    def month_names(self):
+        return localdatetime.get_month_names(self.request)
 
+    def format_date(self, date, with_hours=True):
+        formatted = u'%s.%s.%s' % (
+            date.day, self.month_names[date.month-1], date.year)
+        if with_hours:
+            formatted += u', %s:%s' % (
+                '%02d' % date.hour, '%02d' % date.minute)
+        return formatted
+
+    def occurrences(self):
         for occurrence in self.content.get_occurrences():
             timezone = occurrence.get_timezone()
-            location = occurrence.get_location()
-            display_time = not occurrence.is_all_day()
+            with_hours = not occurrence.is_all_day()
 
             start = occurrence.get_start_datetime(timezone)
             end = occurrence.get_end_datetime(timezone)
-            rec_til = occurrence.get_end_recurrence_datetime()
+            end_recurrence = occurrence.get_end_recurrence_datetime()
 
-            start_str = u'%s.%s.%s' % (start.day,
-                                       local_months[start.month-1],
-                                       start.year)
+            information = {
+                'start': self.format_date(start, with_hours),
+                'end': self.format_date(end, with_hours),
+                'location': occurrence.get_location(),
+                'recurrence_until': None}
 
-            end_str = u'%s.%s.%s' % (end.day,
-                                     local_months[end.month-1],
-                                     end.year)
+            if end_recurrence:
+                information.update({
+                    'recurrence_until': self.format_date(
+                        end_recurrence, with_hours),
+                    'recurrence': RRuleData(
+                        occurrence.get_recurrence()).get('FREQ')})
 
-            if display_time:
-                start_str = u'%s, %s:%s' % (start_str,
-                                            '%02d' % (start.hour),
-                                            '%02d' % (start.minute))
-                end_str = u'%s, %s:%s' % (end_str,
-                                          '%02d' % (end.hour),
-                                          '%02d' % (end.minute))
-
-            odi = {
-                'start': start_str,
-                'end': end_str,
-                'location': location,
-                'recurrence_until': rec_til,
-            }
-
-            if rec_til:
-                rec_til_str = u'%s.%s.%s' % (rec_til.day,
-                                             local_months[rec_til.month-1],
-                                             rec_til.year)
-
-                if display_time:
-                    rec_til_str = u'%s, %s:%s' % (rec_til_str,
-                                                  '%02d' % (rec_til.hour),
-                                                  '%02d' % (rec_til.minute))
-
-                odi['recurrence_until'] = rec_til_str
-                recurrence = RRuleData(occurrence.get_recurrence()).get('FREQ')
-                odi['recurrence'] = recurrence
-
-            yield odi
+            yield information
 
 
 class AgendaItemView(NewsItemView, AgendaItemBaseView):
