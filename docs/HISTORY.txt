@@ -1,10 +1,17 @@
 ChangeLog
 =========
 
-3.0.4 (unreleased)
+3.0.4 (2013/12/19)
 ------------------
 
-- ...
+- Change how the dates are displayed in agenda and news items: no
+  longer properly translate them using the local setting. Display the
+  recurrence information.
+
+- Validate and prevent bugs while using subjects and target audiences
+  that have been removed or renamed in the service.
+
+- Improve tests.
 
 3.0.3 (2013/10/09)
 ------------------
