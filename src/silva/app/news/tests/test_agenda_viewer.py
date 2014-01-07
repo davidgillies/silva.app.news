@@ -248,9 +248,6 @@ class RenderAgendaViewerTestCase(SilvaNewsTestCase):
                 200)
             self.assertEqual(browser.inspect.title, ['Agenda'])
             self.assertEqual(
-                browser.inspect.introduction,
-                'Events for Tuesday, June 4, 2013')
-            self.assertEqual(
                 browser.inspect.items,
                 [u'Saturday “π” aka Disco'])
 
